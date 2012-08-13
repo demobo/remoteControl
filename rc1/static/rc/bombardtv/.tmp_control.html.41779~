@@ -1,0 +1,180 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+  
+        <title>
+        </title>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.css" />
+	
+        <style>
+            /* App custom styles */
+        </style>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js">
+        </script>
+        <script src="http://code.jquery.com/mobile/1.1.0/jquery.mobile-1.1.0.min.js">
+        </script>
+        
+        <style type=text/css>
+
+    		input.ui-slider-input {
+      			display : none !important;
+    		}
+
+  		</style>
+        <script>
+		function bombComment(){
+		var comment = $('textarea').val();
+		alert(comment);
+	}
+		</script>
+        
+    </head>
+    <body>
+        <!-- Home -->
+        <div data-role="page" id="main">
+			<div data-role="header">
+				<h4>Bombard.TV</h4>
+				
+				<a href=#bomb class=ui-btn-right data-transition=none data-icon=chat>Bomb!</a>
+			
+			</div>
+            
+            <div data-role="content" style="padding: 15px">
+            
+            	<select id="bombardToggle" data-role=slider>
+	      					<option value=no> Off </option>
+							<option value=yes> On </option>
+				</select>
+    			
+    			<div class=ui-grid-b style="text-align:center; padding-top:5px; padding-bottom:5px">
+    			
+    				
+					<input name="slider" id="slider1" value="50" min="0" max="100" data-highlight="false" type="range" />
+					
+					<div class=ui-block-a> 
+						<button id="play_button" value="play" type="button">play/pause</button>
+					</div>
+					<div class=ui-block-b> 
+						<button id="screen_button" value="screen" type="button">screen</button>
+					</div>
+					
+					
+				</div>
+				
+    		
+    		</div>
+            
+            <div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role=navbar>
+                	<ul>
+                		<li><a id=control href=#main class="ui-btn-active ui-state-persist" data-transition=none>Control</a></li>
+                		<li><a id=video href=#video data-transition=none data-prefetch>Video</a></li>
+                		<li><a id=bombs href=#bombhistory data-transition=none data-prefetch>Bombs</a></li>
+                	</ul>
+                </div> 
+            </div>
+        </div>
+        
+		
+        <div data-role="page" id="bomb" data-dom-cache="true">
+			<div data-role="header">
+				<h4>Bombard.TV</h4>
+			</div>
+            
+            <div data-role="content" style="padding: 15px">
+    			<textarea id="comment" rows="3" cols="1"></textarea>
+				<div style="text-align:center">
+					<a data-role=button id="bombard_button" value="bombard" data-inline=true data-mini=true>BOMBARD!</a>
+				</div>
+			
+    		</div>
+            
+            <div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role=navbar>
+                	<ul>
+                		<li><a id=control href=#main class="ui-btn-active ui-state-persist" data-transition=none>Control</a></li>
+                		<li><a id=video href=#video data-transition=none>Video</a></li>
+                		<li><a id=bombs href=#bombhistory data-transition=none>Bombs</a></li>
+                	</ul>
+                </div>
+            </div>
+        </div>
+        
+		<div data-role="page" id=video data-dom-cache="true">
+
+			<div data-role="header">
+				<h1>Videos</h1>
+			</div><!-- /header -->
+
+			<div data-role="content">
+				<ul id="videoItemList" data-role="listview">
+				    <li></li>
+				</ul>
+			</div><!-- /content -->
+
+			<div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role=navbar>
+                	<ul>
+                		<li><a id=control href=#main data-transition=none>Control</a></li>
+                		<li><a id=video href=#video class="ui-btn-active ui-state-persist" data-transition=none>Videos</a></li>
+                		<li><a id=bombs href=#bombhistory data-transition=none>Bombs</a></li>
+                	</ul>
+                </div>
+            </div>
+		</div>
+		
+		<div data-role="page" id=bombhistory data-dom-cache="true">
+
+			<div data-role="header">
+				<h1>Bombs</h1>
+			</div><!-- /header -->
+
+			<div data-role="content">
+				<ul id="commentItemList" data-role="listview">
+				   <li></li>
+				</ul>
+			</div><!-- /content -->
+
+			<div data-theme="a" data-role="footer" data-position="fixed">
+                <div data-role=navbar>
+                	<ul>
+                		<li><a id=control href=#main data-transition=none>Control</a></li>
+                		<li><a id=video href=#video data-transition=none>Video</a></li>
+                		<li><a id=bombs href=#bombhistory class="ui-btn-active ui-state-persist" data-transition=none>Bombs</a></li>
+                	</ul>
+                </div>
+            </div>
+		</div>
+		
+        <script>
+		
+			$('#comment').val('');
+			$('#bombard_button').click(function() {
+				$('#comment').val('');
+			});
+			
+			function addVideoItems(items, init) {
+				$('#videoItemList').html('');
+				for (var i = 0; i<items.length; i++) {
+					$('#videoItemList').append($('<li><a id="videoItem" value="'+items[i].vid+'"><img src="http://i3.ytimg.com/vi/'+items[i].vid+'/default.jpg" title="'+items[i].title+'"/><h3>'+items[i].title+'</h3><p>'+items[i].viewCount+' views</p></a></li>'));
+				}
+				if (!init) $('#videoItemList').listview("refresh");
+			}
+			addVideoItems([{vid:'EvquyiBRHCk', title:'Super Creepy Justin Bieber \'Boyfriend\' Parody', viewCount:'222,055'},{vid:'Z9kB2sTd8UE', title:'Fourth of July outfit ideas!!!', viewCount:'219,540'},{vid:'8cJiBArztwA', title:'"CALL ME MAYBE" CARLY RAE JEPSEN MUSIC VIDEO PARODY', viewCount:'5,616,678'}],true);
+
+			function addCommentItems(items, init) {
+				$('#commentItemList').html('');
+				for (var i = 0; i<items.length; i++) {
+					$('#commentItemList').append($('<li><a id="commentItem" value="'+items[i].cid+'"><h3>'+items[i].title+'</h3></a></li>'));
+				}
+				if (!init) $('#commentItemList').listview("refresh");
+			}
+			addCommentItems([{cid:'EvquyiBRHCk', title:'Super Creepy Justin Bieber \'Boyfriend\' Parody'},{cid:'Z9kB2sTd8UE', title:'Fourth of July outfit ideas!!!'}],true);
+
+        </script>
+    </body>
+</html>

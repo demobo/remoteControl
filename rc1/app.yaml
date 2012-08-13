@@ -1,0 +1,20 @@
+application: de-mobo
+version: rc1
+runtime: python
+api_version: 1
+
+handlers:
+- url: /
+  static_files: static/index.html
+  upload: static/.*
+  
+- url: /(.*\.(html|css|json|txt|png|jpg|gif|jpg|jpeg|ico|mp3|ogg|ttf|js))
+  static_files: static/\1
+  upload: static/.*
+   
+- url: /rc/(.*)  
+  static_files: static/rc/\1/control.html
+  upload: static/.*
+    
+- url: .*
+  script: main.py

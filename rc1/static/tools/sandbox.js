@@ -8,7 +8,8 @@ if (DEMOBO) {
 	DEMOBO.stayOnBlur = true;
 	var imgID = 0;
 	DEMOBO.init = function() {
-		if (localStorage.getItem("url")) $('#url').val(localStorage.getItem("url"));
+		if (localStorage.getItem("url"))
+			$('#url').val(localStorage.getItem("url"));
 		$.demobo.addEventListener('input', function(e) {
 			console.log(e);
 			var messageCss = {
@@ -64,6 +65,17 @@ if (DEMOBO) {
 				}
 			});
 		});
+		$('button#rc1').click(
+				function() {
+					var url = "http://rc1.demobo.com" + $('#url').val() + "?" + Math.random();
+					$.demobo.setController( {
+						page : "default",
+						url : url,
+						touchEnabled : true
+					});
+					$('iframe').attr('src', url);
+					$('#controllerUrl').attr('href', url);
+				});
 		$('input[type=radio]').click(function() {
 			var wh = this.value.split("x");
 			$('iframe').css( {

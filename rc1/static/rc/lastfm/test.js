@@ -1,0 +1,6 @@
+var testCases = [
+		{
+			fn : "",
+			param : {
+			}
+		} ];

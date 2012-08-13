@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+        </script>
+    </head>
+    <body>
+        <div id='frame'>
+            <div id='content'>
+              <div class='mainControl'>
+              <a value='play' id='playButton'></a>
+              <a value='pause' id='pauseButton'></a>
+              <a value='next' id='nextButton'></a>
+              </div>
+              <div class='subControl'>
+              <a value='love' id='loveButton'></a>
+              <a value='spam' id='spamButton'></a>
+              </div>
+            </div>
+        </div>
+        <script>
+        
+        </script>
+        <style>        
+            body {
+                margin: 0px;
+                font-family: arial, helvetica, sans-serif;
+            }
+            
+            #frame {
+                background-color: white;
+                position: fixed;
+                width: 480px;
+                height: 320px;
+                overflow: hidden;
+            }
+
+            .mainControl, .subControl {
+              text-align : center;
+            }
+
+            .mainControl {
+              margin-top:80px;
+            }
+
+            .mainControl a {
+            }
+
+            .subControl {
+              margin-top:20px;
+            }
+            
+            a {
+              margin-left:20px;
+              margin-right:20px;
+              width : 60px;
+              height : 60px;
+              display : inline-block;
+              cursor : pointer;
+            }
+
+            #playButton {
+              background : url('http://localhost:1242/rc/lastfm/images/play.png');
+              background : url('http://rc1.demobo.com/rc/lastfm/images/play.png')
+            }
+
+            #loveButton {
+              background : url('http://localhost:1242/rc/lastfm/images/love.png');
+              background : url('http://rc1.demobo.com/rc/lastfm/images/love.png')
+            }
+
+            #pauseButton {
+              background : url('http://localhost:1242/rc/lastfm/images/pause.png'); 
+              background : url('http://rc1.demobo.com/rc/lastfm/images/pause.png')
+            }
+
+            #spamButton {
+              background : url('http://localhost:1242/rc/lastfm/images/spam.png');
+              background : url('http://rc1.demobo.com/rc/lastfm/images/spam.png')
+            }
+
+            #nextButton {
+              background : url('http://localhost:1242/rc/lastfm/images/next.png');
+              background : url('http://rc1.demobo.com/rc/lastfm/images/next.png')
+            }
+        </style>
+    </body>
+</html>

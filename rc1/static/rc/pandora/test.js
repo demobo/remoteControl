@@ -1,6 +1,6 @@
 var testCases = [
 		{
-			fn : "loadNowPlayingItem",
+			fn : "loadSongInfo",
 			param : {
 				image : "http://cont-sv5-3.pandora.com/images/public/amz/7/2/0/1/886976911027_500W_500H.jpg",
 				title : "Older",
@@ -8,7 +8,7 @@ var testCases = [
 				album : "Infinite Arms - 2012/08/09"
 			}
 		}, {
-			fn : "loadStationItems",
+			fn : "loadChannelList",
 			param : [ {
 				title : "我的私人兆赫"
 			}, {

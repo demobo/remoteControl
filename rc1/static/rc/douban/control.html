@@ -70,7 +70,7 @@
             function loadChannelList(list){
                 $('#list-items').html('');
                 $.each(list, function(index, value){
-                    $('#list-items').append($('<div class="list-item"><a id="channel" value="' + index + '">' + value + '</a></div>'));
+                    $('#list-items').append($('<div class="list-item"><a id="channel" value="' + index + '">' + value.title + '</a></div>'));
                 });
             }
         </script>

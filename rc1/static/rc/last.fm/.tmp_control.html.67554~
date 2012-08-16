@@ -28,7 +28,7 @@
                 <div class="row">
                     <a id="playButton" class="playButton button" value="play"></a>
                     <a id="pauseButton" class="pauseButton button" value="pause"></a>
-                    <a id="nextButton" class="nextButton button" value="next"></a>
+                    <a id="skipButton" class="skipButton button" value="skip"></a>
                 </div>
                 <div class="volumeControl row volumeBackground">
                     <div class="volumeButton" id="volumeButton">
@@ -40,8 +40,8 @@
                 <div id="nowplayingItem" class="row">
                 </div>
                 <div class="updowngroup">
-                    <a id="loveButton" class="loveButton smallButton" value="love"></a>
-                    <a id="spamButton" class="spamButton smallButton" value="spam"></a>
+                    <a id="upButton" class="upButton smallButton" value="up"></a>
+                    <a id="downButton" class="downButton smallButton" value="down"></a>
                 </div>
             </div>
             <div id="stations" class="page">
@@ -81,11 +81,11 @@
                     scrollLeft: $(curPage)[0].offsetLeft
                 }, 'slow');
             });
-            function loadSongInfo(song){
-                $('#nowplayingItem').html('<div class="albumImage"><img src="' + song.image + '"></div><div class="albumInfo"><div class="title">' + song.title + '</div><div class="artist">' + song.artist + '</div><div class="album">' + song.album + '</div></div>');
+            function loadNowPlayingItem(item){
+                $('#nowplayingItem').html('<div class="albumImage"><img src="' + item.image + '"></div><div class="albumInfo"><div class="title">' + item.title + '</div><div class="artist">' + item.artist + '</div><div class="album">' + item.album + '</div></div>');
             }
             
-            function loadChannelList(items){
+            function loadStationItems(items){
                 $('#stationItem').html('');
                 for (var i = 0; i < items.length; i++) {
                     $('#stationItem').append($('<option value="' + i + '">' + items[i].title + '</option>'));
@@ -176,55 +176,55 @@
                 background-size: 210px;
             }
             
-            .loveButton {
+            .upButton {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_up.png) no-repeat top left;
                 background-position-x: 0px;
                 background-size: 150px;
             }
             
-            .loveButton:hover {
+            .upButton:hover {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_up.png) no-repeat top left;
                 background-position-x: -50px;
                 background-size: 150px;
             }
             
-            .loveButton:active {
+            .upButton:active {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_up.png) no-repeat top left;
                 background-position-x: -100px;
                 background-size: 150px;
             }
             
-            .spamButton {
+            .downButton {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_down.png) no-repeat top left;
                 background-position-x: 0px;
                 background-size: 150px;
             }
             
-            .spamButton:hover {
+            .downButton:hover {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_down.png) no-repeat top left;
                 background-position-x: -50px;
                 background-size: 150px;
             }
             
-            .spamButton:active {
+            .downButton:active {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_down.png) no-repeat top left;
                 background-position-x: -100px;
                 background-size: 150px;
             }
             
-            .nextButton {
+            .skipButton {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_skip.png) no-repeat top left;
                 background-position-x: 0px;
                 background-size: 210px;
             }
             
-            .nextButton:hover {
+            .skipButton:hover {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_skip.png) no-repeat top left;
                 background-position-x: -70px;
                 background-size: 210px;
             }
             
-            .nextButton:active {
+            .skipButton:active {
                 background: url(http://rc1.demobo.com/rc/pandora/images/btn_skip.png) no-repeat top left;
                 background-position-x: -140px;
                 background-size: 210px;

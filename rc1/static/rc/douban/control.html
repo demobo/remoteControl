@@ -48,10 +48,10 @@
                 }
             });
             
-            function loadSongInfo(infoObject){
-                $('#artist').text(infoObject['artist']);
-                $('#songName').text(infoObject['songName']);
-                $('img.newAlbumArt').attr('src', infoObject['albumArtUrl']);
+            function loadSongInfo(song){
+                $('#artist').text(song['artist']);
+                $('#songName').text(song['title']);
+                $('img.newAlbumArt').attr('src', song['image']);
             }
             
             //function handler of img onload event

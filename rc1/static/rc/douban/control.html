@@ -6,55 +6,32 @@
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
         </script>
-    </head>
-    <body>
-        <div id='frame'>
-            <div id='content'>
-                <img id='albumArt' class='currentAlbumArt to0'/><img id='albumArt' class='newAlbumArt to90' />
-                <div id='controlPanel'>
-                    <div id='artist'>
-                    </div>
-                    <div id='songName'>
-                    </div>
-                    <a id='loveButton' value='love'></a>
-                    <a id='spamButton' value='spam'></a>
-                    <a id='nextButton' value='next'></a>
-                    <a id='playPauseButton' value='playPause'></a>
-                </div>
-            </div>
-            <div id='listTab'>
-                <div id='smallButton'>
-                </div>
-                <div id='listWrap'>
-                    <div id='list'>
-                        <div id='list-items'>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <script>
-        	var screenHeight = $(window).height();
-			if (screenHeight>100) $('html').css('zoom',screenHeight/320);
-            $('#smallButton').bind('click', function(){
-                if ($('#listTab').css('left') == '80px') {
-                    $('#listTab').animate({
-                        'left': '480px'
-                    }, 'slow');
-                }
-                else {
-                    $('#listTab').animate({
-                        'left': '80px'
-                    }, 'slow');
-                }
-            });
-            
-            function loadSongInfo(song){
-                $('#artist').text(song['artist']);
-                $('#songName').text(song['title']);
-                $('img.newAlbumArt').attr('src', song['image']);
-            }
-            
+		<script>
+        	$(document).ready(function(){
+				var screenHeight = $(window).height();
+				var screenWidth = $(window).width();
+				$('html').css('zoom',screenHeight/320);
+	            $('#smallButton').bind('click', function(){
+	                if ($('#listTab').css('left') == '80px') {
+	                    $('#listTab').animate({
+	                        'left': '480px'
+	                    }, 'slow');
+	                }
+	                else {
+	                    $('#listTab').animate({
+	                        'left': '80px'
+	                    }, 'slow');
+	                }
+	            });
+				$('img').bind('load', flipAlbumArt);
+			});
+			
+			function loadSongInfo(song){
+	                $('#artist').text(song['artist']);
+	                $('#songName').text(song['title']);
+	                $('img.newAlbumArt').attr('src', song['image']);
+	            }
+	            
             //function handler of img onload event
             function flipAlbumArt(){
                 $('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function(){
@@ -66,8 +43,6 @@
                 });
             }
             
-            $('img').bind('load', flipAlbumArt);
-            
             function loadChannelList(list){
                 $('#list-items').html('');
                 $.each(list, function(index, value){
@@ -75,20 +50,51 @@
                 });
             }
         </script>
-        <style>        
+    </head>
+    <body>
+    	<div id="main">
+	        <div id='frame'>
+	            <div id='content'>
+	                <img id='albumArt' class='currentAlbumArt to0'/><img id='albumArt' class='newAlbumArt to90' />
+	                <div id='controlPanel'>
+	                    <div id='artist'>
+	                    </div>
+	                    <div id='songName'>
+	                    </div>
+	                    <a id='loveButton' value='love'></a>
+	                    <a id='spamButton' value='spam'></a>
+	                    <a id='nextButton' value='next'></a>
+	                    <a id='playPauseButton' value='playPause'></a>
+	                </div>
+	            </div>
+	            <div id='listTab'>
+	                <div id='smallButton'>
+	                </div>
+	                <div id='listWrap'>
+	                    <div id='list'>
+	                        <div id='list-items'>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+		<style>        
             body {
                 margin: 0px;
                 font-family: arial, helvetica, sans-serif;
                 background-color: white;
-				overflow: hidden;
             }
-            
+            #main {
+				overflow: hidden;
+				white-space: nowrap;
+			}
             #frame {
                 background-color: white;
                 position: relative;
                 width: 480px;
                 height: 320px;
-				margin: auto;
+				margin: 0px auto;
             }
             
             .to90 {
@@ -245,9 +251,7 @@
             #songName {
               margin-top:20px;
               margin-left:20px;
-            }    
-                                
-                    
+            }      
         </style>
     </body>
 </html>

@@ -18,6 +18,38 @@
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
         <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js">
         </script>
+		<script>
+			$(document).ready(function(){
+				var screenHeight = $(window).height();
+				$('html').css('zoom',screenHeight/320);
+				// jquery mobile input range is not working with zoom
+				$('.volumeControl').css('zoom',320/screenHeight);
+	            var curPage = "#control";
+	            $('#footer li a').click(function(){
+	                curPage = '#' + $(this).attr('value');
+	                $('#main').animate({
+	                    scrollLeft: $(curPage)[0].offsetLeft
+	                }, 'slow');
+	            });
+			});
+            function loadSongInfo(song){
+                $('#nowplayingItem .albumImage img').attr('src',song.image);
+				$('#nowplayingItem .title').html(song.title);
+				$('#nowplayingItem .artist').html(song.artist);
+				$('#nowplayingItem .album').html(song.album);
+            }
+            
+            function loadChannelList(items){
+                $('#stationItem').html('');
+                for (var i = 0; i < items.length; i++) {
+                    $('#stationItem').append($('<option value="' + i + '">' + items[i].title + '</option>'));
+                }
+            }
+            
+            function loadChannelName(name){
+                $('#stationName').html(name);
+            }
+        </script>
     </head>
     <body>
         <div class="logo">
@@ -57,10 +89,6 @@
             <div id="stations" class="page">
                 <!--<div class="searchBox row">
                 <input class="searchInput" type="text" autocomplete="off" spellcheck="false">
-                </div>
-                <div class="stationsList row">
-                <select id="stationItem" title="Select a station:" data-role="none" style="opacity: 0;">
-                </select>
                 </div>-->
             </div>
             <div id="footer" data-theme="a" data-role="footer" data-position=fixed>
@@ -83,34 +111,6 @@
                 </div>
             </div>
         </div>
-        <script>
-//        	var screenHeight = $(window).height();
-//			if (screenHeight>100) $('html').css('zoom',screenHeight/320);
-            var curPage = "#control";
-            $('#footer li a').click(function(){
-                curPage = '#' + $(this).attr('value');
-                $('#main').animate({
-                    scrollLeft: $(curPage)[0].offsetLeft
-                }, 'slow');
-            });
-            function loadSongInfo(song){
-                $('#nowplayingItem .albumImage img').attr('src',song.image);
-				$('#nowplayingItem .title').html(song.title);
-				$('#nowplayingItem .artist').html(song.artist);
-				$('#nowplayingItem .album').html(song.album);
-            }
-            
-            function loadChannelList(items){
-                $('#stationItem').html('');
-                for (var i = 0; i < items.length; i++) {
-                    $('#stationItem').append($('<option value="' + i + '">' + items[i].title + '</option>'));
-                }
-            }
-            
-            function loadChannelName(name){
-                $('#stationName').html(name);
-            }
-        </script>
         <style>
             body {
                 height: 340px;

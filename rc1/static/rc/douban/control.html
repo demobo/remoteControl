@@ -26,12 +26,12 @@
 				$('img').bind('load', flipAlbumArt);
 			});
 			
-			function loadSongInfo(song){
-	                $('#artist').text(song['artist']);
-	                $('#songName').text(song['title']);
-	                $('img.newAlbumArt').attr('src', song['image']);
-	            }
-	            
+            function loadSongInfo(song){
+                $('#artist').text(song['artist']);
+                $('#songName').text(song['song']);
+                $('img.newAlbumArt').attr('src', song['image']);
+            }
+			
             //function handler of img onload event
             function flipAlbumArt(){
                 $('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function(){

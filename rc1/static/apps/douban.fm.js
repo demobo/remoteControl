@@ -45,7 +45,7 @@ function getInfoObject(){
 }
 
 function sendChannelList(){
-  demobo.callFunction('loadChannelList', $.map($('.chl_name'), function(value, index){return $(value).text();}));
+  demobo.callFunction('loadChannelList', $.map($('.chl_name'), function(value, index){return {'title':$(value).text()};}));
 }
 
 function sendCurrentSongInfo(){

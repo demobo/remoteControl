@@ -25,19 +25,20 @@
 				// jquery mobile input range is not working with zoom
 				$('.volumeControl').css('zoom',320/screenHeight);
 	            var curPage = "#control";
-	            $('#footer li a').click(function(){
-	                curPage = '#' + $(this).attr('value');
-	                $('#main').animate({
-	                    scrollLeft: $(curPage)[0].offsetLeft
-	                }, 'slow');
-	            });
+	            $('#footer li a').click(function(){changeTab($(this));});
 			});
+			function changeTab(target){
+                curPage = '#' + target.attr('value');
+                $('#main').animate({
+                    scrollLeft: $(curPage)[0].offsetLeft
+                }, 'slow');
+            }
             function loadSongInfo(song){
                 $('#nowplayingItem .albumImage img').attr('src',song.image);
 				$('#nowplayingItem .title').html(song.title);
 				$('#nowplayingItem .artist').html(song.artist);
 				$('#nowplayingItem .album').html(song.album);
-				$('#footer li a#nowPlayingTab').click();
+				changeTab($('#footer li a#nowPlayingTab'));
             }
             
             function loadChannelList(items){

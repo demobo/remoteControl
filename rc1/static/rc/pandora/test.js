@@ -26,4 +26,8 @@ var testCases = [
 			}, {
 				title : "古典 MHz"
 			} ]
-		} ];
+		},
+		{
+			fn : "loadChannelName",
+			param : "Akon Radio"
+		}];

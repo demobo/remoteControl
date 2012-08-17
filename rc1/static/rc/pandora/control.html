@@ -23,7 +23,8 @@
         <div class="logo">
             <img src="http://rc1.demobo.com/rc/pandora/images/pandora-logo.png" />
         </div>
-		<div id="stationName"></div>
+        <div id="stationName">
+        </div>
         <div id="main" data-role=page>
             <div id="control" class="page">
                 <div class="row">
@@ -39,10 +40,18 @@
             </div>
             <div id="nowPlaying" class="page">
                 <div id="nowplayingItem" class="row">
-                </div>
-                <div class="updowngroup">
-                    <a id="loveButton" class="loveButton smallButton" value="love"></a>
-                    <a id="spamButton" class="spamButton smallButton" value="spam"></a>
+                	<div class="albumImage"><img></div>
+					<div class="albumInfo">
+						<div class="albumInfoGroup">
+							<div class="title"></div>
+							<div class="artist"></div>
+							<div class="album"></div>
+						</div>	
+						<div class="updowngroup">
+		                    <a id="loveButton" class="loveButton smallButton" value="love"></a>
+		                    <a id="spamButton" class="spamButton smallButton" value="spam"></a>
+		                </div>
+					</div>
                 </div>
             </div>
             <div id="stations" class="page">
@@ -75,6 +84,8 @@
             </div>
         </div>
         <script>
+//        	var screenHeight = $(window).height();
+//			if (screenHeight>100) $('html').css('zoom',screenHeight/320);
             var curPage = "#control";
             $('#footer li a').click(function(){
                 curPage = '#' + $(this).attr('value');
@@ -83,7 +94,10 @@
                 }, 'slow');
             });
             function loadSongInfo(song){
-                $('#nowplayingItem').html('<div class="albumImage"><img src="' + song.image + '"></div><div class="albumInfo"><div class="title">' + song.title + '</div><div class="artist">' + song.artist + '</div><div class="album">' + song.album + '</div></div>');
+                $('#nowplayingItem .albumImage img').attr('src',song.image);
+				$('#nowplayingItem .title').html(song.title);
+				$('#nowplayingItem .artist').html(song.artist);
+				$('#nowplayingItem .album').html(song.album);
             }
             
             function loadChannelList(items){
@@ -92,12 +106,18 @@
                     $('#stationItem').append($('<option value="' + i + '">' + items[i].title + '</option>'));
                 }
             }
+            
+            function loadChannelName(name){
+                $('#stationName').html(name);
+            }
         </script>
         <style>
             body {
                 height: 340px;
                 width: 480px;
                 overflow: hidden;
+                font-family: "arial", Helvetica Neue, helvetica, sans-serif;
+				background: black;
             }
             
             input.ui-slider-input {
@@ -106,6 +126,7 @@
             
             .ui-page {
                 background-image: url(http://rc1.demobo.com/rc/pandora/images/skin_background.jpg);
+				background-size: 100%;
             }
             
             #stationSelect {
@@ -301,6 +322,21 @@
                 width: 100%;
             }
             
+            #stationName {
+                position: absolute;
+                top: 195px;
+                z-index: 999;
+                text-align: center;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                text-shadow: 0 -1px 0 #111;
+                width: 80%;
+                padding: 30px 10% 10px 10%;
+                font-size: 28px;
+				color: #A8C4E2;
+            }
+            
             .row {
                 text-align: center;
                 margin: 20px auto;
@@ -353,12 +389,16 @@
             }
             
             #nowplayingItem .albumInfo {
-                display: inline-block;
+                display: inline-table;
                 width: 230px;
                 text-align: left;
                 padding-left: 10px;
             }
-            
+			
+            #nowplayingItem .albumInfoGroup {
+                padding-bottom: 18px;
+            }
+			
             #nowplayingItem .albumImage {
                 display: inline-block;
             }
@@ -366,43 +406,35 @@
             #nowplayingItem .albumImage img {
                 width: 130px;
                 height: 130px;
+				background: rgba(0, 0, 0, 0.3);
+				border: none;
             }
             
             .updowngroup {
-                position: relative;
-                top: -150px;
-                left: 200px;
-                z-index: 999;
+            }
+            
+            #nowplayingItem {
+                text-decoration: none;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                font-family: "arial", Helvetica Neue, helvetica, sans-serif;
+                padding: 1px;
+				color: #A8C4E2;
+				text-shadow: none;
             }
             
             #nowplayingItem .title {
-                color: #fff;
-                text-decoration: none;
-                font-size: 20px;
-                padding: 3px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
+                font-size: 17px;
+				font-weight: bold;
             }
             
             #nowplayingItem .artist {
-                color: #fff;
-                text-decoration: none;
-                font-size: 16px;
-                padding: 3px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
+                font-size: 15px;
             }
             
             #nowplayingItem .album {
-                color: #fff;
-                text-decoration: none;
-                font-size: 16px;
-                padding: 3px;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
+                font-size: 15px;
             }
             
             .ui-select .ui-btn select {

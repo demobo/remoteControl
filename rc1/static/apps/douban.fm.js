@@ -99,7 +99,7 @@ function myInitiation(){
   _this.delay=function(){
     setTimeout(_this.onChange,1);
   };
-  _this.target.addEventListener('DOMSubtreeModified',_this.delay,false)
+  _this.target.addEventListener('DOMSubtreeModified',_this.delay,false);
 }
 
 //main logic

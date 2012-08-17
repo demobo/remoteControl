@@ -37,15 +37,15 @@ function getAbsPosition(element) {
 }
 
 function playVideo(){
-//  d$('.playButton').click();
+  $('.playButton').click();
 //  Pandora.pauseMusic();
-  $('#demoboPlay').click();
+//  $('#demoboPlay').click();
 }
 
 function pauseVideo(){
-//  d$('.pauseButton').click();
+  $('.pauseButton').click();
 //  Pandora.pauseMusic(1);
-  $('#demoboPause').click();
+//  $('#demoboPause').click();
 }
 
 function skipVideo(){
@@ -82,8 +82,15 @@ function sendStationList(){
   demobo.callFunction('loadChannelList', getStationList());
 }
 
-function sendPhoneInfo(){
+function sendNowPlaying(){
   demobo.callFunction('loadSongInfo', getInfoObject());
+  var stationName = $('.stationChangeSelectorNoMenu').text().trim();
+  demobo.callFunction('loadChannelName', stationName);
+}
+
+function refreshController(){
+	sendStationList();
+	sendNowPlaying();
 }
 
 function setVolume(num){
@@ -121,37 +128,41 @@ myInputDispatcher.addCommands({
   'spamButton' : thumbDown ,
   'nextButton' : skipVideo ,
   'volumeSlider' : setVolume ,
-  'nowPlayingTab' : sendPhoneInfo ,
-  'stationsTab' : sendStationList ,
   'stationItem' : chooseStation ,
+  'nowPlayingTab': refreshController,
   'demoboApp' : function(){
-    sendPhoneInfo();
-    sendStationList();
+	refreshController();
     hideDemobo();
   }
 });
 
 
 function myInitiation(){
-  //TODO: 1 bind external function doesn't work
-  $('.albumArt').bind('ajaxComplete', function(e){
-    var newPic = d$('.albumArt').children().last().attr('src');
-    console.log('new:'+ newPic+';old:'+currentPic);
-    if (newPic != currentPic){
-      currentPic = newPic;
-      sendPhoneInfo();
+  var _this={
+    target:$('.albumArt')[0],
+    oldValue:$('.playerBarArt').attr('src')
+  };
+  _this.onChange=function(){
+	var newValue = $('.playerBarArt').attr('src');  
+    if(newValue && _this.oldValue!==newValue)
+    {
+      _this.oldValue=newValue;
+      sendNowPlaying();
     }
-  });
-  var device;
-  var a = document.createElement('div');
-  a.setAttribute('onclick','javascript:document.querySelector(".playButton").click()');
-  a.setAttribute('id', 'demoboPlay');
-  var b = document.createElement('div');
-  b.setAttribute('onclick','javascript:document.querySelector(".pauseButton").click()');
-  b.setAttribute('id', 'demoboPause');
-  document.body.appendChild(a);
-  document.body.appendChild(b);
-
+  };
+  _this.delay=function(){
+    setTimeout(_this.onChange,30);
+  };
+  _this.target.addEventListener('DOMSubtreeModified',_this.delay,false);
+//  var device;
+//  var a = document.createElement('div');
+//  a.setAttribute('onclick','javascript:document.querySelector(".playButton").click()');
+//  a.setAttribute('id', 'demoboPlay');
+//  var b = document.createElement('div');
+//  b.setAttribute('onclick','javascript:document.querySelector(".pauseButton").click()');
+//  b.setAttribute('id', 'demoboPause');
+//  document.body.appendChild(a);
+//  document.body.appendChild(b);
 }
 
 //main logic

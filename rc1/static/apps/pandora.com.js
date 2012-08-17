@@ -104,7 +104,6 @@ function chooseStation(index){
 function setController(){
   DEMOBO.controller = {page: "default", url:"http://rc1.demobo.com/rc/pandora", touchEnabled: true};
 // DEMOBO.controller = {"page": "presentation"};  
-
   demobo.setController(DEMOBO.controller);  
 }
 
@@ -186,6 +185,7 @@ function myInitiation(){
   myInitiation();
 
   demoboLoading = undefined;
+  localStorage.removeItem('demoboExtLoading');
 }());
 
 

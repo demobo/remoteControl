@@ -175,8 +175,9 @@ function myInitiation(){
       showDemobo();
       demobo.getDeviceInfo('','setDevice');
     }
-    demobo.start();
   }
+
+  demobo.start();
 
   var currentPic;
   

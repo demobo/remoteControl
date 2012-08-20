@@ -5,5 +5,22 @@
         <title>demo</title>
     </head>
     <body>
+      <div>Enter the port number that you wanna load demobo-ext.js and util.js from: <input id='demoboPort' /></div>
+      <div>Enter the port number that you wanna load controllers from:<input id='rcPort' /></div>
+      <div><button onclick='javascript:generateBookmarklet()'>Generate dev bookmarklet</button></div>
     </body>
 </html>
+
+<script>
+function generateBookmarklet(){
+  var current = document.getElementById('bookmarklet');
+  if (current){
+    current.parentNode.removeChild(current);
+  }
+  var elem = document.createElement('a');
+  elem.setAttribute('id','bookmarklet');
+  elem.href = "javascript:(function(){var s = document.createElement('script');window.demoboRcPort = "+document.getElementById('rcPort').value+";window.demoboPort = "+document.getElementById('demoboPort').value+";s.src='http://localhost:"+document.getElementById('demoboPort').value+"/dev/demobo-ext.js';document.body.appendChild(s);}())";
+  elem.innerText = "DemoboDev";
+  document.body.appendChild(elem);
+}
+</script>

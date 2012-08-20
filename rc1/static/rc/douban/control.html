@@ -49,8 +49,15 @@
 					if (value.selected) var option = $('<div class="list-item selected"><a id="channel" value="' + index + '">' + value.title + '</a></div>');
                     else var option = $('<div class="list-item"><a id="channel" value="' + index + '">' + value.title + '</a></div>');
 					$('#list-items').append(option);
+					if (value.selected) setCurrentChannel(index);
                 });
             }
+			
+			function setCurrentChannel(index) {
+				$('#list-items .list-item').removeClass('selected');
+				$($('#list-items .list-item')[index]).addClass('selected');
+			}
+			
         </script>
     </head>
     <body>

@@ -29,6 +29,6 @@ var testCases = [
 			} ]
 		},
 		{
-			fn : "loadChannelName",
-			param : "Akon Radio"
+			fn : "setCurrentChannel",
+			param : 1
 		}];

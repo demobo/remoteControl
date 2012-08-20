@@ -57,6 +57,7 @@ function setDevice(data){
 //you needa define the corresponding function in your controller ( 'loadSongInfo' in this example )
 function sendCurrentSongInfo(){
   demobo.callFunction('loadSongInfo', getInfoObject());
+//  demobo.callFunction('setCurrentChannel', getCurrentStationIndex());
 }
 
 //add or modify comamnds to accomondate your desgin

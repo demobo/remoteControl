@@ -45,11 +45,25 @@ function getInfoObject(){
 }
 
 function sendChannelList(){
-  demobo.callFunction('loadChannelList', $.map($('.chl_name'), function(value, index){return {'title':$(value).text()};}));
+	var list = $.map($('.channel'), function(value, index){
+		var s = {'title':$(value).find('.chl_name').text()};
+		if ($(value).hasClass('selected')) s.selected = true;
+		return s;
+	});
+  demobo.callFunction('loadChannelList', list);
+}
+
+function getCurrentStationIndex() {
+	var toReturn = 0;
+	var list = $.map($('.channel'), function(value, index){
+		if ($(value).hasClass('selected')) toReturn = index;
+	});
+	return toReturn;
 }
 
 function sendCurrentSongInfo(){
   demobo.callFunction('loadSongInfo', getInfoObject());
+  demobo.callFunction('setCurrentChannel', getCurrentStationIndex());
 }
 
 function setController(){

@@ -10,7 +10,7 @@ if (DEMOBO) {
 	DEMOBO.init = function() {
 		if (localStorage.getItem("url"))
 			$('#url').val(localStorage.getItem("url"));
-		$.demobo.addEventListener('input', function(e) {
+		demobo.addEventListener('input', function(e) {
 			console.log(e);
 			var messageCss = {
 				'font-size' : 300,
@@ -26,11 +26,13 @@ if (DEMOBO) {
 				function() {
 					var url = "http://net.demobo.com/server/upload/" + roomID
 							+ ".html?" + Math.random();
-					$.demobo.setController( {
-						page : "default",
-						url : url,
-						touchEnabled : true
-					});
+					var c = {
+							page : "default",
+							url : url,
+							touchEnabled : true
+						};
+					if (!$('#orientation').is(':checked')) c.orientation = "portrait";
+					demobo.setController(c);
 					$('iframe').attr('src', localStorage.getItem("url"));
 					$('#controllerUrl').attr('href', url);
 				});
@@ -61,23 +63,26 @@ if (DEMOBO) {
 					var test = testCases[i];
 					console.log(test.fn, test.param);
 					$('iframe')[0].contentWindow[test.fn](test.param);
-					$.demobo.callFunction(test.fn, test.param);
+					demobo.callFunction(test.fn, test.param);
 				}
 			});
 		});
 		$('button#rc1').click(
 				function() {
 					var url = "http://rc1.demobo.com" + $('#url').val() + "?" + Math.random();
-					$.demobo.setController( {
-						page : "default",
-						url : url,
-						touchEnabled : true
-					});
+					var c = {
+							page : "default",
+							url : url,
+							touchEnabled : true
+						};
+					if (!$('#orientation').is(':checked')) c.orientation = "portrait";
+					demobo.setController(c);
 					$('iframe').attr('src', url);
 					$('#controllerUrl').attr('href', url);
 				});
 		$('input[type=radio]').click(function() {
 			var wh = this.value.split("x");
+			if (!$('#orientation').is(':checked')) wh.reverse();
 			$('iframe').css( {
 				width : wh[0],
 				height : wh[1],

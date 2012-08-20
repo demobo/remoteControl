@@ -31,6 +31,8 @@
             });
             function changeTab(target){
                 curPage = '#' + target.attr('value');
+				$('#footer a').removeClass('ui-btn-active');
+				target.addClass('ui-btn-active');
                 $('#main').animate({
                     scrollLeft: $(curPage)[0].offsetLeft
                 }, 'slow');
@@ -47,15 +49,17 @@
             function loadChannelList(items){
                 $('#stationItem').html('');
                 for (var i = 0; i < items.length; i++) {
-					if (items[i].selected) var option = $('<option value="' + i + '" selected>' + items[i].title + '</option>');
-					else var option = $('<option value="' + i + '">' + items[i].title + '</option>');
+					var option = $('<option value="' + i + '">' + items[i].title + '</option>');
                     $('#stationItem').append(option);
+					if (items[i].selected) $('#stationItem').val(i);
                 }
             }
-            
-            function loadChannelName(name){
-                $('#stationName').html(name);
-            }
+			
+			function setCurrentChannel(index) {
+				$('#stationItem').val(index);
+				$('#stationName').html($('#stationItem option')[index].text);
+			}
+			
         </script>
     </head>
     <body>

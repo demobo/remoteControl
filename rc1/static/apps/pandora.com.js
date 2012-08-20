@@ -72,8 +72,18 @@ function getInfoObject(){
 
 function getStationList(){
   var toReturn = [];
-  $.each($('.stationNameText'), function(index, elem){
-    toReturn.push({'title':$(elem).text()});
+  $.each($('.stationListItem').has('.stationNameText'), function(index, elem){
+	  var s = {'title':$(elem).find('.stationNameText').text()};
+	  if ($(elem).hasClass('selected')) s.selected = true;
+	  toReturn.push(s);
+  });
+  return toReturn;
+}
+
+function getCurrentStationIndex(){
+  var toReturn = 0;
+  $.each($('.stationListItem').has('.stationNameText'), function(index, elem){
+	  if ($(elem).hasClass('selected')) toReturn = index;
   });
   return toReturn;
 }
@@ -84,8 +94,8 @@ function sendStationList(){
 
 function sendNowPlaying(){
   demobo.callFunction('loadSongInfo', getInfoObject());
-  var stationName = $('.stationChangeSelectorNoMenu').text().trim();
-  demobo.callFunction('loadChannelName', stationName);
+//  var stationName = $('.stationChangeSelectorNoMenu').text().trim();
+  demobo.callFunction('setCurrentChannel', getCurrentStationIndex());
 }
 
 function refreshController(){

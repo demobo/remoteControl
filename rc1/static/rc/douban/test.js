@@ -27,4 +27,8 @@ var testCases = [
 			}, {
 				title : "古典 MHz"
 			} ]
-		} ];
+		},
+		{
+			fn : "setCurrentChannel",
+			param : 1
+		}];

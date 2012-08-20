@@ -14,7 +14,8 @@ var testCases = [
 			}, {
 				title : "我的红心兆赫"
 			}, {
-				title : "旅行~songtaste~ MHz"
+				title : "旅行~songtaste~ MHz",
+				selected : true
 			}, {
 				title : "奥迪Q3驾驭简洁 MHz"
 			}, {

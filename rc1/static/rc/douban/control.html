@@ -46,7 +46,9 @@
             function loadChannelList(list){
                 $('#list-items').html('');
                 $.each(list, function(index, value){
-                    $('#list-items').append($('<div class="list-item"><a id="channel" value="' + index + '">' + value.title + '</a></div>'));
+					if (value.selected) var option = $('<div class="list-item selected"><a id="channel" value="' + index + '">' + value.title + '</a></div>');
+                    else var option = $('<div class="list-item"><a id="channel" value="' + index + '">' + value.title + '</a></div>');
+					$('#list-items').append(option);
                 });
             }
         </script>
@@ -185,6 +187,10 @@
             	font-weight: 500;
             }
             
+			.list-item.selected {
+				background-image: -webkit-linear-gradient(bottom, rgba(200, 180, 180, 0.8) 20%, rgba(256, 218, 218, 0.8) 69%);
+			}
+				
             #smallButton {
               width:40px;
               height:80px;

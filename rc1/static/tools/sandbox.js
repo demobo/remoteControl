@@ -11,16 +11,19 @@ if (DEMOBO) {
 		if (localStorage.getItem("url"))
 			$('#url').val(localStorage.getItem("url"));
 		demobo.addEventListener('input', function(e) {
-			console.log(e);
+			console.log(e.source,e.value);
 			var messageCss = {
-				'font-size' : 300,
+				'font-size' : 50,
 				'color' : '#433',
 				'position' : 'absolute',
 				'text-align' : 'center',
-				'width' : '90%',
+				'width' : '30%',
+				'right' : '0%',
 				'top' : '10%'
 			};
-			$('#message').text(e.value).css(messageCss).show().fadeOut(1000);
+			if (e.source) $('#eventSource').text(e.source).css(messageCss).show().fadeOut(1000);
+			messageCss.top = '30%';
+			if (e.value) $('#eventValue').text(e.value).css(messageCss).show().fadeOut(1000);
 		}, false);
 		$('button#set').click(
 				function() {

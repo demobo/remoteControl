@@ -48,12 +48,12 @@ function demoboCustomInputDispatcher() {
 		for ( var command in dict) {
 			this.acceptableCommands[command] = dict[command];
 		}
-	}
+	};
 	this.execCommand = function(command, data) {
 		if (command in this.acceptableCommands) {
 			this.acceptableCommands[command](data);
 		}
-	}
+	};
 }
 
 var demoboInputDispatcher = new demoboCustomInputDispatcher();

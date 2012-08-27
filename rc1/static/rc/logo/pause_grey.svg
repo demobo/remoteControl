@@ -572,24 +572,14 @@
      style="display:inline">
     <g
        id="g2837">
-      <path
-         inkscape:r_cy="true"
-         inkscape:r_cx="true"
-         id="path2815"
-         d="M 26.086565,12.829103 L 26.086565,34.982359 L 34.912658,34.982359 L 34.912658,12.829103 L 26.086565,12.829103 z "
-         style="opacity:1;color:#000000;fill:grey;fill-opacity:1;fill-rule:evenodd;stroke:grey;stroke-width:1.99999952;stroke-linecap:square;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible" />
+      <path xmlns="http://www.w3.org/2000/svg" style="color:#000000;fill:grey;fill-opacity:1;fill-rule:evenodd;stroke-linecap:square;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible" d="M 26.4996,13.407946 L 26.4996,34.50001 L 34.4996,34.50001 L 34.4996,13.407946 L 26.4996,13.407946 z " id="path2762" inkscape:r_cx="true" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" inkscape:r_cy="true"/>   
     </g>
     <g
        id="use2844"
        inkscape:r_cx="true"
        inkscape:r_cy="true"
        transform="translate(-12.97229,0)">
-      <path
-         style="opacity:1;color:#000000;fill:grey;fill-opacity:1;fill-rule:evenodd;stroke:grey;stroke-width:1.99999952;stroke-linecap:square;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible"
-         d="M 26.086565,12.829103 L 26.086565,34.982359 L 34.912658,34.982359 L 34.912658,12.829103 L 26.086565,12.829103 z "
-         id="path2848"
-         inkscape:r_cx="true"
-         inkscape:r_cy="true" />
+      <path xmlns="http://www.w3.org/2000/svg" style="color:#000000;fill:grey;fill-opacity:1;fill-rule:evenodd;stroke-linecap:square;stroke-linejoin:round;marker:none;marker-start:none;marker-mid:none;marker-end:none;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;visibility:visible;display:inline;overflow:visible" d="M 26.4996,13.407946 L 26.4996,34.50001 L 34.4996,34.50001 L 34.4996,13.407946 L 26.4996,13.407946 z " id="path2762" inkscape:r_cx="true" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" inkscape:r_cy="true"/>
     </g>
   </g>
 </svg>

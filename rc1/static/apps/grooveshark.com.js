@@ -1,6 +1,6 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/lastfm"
+		url : "http://rc1.demobo.com/rc/grooveshark"
 	});
 }
 
@@ -9,11 +9,11 @@ function demoboInitiation() {
 	// make sure the target is an element that will not be destroyed after meta
 	// data updates
 	var _this = {
-		target : jQuery('#radioTrackMeta')[0],
-		oldValue : jQuery('#nowPlayingMeta img').attr('src')
+		target : jQuery('#playerDetails_nowPlaying')[0],
+		oldValue : jQuery('.queue-item.queue-item-active .albumart img').attr('src')
 	};
 	_this.onChange = function() {
-		var newValue = jQuery('#nowPlayingMeta img').attr('src');
+		var newValue = jQuery('.queue-item.queue-item-active .albumart img').attr('src');
 		if (newValue && _this.oldValue !== newValue) {
 			_this.oldValue = newValue;
 			refreshController();
@@ -43,28 +43,32 @@ demoboInputDispatcher.addCommands( {
 
 // ********** custom event handler functions *************
 function play() {
-	jQuery('#radioControlPlay').click();
+	jQuery('#player_play_pause.play').click();
 }
 
 function pause() {
-	jQuery('#radioControlPause').click();
+	jQuery('#player_play_pause.pause').click();
+}
+
+function prev() {
+	jQuery('#player_previous').click();
 }
 
 function next() {
-	jQuery('#radioControlSkip').click();
+	jQuery('#player_next').click();
 }
 
 function love() {
-	jQuery('#radioControlLove').click();
+	jQuery('.queue-item.queue-item-active .smile').click();
 }
 
 function spam() {
-	jQuery('#radioControlBan').click();
+	jQuery('.queue-item.queue-item-active .frown').click();
 }
 
 function setVolume(num) {
 	num = parseInt(num / 10) * 10;
-	getLFMControls()._setVolume(num, true);
+	GS.player.setVolume(num);
 }
 
 function sendNowPlaying() {
@@ -81,16 +85,26 @@ function refreshController() {
 /* helpers */
 function getNowPlayingData() {
 	return {
-		'title' : jQuery('#radioTrackMeta .track').text(),
-		'artist' : jQuery('#radioTrackMeta .artist').text(),
-		'album' : jQuery('#radioTrackMeta .album .title').text(),
-		'image' : jQuery('#trackAlbum .albumCover img').attr('src')||jQuery('#nowPlayingMeta img').attr('src')
+		'title' : GS.player.activeSong.SongName,
+		'artist' : GS.player.activeSong.ArtistName,
+		'album' : GS.player.activeSong.AlbumName,
+		'image' : jQuery('.queue-item.queue-item-active img').attr('src')
 	};
 }
 
 function getStationList() {
 	var toReturn = [];
-	jQuery.each(jQuery('#recentStationsList li'), function(index, elem) {
+	jQuery('#player_radio_label').click();
+	jQuery.each(jQuery('#jjmenu_main .jj_menu_item_station .jj_menu_item_text'), function(index, elem) {
+		var s = {
+			'title' : jQuery(elem).text().trim()
+		};
+		if (index == 0)
+			s.selected = true;
+		toReturn.push(s);
+	});
+	jQuery('#player_radio_label').click();
+	jQuery.each(jQuery('#jjmenu_main .jj_menu_item_station .jj_menu_item_text'), function(index, elem) {
 		var s = {
 			'title' : jQuery(elem).text().trim()
 		};
@@ -103,7 +117,9 @@ function getStationList() {
 
 function chooseStation(index) {
 	index = parseInt(index);
+	jQuery('#player_radio_label').click();
 	jQuery(jQuery('#recentStationsList li a span')[index]).click();
+	jQuery('.btn span[data-translate-text="POPUP_START_RADIO_TITLE"]').click();
 }
 
 function getCurrentStationIndex() {
@@ -120,14 +136,6 @@ function setDevice(data) {
 		console.log(data);
 		hideDemobo();
 	}
-}
-
-function getLFMControls() {
-	return LFM.Flash.Player.observers[0].controls;
-}
-
-function getLFMPlayer() {
-	return LFM.Flash.Player.observers[0].player;
 }
 
 // dont modify the codes below if you dont know what you are doing

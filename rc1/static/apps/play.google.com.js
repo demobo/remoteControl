@@ -10,10 +10,10 @@ function demoboInitiation() {
 	// data updates
 	var _this = {
 		target : jQuery('#radioTrackMeta')[0],
-		oldValue : jQuery('#nowPlayingMeta img').attr('src')
+		oldValue : jQuery('.albumCover .art').attr('src')
 	};
 	_this.onChange = function() {
-		var newValue = jQuery('#nowPlayingMeta img').attr('src');
+		var newValue = jQuery('.albumCover .art').attr('src');
 		if (newValue && _this.oldValue !== newValue) {
 			_this.oldValue = newValue;
 			refreshController();
@@ -64,7 +64,7 @@ function spam() {
 
 function setVolume(num) {
 	num = parseInt(num / 10) * 10;
-	getLFMControls()._setVolume(num, true);
+	getLFMControls()._setVolume(num, true)
 }
 
 function sendNowPlaying() {
@@ -84,7 +84,7 @@ function getNowPlayingData() {
 		'title' : jQuery('#radioTrackMeta .track').text(),
 		'artist' : jQuery('#radioTrackMeta .artist').text(),
 		'album' : jQuery('#radioTrackMeta .album .title').text(),
-		'image' : jQuery('#trackAlbum .albumCover img').attr('src')||jQuery('#nowPlayingMeta img').attr('src')
+		'image' : jQuery('#trackAlbum .albumCover img').attr('src')
 	};
 }
 

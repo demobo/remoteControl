@@ -1,6 +1,6 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/grooveshark?0829"
+		url : "http://rc1.demobo.com/rc/grooveshark?0830"
 	});
 }
 

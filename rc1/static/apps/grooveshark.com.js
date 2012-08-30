@@ -19,7 +19,7 @@ function demoboInitiation() {
 			newValue += GS.player.activeSong.SongName;
 		if (GS.player.nextSongToPlay)
 			newValue += GS.player.nextSongToPlay.SongName;
-		if (_this.oldValue !== newValue) {
+		if ((GS.player.nextSongToPlay || !GS.player.autoplayEnabled) && _this.oldValue !== newValue) {
 			_this.oldValue = newValue;
 			sendNowPlaying();
 		}
@@ -40,7 +40,6 @@ demoboInputDispatcher.addCommands( {
 	'volumeSlider' : setVolume,
 	'stationItem' : chooseStation,
 	'pinBoardItem' : choosePinBoard,
-	'nowPlayingTab' : refreshController,
 	'demoboApp' : function() {
 		refreshController();
 		hideDemobo();
@@ -100,7 +99,7 @@ function getNowPlayingData() {
 			'title' : GS.player.activeSong.SongName,
 			'artist' : GS.player.activeSong.ArtistName,
 			'album' : GS.player.activeSong.AlbumName,
-			'image' : GS.player.activeSong.getImageURL()
+			'image' : getImageURL(GS.player.activeSong)
 		});
 	if (GS.player.nextSongToPlay)
 		toReturn.push( {
@@ -113,7 +112,7 @@ function getNowPlayingData() {
 }
 
 function getImageURL(song) {
-	var a = _.orEqual(a, 70);
+	var a = _.orEqual(a, 90);
 	var b = GS.Models.Song.artPath + a + "_album.png";
 	if (song.CoverArtFilename && song.CoverArtFilename.indexOf("default") == -1)
 		b = GS.Models.Song.artPath + a + "_" + song.CoverArtFilename;

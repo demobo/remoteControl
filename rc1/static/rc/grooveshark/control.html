@@ -41,24 +41,29 @@
                 }
                 else 
                     var song = songs;
-				make4nowplayings();
-                $('.nowplayingItem:nth-child(3) .albumImage img').attr('src', song.image);
-                $('.nowplayingItem:nth-child(3) .title').html(song.title);
-                $('.nowplayingItem:nth-child(3) .artist').html(song.artist);
-                $('.nowplayingItem:nth-child(3) .album').html(song.album);
 				if (nextSong)  {
-					$('.nowplayingItem:nth-child(4) .albumImage img').attr('src', nextSong.image);
-	                $('.nowplayingItem:nth-child(4) .title').html(nextSong.title);
-	                $('.nowplayingItem:nth-child(4) .artist').html(nextSong.artist);
-	                $('.nowplayingItem:nth-child(4) .album').html(nextSong.album);
+					setSongAt(4,nextSong);
 				}
-				setTimeout(function(){$('.nowplayingItem').first().remove();},10);
+				if ($('.nowplayingItem:nth-child(2) .title').text()!=song.title) {
+	                setSongAt(3,song);
+					setTimeout(function(){$('.nowplayingItem:nth-child(1)').remove();},10);	
+				} else {
+					setTimeout(function(){$('.nowplayingItem:nth-child(3)').remove();},10);
+				}
             }
-			
-			function make4nowplayings() {
-				while ($('.nowplayingItem').length<4) {
+			function setSongAt(n, song) {
+				if ($('.nowplayingItem').length<n) makeQueue(n);
+				var item = $('.nowplayingItem:nth-child('+n+')');
+				item.find('.albumImage img').attr('src', song.image);
+				item.find('.title').html(song.title);
+                item.find('.artist').html(song.artist);
+                item.find('.album').html(song.album);
+			}
+			function makeQueue(n) {
+				while ($('.nowplayingItem').length<n) {
 					$('.nowplayingItem').parent().append($('.nowplayingItem').first().clone());
 				}
+				$('.nowplayingItem:gt('+(n-1)+')').remove();
 			}
             
             function loadChannelList(items){
@@ -306,7 +311,7 @@
 			}
 			
 			.nowplayingItem {
-				-webkit-transition:left 1s linear, background 0.4s;
+				-webkit-transition:left 1s ease-in, background 0.2s;
 			}
             .nowplayingItem .title {
                 font-size: 19px;

@@ -39,6 +39,12 @@
             }
             
             function loadSongInfo(song){
+				if ($.isArray(songs)) {
+                    var song = songs[0];
+                    var nextSong = songs[1];
+                }
+                else 
+                    var song = songs;
                 $('#nowplayingItem .albumImage img').attr('src', song.image);
                 $('#nowplayingItem .title').html(song.title);
                 $('#nowplayingItem .artist').html(song.artist);
@@ -116,7 +122,7 @@
                             <a href=# id="nowPlayingTab" value="nowPlaying">Now Playing</a>
                         </li>
                         <li>
-                            <a href=# id="stationsTab" value="stations">Stations</a>
+                            <a href=# id="stationsTab" value="stations">Stations &#9660;</a>
                             <div id="stationSelect">
                                 <select id="stationItem">
                                 </select>

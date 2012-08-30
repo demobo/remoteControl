@@ -1,12 +1,17 @@
 var testCases = [
 		{
 			fn : "loadSongInfo",
-			param : {
+			param : [{
 				image : "http://cont-sv5-3.pandora.com/images/public/amz/7/2/0/1/886976911027_500W_500H.jpg",
 				title : "Older",
 				artist : "Band Of Horses",
 				album : "Infinite Arms - 2012/08/09"
-			}
+			},{
+				image : "http://cont-sv5-3.pandora.com/images/public/amz/7/2/0/1/886976911027_500W_500H.jpg",
+				title : "Another Song",
+				artist : "Akon",
+				album : "Infinite Arms - 2012/08/09"
+			}]
 		}, {
 			fn : "loadChannelList",
 			param : [ {
@@ -14,8 +19,7 @@ var testCases = [
 			}, {
 				title : "我的红心兆赫"
 			}, {
-				title : "旅行~songtaste~ MHz",
-				selected : true
+				title : "旅行~songtaste~ MHz"
 			}, {
 				title : "奥迪Q3驾驭简洁 MHz"
 			}, {
@@ -27,8 +31,23 @@ var testCases = [
 			}, {
 				title : "古典 MHz"
 			} ]
-		},
-		{
-			fn : "setCurrentChannel",
-			param : 1
+		}, {
+			fn : "loadPinBoard",
+			param : [ {
+				title : "我的私人兆赫"
+			}, {
+				title : "我的红心兆赫"
+			}, {
+				title : "旅行~songtaste~ MHz"
+			}, {
+				title : "奥迪Q3驾驭简洁 MHz"
+			}, {
+				title : "咖啡 MHz"
+			}, {
+				title : "张悬城市地图 MHz"
+			}, {
+				title : "华语 MHz"
+			}, {
+				title : "古典 MHz"
+			} ]
 		}];

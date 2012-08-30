@@ -27,6 +27,12 @@
 			});
 			
             function loadSongInfo(song){
+				if ($.isArray(songs)) {
+                    var song = songs[0];
+                    var nextSong = songs[1];
+                }
+                else 
+                    var song = songs;
                 $('#artist').text(song['artist']);
                 $('#songName').text(song['song']);
                 $('img.newAlbumArt').attr('src', song['image']);

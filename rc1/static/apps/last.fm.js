@@ -1,6 +1,6 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/lastfm"
+		url : "http://rc1.demobo.com/rc/douban?0829"
 	});
 }
 
@@ -80,11 +80,12 @@ function refreshController() {
 
 /* helpers */
 function getNowPlayingData() {
+	var imgURL = jQuery('#trackAlbum .albumCover img').attr('src')||jQuery('#nowPlayingMeta img').attr('src');
 	return {
 		'title' : jQuery('#radioTrackMeta .track').text(),
 		'artist' : jQuery('#radioTrackMeta .artist').text(),
 		'album' : jQuery('#radioTrackMeta .album .title').text(),
-		'image' : jQuery('#trackAlbum .albumCover img').attr('src')||jQuery('#nowPlayingMeta img').attr('src')
+		'image' : imgURL.replace('64s','174s')
 	};
 }
 

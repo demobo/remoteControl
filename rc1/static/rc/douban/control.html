@@ -33,9 +33,9 @@
                 }
                 else 
                     var song = songs;
-                $('#artist').text(song['artist']);
-                $('#songName').text(song['song']);
-                $('img.newAlbumArt').attr('src', song['image']);
+				$('#songName').text(song.title);
+                $('#artist').text(song.artist);
+                $('img.newAlbumArt').attr('src', song.image);
             }
 			
             //function handler of img onload event

@@ -1,6 +1,6 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/douban"
+		url : "http://rc1.demobo.com/rc/douban?0829"
 	});
 }
 
@@ -75,8 +75,8 @@ function changeChannel(index) {
 function getNowPlayingData() {
 	var temp = FM.getCurrentSongInfo();
 	return {
+		'title' : temp['songName'],
 		'artist' : temp['artistName'],
-		'song' : temp['songName'],
 		'image' : temp['coverUrl']
 	};
 }

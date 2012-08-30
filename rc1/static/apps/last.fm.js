@@ -27,8 +27,8 @@ function demoboInitiation() {
 
 // your custom demoboApp event dispatcher
 demoboInputDispatcher.addCommands( {
-	'playButton' : play,
-	'pauseButton' : pause,
+	'playButton' : playPause,
+	'pauseButton' : playPause,
 	'nextButton' : next,
 	'loveButton' : love,
 	'spamButton' : spam,
@@ -42,12 +42,10 @@ demoboInputDispatcher.addCommands( {
 });
 
 // ********** custom event handler functions *************
-function play() {
-	jQuery('#radioControlPlay').click();
-}
-
-function pause() {
-	jQuery('#radioControlPause').click();
+function playPause() {
+//	getLFMPlayer().pause();
+//	getLFMPlayer().unpause();
+	jQuery('#radioControlPause:visible, #radioControlPlay:visible').click();
 }
 
 function next() {
@@ -55,7 +53,7 @@ function next() {
 }
 
 function love() {
-	jQuery('#radioControlLove').click();
+	jQuery('#radioPlayer:not(.loved) #radioControlLove').click();
 }
 
 function spam() {

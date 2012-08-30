@@ -29,7 +29,7 @@ demoboInputDispatcher.addCommands( {
 	'spamButton' : ban,
 	'nextButton' : next,
 	'channelTab' : sendChannelList,
-	'channel' : changeChannel,
+	'stationItem' : changeChannel,
 	'demoboApp' : function() {
 		sendChannelList();
 		sendCurrentSongInfo();

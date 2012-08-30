@@ -19,25 +19,26 @@
         <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js">
         </script>
         <script>
-            $(document).ready(function(){
-                var screenHeight = $(window).height();
+        	$(document).ready(function(){
+				var screenHeight = $(window).height();
                 $('html').css('zoom', screenHeight / 320);
                 // jquery mobile input range is not working with zoom
                 $('.volumeControl').css('zoom', 320 / screenHeight);
-                var curPage = "#control";
-                $('#footer li a').click(function(){
-                    changeTab($(this));
-                });
-            });
-            function changeTab(target){
-                curPage = '#' + target.attr('value');
-				$('#footer a').removeClass('ui-btn-active');
-				target.addClass('ui-btn-active');
-                $('#main').animate({
-                    scrollLeft: $(curPage)[0].offsetLeft
-                }, 'slow');
-            }
-            
+	            $('#smallButton').bind('click', function(){
+	                if ($('#listTab').css('left') == '80px') {
+	                    $('#listTab').animate({
+	                        'left': '480px'
+	                    }, 'slow');
+	                }
+	                else {
+	                    $('#listTab').animate({
+	                        'left': '80px'
+	                    }, 'slow');
+	                }
+	            });
+				$('img').bind('load', flipAlbumArt);
+			});
+			
             function loadSongInfo(songs){
 				if ($.isArray(songs)) {
                     var song = songs[0];
@@ -45,281 +46,260 @@
                 }
                 else 
                     var song = songs;
-                $('#nowplayingItem .albumImage img').attr('src', song.image);
-                $('#nowplayingItem .title').html(song.title);
-                $('#nowplayingItem .artist').html(song.artist);
-                $('#nowplayingItem .album').html(song.album);
-                changeTab($('#footer li a#nowPlayingTab'));
+				$('#songName').text(song.title);
+                $('#artist').text(song.artist);
+                $('img.newAlbumArt').attr('src', song.image);
+            }
+			
+            //function handler of img onload event
+            function flipAlbumArt(){
+                $('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function(){
+                    $('img').toggleClass('currentAlbumArt newAlbumArt')
+                    setTimeout(function(){
+                        $('img.currentAlbumArt').toggleClass('to90 to0');
+                    }, 0);
+                    $(this).unbind('webkitTransitionEnd');
+                });
             }
             
-            function loadChannelList(items){
-                $('#stationItem').html('');
-                for (var i = 0; i < items.length; i++) {
-					var option = $('<option value="' + i + '">' + items[i].title + '</option>');
-                    $('#stationItem').append(option);
-					if (items[i].selected) $('#stationItem').val(i);
-                }
+            function loadChannelList(list){
+                $('#list-items').html('');
+                $.each(list, function(index, value){
+					if (value.selected) var option = $('<div class="list-item selected"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
+                    else var option = $('<div class="list-item"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
+					$('#list-items').append(option);
+					if (value.selected) setCurrentChannel(index);
+                });
             }
 			
 			function setCurrentChannel(index) {
-				$('#stationItem').val(index);
-				$('#stationName').html($('#stationItem option')[index].text);
+				$('#list-items .list-item').removeClass('selected');
+				$($('#list-items .list-item')[index]).addClass('selected');
 			}
 			
         </script>
     </head>
     <body>
-        <div class="logo">
-        </div>
-        <div id="stationName">
-        </div>
-        <div id="main" data-role=page>
-            <div id="control" class="page">
-                <div class="row">
-                    <a id="playButton" class="playButton button" value="play"></a>
-                    <a id="pauseButton" class="pauseButton button" value="pause"></a>
-                    <a id="nextButton" class="nextButton button" value="next"></a>
-                </div>
-                <div class="volumeControl row volumeBackground">
-                    <div class="volumeButton" id="volumeButton">
-                    </div>
-                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="false" type="range" />
-                </div>
-            </div>
-            <div id="nowPlaying" class="page">
-                <div id="nowplayingItem" class="row">
-                    <div class="albumImage">
-                        <img>
-                    </div>
-                    <div class="albumInfo">
-                        <div class="albumInfoGroup">
-                            <div class="title">
-                            </div>
-                            <div class="artist">
-                            </div>
-                            <div class="album">
-                            </div>
-                        </div>
-                        <div class="updowngroup">
-                            <a id="loveButton" class="loveButton smallButton" value="love"></a>
-                            <a id="spamButton" class="spamButton smallButton" value="spam"></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div id="stations" class="page">
-            </div>
-            <div id="footer" data-theme="a" data-role="footer" data-position=fixed>
-                <div data-role=navbar>
-                    <ul>
-                        <li>
-                            <a href=# id="controlTab" value="control" class="ui-btn-active">Control</a>
-                        </li>
-                        <li>
-                            <a href=# id="nowPlayingTab" value="nowPlaying">Now Playing</a>
-                        </li>
-                        <li>
-                            <a href=# id="stationsTab" value="stations">Stations &#9660;</a>
-                            <div id="stationSelect">
-                                <select id="stationItem">
-                                </select>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <style>
+    	<div id="main">
+	        <div id='frame'>
+	            <div id='content'>
+	                <img id='albumArt' class='currentAlbumArt to0'/><img id='albumArt' class='newAlbumArt to90' />
+	                <div id='controlPanel'>
+	                    <div id='artist'>
+	                    </div>
+	                    <div id='songName'>
+	                    </div>
+						<div>
+							<a href id="loveButton" class="loveButton button" value="love"></a>
+	                        <a href id="spamButton" class="spamButton button" value="spam"></a>
+		                    <a href id="nextButton" class="nextButton button" value="next"></a>
+		                    <a href id="playButton" class="playButton redbutton" value="play"></a>
+							<a href id="pauseButton" class="pauseButton redbutton" value="pause"></a>
+						</div>
+						<div class="volumeControl row volumeBackground">
+		                    <div class="volumeButton" id="volumeButton">
+		                    </div>
+		                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="false" type="range" />
+		                </div>
+	                </div>
+	            </div>
+	            <div id='listTab'>
+	                <div id='smallButton'>
+	                </div>
+	                <div id='listWrap'>
+	                    <div id='list'>
+	                        <div id='list-items'>
+	                        </div>
+	                    </div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+		<style>        
             body {
-                height: 340px;
-                width: 100%;
-                overflow: hidden;
-                font-family: "arial", Helvetica Neue, helvetica, sans-serif;
-                background: black;
+                margin: 0px;
+                font-family: arial, helvetica, sans-serif;
+                background-color: white;
             }
-            
-            input.ui-slider-input {
-                display: none !important;
-            }
-            
-            #stationSelect {
-                position: absolute;
-                bottom: 0px;
-                right: 0px;
-                width: 33%;
-                height: 50px;
-                opacity: 0;
-                z-index: 1111;
-            }
-            
             #main {
-                overflow: hidden;
-                white-space: nowrap;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+            #frame {
+                background-color: white;
+                position: relative;
+                width: 480px;
+                height: 320px;
+				margin: 0px auto;
             }
             
-            .page {
-                display: inline-block;
-                vertical-align: top;
+            .to90 {
+                -webkit-transform: rotate3d(0, 1, 0, 90deg);
+            }
+            
+            .to0 {
+                -webkit-transform: rotate3d(0, 1, 0, 0deg);
+            }
+            
+            img {
+                -webkit-transition: -webkit-transform 1s ease-in-out;
+            }
+            
+            .currentAlbumArt {
+                display: block;
+            }
+            
+            .newAlbumArt {
+                display: none;
+            }
+            
+            #listTab {
                 width: 100%;
-                margin-top: 35px;
-            }
-            
-            .padding-top {
-                padding-top: 15px;
-            }
-            
-            table.center {
-                width: auto;
-                margin-left: auto;
-                margin-right: auto;
-                text-align: center;
-            }
-            
-            .volumePosition {
-                padding: 14px 0 0 4px;
-                float: left;
-                width: 19px;
-                height: 15px;
-            }
-            
-            .volumeControl {
-                width: 300px;
-                height: 29px;
-                margin-left: -3px;
-                margin-top: -3px;
-            }
-            
-            .volumeBackground {
-                width: 279px;
-                height: 34px;
-                background: rgba(54, 25, 25, .5);
-                border-radius: 28px;
-            }
-            
-            #stationName {
+                height: 320px;
                 position: absolute;
-                top: 195px;
-                z-index: 999;
-                text-align: center;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                text-shadow: 0 -1px 0 #111;
-                width: 80%;
-                padding: 30px 10% 10px 10%;
-                font-size: 28px;
-                color: white;
-				text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+                left: 480px;
             }
-            
-            .row {
-                text-align: center;
-                margin: 20px auto;
-            }
-            
-            .stationsList {
-                width: 279px;
-                height: 34px;
-            }
-            
-            div.ui-slider {
-                top: 0px;
-            }
-            
-            #nowplayingItem .albumInfo {
-                display: inline-table;
-                width: 230px;
-                text-align: left;
-                padding-left: 10px;
-            }
-            
-            #nowplayingItem .albumInfoGroup {
-                padding-bottom: 18px;
-            }
-            
-            #nowplayingItem .albumImage {
+                    
+            .list-item a {
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
                 display: inline-block;
             }
             
-            #nowplayingItem .albumImage img {
-                width: 130px;
-                height: 130px;
-                background: rgba(0, 0, 0, 0.3);
-                border: none;
+            #list-items {
+                position: absolute;
+                width: 340px;
+                height: 220px;
+                left: 30px;
+                top: 30px;
+                overflow-y: scroll;
             }
             
-            #nowplayingItem {
-                text-decoration: none;
-                white-space: nowrap;
-                text-overflow: ellipsis;
-                overflow: hidden;
-                font-family: "arial", Helvetica Neue, helvetica, sans-serif;
-                padding: 1px;
-                color: white;
-				text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+            .list-item {
+                margin-top: 5px;
+                padding-top: 10px;
+                padding-left: 30px;
+                padding-bottom: 10px;
+                font-size: 20px;
+                color: #666;
+                background-image: -webkit-linear-gradient(bottom, rgba(218, 218, 218, 0.8) 20%, rgba(256, 256, 256, 0.8) 69%);
+            	font-weight: 500;
             }
             
-            #nowplayingItem .title {
-                font-size: 17px;
-                font-weight: bold;
+			.list-item.selected {
+				background-image: -webkit-linear-gradient(bottom, rgba(200, 180, 180, 0.8) 20%, rgba(256, 218, 218, 0.8) 69%);
+			}
+				
+            #smallButton {
+              width:40px;
+              height:80px;
+              position:absolute;
+			  z-index: 2;
+              left:-40px;
+              top:120px;
+              -webkit-border-top-left-radius:5px;
+              -webkit-border-bottom-left-radius:5px;
             }
             
-            #nowplayingItem .artist {
-                font-size: 15px;
+            #smallButton, #listWrap {
+              background:rgba(218, 218, 218, 0.8)
             }
             
-            #nowplayingItem .album {
-                font-size: 15px;
+            #listWrap {
+              z-index:2;
+              width:100%;
+              height:280px;
+              position:absolute;
+              left:0px;
+              top:20px;
+              -webkit-border-top-left-radius:5px;
+              -webkit-border-bottom-left-radius:5px;
             }
             
-            .ui-select .ui-btn select {
-                font-size: 50px;
+            #content {
+              width:460px;
+              height:240px;
+              position:absolute;
+              background-color:white;
+              top:40px;
+              left:10px;
+              -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.2);
             }
             
-            /* assets */
-            .ui-page {
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* Chrome,Safari4+ */
-				background: -webkit-linear-gradient(top, #45484d 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
+            #controlPanel img {
+              margin-left:10px;
+            }
+            
+            #albumArt {
+              height:240px;
+            }
+            
+            #controlPanel {
+              width:218px;
+              height:100%;
+              position:absolute;
+              top:0px;
+              left:242px;
+              background-color:white;
+            }
+            
+            #artist {
+              font-size:25px;
+              margin-top:40px;
+              margin-left:20px;
+			  height: 29px;
+            }
+            
+            #songName {
+              margin-top:20px;
+              margin-left:20px;
+			  height: 18px;
             }
 			
+			/* assets */
 			.button {
                 display: inline-block;
-                width: 60px;
-                height: 42px;
+				width: 44px;
+				height: 37px;
 				background: url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
-				background-size: 360px 300px;
-            }
-            
-            .smallButton {
-                display: inline-block;
-                width: 60px;
-                height: 42px;
-				background: url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
-				background-size: 360px 300px;
+				background-size: 300px 250px;
+				margin: 35px 0px 0px 10px;
             }
 			
-			.playButton {
-                background-position: -120px 0px;
+			.redbutton {
+				top: 0px;
+				position: absolute;
+				width: 17px;
+				height: 26px;
+				background: #D11 url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
+				background-size: 156px 156px;
             }
             
+			.playButton {
+				left: 155px;
+				background-position: -56px 2px;
+			}
+				
             .playButton:hover {
-                background-position: -120px -42px;
+				background-position: -56px -20px;
             }
             
             .playButton:active {
-                background-position: -120px -84px;
+				background-position: -56px -42px;
             }
             
             .pauseButton {
-                background-position: -317px -0px;
+            	left: 171px;
+                background-position: -140px 2px;
             }
             
             .pauseButton:hover {
-                background-position: -317px -42px;
+                background-position: -140px -20px;
             }
             
             .pauseButton:active {
-                background-position: -317px -84px;
+                background-position: -140px -42px;
             }
             
             .loveButton {
@@ -327,35 +307,35 @@
             }
             
             .loveButton:hover {
-                background-position: 0px -42px;
+                background-position: 0px -35px;
             }
             
             .loveButton:active {
-                background-position: 0px -84px;
+                background-position: 0px -70px;
             }
             
             .spamButton {
-                background-position: -60px -0px;
+                background-position: -56px -0px;
             }
             
             .spamButton:hover {
-                background-position: -60px -42px;
+                background-position: -56px -35px;
             }
             
             .spamButton:active {
-                background-position: -60px -84px;
+                background-position: -56px -70px;
             }
             
             .nextButton {
-                background-position: -240px -0px;
+                background-position: -200px -0px;
             }
             
             .nextButton:hover {
-                background-position: -240px -42px;
+                background-position: -200px -35px;
             }
             
             .nextButton:active {
-                background-position: -240px -84px;
+                background-position: -200px -70px;
             }
             
             .volumeButton {
@@ -366,11 +346,19 @@
                 display: inline-block;
                 top: 4px;
                 position: relative;
+            } 
+			
+			.volumeControl {
+				margin: 10px 0px 0px 25px;
+			}
+			
+			input.ui-slider-input {
+                display: none !important;
             }
-           
-		    .ui-btn-active {
-		    	background-image: -webkit-linear-gradient(#F66,#F11);
-		    }
+			
+			div .ui-slider {
+				margin: 0 2% 0 5px;
+			}
         </style>
     </body>
 </html>

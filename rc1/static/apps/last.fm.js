@@ -118,6 +118,7 @@ function setDevice(data) {
 	if (data) {
 		console.log(data);
 		hideDemobo();
+		setDemoboController();
 	}
 }
 
@@ -136,6 +137,7 @@ function getLFMPlayer() {
 		DEMOBO.maxPlayers = 1;
 		DEMOBO.stayOnBlur = true;
 		DEMOBO.init = function() {
+			// set controller for existing devices
 			setDemoboController();
 			demobo.addEventListener('input', function(e) {
 				console.log(e);
@@ -143,6 +145,8 @@ function getLFMPlayer() {
 			});
 			demobo.addEventListener('connected', function(e) {
 				console.log('connected');
+				// set controller for newly connected devices
+				setDemoboController();
 			});
 			showDemobo();
 			demobo.getDeviceInfo('', 'setDevice');

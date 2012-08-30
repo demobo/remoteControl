@@ -100,6 +100,7 @@ function setDevice(data) {
 	console.log(device);
 	if (data) {
 		hideDemobo();
+		setDemoboController();
 	}
 }
 
@@ -110,6 +111,7 @@ function setDevice(data) {
 		DEMOBO.maxPlayers = 1;
 		DEMOBO.stayOnBlur = true;
 		DEMOBO.init = function() {
+			// set controller for existing devices
 			setDemoboController();
 			demobo.addEventListener('input', function(e) {
 				console.log(e);
@@ -118,6 +120,8 @@ function setDevice(data) {
 			});
 			demobo.addEventListener('connected', function(e) {
 				console.log('connected');
+				// set controller for newly connected devices
+				setDemoboController();
 			});
 			showDemobo();
 			demobo.getDeviceInfo('', 'setDevice');

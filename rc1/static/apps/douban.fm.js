@@ -1,7 +1,8 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/douban?0830"
+		url : "http://rc1.demobo.com/rc/douban?0901"
 	});
+	refreshController();
 }
 
 function demoboInitiation() {
@@ -13,7 +14,7 @@ function demoboInitiation() {
 	_this.onChange = function() {
 		if (_this.oldValue !== document.title) {
 			_this.oldValue = document.title;
-			sendCurrentSongInfo();
+			sendNowPlaying();
 		}
 	};
 	_this.delay = function() {
@@ -28,11 +29,10 @@ demoboInputDispatcher.addCommands( {
 	'loveButton' : love,
 	'spamButton' : ban,
 	'nextButton' : next,
-	'channelTab' : sendChannelList,
-	'stationItem' : changeChannel,
+	'channelTab' : sendStationList,
+	'stationItem' : chooseStation,
 	'demoboApp' : function() {
-		sendChannelList();
-		sendCurrentSongInfo();
+		refreshController();
 		hideDemobo();
 	}
 });
@@ -54,7 +54,7 @@ function ban() {
 	DBR.act('ban');
 }
 
-function sendChannelList() {
+function sendStationList() {
 	var list = $.map($('.channel'), function(value, index) {
 		var s = {
 			'title' : $(value).find('.chl_name').text()
@@ -66,9 +66,15 @@ function sendChannelList() {
 	demobo.callFunction('loadChannelList', list);
 }
 
-function changeChannel(index) {
+function chooseStation(index) {
 	index = parseInt(index);
 	$($('.chl_name')[index]).trigger('click');
+}
+
+function refreshController() {
+	console.log('refresh');
+	sendStationList();
+	sendNowPlaying();
 }
 
 /* helpers */
@@ -90,7 +96,7 @@ function getCurrentStationIndex() {
 	return toReturn;
 }
 
-function sendCurrentSongInfo() {
+function sendNowPlaying() {
 	demobo.callFunction('loadSongInfo', getNowPlayingData());
 	demobo.callFunction('setCurrentChannel', getCurrentStationIndex());
 }

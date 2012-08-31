@@ -31,6 +31,7 @@
 				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(3)', function(e){
 					$('#nextButton').click();
 				});
+				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
             });
             
             function loadSongInfo(songs){
@@ -103,7 +104,7 @@
 	                <div class="volumeControl volumeBackground">
 	                    <div class="volumeButton" id="volumeButton">
 	                    </div>
-	                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="false" type="range" />
+	                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
 	                </div>
 				</div>
 				<div>
@@ -442,10 +443,6 @@
 		    .ui-btn-active {
 		    	background-image: -webkit-linear-gradient(orange,#F77F00);
 		    }
-			
-			div.ui-slider {
-				background: #F77F00;
-			}
 			
 			.ui-page {
 				background: black;

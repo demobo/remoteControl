@@ -1,7 +1,8 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/pandora?0830"
+		url : "http://rc1.demobo.com/rc/pandora?0901"
 	});
+	refreshController();
 }
 
 function demoboInitiation() {
@@ -33,6 +34,7 @@ demoboInputDispatcher.addCommands( {
 	'volumeSlider' : setVolume,
 	'stationItem' : chooseStation,
 	'nowPlayingTab' : refreshController,
+	'stationsTab' : refreshController,
 	'demoboApp' : function() {
 		refreshController();
 		hideDemobo();

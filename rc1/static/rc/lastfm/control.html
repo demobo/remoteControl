@@ -37,6 +37,7 @@
 	                }
 	            });
 				$('img').bind('load', flipAlbumArt);
+				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
 			});
 			
             function loadSongInfo(songs){
@@ -66,7 +67,7 @@
                 $('#list-items').html('');
                 $.each(list, function(index, value){
 					if (value.selected) var option = $('<div class="list-item selected"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
-                    else var option = $('<div class="list-item"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
+                    else var option = $('<div class="list-item"><a onclick id="stationItem" value="' + index + '">' + value.title + '</a></div>');
 					$('#list-items').append(option);
 					if (value.selected) setCurrentChannel(index);
                 });
@@ -187,8 +188,14 @@
             	font-weight: 500;
             }
             
-			.list-item.selected {
+			.list-item:hover, .list-item:active {
 				background-image: -webkit-linear-gradient(bottom, rgba(200, 180, 180, 0.8) 20%, rgba(256, 218, 218, 0.8) 69%);
+			}
+			
+			.list-item.selected {
+				background-image: -webkit-linear-gradient(bottom, rgba(200, 80, 80, 1) 20%, rgba(256, 18, 18, 1) 69%);
+				text-shadow: none;
+				color: white;
 			}
 				
             #smallButton {

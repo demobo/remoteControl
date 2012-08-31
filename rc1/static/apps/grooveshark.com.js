@@ -1,7 +1,8 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/grooveshark?0830"
+		url : "http://rc1.demobo.com/rc/grooveshark?0901"
 	});
+	refreshController();
 }
 
 // do all the iniations you need here

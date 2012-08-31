@@ -36,6 +36,7 @@ function toggleDemobo() {
 	} else {
 		showDemobo();
 	}
+	setDemoboController();
 }
 
 function demoboCustomInputDispatcher() {

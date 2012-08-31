@@ -2,7 +2,7 @@ function setDemoboController() {
 	demobo.setController( {
 		url : "http://rc1.demobo.com/rc/grooveshark?0901"
 	});
-	refreshController();
+	setTimeout(refreshController,1000);
 }
 
 // do all the iniations you need here

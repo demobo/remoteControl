@@ -2,7 +2,7 @@ function setDemoboController() {
 	demobo.setController( {
 		url : "http://rc1.demobo.com/rc/douban?0901"
 	});
-	refreshController();
+	setTimeout(refreshController,1000);
 }
 
 function demoboInitiation() {

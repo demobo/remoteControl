@@ -1,0 +1,283 @@
+body {
+    background: #fff;
+    margin: 60px 10px;
+}
+
+.bgGrey {
+    background: white;
+    position: absolute;
+    width: 398px;
+    height: 220px;
+    top: 127px;
+    left: 50px;
+    border: 5px solid grey;
+    border-radius: 10px;
+}
+
+.bgWhite {
+    background: url(egg_shell.png);
+    background: #FAFAFA;
+    position: absolute;
+    width: 398px;
+    height: 220px;
+    top: 137px;
+    left: 50px;
+    border: 5px solid #3F3F3F;
+    border-radius: 10px;
+}
+
+.bgBlack {
+    background: url(irongrip.png);
+    background: #171515;
+    position: absolute;
+    width: 398px;
+    height: 220px;
+    top: 137px;
+    left: 50px;
+    border: 5px solid #373737;
+    border-radius: 10px;
+}
+
+.logo {
+    width: 512px;
+    height: 512px;
+    display: inline-block;
+    position: relative;
+}
+
+.minilogo {
+    width: 512px;
+    height: 512px;
+    display: inline-block;
+    position: relative;
+}
+
+.iphoneGrey {
+    background: url(iphone_grey.svg);
+    background-size: 1240px;
+}
+
+.iphone {
+    background: url(iphone_4s_mock_up.svg);
+    background-size: 1240px;
+}
+
+.black {
+    background-position-x: -3px;
+}
+
+.white {
+    background-position-x: 530px;
+}
+
+.top {
+    width: 512px;
+    height: 220px;
+    background-position-y: 0px;
+}
+
+.bottom {
+    width: 512px;
+    height: 300px;
+    background-position-y: 300px;
+}
+
+.prev {
+    background: url(prevButton.png) no-repeat;
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: 160px;
+    left: 70px;
+    background-size: 250px;
+    border-radius: 50%;
+    background-position: -36px;
+}
+
+.next {
+    background: url(nextButton.png) no-repeat;
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: 160px;
+    right: 70px;
+    background-size: 250px;
+    border-radius: 50%;
+    background-position: -36px;
+}
+
+.prev1 {
+    background: url(prevButton1.png) no-repeat;
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: 160px;
+    left: 70px;
+    background-size: 200px;
+    border-radius: 50%;
+    background-position: -12px;
+}
+
+.next1 {
+    background: url(nextButton1.png) no-repeat;
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    top: 160px;
+    right: 70px;
+    background-size: 200px;
+    border-radius: 50%;
+    background-position: -12px;
+}
+
+.play {
+    background: url(media-play-black.png) no-repeat;
+    position: absolute;
+    width: 198px;
+    height: 198px;
+    top: 154px;
+    left: 58px;
+    background-size: 198px;
+}
+
+.pause {
+    background: url(media-pause-black.png) no-repeat;
+    position: absolute;
+    width: 198px;
+    height: 198px;
+    top: 154px;
+    right: 58px;
+    background-size: 198px;
+}
+
+.play1 {
+    background: url(play.svg) no-repeat;
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    top: 141px;
+    left: 70px;
+    background-size: 220px;
+}
+
+.pause1 {
+    background: url(pause.svg) no-repeat;
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    top: 141px;
+    right: 63px;
+    background-size: 220px;
+}
+
+.playGrey {
+    background: url(play_grey.svg) no-repeat;
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    top: 130px;
+    left: 52px;
+    background-size: 220px;
+}
+
+.pauseGrey {
+    background: url(pause_grey.svg) no-repeat;
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    top: 115px;
+    right: 42px;
+    background-size: 250px;
+}
+
+.heart {
+    background: url(heart.svg) no-repeat;
+    position: absolute;
+    width: 220px;
+    height: 220px;
+    top: 141px;
+    right: 63px;
+    background-size: 220px;
+}
+
+.heartGrey {
+    background: url(heart_grey.svg) no-repeat;
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    top: 115px;
+    right: 30px;
+    background-size: 250px;
+}
+
+.whitePower {
+    background: url(iphone_4s_mock_up.svg) no-repeat;
+    background-size: 1488px;
+    width: 110px;
+    height: 110px;
+    position: absolute;
+    top: 371px;
+    left: 198px;
+    background-position-x: -1100px;
+    background-position-y: -940px;
+}
+
+.whiteHead {
+    background: url(iphone_4s_mock_up.svg) no-repeat;
+    background-size: 1600px;
+    width: 210px;
+    height: 100px;
+    position: absolute;
+    top: 23px;
+    left: 121px;
+    background-position-x: -1110px;
+    background-position-y: -47px;
+}
+
+.blackPower {
+    background: url(iphone_4s_mock_up.svg) no-repeat;
+    background-size: 1488px;
+    width: 110px;
+    height: 110px;
+    position: absolute;
+    top: 371px;
+    left: 198px;
+    background-position-x: -253px;
+    background-position-y: -940px;
+}
+
+.blackHead {
+    background: url(iphone_4s_mock_up.svg) no-repeat;
+    background-size: 1600px;
+    width: 210px;
+    height: 100px;
+    position: absolute;
+    top: 23px;
+    left: 121px;
+    background-position-x: -196px;
+    background-position-y: -70px;
+}
+
+.greyPower {
+    background: url(iphone_grey.svg) no-repeat;
+    background-size: 1488px;
+    width: 110px;
+    height: 110px;
+    position: absolute;
+    top: 369px;
+    left: 198px;
+    background-position-x: -253px;
+    background-position-y: -940px;
+}
+
+.greyHead {
+    background: url(iphone_grey.svg) no-repeat;
+    background-size: 1600px;
+    width: 210px;
+    height: 100px;
+    position: absolute;
+    top: 23px;
+    left: 121px;
+    background-position-x: -196px;
+    background-position-y: -70px;
+}

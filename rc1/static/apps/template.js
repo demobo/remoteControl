@@ -1,111 +1,81 @@
-function CustomInputDispatcher(){
-  this.acceptableCommands = {};
-  this.addCommand = function (command, handler) {
-    this.acceptableCommands[command] = handler;
-  };
-  this.addCommands = function (dict) {
-    for (var command in dict) {
-      this.acceptableCommands[command] = dict[command];
-    }
-
-  }
-  this.execCommand = function (command, data) {
-    if (command in this.acceptableCommands){
-      this.acceptableCommands[command](data);
-    }
-  }
+function setDemoboController() {
+	demobo.setController( {
+		url : "http://yourController.html"
+	});
 }
 
-var myInputDispatcher = new CustomInputDispatcher();
-
-function setController(){
-  DEMOBO.controller = {page: "default", url:"http://yourController.html", touchEnabled: true};
-  demobo.setController(DEMOBO.controller);  
-}
-
-//********** finish the functions  *************
-function play(){
+function demoboInitiation() {
 
 }
 
-function pause(){
+//your custom demoboApp event dispatcher
+demoboInputDispatcher.addCommands( {
+	'playButton' : play,
+	'pauseButton' : pause,
+	'nextButton' : next,
+	'loveButton' : love,
+	'spamButton' : spam,
+	'demoboApp' : sendCurrentSongInfo
+});
+
+// ********** finish the functions *************
+function play() {
 
 }
 
-function next(){
+function pause() {
 
 }
 
-function love(){
+function next() {
 
 }
 
-function spam(){
+function love() {
 
 }
 
-function getInfoObject(){
+function spam() {
+
+}
+
+function sendCurrentSongInfo() {
+	demobo.callFunction('loadSongInfo', getNowPlayingData());
+}
+
+/* helpers */
+function getNowPlayingData() {
 
 }
 
 function setDevice(data) {
-  if (data) {
-    console.log(data);
-    hideDemobo();
-  }
+	if (data) {
+		console.log(data);
+		hideDemobo();
+	}
 }
 
-//you needa define the corresponding function in your controller ( 'loadSongInfo' in this example )
-function sendCurrentSongInfo(){
-  demobo.callFunction('loadSongInfo', getInfoObject());
-}
+// dont modify the codes below if you dont know what you are doing
+(function() {
+	if (DEMOBO) {
+		DEMOBO.developer = 'developer@demobo.com';
+		DEMOBO.maxPlayers = 1;
+		DEMOBO.stayOnBlur = true;
+		DEMOBO.init = function() {
+			setDemoboController();
+			demobo.addEventListener('input', function(e) {
+				console.log(e);
+				demoboInputDispatcher.execCommand(e.source, e.value);
 
-//add or modify comamnds to accomondate your desgin
-myInputDispatcher.addCommands({
-  'playButton' : play ,
-  'pauseButton' : pause ,
-  'nextButton' : next ,
-  'loveButton' : love ,
-  'spamButton' : spam ,
-  'demoboApp' : sendCurrentSongInfo  
-});
-
-//do all the iniations you need here
-function myInitiation(){
-
-}
-
-//*************************************
-
-//dont modify the codes below if you dont know what you are doing
-(function (){
-  console.log('fuck');
-  if (DEMOBO) {
-    //developer authentication, now hardcoded
-    console.log('DEMOBO is ready');
-    DEMOBO.developer = 'developer@demobo.com';
-    DEMOBO.maxPlayers = 1;
-    DEMOBO.stayOnBlur = true;
-    DEMOBO.init = function(){
-      setController();
-      demobo.addEventListener('input', function(e){
-        console.log(e);
-        myInputDispatcher.execCommand(e.source, e.value);
-        
-      });
-      demobo.addEventListener('connected', function(e){
-        console.log('connected');
-      });
-      showDemobo();
-      demobo.getDeviceInfo('','setDevice');
-    }
-    demobo.start();
-  }
-  
-  console.log('here');
-
-  myInitiation();
-
-  demoboLoading = undefined;
+			});
+			demobo.addEventListener('connected', function(e) {
+				console.log('connected');
+			});
+			showDemobo();
+			demobo.getDeviceInfo('', 'setDevice');
+		}
+		demobo.start();
+	}
+	demoboInitiation();
+	demoboLoading = undefined;
 })();
-

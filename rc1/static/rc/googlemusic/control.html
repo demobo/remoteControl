@@ -25,10 +25,9 @@
                 // jquery mobile input range is not working with zoom
                 $('.volumeControl').css('zoom', 320 / screenHeight);
                 var curPage = "#control";
-                $('#footer li a').click(function(){changeTab($(this));});
-				$('select').focus(function(){$('#stationsTab').click();});
-				$('img').bind('load', function(){changeTab($('#footer li a#nowPlayingTab'));});
-				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
+                $('#footer li a').click(function(){
+                    changeTab($(this));
+                });
             });
             function changeTab(target){
                 curPage = '#' + target.attr('value');
@@ -39,25 +38,20 @@
                 }, 'slow');
             }
             
-            function loadSongInfo(songs){
-				if ($.isArray(songs)) {
-                    var song = songs[0];
-                    var nextSong = songs[1];
-                }
-                else 
-                    var song = songs;
+            function loadSongInfo(song){
                 $('#nowplayingItem .albumImage img').attr('src', song.image);
                 $('#nowplayingItem .title').html(song.title);
                 $('#nowplayingItem .artist').html(song.artist);
                 $('#nowplayingItem .album').html(song.album);
+                changeTab($('#footer li a#nowPlayingTab'));
             }
-           
+            
             function loadChannelList(items){
                 $('#stationItem').html('');
                 for (var i = 0; i < items.length; i++) {
 					var option = $('<option value="' + i + '">' + items[i].title + '</option>');
                     $('#stationItem').append(option);
-					if (items[i].selected) setCurrentChannel(i);
+					if (items[i].selected) $('#stationItem').val(i);
                 }
             }
 			
@@ -107,11 +101,8 @@
                     </div>
                 </div>
             </div>
-            <!--<div id="stations" class="page">
-                <div class="searchBox row">
-                <input class="searchInput" type="text" autocomplete="off" spellcheck="false">
-                </div>
-            </div>-->
+            <div id="stations" class="page">
+            </div>
             <div id="footer" data-theme="a" data-role="footer" data-position=fixed>
                 <div data-role=navbar>
                     <ul>
@@ -122,7 +113,7 @@
                             <a href=# id="nowPlayingTab" value="nowPlaying">Now Playing</a>
                         </li>
                         <li>
-                            <a href=# id="stationsTab" value="stations">Stations &#9660;</a>
+                            <a href=# id="stationsTab" value="stations">Stations</a>
                             <div id="stationSelect">
                                 <select id="stationItem">
                                 </select>
@@ -178,18 +169,6 @@
                 text-align: center;
             }
             
-            .button {
-                display: inline-block;
-                width: 70px;
-                height: 70px;
-            }
-            
-            .smallButton {
-                display: inline-block;
-                width: 50px;
-                height: 50px;
-            }
-            
             .volumePosition {
                 padding: 14px 0 0 4px;
                 float: left;
@@ -223,7 +202,8 @@
                 width: 80%;
                 padding: 30px 10% 10px 10%;
                 font-size: 28px;
-                color: #A8C4E2;
+                color: white;
+				text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
             }
             
             .row {
@@ -234,25 +214,6 @@
             .stationsList {
                 width: 279px;
                 height: 34px;
-            }
-            
-            .searchInput.ui-input-text {
-                position: relative;
-                top: 5px;
-                line-height: 1;
-                width: 185px;
-                border: 0;
-                padding: 0 0 0 4px;
-                margin: 0;
-                font-size: 12px;
-                color: #ACAFB8;
-                background: transparent;
-                box-shadow: none;
-            }
-            
-            .searchInput:focus {
-                outline: 0;
-                color: #203041
             }
             
             div.ui-slider {
@@ -272,16 +233,13 @@
             
             #nowplayingItem .albumImage {
                 display: inline-block;
-				border: black 1px solid;
-				width: 132px;
-				height: 132px;
             }
             
             #nowplayingItem .albumImage img {
                 width: 130px;
                 height: 130px;
                 background: rgba(0, 0, 0, 0.3);
-                border: white 1px solid;
+                border: none;
             }
             
             #nowplayingItem {
@@ -291,8 +249,8 @@
                 overflow: hidden;
                 font-family: "arial", Helvetica Neue, helvetica, sans-serif;
                 padding: 1px;
-                color: #A8C4E2;
-                text-shadow: none;
+                color: white;
+				text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
             }
             
             #nowplayingItem .title {
@@ -314,98 +272,84 @@
             
             /* assets */
             .ui-page {
-                background-image: url(http://rc1.demobo.com/rc/pandora/images/skin_background.jpg);
-                background-size: 100%;
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#45484d), color-stop(100%,#000000)); /* Chrome,Safari4+ */
+				background: -webkit-linear-gradient(top, #45484d 0%,#000000 100%); /* Chrome10+,Safari5.1+ */
+            }
+			
+			.button {
+                display: inline-block;
+                width: 60px;
+                height: 42px;
+				background: url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
+				background-size: 360px 300px;
+            }
+            
+            .smallButton {
+                display: inline-block;
+                width: 60px;
+                height: 42px;
+				background: url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
+				background-size: 360px 300px;
             }
 			
 			.playButton {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_play.png) no-repeat top left;
-                background-position-x: 0px;
-                background-size: 210px;
+                background-position: -120px 0px;
             }
             
             .playButton:hover {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_play.png) no-repeat top left;
-                background-position-x: -70px;
-                background-size: 210px;
+                background-position: -120px -42px;
             }
             
             .playButton:active {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_play.png) no-repeat top left;
-                background-position-x: -140px;
-                background-size: 210px;
+                background-position: -120px -84px;
             }
             
             .pauseButton {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_pause.png) no-repeat top left;
-                background-position-x: 0px;
-                background-size: 210px;
+                background-position: -317px -0px;
             }
             
             .pauseButton:hover {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_pause.png) no-repeat top left;
-                background-position-x: -70px;
-                background-size: 210px;
+                background-position: -317px -42px;
             }
             
             .pauseButton:active {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_pause.png) no-repeat top left;
-                background-position-x: -140px;
-                background-size: 210px;
+                background-position: -317px -84px;
             }
             
             .loveButton {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_up.png) no-repeat top left;
-                background-position-x: 0px;
-                background-size: 150px;
+                background-position: 0px 0px;
             }
             
             .loveButton:hover {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_up.png) no-repeat top left;
-                background-position-x: -50px;
-                background-size: 150px;
+                background-position: 0px -42px;
             }
             
             .loveButton:active {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_up.png) no-repeat top left;
-                background-position-x: -100px;
-                background-size: 150px;
+                background-position: 0px -84px;
             }
             
             .spamButton {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_down.png) no-repeat top left;
-                background-position-x: 0px;
-                background-size: 150px;
+                background-position: -60px -0px;
             }
             
             .spamButton:hover {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_down.png) no-repeat top left;
-                background-position-x: -50px;
-                background-size: 150px;
+                background-position: -60px -42px;
             }
             
             .spamButton:active {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_down.png) no-repeat top left;
-                background-position-x: -100px;
-                background-size: 150px;
+                background-position: -60px -84px;
             }
             
             .nextButton {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_skip.png) no-repeat top left;
-                background-position-x: 0px;
-                background-size: 210px;
+                background-position: -240px -0px;
             }
             
             .nextButton:hover {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_skip.png) no-repeat top left;
-                background-position-x: -70px;
-                background-size: 210px;
+                background-position: -240px -42px;
             }
             
             .nextButton:active {
-                background: url(http://rc1.demobo.com/rc/pandora/images/btn_skip.png) no-repeat top left;
-                background-position-x: -140px;
-                background-size: 210px;
+                background-position: -240px -84px;
             }
             
             .volumeButton {
@@ -417,7 +361,10 @@
                 top: 4px;
                 position: relative;
             }
-            
+           
+		    .ui-btn-active {
+		    	background-image: -webkit-linear-gradient(#F66,#F11);
+		    }
         </style>
     </body>
 </html>

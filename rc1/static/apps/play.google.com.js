@@ -1,8 +1,7 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/lastfm?0901"
+		url : "http://rc1.demobo.com/rc/lastfm"
 	});
-	setTimeout(refreshController,1000);
 }
 
 // do all the iniations you need here
@@ -11,10 +10,10 @@ function demoboInitiation() {
 	// data updates
 	var _this = {
 		target : jQuery('#radioTrackMeta')[0],
-		oldValue : jQuery('#nowPlayingMeta img').attr('src')
+		oldValue : jQuery('.albumCover .art').attr('src')
 	};
 	_this.onChange = function() {
-		var newValue = jQuery('#nowPlayingMeta img').attr('src');
+		var newValue = jQuery('.albumCover .art').attr('src');
 		if (newValue && _this.oldValue !== newValue) {
 			_this.oldValue = newValue;
 			refreshController();
@@ -28,8 +27,8 @@ function demoboInitiation() {
 
 // your custom demoboApp event dispatcher
 demoboInputDispatcher.addCommands( {
-	'playButton' : playPause,
-	'pauseButton' : playPause,
+	'playButton' : play,
+	'pauseButton' : pause,
 	'nextButton' : next,
 	'loveButton' : love,
 	'spamButton' : spam,
@@ -43,10 +42,12 @@ demoboInputDispatcher.addCommands( {
 });
 
 // ********** custom event handler functions *************
-function playPause() {
-//	getLFMPlayer().pause();
-//	getLFMPlayer().unpause();
-	jQuery('#radioControlPause:visible, #radioControlPlay:visible').click();
+function play() {
+	jQuery('#radioControlPlay').click();
+}
+
+function pause() {
+	jQuery('#radioControlPause').click();
 }
 
 function next() {
@@ -54,7 +55,7 @@ function next() {
 }
 
 function love() {
-	jQuery('#radioPlayer:not(.loved) #radioControlLove').click();
+	jQuery('#radioControlLove').click();
 }
 
 function spam() {
@@ -63,7 +64,7 @@ function spam() {
 
 function setVolume(num) {
 	num = parseInt(num / 10) * 10;
-	getLFMControls()._setVolume(num, true);
+	getLFMControls()._setVolume(num, true)
 }
 
 function sendNowPlaying() {
@@ -79,12 +80,11 @@ function refreshController() {
 
 /* helpers */
 function getNowPlayingData() {
-	var imgURL = jQuery('#trackAlbum .albumCover img').attr('src')||jQuery('#nowPlayingMeta img').attr('src');
 	return {
 		'title' : jQuery('#radioTrackMeta .track').text(),
 		'artist' : jQuery('#radioTrackMeta .artist').text(),
 		'album' : jQuery('#radioTrackMeta .album .title').text(),
-		'image' : imgURL.replace('64s','174s')
+		'image' : jQuery('#trackAlbum .albumCover img').attr('src')
 	};
 }
 
@@ -119,7 +119,6 @@ function setDevice(data) {
 	if (data) {
 		console.log(data);
 		hideDemobo();
-		setDemoboController();
 	}
 }
 
@@ -138,7 +137,6 @@ function getLFMPlayer() {
 		DEMOBO.maxPlayers = 1;
 		DEMOBO.stayOnBlur = true;
 		DEMOBO.init = function() {
-			// set controller for existing devices
 			setDemoboController();
 			demobo.addEventListener('input', function(e) {
 				console.log(e);
@@ -146,8 +144,6 @@ function getLFMPlayer() {
 			});
 			demobo.addEventListener('connected', function(e) {
 				console.log('connected');
-				// set controller for newly connected devices
-				setDemoboController();
 			});
 			showDemobo();
 			demobo.getDeviceInfo('', 'setDevice');

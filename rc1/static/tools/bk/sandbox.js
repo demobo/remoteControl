@@ -10,32 +10,27 @@ if (DEMOBO) {
 	DEMOBO.init = function() {
 		if (localStorage.getItem("url"))
 			$('#url').val(localStorage.getItem("url"));
-		demobo.addEventListener('input', function(e) {
-			console.log(e.source,e.value);
+		$.demobo.addEventListener('input', function(e) {
+			console.log(e);
 			var messageCss = {
-				'font-size' : 50,
+				'font-size' : 300,
 				'color' : '#433',
 				'position' : 'absolute',
 				'text-align' : 'center',
-				'width' : '30%',
-				'right' : '0%',
+				'width' : '90%',
 				'top' : '10%'
 			};
-			if (e.source) $('#eventSource').text(e.source).css(messageCss).show().fadeOut(1000);
-			messageCss.top = '30%';
-			if (e.value) $('#eventValue').text(e.value).css(messageCss).show().fadeOut(1000);
+			$('#message').text(e.value).css(messageCss).show().fadeOut(1000);
 		}, false);
 		$('button#set').click(
 				function() {
 					var url = "http://net.demobo.com/server/upload/" + roomID
 							+ ".html?" + Math.random();
-					var c = {
-							page : "default",
-							url : url,
-							touchEnabled : true
-						};
-					if (!$('#orientation').is(':checked')) c.orientation = "portrait";
-					demobo.setController(c);
+					$.demobo.setController( {
+						page : "default",
+						url : url,
+						touchEnabled : true
+					});
 					$('iframe').attr('src', localStorage.getItem("url"));
 					$('#controllerUrl').attr('href', url);
 				});
@@ -66,26 +61,23 @@ if (DEMOBO) {
 					var test = testCases[i];
 					console.log(test.fn, test.param);
 					$('iframe')[0].contentWindow[test.fn](test.param);
-					demobo.callFunction(test.fn, test.param);
+					$.demobo.callFunction(test.fn, test.param);
 				}
 			});
 		});
 		$('button#rc1').click(
 				function() {
 					var url = "http://rc1.demobo.com" + $('#url').val() + "?" + Math.random();
-					var c = {
-							page : "default",
-							url : url,
-							touchEnabled : true
-						};
-					if (!$('#orientation').is(':checked')) c.orientation = "portrait";
-					demobo.setController(c);
+					$.demobo.setController( {
+						page : "default",
+						url : url,
+						touchEnabled : true
+					});
 					$('iframe').attr('src', url);
 					$('#controllerUrl').attr('href', url);
 				});
 		$('input[type=radio]').click(function() {
 			var wh = this.value.split("x");
-			if (!$('#orientation').is(':checked')) wh.reverse();
 			$('iframe').css( {
 				width : wh[0],
 				height : wh[1],

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title></title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
+        </script>
+        <script>
+            $(document).bind("mobileinit", function(event){
+                $.extend($.mobile.zoom, {
+                    locked: true,
+                    enabled: false
+                });
+            });
+        </script>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js">
+        </script>
+        <script>
+            $(document).ready(function(){
+                var screenHeight = $(window).height();
+                $('html').css('zoom', screenHeight / 320);
+                // jquery mobile input range is not working with zoom
+                $('.volumeControl').css('zoom', 320 / screenHeight);
+				$('select').focus(function(){
+                    $(this).parents('li').find('a').click();
+					$(this).val("");
+                });
+				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(3)', function(e){
+					$('#nextButton').click();
+				});
+				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
+            });
+            
+            function loadSongInfo(songs){
+                $('#comingItem').text('');
+                if ($.isArray(songs)) {
+                    var song = songs[0];
+                    var nextSong = songs[1];
+                }
+                else 
+                    var song = songs;
+				if (nextSong)  {
+					setSongAt(4,nextSong);
+				}
+				if ($('.nowplayingItem:nth-child(2) .title').text()!=song.title) {
+	                setSongAt(3,song);
+					setTimeout(function(){$('.nowplayingItem:nth-child(1)').remove();},10);	
+				} else {
+					setTimeout(function(){$('.nowplayingItem:nth-child(3)').remove();},10);
+				}
+            }
+			function setSongAt(n, song) {
+				if ($('.nowplayingItem').length<n) makeQueue(n);
+				var item = $('.nowplayingItem:nth-child('+n+')');
+				item.find('.albumImage img').attr('src', song.image);
+				item.find('.title').html(song.title);
+                item.find('.artist').html(song.artist);
+                item.find('.album').html(song.album);
+			}
+			function makeQueue(n) {
+				while ($('.nowplayingItem').length<n) {
+					$('.nowplayingItem').parent().append($('.nowplayingItem').first().clone());
+				}
+				$('.nowplayingItem:gt('+(n-1)+')').remove();
+			}
+            
+            function loadChannelList(items){
+                $('#stationItem').html('');
+				var option = $('<option value="">Select a station:</option>');
+                $('#stationItem').append(option);
+                for (var i = 0; i < items.length; i++) {
+                    var option = $('<option value="' + i + '">' + items[i].title + '</option>');
+                    $('#stationItem').append(option);
+                    if (items[i].selected) 
+                        $('#stationItem').val(i);
+                }
+            }
+            
+            function loadPinBoard(items){
+                $('#pinBoardItem').html('');
+				var option = $('<option value="">Select from pinboard:</option>');
+                $('#pinBoardItem').append(option);
+                for (var i = 0; i < items.length; i++) {
+                    var option = $('<option value="' + i + '">' + items[i].title + '</option>');
+                    $('#pinBoardItem').append(option);
+                    if (items[i].selected) 
+                        $('#pinBoardItem').val(i);
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div class="logo">
+        </div>
+        <div id="main" data-role=page>
+            <div id="control" class="page">
+				<div id="controlGroup">
+                    <a id="playButton" class="playButton button" value="play"></a>
+                    <a id="pauseButton" class="pauseButton button" value="pause"></a>
+                    <a id="nextButton" class="nextButton button" value="next"></a>
+	                <div class="volumeControl volumeBackground">
+	                    <div class="volumeButton" id="volumeButton">
+	                    </div>
+	                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
+	                </div>
+				</div>
+				<div>
+					<div class="nowplayingItem">
+	                    <div class="albumImage">
+	                        <img>
+	                    </div>
+	                    <div class="albumInfo">
+	                    	<div class="updowngroup">
+	                            <a id="loveButton" class="loveButton smallButton" value="love"></a>
+	                            <a id="spamButton" class="spamButton smallButton" value="spam"></a>
+	                        </div>
+	                        <div class="albumInfoGroup">
+	                            <div class="title">
+	                            </div>
+	                            <div class="artist">
+	                            </div>
+	                            <div class="album">
+	                            </div>
+	                        </div>
+	                    </div>
+	                </div>
+				</div>
+            </div>
+            <div id="footer" data-theme="a" data-role="footer" data-position=fixed>
+                <div data-role=navbar>
+                    <ul>
+                        <li>
+                            <a href=#>Stations &#9660;</a>
+                            <div class="stationSelect">
+                                <select id="stationItem">
+                                </select>
+                            </div>
+                        </li>
+                        <li>
+                            <a href=#>PinBoard &#9660;</a>
+                            <div class="pinBoardSelect">
+                                <select id="pinBoardItem">
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <style>        
+            body {
+                height: 340px;
+                width: 100%;
+                overflow: hidden;
+                font-family: "arial", Helvetica Neue, helvetica, sans-serif;
+                background: black;
+            }
+            
+            input.ui-slider-input {
+                display: none !important;
+            }
+            
+            .stationSelect {
+                position: absolute;
+                top: 0px;
+                right: 50%;
+                width: 50%;
+                height: 50px;
+                opacity: 0;
+                z-index: 1111;
+            }
+            
+            .pinBoardSelect {
+                position: absolute;
+                top: 0px;
+                right: 0px;
+                width: 50%;
+                height: 50px;
+                opacity: 0;
+                z-index: 1111;
+            }
+            
+            #main {
+                overflow: hidden;
+                white-space: nowrap;
+            }
+			
+			#controlGroup {
+				height: 60px;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAADtCAYAAAB+kx9wAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAALVJREFUOI3FkbEOwjAMRJ/8AQyMfABbp04d8o98H+rMhFQG2qFScwytEkBV6i6wnO5yjny2qetaBmCSFviSDkMSFmMsuLuKtxMAyJqmwcZxXIyfwpyg7/vCgHnKLNdgV0nu0bYtAGckybqu+8sOQgjMi8h3KzOHLJcU2ZyqqirezpODr33zBncM42BOg/sF2eF4wuLzhiEwYgk0JTl9uklqzc2QelwfQAhBNgzD1vi73hzFib0AqFZ7tEuT42sAAAAASUVORK5CYII=) repeat-x;
+				position: relative;
+				text-align: center;
+				background-position: left -115px;
+				border-bottom: grey 1px solid;
+			}
+            
+            .page {
+                display: inline-block;
+                vertical-align: top;
+                width: 100%;
+            }
+            
+            .padding-top {
+                padding-top: 15px;
+            }
+            
+            table.center {
+                width: auto;
+                margin-left: auto;
+                margin-right: auto;
+                text-align: center;
+            }
+            
+            .volumePosition {
+                padding: 14px 0 0 4px;
+                float: left;
+                width: 19px;
+                height: 15px;
+            }
+            
+            .volumeControl {
+                width: 300px;
+                height: 29px;
+                margin-left: -3px;
+                margin-top: -3px;
+            }
+            
+            .volumeBackground {
+                width: 250px;
+				height: 44px;
+				border-radius: 28px;
+				display: inline-block;
+				vertical-align: top;
+				margin: 15px;
+            }
+			            
+            .row {
+                text-align: center;
+                margin: 20px auto;
+            }
+            
+            .stationsList {
+                width: 279px;
+                height: 34px;
+            }
+            
+            div.ui-slider {
+                top: 0px;
+            }
+            
+            .nowplayingItem .albumInfo {
+                position: absolute;
+				top: 0px;
+				height: 100%;
+                width: 100%;				
+            }
+            
+            .nowplayingItem .albumInfoGroup {
+                position: absolute;
+				bottom: 0px;
+				margin: 5px 9px 8px 9px;
+				width: 142px;
+            }
+            
+            .nowplayingItem .albumImage {
+                display: inline-block;
+            }
+            
+            .nowplayingItem .albumImage img {
+                width: 126px;
+                height: 126px;
+                background: rgba(0, 0, 0, 0.3);
+                border: white 3px solid;
+            }
+            
+            .nowplayingItem {
+                font-family: "arial", Helvetica Neue, helvetica, sans-serif;
+                padding: 8px;
+				margin: 10px 20px;
+                color: white;
+                text-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+                background: grey;
+                border-radius: 6px;
+                width: 132px;
+                height: 185px;
+				position: absolute;
+				top: 60px;
+            }
+			.nowplayingItem:nth-child(1) {
+				left: -200px;
+			}
+			.nowplayingItem:nth-child(2) {
+				background: #F77F00;
+				left: 0px;
+			}
+            .nowplayingItem:nth-child(3) {
+				left: 200px;
+			}
+			.nowplayingItem:nth-child(4) {
+				left: 400px;
+			}
+			
+			.updowngroup{
+				display: none;
+			}
+			
+			.nowplayingItem:nth-child(2) .updowngroup{
+				display: block;
+			}
+			
+			.nowplayingItem {
+				-webkit-transition:left 1s ease-in, background 0.2s;
+			}
+            .nowplayingItem .title {
+                font-size: 19px;
+                font-weight: bold;
+				text-decoration: none;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+				text-align: center;
+				width: 80%;
+            }
+            
+            .nowplayingItem .artist {
+                font-size: 17px;
+				text-decoration: none;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+				text-align: center;
+				width: 80%;
+            }
+            
+            .nowplayingItem .album {
+            	display: none;
+                font-size: 17px;
+				text-decoration: none;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+				text-align: center;
+				width: 80%;
+            }
+            
+            .ui-select .ui-btn select {
+                font-size: 50px;
+            }
+            
+            /* assets */
+                        			
+			.button {
+                display: inline-block;
+                width: 60px;
+                height: 42px;
+				background: url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
+				background-size: 360px 300px;
+				margin: 10px 5px;
+            }
+            
+            .smallButton {
+                display: inline-block;
+                width: 60px;
+                height: 42px;
+				background: url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
+				background-size: 360px 300px;
+				margin: 8px 3px;
+            }
+			
+			.playButton {
+                background-position: -120px 0px;
+            }
+            
+            .playButton:hover {
+                background-position: -120px -42px;
+            }
+            
+            .playButton:active {
+                background-position: -120px -84px;
+            }
+            
+            .pauseButton {
+                background-position: -317px -0px;
+            }
+            
+            .pauseButton:hover {
+                background-position: -317px -42px;
+            }
+            
+            .pauseButton:active {
+                background-position: -317px -84px;
+            }
+            
+            .loveButton {
+                background-position: 0px 0px;
+            }
+            
+            .loveButton:hover {
+                background-position: 0px -42px;
+            }
+            
+            .loveButton:active {
+                background-position: 0px -84px;
+            }
+            
+            .spamButton {
+                background-position: -60px -0px;
+            }
+            
+            .spamButton:hover {
+                background-position: -60px -42px;
+            }
+            
+            .spamButton:active {
+                background-position: -60px -84px;
+            }
+            
+            .nextButton {
+                background-position: -240px -0px;
+            }
+            
+            .nextButton:hover {
+                background-position: -240px -42px;
+            }
+            
+            .nextButton:active {
+                background-position: -240px -84px;
+            }
+            
+            .volumeButton {
+                width: 30px;
+                height: 25px;
+                background: url(http://rc1.demobo.com/rc/pandora/images/volume_icon.png) no-repeat;
+                background-size: 30px 25px;
+                display: inline-block;
+                top: 4px;
+                position: relative;
+            }
+           
+		    .ui-btn-active {
+		    	background-image: -webkit-linear-gradient(orange,#F77F00);
+		    }
+			
+			.ui-page {
+				background: black;
+			}
+                                
+                    
+        </style>
+    </body>
+</html>

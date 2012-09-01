@@ -4,13 +4,26 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
         <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title></title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
         </script>
-		<script>
+        <script>
+            $(document).bind("mobileinit", function(event){
+                $.extend($.mobile.zoom, {
+                    locked: true,
+                    enabled: false
+                });
+            });
+        </script>
+        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js">
+        </script>
+        <script>
         	$(document).ready(function(){
 				var screenHeight = $(window).height();
-				var screenWidth = $(window).width();
-				$('html').css('zoom',screenHeight/320);
+                $('html').css('zoom', screenHeight / 320);
+                // jquery mobile input range is not working with zoom
+                $('.volumeControl').css('zoom', 320 / screenHeight);
 	            $('#smallButton').bind('click', function(){
 	                if ($('#listTab').css('left') == '80px') {
 	                    $('#listTab').animate({
@@ -24,6 +37,7 @@
 	                }
 	            });
 				$('img').bind('load', flipAlbumArt);
+				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
 			});
 			
             function loadSongInfo(songs){
@@ -53,7 +67,7 @@
                 $('#list-items').html('');
                 $.each(list, function(index, value){
 					if (value.selected) var option = $('<div class="list-item selected"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
-                    else var option = $('<div class="list-item"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
+                    else var option = $('<div class="list-item"><a onclick id="stationItem" value="' + index + '">' + value.title + '</a></div>');
 					$('#list-items').append(option);
 					if (value.selected) setCurrentChannel(index);
                 });
@@ -76,10 +90,18 @@
 	                    </div>
 	                    <div id='songName'>
 	                    </div>
-	                    <a id='loveButton' value='love'></a>
-	                    <a id='spamButton' value='spam'></a>
-	                    <a id='nextButton' value='next'></a>
-	                    <a id='playPauseButton' value='playPause'></a>
+						<div>
+							<a href id="loveButton" class="loveButton button" value="love"></a>
+	                        <a href id="spamButton" class="spamButton button" value="spam"></a>
+		                    <a href id="nextButton" class="nextButton button" value="next"></a>
+		                    <a href id="playButton" class="playButton redbutton" value="play"></a>
+							<a href id="pauseButton" class="pauseButton redbutton" value="pause"></a>
+						</div>
+						<div class="volumeControl row volumeBackground">
+		                    <div class="volumeButton" id="volumeButton">
+		                    </div>
+		                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="false" type="range" />
+		                </div>
 	                </div>
 	            </div>
 	            <div id='listTab'>
@@ -138,41 +160,7 @@
                 position: absolute;
                 left: 480px;
             }
-            
-            #loveButton, #spamButton, #nextButton {
-                width: 50px;
-                height: 46px;
-                display: inline-block;
-                cursor: pointer;
-            }
-            
-            #loveButton {
-                margin-left: 8px;
-            }
-            
-            #playPauseButton {
-                display: inline-block;
-                cursor: pointer;
-                width: 48px;
-                height: 38px;
-                background: url('http://rc1.demobo.com/rc/douban/images/pause.png');
-                top: 0px;
-                position: absolute;
-                left: 150px;
-            }
-            
-            #loveButton {
-                background: url('http://rc1.demobo.com/rc/douban/images/love.png');
-            }
-            
-            #spamButton {
-                background: url('http://rc1.demobo.com/rc/douban/images/spam.png');
-            }
-            
-            #nextButton {
-                background: url('http://rc1.demobo.com/rc/douban/images/next.png');
-            }
-            
+                    
             .list-item a {
                 cursor: pointer;
                 width: 100%;
@@ -200,8 +188,14 @@
             	font-weight: 500;
             }
             
-			.list-item.selected {
+			.list-item:hover, .list-item:active {
 				background-image: -webkit-linear-gradient(bottom, rgba(200, 180, 180, 0.8) 20%, rgba(256, 218, 218, 0.8) 69%);
+			}
+			
+			.list-item.selected {
+				background-image: -webkit-linear-gradient(bottom, rgba(200, 80, 80, 1) 20%, rgba(256, 18, 18, 1) 69%);
+				text-shadow: none;
+				color: white;
 			}
 				
             #smallButton {
@@ -240,10 +234,6 @@
               -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.2);
             }
             
-            #loveButton {
-              margin-top:35px;
-            }
-            
             #controlPanel img {
               margin-left:10px;
             }
@@ -272,7 +262,110 @@
               margin-top:20px;
               margin-left:20px;
 			  height: 18px;
-            }      
+            }
+			
+			/* assets */
+			.button {
+                display: inline-block;
+				width: 44px;
+				height: 37px;
+				background: url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
+				background-size: 300px 250px;
+				margin: 35px 0px 0px 10px;
+            }
+			
+			.redbutton {
+				top: 0px;
+				position: absolute;
+				width: 17px;
+				height: 26px;
+				background: #D11 url(http://rc1.demobo.com/rc/lastfm/images/control.png) no-repeat top left;
+				background-size: 156px 156px;
+            }
+            
+			.playButton {
+				left: 155px;
+				background-position: -56px 2px;
+			}
+				
+            .playButton:hover {
+				background-position: -56px -20px;
+            }
+            
+            .playButton:active {
+				background-position: -56px -42px;
+            }
+            
+            .pauseButton {
+            	left: 171px;
+                background-position: -140px 2px;
+            }
+            
+            .pauseButton:hover {
+                background-position: -140px -20px;
+            }
+            
+            .pauseButton:active {
+                background-position: -140px -42px;
+            }
+            
+            .loveButton {
+                background-position: 0px 0px;
+            }
+            
+            .loveButton:hover {
+                background-position: 0px -35px;
+            }
+            
+            .loveButton:active {
+                background-position: 0px -70px;
+            }
+            
+            .spamButton {
+                background-position: -56px -0px;
+            }
+            
+            .spamButton:hover {
+                background-position: -56px -35px;
+            }
+            
+            .spamButton:active {
+                background-position: -56px -70px;
+            }
+            
+            .nextButton {
+                background-position: -200px -0px;
+            }
+            
+            .nextButton:hover {
+                background-position: -200px -35px;
+            }
+            
+            .nextButton:active {
+                background-position: -200px -70px;
+            }
+            
+            .volumeButton {
+                width: 30px;
+                height: 25px;
+                background: url(http://rc1.demobo.com/rc/pandora/images/volume_icon.png) no-repeat;
+                background-size: 30px 25px;
+                display: inline-block;
+                top: 4px;
+                position: relative;
+            } 
+			
+			.volumeControl {
+				margin: 10px 0px 0px 25px;
+			}
+			
+			input.ui-slider-input {
+                display: none !important;
+            }
+			
+			div .ui-slider {
+				margin: 0 2% 0 5px;
+			}
         </style>
     </body>
 </html>

@@ -3,6 +3,10 @@ var rcPort = window.demoboRcPort ? window.demoboRcPort : 1280;
 // this is set through bookmarklet, default port of demobo is 1281
 var demoboPort = window.demoboPort ? window.demoboPort : 1281;
 
+function getCurrentDomain() {                                                                                                                                                                                                         
+  return document.domain ? document.domain : window.location.hostname;
+}
+
 console.log('This is demobo-ext.js loaded from port: ' + rcPort);
 
 function loadMain() {
@@ -19,6 +23,7 @@ function loadMain() {
 	} else {
 		base = 'http://rc1.demobo.com/';
 	}
+  console.log(base);
 	switch (domain) {
 	// when we support more websites, add new cases here;
 	case 'pandora.com':

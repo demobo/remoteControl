@@ -54,7 +54,7 @@ function showDemobo() {
 	var div = document.createElement("div");
 	document.getElementById(id).appendChild(div);
 	var a = document.createElement("a");
-	a.href = "http://www.demobo.com";
+	a.href = "https://chrome.google.com/webstore/search/demobo.com?utm_source=chrome-ntp-icon";
 	a.target = "_blank";
 	newContent = document.createTextNode('How to control more websites using "de Mobo"');
 	a.appendChild(newContent);

@@ -1,0 +1,41 @@
+{
+   "name": "Pandora remote control",
+   "description": "Control Pandora music using your smartphone",
+   "page_action":
+   {
+	  "default_icon": "images/icon_bw_19.png",
+      "default_title": "Remote Control"
+   },
+   "background" : {
+    "scripts": ["js/background.js"]
+   },
+   "content_scripts": [
+      {
+         "all_frames": true,
+         "js": ["js/main.js"],
+		 "matches": [ "http://www.pandora.com/*" ],
+         "run_at": "document_end"
+      }
+   ],
+   "icons":
+   {
+   	 "128": "images/icon_128.png",
+      "48": "images/icon_48.png",
+	  "19": "images/icon_bw_19.png",
+      "16": "images/icon_bw_16.png"
+   },
+   "homepage_url": "http://www.demobo.com",
+   "permissions": [
+     "http://www.pandora.com/*",
+	 "chrome://favicon/",
+     "clipboardWrite",
+     "contextMenus",
+     "cookies",
+     "idle",
+     "notifications",
+     "unlimitedStorage",
+	 "tabs"
+   ],
+   "version": "0.1.2",
+   "manifest_version": 2
+}

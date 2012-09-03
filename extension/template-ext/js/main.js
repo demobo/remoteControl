@@ -1,5 +1,4 @@
-if (localStorage.getItem('DEMOBOEXT')!='1'){
-  localStorage.setItem('DEMOBOEXT','1');
+if (!document.getElementById('toggle')){
   var toggle = document.createElement('div');
   toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js?123'; document.body.appendChild(s);}}())");
   toggle.setAttribute('id', 'toggle');
@@ -18,7 +17,7 @@ if (localStorage.getItem('DEMOBOEXT')!='1'){
   chrome.extension.onMessage.addListener(onMessage);
   
   
-  var timeToWait = 1000; //in case sometimes you wanna wait for the page to load, you can definitely set it to 0;
+  var timeToWait = 0; //in case sometimes you wanna wait for the page to load, you can definitely set it to 0;
   setTimeout(function(){chrome.extension.sendMessage('testing sendMessage');},timeToWait);
   
   var autoLoad = false; //this tag indicates whether you want the extension to load demobo automatically or after user clicks icon

@@ -17,10 +17,12 @@ function loadMain() {
 	case 'facebook.com':
 	case 'douban.fm':
 	case 'last.fm':
-		s.src = base + 'domain/' + domain + '.js?1sl';
+  case 'play.google.com':
+  case 'grooveshark.com':
+		s.src = base + 'apps/' + domain + '.js?1sl';
 		break;
 	default:
-		s.src = base + 'domain/' + 'default-main.js';
+		s.src = base + 'apps/' + 'default-main.js';
 		break;
 	}
 	s.setAttribute('class', 'dmb-script');

@@ -1,6 +1,6 @@
 {
-   "name": "de Mobo remote control",
-   "description": "Control website using your smartphone",
+   "name": "Grooveshark remote control",
+   "description": "Control Grooveshark music using your smartphone",
    "page_action":
    {
 	  "default_icon": "images/icon_bw_19.png",

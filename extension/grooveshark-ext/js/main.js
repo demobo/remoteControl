@@ -1,107 +1,34 @@
-DEMOBO_DEV_RC = "http://localhost:1280";
-DEMOBO_PROD_RC = "http://rc1.demobo.com";
-DEMOBO_API = 'http://api.demobo.com/js_demobo.js';
-var dev = true;
+var dev = false;//change these two lines for loading local files
+var devPort = 1242;
 
-function getSuportedSites() {
-	return [ 'pandora.com', 'last.fm','grooveshark.com','douban.fm'];
-}
-
-function isSupportedSite() {
-	var domain = getCurrentDomain();
-	return (getSuportedSites().indexOf(domain) >=0);
-}
-
-function isDemoboSupported() {
-	return isSupportedSite();
-}
-function getCurrentDomain() {
-	return document.domain ? document.domain : window.location.hostname;
-}
-
-function loadMain() {
-	if (!isDemoboSupported()) return;
-	console.log('loading Main');
-	var s = document.createElement('script');
-
-	console.log('before domain');
-	console.log(typeof getCurrentDomain);
-	var domain = getCurrentDomain();
-	console.log('after domain called');
-	var base;
-	if (dev) {
-		base = DEMOBO_DEV_RC+'/apps/';
-	} else {
-		base = DEMOBO_PROD_RC+'/apps/';
-	}
-	console.log('the domain is: ' + domain);
-	if (isSupportedSite()) {
-		s.src = base + domain + '.js?1';
-	} else {
-		s.src = base + 'default-main.js';
-	}
-	s.setAttribute('class', 'dmb-script');
-	document.body.appendChild(s);
-}
-
-//util.js should have utility functions for developer. An alternative is to pack these utilities into js_all.js so that we dont needa import util.jss
-function loadUtil(){
-  console.log('loading Util');
-  var s = document.createElement('script');
-  s.src = dev?DEMOBO_DEV_RC+'/dev/util.js?1':DEMOBO_PROD_RC+'/dev/util.js?1';
-  s.setAttribute('class', 'dmb-script');
-  s.onload = loadMain;
-  document.body.appendChild(s);
-}
-
-function loadDemoboApi() {
-	console.log('loading DemoboApi');
-	var s = document.createElement('script');
-	s.src = DEMOBO_API;
-	s.setAttribute('class', 'dmb-script');
-	s.onload = loadUtil;
-	document.body.appendChild(s);
-}
-
-function toggleExtension() {
-	// if another demobo is loading, do nothing
-	console.log('loading extension');
-	if (!localStorage.getItem('demoboExtLoading')) {
-		// toggle demobo
-		if (!!localStorage.getItem('demoboExtOn')) {
-			document.getElementById('setController').click();
-		} else {
-			localStorage.setItem('demoboExtLoading', 1);
-			localStorage.setItem('demoboExtOn', 1);
-			var e = document.createElement('div');
-			e.setAttribute('id', 'qrcode');
-			document.body.appendChild(e);
-
-			var setController = document.createElement('div');
-			setController.setAttribute('onclick', 'javascript:setDemoboController();');
-			setController.setAttribute('id', 'setController');
-			document.body.appendChild(setController);
-
-      var toggleDemobo = document.createElement('div') ;
-      toggleDemobo.setAttribute('onclick', 'javascript:toggleDemobo();');
-      toggleDemobo.setAttribute('id', 'toggleDemobo');
-      document.body.appendChild(toggleDemobo);
-			loadDemoboApi();
-		}
-	}
-}
-
-function onMessage(message, sender, sendResponse) {
-  console.log('here at front end: '+message);
- if (message=='toggleDemobo'){
-    console.log(message);
-    document.getElementById('toggleDemobo').click();
-    sendResponse({});
+if (!document.getElementById('toggle')){
+  var toggle = document.createElement('div');
+  if (dev){
+    toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');window.demoboRcPort = "+devPort+";window.demoboPort = "+devPort+";s.src='http://localhost:"+devPort+"/dev/demobo-ext.js';document.body.appendChild(s);}}())");
+  }else{
+    toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js?123'; document.body.appendChild(s);}}())");
   }
-};
-
-chrome.extension.onMessage.addListener(onMessage);
-chrome.extension.sendMessage('testing sendMessage');
-
-localStorage.clear();
-toggleExtension();
+  toggle.setAttribute('id', 'toggle');
+  document.body.appendChild(toggle);
+  
+  function onMessage(message, sender, sendResponse) {
+    console.log('here at front end: '+message);
+   if (message=='toggleDemobo'){
+      console.log(message);
+  //    document.getElementById('toggleDemobo').click();
+      document.getElementById('toggle').click();
+      sendResponse({});
+    }
+  };
+  
+  chrome.extension.onMessage.addListener(onMessage);
+  
+  
+  var timeToWait = 0; //in case sometimes you wanna wait for the page to load, you can definitely set it to 0;
+  setTimeout(function(){chrome.extension.sendMessage('testing sendMessage');},timeToWait);
+  
+  var autoLoad = false; //this tag indicates whether you want the extension to load demobo automatically or after user clicks icon
+  if(autoLoad){
+    toggle.click();
+  }
+}

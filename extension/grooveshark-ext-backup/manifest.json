@@ -1,19 +1,19 @@
 {
-   "name": "de Mobo remote control",
-   "description": "Control website using your smartphone",
+   "name": "Grooveshark remote control",
+   "description": "Control Grooveshark music using your smartphone",
    "page_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
-      "default_title": "de Mobo"
+      "default_title": "Remote Control"
    },
    "background" : {
     "scripts": ["js/background.js"]
    },
    "content_scripts": [
       {
-         "all_frames": true,
+         "all_frames": false,
          "js": ["js/main.js"],
-		 "matches": [ "http://www.pandora.com/*", "http://douban.fm/*", "http://grooveshark.com/*", "http://www.last.fm/*" ],
+		 "matches": [ "http://grooveshark.com/*" ],
          "run_at": "document_end"
       }
    ],
@@ -26,10 +26,7 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "http://www.pandora.com/*",
      "http://grooveshark.com/*",
-	 "http://www.last.fm/*",
-	 "http://douban.fm/*",
 	 "chrome://favicon/",
      "clipboardWrite",
      "contextMenus",

@@ -1,11 +1,12 @@
 function onMessage(message, sender, sendResponse) {
   console.log('here at backend: '+message);
-  console.log(sender.tab.id);
-  console.log(message);
+  if (message=='testing sendMessage'){
+    console.log(sender.tab.id);
+    console.log(message);
+    chrome.pageAction.show(sender.tab.id);
 
-  chrome.pageAction.show(sender.tab.id);
-
-  sendResponse({});
+    sendResponse({});
+  }
 };
 
 chrome.extension.onMessage.addListener(onMessage);

@@ -1,10 +1,10 @@
 {
-   "name": "Pandora remote control",
-   "description": "Control Pandora music using your smartphone",
+   "name": "de Mobo remote control",
+   "description": "Control website using your smartphone",
    "page_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
-      "default_title": "Remote Control"
+      "default_title": "de Mobo"
    },
    "background" : {
     "scripts": ["js/background.js"]
@@ -13,7 +13,7 @@
       {
          "all_frames": true,
          "js": ["js/main.js"],
-		 "matches": [ "http://www.pandora.com/*" ],
+		 "matches": [ "http://www.pandora.com/*", "http://douban.fm/*", "http://grooveshark.com/*", "http://www.last.fm/*" ],
          "run_at": "document_end"
       }
    ],
@@ -27,6 +27,9 @@
    "homepage_url": "http://www.demobo.com",
    "permissions": [
      "http://www.pandora.com/*",
+     "http://grooveshark.com/*",
+	 "http://www.last.fm/*",
+	 "http://douban.fm/*",
 	 "chrome://favicon/",
      "clipboardWrite",
      "contextMenus",

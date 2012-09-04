@@ -23,7 +23,7 @@ function demoboInitiation() {
 	_this.delay = function() {
 		setTimeout(_this.onChange, 30);
 	};
-	_this.target.addEventListener('DOMSubtreeModified', _this.delay, false);
+	if (_this.target) _this.target.addEventListener('DOMSubtreeModified', _this.delay, false);
 }
 
 // your custom demoboApp event dispatcher
@@ -67,7 +67,9 @@ function setVolume(num) {
 }
 
 function sendNowPlaying() {
-	demobo.callFunction('loadSongInfo', getNowPlayingData());
+	var nowplayingdata = getNowPlayingData();
+	if (!nowplayingdata) return;
+	demobo.callFunction('loadSongInfo', nowplayingdata);
 	demobo.callFunction('setCurrentChannel', getCurrentStationIndex());
 }
 
@@ -79,6 +81,7 @@ function refreshController() {
 
 /* helpers */
 function getNowPlayingData() {
+	if (!jQuery('#radioTrackMeta .track').text()) return null;
 	var imgURL = jQuery('#trackAlbum .albumCover img').attr('src')||jQuery('#nowPlayingMeta img').attr('src');
 	return {
 		'title' : jQuery('#radioTrackMeta .track').text(),

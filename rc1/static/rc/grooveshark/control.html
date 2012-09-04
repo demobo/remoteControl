@@ -42,14 +42,19 @@
                 }
                 else 
                     var song = songs;
+				makeQueue(5);	
 				if (nextSong)  {
 					setSongAt(4,nextSong);
 				}
 				if ($('.nowplayingItem:nth-child(2) .title').text()!=song.title) {
 	                setSongAt(3,song);
-					setTimeout(function(){$('.nowplayingItem:nth-child(1)').remove();},10);	
+					setTimeout(function(){
+						$('.nowplayingItem:nth-child(1)').remove();
+					},10);	
 				} else {
-					setTimeout(function(){$('.nowplayingItem:nth-child(3)').remove();},10);
+					setTimeout(function(){
+						$('.nowplayingItem:nth-child(3)').remove();
+					},10);
 				}
             }
 			function setSongAt(n, song) {
@@ -62,7 +67,12 @@
 			}
 			function makeQueue(n) {
 				while ($('.nowplayingItem').length<n) {
-					$('.nowplayingItem').parent().append($('.nowplayingItem').first().clone());
+					var clone = $('.nowplayingItem').first().clone();
+					clone.find('.albumImage img').attr('src', "");
+					clone.find('.title').html("");
+	                clone.find('.artist').html("");
+	                clone.find('.album').html("");
+					$('.nowplayingItem').parent().append(clone);
 				}
 				$('.nowplayingItem:gt('+(n-1)+')').remove();
 			}
@@ -290,17 +300,20 @@
 				top: 60px;
             }
 			.nowplayingItem:nth-child(1) {
-				left: -200px;
+				left: -154px;
 			}
 			.nowplayingItem:nth-child(2) {
 				background: #F77F00;
-				left: 0px;
+				left: 46px;
 			}
             .nowplayingItem:nth-child(3) {
-				left: 200px;
+				left: 246px;
 			}
 			.nowplayingItem:nth-child(4) {
-				left: 400px;
+				left: 446px;
+			}
+			.nowplayingItem:nth-child(5) {
+				left: 646px;
 			}
 			
 			.updowngroup{

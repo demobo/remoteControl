@@ -11,7 +11,7 @@
    },
    "content_scripts": [
       {
-         "all_frames": true,
+         "all_frames": false,
          "js": ["js/main.js"],
 		 "matches": [ "http://www.pandora.com/*", "http://douban.fm/*", "http://grooveshark.com/*", "http://www.last.fm/*" ],
          "run_at": "document_end"

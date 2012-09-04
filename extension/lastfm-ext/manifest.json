@@ -11,9 +11,9 @@
    },
    "content_scripts": [
       {
-         "all_frames": true,
+         "all_frames": false,
          "js": ["js/main.js"],
-		 "matches": [ "http://www.pandora.com/*", "http://douban.fm/*", "http://grooveshark.com/*", "http://www.last.fm/*" ],
+		 "matches": [ "http://www.last.fm/*" ],
          "run_at": "document_end"
       }
    ],
@@ -26,18 +26,7 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "http://www.pandora.com/*",
-     "http://grooveshark.com/*",
-	 "http://www.last.fm/*",
-	 "http://douban.fm/*",
-	 "chrome://favicon/",
-     "clipboardWrite",
-     "contextMenus",
-     "cookies",
-     "idle",
-     "notifications",
-     "unlimitedStorage",
-	 "tabs"
+	 "http://www.last.fm/*"
    ],
    "version": "0.1.2",
    "manifest_version": 2

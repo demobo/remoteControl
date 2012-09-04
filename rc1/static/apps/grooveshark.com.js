@@ -26,7 +26,7 @@ function demoboInitiation() {
 		}
 	};
 	_this.delay = function() {
-		setTimeout(_this.onChange, 30);
+		setTimeout(_this.onChange, 100);
 	};
 	_this.target.addEventListener('DOMSubtreeModified', _this.delay, false);
 }
@@ -113,7 +113,7 @@ function getNowPlayingData() {
 }
 
 function getImageURL(song) {
-	var a = _.orEqual(a, 90);
+	var a = _.orEqual(a, 200);
 	var b = GS.Models.Song.artPath + a + "_album.png";
 	if (song.CoverArtFilename && song.CoverArtFilename.indexOf("default") == -1)
 		b = GS.Models.Song.artPath + a + "_" + song.CoverArtFilename;

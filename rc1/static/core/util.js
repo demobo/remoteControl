@@ -99,7 +99,7 @@ function showDemobo(){
     div.style.textAlign = "center";
     demoboCoverDiv.appendChild(div);
     var a = document.createElement("a");
-    a.href = "https://chrome.google.com/webstore/search/demobo.com?utm_source=chrome-ntp-icon";
+    a.href = "https://chrome.google.com/webstore/search/demobo.com";
     a.target = "_blank";
     newContent = document.createTextNode('More website remote controls');
     a.appendChild(newContent);
@@ -113,7 +113,7 @@ function showDemobo(){
 	a.style.padding = '10px';
 	a.style.fontFamily = "Helvetica, Arial";
 	a.style.fontWeight = "normal";
-    a.style.textShadow = "0 1px white";
+    a.style.textShadow = "0 1px black";
     div.appendChild(a);
 }
 

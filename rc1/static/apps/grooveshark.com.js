@@ -158,13 +158,16 @@ function choosePinBoard(index) {
 	if (!$.isNumeric(index)) return;
 	index = parseInt(index);
 	var sidebarLink = jQuery(jQuery('.sidebar_link')[index]);
-	if (sidebarLink.hasClass('artist') || sidebarLink.hasClass('playlist')) {
+	if (sidebarLink.hasClass('artist')) {
 		sidebarLink.contextmenu();
 		setTimeout(function() {
 			jQuery('.jj_menu_item_play').click();
 		}, 200);
-	} else {
+	} else if (sidebarLink.hasClass('station')) {
 		sidebarLink.click();
+	} else {
+		// sidebarLink.hasClass('playlist') || sidebarLink.hasClass('song')
+		sidebarLink.click().click();
 	}
 	if (jQuery('.btn span[data-translate-text="POPUP_START_RADIO_TITLE"]').length)
 		jQuery('.btn span[data-translate-text="POPUP_START_RADIO_TITLE"]').click();

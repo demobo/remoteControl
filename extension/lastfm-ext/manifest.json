@@ -13,7 +13,7 @@
       {
          "all_frames": false,
          "js": ["js/main.js"],
-		 "matches": [ "http://www.last.fm/*" ],
+		 "matches": [ "http://www.last.fm/listen/*" ],
          "run_at": "document_end"
       }
    ],
@@ -28,6 +28,6 @@
    "permissions": [
 	 "http://www.last.fm/*"
    ],
-   "version": "0.1.2",
+   "version": "2.0.0",
    "manifest_version": 2
 }

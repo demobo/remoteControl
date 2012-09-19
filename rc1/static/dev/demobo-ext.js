@@ -3,10 +3,6 @@ var rcPort = window.demoboRcPort ? window.demoboRcPort : 1280;
 // this is set through bookmarklet, default port of demobo is 1281
 var demoboPort = window.demoboPort ? window.demoboPort : 1281;
 
-function getCurrentDomain() {                                                                                                                                                                                                         
-  return document.domain ? document.domain : window.location.hostname;
-}
-
 console.log('This is demobo-ext.js loaded from port: ' + rcPort);
 
 function loadMain() {
@@ -14,7 +10,7 @@ function loadMain() {
 	console.log('loading controller from port: ' + rcPort);
 	var s = document.createElement('script');
 
-	var domain = getCurrentDomain();
+	var domain = demobo.getCurrentDomain();
 	var base;
 	if (dev) {
 		// assume localhost:1238 is the test environment, which is set in Google
@@ -23,7 +19,7 @@ function loadMain() {
 	} else {
 		base = 'http://rc1.demobo.com/';
 	}
-  console.log(base);
+	console.log(base);
 	switch (domain) {
 	// when we support more websites, add new cases here;
 	case 'pandora.com':
@@ -31,8 +27,8 @@ function loadMain() {
 	case 'douban.fm':
 	case 'last.fm':
 	case 'play.google.com':
-	case 'grooveshark.com':	
-		s.src = base + 'apps/' + domain + '.js?1sl';
+	case 'grooveshark.com':
+		s.src = base + 'apps/' + domain + '.js?0918';
 		break;
 	default:
 		s.src = base + 'apps/' + 'default-main.js';
@@ -42,26 +38,13 @@ function loadMain() {
 	document.body.appendChild(s);
 }
 
-// util.js should have utility functions for developer. An alternative is to
-// pack these utilities into js_all.js so that we dont needa import util.jss
-function loadUtil() {
-	console.log('DemoboApi loaded, here at loadUtil');
-	console.log('loading util.js from port: ' + demoboPort);
-	var s = document.createElement('script');
-	s.src = dev ? 'http://localhost:' + demoboPort + '/dev/util.js'
-			: 'http://www.demobo.com/util.js?1211';
-	s.setAttribute('class', 'dmb-script');
-	s.onload = loadMain;
-	document.body.appendChild(s);
-}
-
 function loadDemoboApi() {
 	console.log('jquery loaded, here at loadDemoboApi');
 	var s = document.createElement('script');
-	s.src = dev ? 'http://api.demobo.com/js_demobo.js'
-			: 'http://api.demobo.com/js_demobo.js';
+	s.src = dev ? 'http://api.demobo.com/demobo.1.0.min.js'
+			: 'http://api.demobo.com/demobo.1.0.min.js';
 	s.setAttribute('class', 'dmb-script');
-	s.onload = loadUtil;
+	s.onload = loadMain;
 	document.body.appendChild(s);
 }
 
@@ -72,7 +55,7 @@ var dev = true;
 if (typeof demoboLoading == 'undefined') {
 	// toggle demobo
 	if (typeof demoboOn != 'undefined') {
-		setDemoboController();
+		toggleDemobo();
 	} else {
 		demoboLoading = 1;
 		demoboOn = 1;

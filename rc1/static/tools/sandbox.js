@@ -1,9 +1,6 @@
 /* setting */
 if (DEMOBO) {
 	DEMOBO.developer = 'developer@demobo.com';
-	DEMOBO.controller = {
-		"page" : "default"
-	};
 	DEMOBO.maxPlayers = 1;
 	DEMOBO.stayOnBlur = true;
 	var imgID = 0;
@@ -11,7 +8,6 @@ if (DEMOBO) {
 		if (localStorage.getItem("url"))
 			$('#url').val(localStorage.getItem("url"));
 		demobo.addEventListener('input', function(e) {
-			console.log(e.source,e.value);
 			var messageCss = {
 				'font-size' : 50,
 				'color' : '#433',
@@ -27,7 +23,7 @@ if (DEMOBO) {
 		}, false);
 		$('button#set').click(
 				function() {
-					var url = "http://net.demobo.com/server/upload/" + roomID
+					var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID
 							+ ".html?" + Math.random();
 					var c = {
 							page : "default",
@@ -47,7 +43,7 @@ if (DEMOBO) {
 					crossDomain : true,
 					data : {
 						data : data,
-						roomID : roomID
+						roomID : DEMOBO.roomID
 					},
 					dataType : 'json',
 					success : function() {
@@ -61,11 +57,13 @@ if (DEMOBO) {
 			var testfile = 'test.js';
 			if ($('#url').val().split("/").length == 3)
 				testfile = $('#url').val() + "/" + testfile;
+			console.log(testfile);
 			$.getScript(testfile, function(data, textStatus, jqxhr) {
+				console.log(testCases);
 				for ( var i = 0; i < testCases.length; i++) {
 					var test = testCases[i];
-					console.log(test.fn, test.param);
 					$('iframe')[0].contentWindow[test.fn](test.param);
+					console.log(test.param);
 					demobo.callFunction(test.fn, test.param);
 				}
 			});

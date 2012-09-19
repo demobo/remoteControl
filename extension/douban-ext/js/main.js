@@ -6,7 +6,7 @@ if (!document.getElementById('toggle')){
   if (dev){
     toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');window.demoboRcPort = "+devPort+";window.demoboPort = "+devPort+";s.src='http://localhost:"+devPort+"/dev/demobo-ext.js';document.body.appendChild(s);}}())");
   }else{
-    toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js?123'; document.body.appendChild(s);}}())");
+    toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js?0919'; document.body.appendChild(s);}}())");
   }
   toggle.setAttribute('id', 'toggle');
   document.body.appendChild(toggle);
@@ -15,7 +15,6 @@ if (!document.getElementById('toggle')){
     console.log('here at front end: '+message);
    if (message=='toggleDemobo'){
       console.log(message);
-  //    document.getElementById('toggleDemobo').click();
       document.getElementById('toggle').click();
       sendResponse({});
     }
@@ -27,8 +26,8 @@ if (!document.getElementById('toggle')){
   var timeToWait = 0; //in case sometimes you wanna wait for the page to load, you can definitely set it to 0;
   setTimeout(function(){chrome.extension.sendMessage('testing sendMessage');},timeToWait);
   
-  var autoLoad = false; //this tag indicates whether you want the extension to load demobo automatically or after user clicks icon
+  var autoLoad = !localStorage.isDemobo; //this tag indicates whether you want the extension to load demobo automatically or after user clicks icon
   if(autoLoad){
-    toggle.click();
+	  setTimeout(function(){toggle.click();},timeToWait+3000);
   }
 }

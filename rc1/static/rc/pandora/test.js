@@ -26,6 +26,70 @@ var testCases = [
 				title : "华语 MHz"
 			}, {
 				title : "古典 MHz"
+			}, {
+				title : "我的私人兆赫"
+			}, {
+				title : "我的红心兆赫"
+			}, {
+				title : "旅行~songtaste~ MHz",
+			}, {
+				title : "奥迪Q3驾驭简洁 MHz"
+			}, {
+				title : "咖啡 MHz"
+			}, {
+				title : "张悬城市地图 MHz"
+			}, {
+				title : "华语 MHz"
+			}, {
+				title : "古典 MHz"
+			}, {
+				title : "我的私人兆赫"
+			}, {
+				title : "我的红心兆赫"
+			}, {
+				title : "旅行~songtaste~ MHz",
+			},  {
+				title : "奥迪Q3驾驭简洁 MHz"
+			}, {
+				title : "咖啡 MHz"
+			}, {
+				title : "张悬城市地图 MHz"
+			}, {
+				title : "华语 MHz"
+			}, {
+				title : "古典 MHz"
+			}, {
+				title : "我的私人兆赫"
+			}, {
+				title : "我的红心兆赫"
+			}, {
+				title : "旅行~songtaste~ MHz",
+			}, {
+				title : "奥迪Q3驾驭简洁 MHz"
+			}, {
+				title : "咖啡 MHz"
+			}, {
+				title : "张悬城市地图 MHz"
+			}, {
+				title : "华语 MHz"
+			}, {
+				title : "古典 MHz"
+			}, {
+				title : "我的私人兆赫"
+			}, {
+				title : "我的红心兆赫"
+			}, {
+				title : "旅行~songtaste~ MHz",
+			}, {
+				title : "奥迪Q3驾驭简洁 MHz"
+			}, {
+				title : "咖啡 MHz"
+			}, {
+				title : "张悬城市地图 MHz"
+			}, {
+				title : "华语 MHz"
+			}, {
+				title : "古典 MHz"
 			} ]
 		},
 		{

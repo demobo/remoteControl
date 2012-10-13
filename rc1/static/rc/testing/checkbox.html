@@ -30,9 +30,9 @@ h3 {
 }
 
 #container {
-	padding-bottom: 10px;
-	padding-top: 10px;
-	margin: 50px auto 0 auto;
+	padding-bottom: 5px;
+	padding-top: 5px;
+	margin: 20px auto 0 auto;
 	width: 300px;
 	background: #f3f3f3;
 }
@@ -160,31 +160,27 @@ label.info {
 <ul id="checked">
 	<li>
 		<p>
-			<input type="checkbox" id="1" name="1" checked="checked"/>
+			<input type="checkbox" id="1" name="wifi" checked="checked"/>
 			<label class="check" for="1" onclick=""></label>
 			<label class="info" for="1" onclick="">Wi-Fi</label>
 		</p>
 	</li>
-	
 	<li>
 		<p>
-			<input type="checkbox" id="2" name="2" />
+			<input type="checkbox" id="2" name="alarm" />
 			<label class="check" for="2" onclick=""></label>
 			<label class="info" for="2" onclick="">Alarms</label>
 		</p>
 	</li>
-	
-	<li>
-		<p>
-			<input type="checkbox" id="3" name="3" />
-			<label class="check" for="3" onclick=""></label>
-			<label class="info" for="3" onclick="">Warp Drive</label>
-		</p>
-	</li>
-	
-	</ul>
-
-
+</ul>
+<ul>
+	<input type="checkbox" id="3" name="internet" style="display:block;"/>
+	<label for="3" onclick="">Internet</label>
+	<hr>
+	<input id="4" type="radio" name="gender" value="Male"><label for="4" onclick="">Male</label>
+	<input id="5" type="radio" name="gender" value="Female" checked><label for="5" onclick="">Female</label>
+	<input id="6" type="radio" name="gender" value="Unknown"><label for="6" onclick="">Unknown</label>
+</ul>
 </div>
 
 

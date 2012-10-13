@@ -11,7 +11,7 @@
 	// do all the iniations you need here
 	function init() {
 		demobo.setController( {
-			url : "http://rc1.demobo.com/rc/grooveshark?0918"
+			url : "http://rc1.demobo.com/rc/grooveshark?0927"
 		});
 		// your custom demobo input event dispatcher
 		demobo.inputEventDispatcher.addCommands( {
@@ -74,7 +74,7 @@
 	function refreshController() {
 		console.log('refresh');
 		sendStationList();
-		sendNowPlaying();
+		setTimeout(sendNowPlaying,100);
 	}
 
 	/* helpers */
@@ -187,6 +187,6 @@
 
 	function sendStationList() {
 		demobo.callFunction('loadChannelList', getStationList());
-		demobo.callFunction('loadPinBoard', getPinBoard());
+		setTimeout(function(){demobo.callFunction('loadPinBoard', getPinBoard());},200);
 	}
 })();

@@ -68,19 +68,19 @@ if (DEMOBO) {
 				}
 			});
 		});
-		$('button#rc1').click(
-				function() {
-					var url = "http://rc1.demobo.com" + $('#url').val() + "?" + Math.random();
-					var c = {
-							page : "default",
-							url : url,
-							touchEnabled : true
-						};
-					if (!$('#orientation').is(':checked')) c.orientation = "portrait";
-					demobo.setController(c);
-					$('iframe').attr('src', url);
-					$('#controllerUrl').attr('href', url);
-				});
+		$('button#rc1').click(function() {
+			var url = "http://rc1.demobo.com" + $('#url').val() + "?" + Math.random();
+			var c = {
+					page : "default",
+					url : url,
+					touchEnabled : true
+				};
+			if (!$('#orientation').is(':checked')) c.orientation = "portrait";
+			demobo.setController(c);
+			$('iframe').attr('src', url);
+			$('#controllerUrl').attr('href', url);
+		});
+		$('button#connect').click(toggleDemobo);
 		$('input[type=radio]').click(function() {
 			var wh = this.value.split("x");
 			if (!$('#orientation').is(':checked')) wh.reverse();

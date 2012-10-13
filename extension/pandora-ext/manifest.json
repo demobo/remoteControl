@@ -1,6 +1,6 @@
 {
    "name": "Pandora remote control",
-   "description": "Control Pandora music using your smartphone",
+   "description": "Using your smartphone to control music on Pandora, Grooveshark, Last FM ...",
    "page_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
@@ -13,7 +13,7 @@
       {
          "all_frames": true,
          "js": ["js/main.js"],
-		 "matches": [ "http://www.pandora.com/*" ],
+		 "matches": [ "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://grooveshark.com/*" ],
          "run_at": "document_end"
       }
    ],
@@ -26,8 +26,8 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "http://www.pandora.com/*"
+     "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://grooveshark.com/*"
    ],
-   "version": "2.0.0",
+   "version": "2.1.4",
    "manifest_version": 2
 }

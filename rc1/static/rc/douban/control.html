@@ -8,12 +8,18 @@
         </script>
 		<script>
         	$(document).ready(function(){
-				var screenHeight = $(window).height();
-				var screenWidth = $(window).width();
-				$('html').css('zoom',screenHeight/320);
+				non480x320Adjust();
 	            $('#smallButton').bind('click', tabAnimation);
 				$('img').bind('load', flipAlbumArt);
 			});
+			
+			function non480x320Adjust() {
+				var screenHeight = $(window).height();
+				// zoomAdjust for non iphones
+                $('#frame').css('zoom', screenHeight / 320);
+                // jquery mobile input range is not working with zoom
+                $('.volumeControl').css('zoom', 320 / screenHeight);
+			}
 			
             function loadSongInfo(songs){
 				if ($.isArray(songs)) {
@@ -81,11 +87,11 @@
 	                    </div>
 	                    <div id='songName'>
 	                    </div>
-	                    <a id='loveButton' value='love'></a>
-	                    <a id='spamButton' value='spam'></a>
-	                    <a id='nextButton' value='next'></a>
-	                    <a id='playPauseButton' value='playPause'></a>
-	                </div>
+		                    <a id='loveButton' value='love'></a>
+		                    <a id='spamButton' value='spam'></a>
+		                    <a id='nextButton' value='next'></a>
+		                    <a id='playPauseButton' value='playPause'></a>
+		                </div>
 	            </div>
 	            <div id='listTab'>
 	                <div id='smallButton'>

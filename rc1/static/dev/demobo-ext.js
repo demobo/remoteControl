@@ -41,8 +41,8 @@ function loadMain() {
 function loadDemoboApi() {
 	console.log('jquery loaded, here at loadDemoboApi');
 	var s = document.createElement('script');
-	s.src = dev ? 'http://api.demobo.com/demobo.1.0.min.js'
-			: 'http://api.demobo.com/demobo.1.0.min.js';
+//	s.src = 'http://api.demobo.com/demobo.1.0.min.js';
+	s.src = 'http://localhost:8082/demobo.1.0.min.js';
 	s.setAttribute('class', 'dmb-script');
 	s.onload = loadMain;
 	document.body.appendChild(s);

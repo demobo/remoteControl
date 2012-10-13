@@ -11,7 +11,7 @@
 	// do all the iniations you need here
 	function init() {
 		demobo.setController( {
-			url : "http://rc1.demobo.com/rc/lastfm?0918"
+			url : "http://rc1.demobo.com/rc/lastfm?0926"
 		});
 		// your custom demobo input event dispatcher
 		demobo.inputEventDispatcher.addCommands( {
@@ -22,7 +22,6 @@
 			'spamButton' : spam,
 			'volumeSlider' : setVolume,
 			'stationItem' : chooseStation,
-			'nowPlayingTab' : refreshController,
 			'demoboApp' : function() {
 				refreshController();
 				hideDemobo();
@@ -67,7 +66,7 @@
 	function refreshController() {
 		console.log('refresh');
 		sendStationList();
-		sendNowPlaying();
+		setTimeout(sendNowPlaying,100);
 	}
 
 	/* helpers */

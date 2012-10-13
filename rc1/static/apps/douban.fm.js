@@ -11,7 +11,7 @@
 	// do all the iniations you need here
 	function init() {
 		demobo.setController( {
-			url : "http://rc1.demobo.com/rc/douban?0918"
+			url : "http://rc1.demobo.com/rc/douban?0924"
 		});
 		// your custom demobo input event dispatcher
 		demobo.inputEventDispatcher.addCommands( {

@@ -1,4 +1,4 @@
-var dev = false;//change these two lines for loading local files
+var dev = true;//change these two lines for loading local files
 var devPort = 1242;
 
 if (!document.getElementById('toggle')){

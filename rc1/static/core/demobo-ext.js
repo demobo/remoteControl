@@ -19,7 +19,7 @@ function loadMain() {
 	case 'last.fm':
 	case 'play.google.com':
 	case 'grooveshark.com':
-		s.src = base + domain + '.js?0918';
+		s.src = base + domain + '.js?0930';
 		break;
 	default:
 		s.src = base + 'default-main.js';

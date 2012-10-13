@@ -6,7 +6,7 @@ if (!document.getElementById('toggle')){
   if (dev){
     toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');window.demoboRcPort = "+devPort+";window.demoboPort = "+devPort+";s.src='http://localhost:"+devPort+"/dev/demobo-ext.js';document.body.appendChild(s);}}())");
   }else{
-    toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js?0919'; document.body.appendChild(s);}}())");
+    toggle.setAttribute('onclick', "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js?1008'; document.body.appendChild(s);}}())");
   }
   toggle.setAttribute('id', 'toggle');
   document.body.appendChild(toggle);

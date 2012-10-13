@@ -26,8 +26,9 @@ if (!document.getElementById('toggle')){
   var timeToWait = 3000; //in case sometimes you wanna wait for the page to load, you can definitely set it to 0;
   setTimeout(function(){chrome.extension.sendMessage('testing sendMessage');},timeToWait);
   
-  var autoLoad = !localStorage.isDemobo; //this tag indicates whether you want the extension to load demobo automatically or after user clicks icon
-  if(autoLoad){
+  if (!localStorage.isDemobo) localStorage.isAutoLoad = "true";
+  //this tag indicates whether you want the extension to load demobo automatically or after user clicks icon
+  if(localStorage.isAutoLoad){
 	  setTimeout(function(){toggle.click();},timeToWait+1000);
   }
 }

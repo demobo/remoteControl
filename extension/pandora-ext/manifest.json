@@ -1,19 +1,22 @@
 {
-   "name": "Pandora remote control",
-   "description": "Using your smartphone to control music on Pandora, Grooveshark, Last FM ...",
-   "page_action":
+   "name": "Pandora Remote",
+   "description": "Using your smartphone as a Pandora Remote, Grooveshark Remote, Last FM Remote, Google Music Remote, 8 Tracks Remote, Rdio Remote ...",
+   "browser_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
-      "default_title": "de Mobo"
+      "default_title": "de Mobo",
+	  "default_popup": "popup.html"
    },
    "background" : {
     "scripts": ["js/background.js"]
    },
    "content_scripts": [
       {
-         "all_frames": true,
+         "all_frames": false,
          "js": ["js/main.js"],
-		 "matches": [ "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://grooveshark.com/*" ],
+		 "css": ["css/main.css"],
+		 "matches": [ "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://grooveshark.com/*", "http://www.rdio.com/*" ],
+		 "exclude_matches": [ "http://www.pandora.com/radioAdEmbed.html*" ],
          "run_at": "document_end"
       }
    ],
@@ -28,6 +31,6 @@
    "permissions": [
      "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://grooveshark.com/*"
    ],
-   "version": "2.1.4",
+   "version": "3.1.0",
    "manifest_version": 2
 }

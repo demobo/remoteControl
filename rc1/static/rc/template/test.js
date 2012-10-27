@@ -1,6 +1,6 @@
 var testCases = [
 		{
-			fn : "",
-			param : {
+			functionName : "",
+			data : {
 			}
 		} ];

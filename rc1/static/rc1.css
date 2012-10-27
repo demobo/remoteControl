@@ -1,0 +1,216 @@
+body {
+	width: 480px;
+	height: 320px;
+	overflow: hidden;
+	background: #666;
+}
+div {
+	text-align: center;
+	font-family : Helvetica, Arial;
+	font-weight : normal;
+	transition:opacity 2s ease-in;
+	-webkit-transition:opacity 2s ease-in;
+}
+a {
+	text-decoration: none;
+}
+.title {
+	text-align : center;
+    width : 90%;
+    margin : auto;
+    padding : 3px 0px;
+    color : black;
+	font-size : 15px;
+	opacity: 0;
+}
+.social {
+	opacity: 0;
+	height: 30px;
+	width: 100%;
+	overflow: hidden;
+}
+
+.fb-like {
+	margin-right: 30px;
+	top: -4px;
+}
+
+.social-item {
+}
+#qr {
+	position: absolute;
+	top: 43px;
+	left: 168px;
+	z-index: -1;
+}
+#qrImg {
+	width: 160px;
+	height: 160px;
+	border-radius: 30px;
+	opacity: 0;
+}
+#logo {
+	opacity: 1;
+}
+#logo img {
+	width: 180px;
+	height: 170px;
+}
+.download {
+	opacity: 0;
+}
+.download img {
+	padding: 4px;
+	width: 120px;
+	height: 40px;
+}
+/* checkbox */
+#demoboCover #settings {
+	position: relative;
+	width: 130px;
+	margin: auto;
+	font-size: 14px;
+}
+#demoboCover ul#checked {
+	list-style: none;
+	position: relative;
+	margin: 0px;
+}
+
+#demoboCover ul#checked li p {
+	display: block;
+	margin-bottom: 20px;
+	background: -moz-linear-gradient(19% 75% 90deg,#000, #666); 
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#666));
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #555555;
+	width: 120px;
+	position: relative;
+	height: 32px;
+}
+
+#demoboCover ul#checked p:before {
+	content: "ON";
+	padding-left: 0px;
+	line-height: 32px;
+	color: #fff;
+	font-size: 14px;
+	text-shadow: #093B5C 0px -1px 1px;
+
+}
+
+#demoboCover ul#checked p:after {
+	content: "OFF";
+	padding-left: 35px;
+	line-height: 32px;
+	color: #fff;
+	font-size: 14px;
+	text-shadow: #093B5C 0px -1px 1px;
+}
+
+#demoboCover .check { 
+	display: block;
+	width: 60px;
+	height: 30px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	background: -moz-linear-gradient(19% 75% 90deg,#FFFFFF, #A1A1A1);
+	background: #fff -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#A1A1A1));
+	border: 1px solid #e5e5e5;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#demoboCover input[type=checkbox] {
+	display: none;
+}
+
+@-webkit-keyframes labelON {
+	0% {
+		top: 0px;
+    	left: 0px;
+	}
+	
+	100% { 
+		top: 0px;
+    	left: 38px;
+	}
+}
+
+#demoboCover input[type=checkbox]:checked + label.check {
+	top: 0px;
+	left: 58px;
+	-webkit-animation-name: labelON; 
+  	-webkit-animation-duration: .2s; 
+  	-webkit-animation-iteration-count: 1;
+  	-webkit-animation-timing-function: ease-in;
+  	-webkit-box-shadow: #244766 -1px 0px 3px;
+}
+
+@-webkit-keyframes labelOFF {
+	0% {
+		top: 0px;
+    	left: 38px;
+	}
+	
+	100% { 
+		top: 0px;
+    	left: 0px;
+	}
+}
+
+#demoboCover input[type=checkbox] + label.check {
+	top: 0px;
+	left: 0px;
+	-webkit-animation-name: labelOFF; 
+  	-webkit-animation-duration: .2s; 
+  	-webkit-animation-iteration-count: 1;
+  	-webkit-animation-timing-function: ease-in;
+  	-webkit-box-shadow: #244766 1px 0px 3px;
+	cursor: pointer;
+}
+
+#demoboCover label.info {
+	cursor: pointer;
+	margin-left: -4px;
+}
+
+/* checkbox done */
+
+.try {
+	text-align : center;
+    width : 90%;
+    margin : auto;
+    padding : 10px 0px;
+    color : black;
+	font-size : 23px;
+}
+.try div {
+	padding: 3px;
+}
+.try a {
+	color : black;
+	font-size: 17px;
+	text-decoration: underline;
+}
+.arrow {
+	width: 48px;
+	height: 48px;
+	position: absolute;
+	right: 0px;
+	top: 136px;
+	opacity: 0.4;
+	background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAABHNCSVQICAgIfAhkiAAAAAlwSFlzAAAFMQAABTEBt+0oUgAAABl0RVh0U29mdHdhcmUAd3d3Lmlua3NjYXBlLm9yZ5vuPBoAAAbiSURBVGiB7VlvaBTpGf+9f3ZmV80mq9FdjeKiMWg+GAoWBCUgQSShNH7RevGoqaj3wUsItKWInhDlUNh+MLZSLHiwHwrHgUR6iumHlip4wYJo6inXgK3RnrprTDf7b3ZnZ973Ps0yOzu7+TdFDu4HD/PO7Mz7/H7P87zvO/MukVLi+wz6vgksFT8IeN/gXnXU19fXLKXsp5TqnPM/xePxd171XQ+eZSAQCPx1aGgodvjw4REhxDdHjhz5iVd914NnAkql0nZKKVpaWtDW1tZsGMaX/f39I4ODg6pXPtzgmYBCoYDZ2VlkMhn09PSgt7cXpVJpMJVK3T9x4kSbV36c8EyApmlIp9PQdR2zs7OIRCI4fvw4QqFQh6ZpD48dO/YLr3zZQbxayPbu3Sv7+/vR1NRUcT0YDGJiYgL379+HqqqfSylPXLt2LeOJU3g7BpDP56HreoVNT09jy5YtOHjwIBhjhxhjj06ePPljr/x6JsAwDFcBuq4jlUqhUCjgwIEDiEajm4QQ9wYGBn5FCCFL9etZCe3cuVP29vZi/fr1de8LhULIZDIYHx8HgL+oqvrzWCyWXKxfz0uoWCxWWaFQKNvr169hmiZ6enrQ2Ni4T9f1fw4NDe1drF/PMtDR0SG7urrQ2tpa9z67vw0bNuDFixd49uyZpJTGstnsmatXr5YW4rdCwKVLl2J+v//jGzdu+IvFIgghZRNCwDAMmKYJwzDK50IImKYJKSU6OzuxdevWeZG3EAqFwBjDo0ePAOAfPp/vgwsXLvx7UQIGBgYy+/btW3Hr1i3oug4AoJSWBUgpyyTsR6u9du1arF69ek7Szj4URUE4HMbk5CRyuVyaUvrRxYsXP1+wgM7OTrl//35kMply5AHAPlnUuj4fOIk725FIBKlUCm/fvgWl9DPDMAZjsVhuQQK6urpQKpWqiDpJL1SEG2m344oVK+D3+/HmzRsQQr5hjB06d+7cxLwF7Nq1C0KIKvJ2qyXA3q4V5VolaD9njKG5uRnpdBqGYRQppb8eHh7+3bwE7Nixw5V4vWtO8rWIu42beuOqqakJhBAYhgFK6Z8VRTl66tSpiu+MKgEdHR2uZAkhoJTWFFIL9Ui7nUspsWrVKgghoGkakskkpJSIRqOglH7LOf/w9OnTf68poL293ZW4W3uucTAXecs451AUBbquo1AoYGpqCoVCoeKeYDCI9vZ2BAIBQQj59OzZs2ddBbS1tVWRtR+tLDizUUuAszwopRBClN+TDMNANptFNpuFlLJiunaec86xe/duEELAOf/pmTNnvqz6Jk6n09A0DZzzKmOMlY1SCsYYCCGu0RVClM1a6CzSpmlW/C6lLPdj78+JYDBo+TFM0/wP4PJRL6WEpmlVRDnn5baViXrjwK1UhBDlLFhk7cTdRFjXN2/ejHA4DF3X/8s5/3B4ePhrVwFWVC24lZCbAOuZWrUuhCiXndV2EndDIBDAtm3bAACapt1QFOXo+fPn/2f9XiXAcmJX70beKWKu6FvE660rzn5aWloQiUSQy+U0xtgvL1++/AcnX9cMWJGxZ2AuAfYMuEXf6scedbsPe8lwztHa2grTNJFKpb5mjB26cuXKE7cMVQmwE3GbTmuNA7cMWAPUgj0DtaK+cuVKhMNhpFIpSQi52tDQMDQyMlJ0I18lYPny5WhsbMSrV6+qRNUrJecrxHzKxkmcEIJoNAopJRKJxDufz3c8Ho+P1iLuKmD79u3vgsHgKmsRIYSUB7Xbe46UsjxFCiEQDAZRKpUqZhz7M7VmrEAggHXr1iGRSMA0zbt+v78vHo9/Oxf5KgEvX778zczMzG/z+XzF3gghpPwh4zxaZpomuru74ff7q2YU55iyi1izZg0YY3j+/HmJMfbp9evXz8laU5ILPPuk3LRpk+zu7oaqqhULmWmaNS0SiSCZTCKbzU4xxvpGR0e/Wqhfz3anrcWOMVYuH3vk7fD7/fD5fJicnASl9AvO+bHR0dFFbXZ5KsD+ruQsG+taQ0MDkskkZmZmcoqiDN68efOzpfj1VIAlwhl5q0yXLVuGp0+fAsCEqqoHb9++PblUv57sCxFCiCXAbcbinCOfz+Phw4dCCPF7ADvGxsaWTB7wMAPO8pFSolQqwefz4cmTJ8hms0lFUY7euXPnllc+Ae8EEPurtUVe13U8ePAAlNK/McY+uHv37qK3EGvB0zGgqipyuRyEEJiamkIikShSSj8ZHx+PeeXHCa8EyI0bNyIYDCKRSFi7bP/inP/s3r17NbdEvIBnm7uMscT09DQeP35cYoz9EcCP/t/kAQ9X4j179nQB2KKq6hdjY2MznnQ6D3gm4H3he/9P/Q8C3je+A2jJl6pKTujOAAAAAElFTkSuQmCC);
+}
+#smalllogo {
+	opacity: 0.4;
+	position: absolute;
+	right: 50px;
+	top: 120px;
+}
+#smalllogo img {
+	width: 70px;
+	height: 70px;
+}

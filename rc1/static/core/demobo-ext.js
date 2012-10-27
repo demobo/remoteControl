@@ -1,5 +1,4 @@
 function loadMain() {
-	console.log('util loaded, here at loadMain');
 	var s = document.createElement('script');
 
 	var domain = demobo.getCurrentDomain();
@@ -13,6 +12,8 @@ function loadMain() {
 	}
 	switch (domain) {
 	// when we support more websites, add new cases here;
+	case '8tracks.com':
+	case 'rdio.com':
 	case 'pandora.com':
 	case 'facebook.com':
 	case 'douban.fm':
@@ -22,7 +23,7 @@ function loadMain() {
 		s.src = base + domain + '.js?0930';
 		break;
 	default:
-		s.src = base + 'default-main.js';
+		s.src = base + 'pandora.com.js';
 		break;
 	}
 	s.setAttribute('class', 'dmb-script');
@@ -30,7 +31,6 @@ function loadMain() {
 }
 
 function loadDemoboApi() {
-	console.log('jquery loaded, here at loadDemoboApi');
 	var s = document.createElement('script');
 	s.src = dev ? 'http://api.demobo.com/demobo.1.0.min.js'
 			: 'http://api.demobo.com/demobo.1.0.min.js';

@@ -1,7 +1,7 @@
 var testCases = [
 		{
-			fn : "addVideoItems",
-			param : [{
+			functionName : "addVideoItems",
+			data : [{
 			    vid: 'EvquyiBRHCk',
 			    title: 'Super Creepy Justin Bieber \'Boyfriend\' Parody',
 			    viewCount: '222,055'
@@ -15,8 +15,8 @@ var testCases = [
 			    viewCount: '5,616,678'
 			}]
 		}, {
-			fn : "addCommentItems",
-			param : [{
+			functionName : "addCommentItems",
+			data : [{
 			    cid: 'EvquyiBRHCk',
 			    title: 'Super Creepy Justin Bieber \'Boyfriend\' Parody'
 			}, {

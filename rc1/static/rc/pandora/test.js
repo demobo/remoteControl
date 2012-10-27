@@ -1,15 +1,15 @@
 var testCases = [
 		{
-			fn : "loadSongInfo",
-			param : {
+			functionName : "loadSongInfo",
+			data : {
 				image : "http://cont-sv5-3.pandora.com/images/public/amz/7/2/0/1/886976911027_500W_500H.jpg",
 				title : "Older",
 				artist : "Band Of Horses",
 				album : "Infinite Arms - 2012/08/09"
 			}
 		}, {
-			fn : "loadChannelList",
-			param : [ {
+			functionName : "loadChannelList",
+			data : [ {
 				title : "station 1 station 1station 1 station 1"
 			}, {
 				title : "station 1 station 1station 1 station 1"
@@ -92,6 +92,6 @@ var testCases = [
 			} ]
 		},
 		{
-			fn : "setCurrentChannel",
-			param : 1
+			functionName : "setCurrentChannel",
+			data : 1
 		}];

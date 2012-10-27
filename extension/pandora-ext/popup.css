@@ -1,0 +1,126 @@
+html {
+    background: white;
+    border: none;
+}
+
+body {
+    width: 742px;
+    height: 382px;
+    color: white;
+    margin: 0;
+    padding: 0px;
+    -webkit-user-select: none;
+	background-disable: white url(iphone2.png) no-repeat;
+}
+
+iframe {
+	display: block;
+    width: 480px;
+    height: 320px;
+    background: white;
+    position: absolute;
+    top: 24px;
+    left: 122px;
+	border-radius: 0px;
+    border-width: 7px;
+	border-style: solid;
+}
+
+.white iframe {
+	border-color: #ddd;
+}
+
+.black iframe {
+	border-color: #222;
+}
+
+.white .phone{
+	background-color: #fff;
+	border-color: #888;
+}
+
+.black .phone {
+	background-color: #000;
+	border-color: #888;
+}
+.phone {
+    position: absolute;
+    background-clip: padding-box;
+    width: 722px;
+    height: 362px;
+    border-radius: 58px;
+    border-width: 10px;
+	border-style: solid;
+    opacity: 0.9;
+}
+
+.speaker1 {
+    position: absolute;
+    background: black;
+    background-clip: padding-box;
+    width: 10px;
+    height: 65px;
+    border-radius: 8px;
+    border: grey 4px solid;
+    top: 145px;
+    left: 46px;
+}
+
+.speaker2 {
+    position: absolute;
+    background: black;
+    background-clip: padding-box;
+    width: 8px;
+    height: 35px;
+    border-radius: 6px;
+    border: grey 2px solid;
+    top: 162px;
+    left: 17px;
+}
+
+.camera {
+    position: absolute;
+    background: black;
+    background-clip: padding-box;
+    width: 3px;
+    height: 3px;
+    border-radius: 6px;
+    border: grey 5px solid;
+    top: 240px;
+    left: 49px;
+}
+
+.homebutton {
+    position: absolute;
+    background-color: inherit;
+    background-clip: padding-box;
+    width: 65px;
+    height: 65px;
+    border-radius: 60px;
+	border-color: inherit;
+    border-width: 2px;
+	border-style: solid;
+    top: 147px;
+    right: 23px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+.homebutton:hover {
+	opacity: 0.7;
+}
+.homebutton:active {
+	opacity: 1;
+}
+.homebuttonIcon {
+    position: relative;
+    background-color: inherit;
+    background-clip: padding-box;
+    width: 21px;
+    height: 21px;
+    border-radius: 8px;
+	border-color: inherit;
+    border-width: 2px;
+	border-style: solid;
+    margin: auto;
+    top: 20px;
+}

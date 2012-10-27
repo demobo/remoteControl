@@ -1,7 +1,7 @@
 var testCases = [
 		{
-			fn : "loadSongInfo",
-			param : [{
+			functionName : "loadSongInfo",
+			data : [{
 				image : "http://cont-sv5-3.pandora.com/images/public/amz/7/2/0/1/886976911027_500W_500H.jpg",
 				title : "Older",
 				artist : "Band Of Horses",
@@ -13,8 +13,8 @@ var testCases = [
 				album : "Arms"
 			}]
 		}, {
-			fn : "loadChannelList",
-			param : [ {
+			functionName : "loadChannelList",
+			data : [ {
 				title : "station 1"
 			}, {
 				title : "station 1"
@@ -28,8 +28,8 @@ var testCases = [
 				title : "station 1 MHz"
 			} ]
 		}, {
-			fn : "loadPinBoard",
-			param : [ {
+			functionName : "loadPinBoard",
+			data : [ {
 				title : "我的私人兆赫"
 			}, {
 				title : "我的红心兆赫"

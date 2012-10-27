@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <!--Start of Zopim Live Chat Script-->
+        <script type="text/javascript">
+        	var ENABLE_ZOPIM = ENABLE_GOOGLEPLUS = ENABLE_FACEBOOK = ENABLE_TWITTER = true;
+			if (location.search == "?rdio.com") {
+				ENABLE_ZOPIM = ENABLE_GOOGLEPLUS = ENABLE_FACEBOOK = ENABLE_TWITTER = true;
+			}
+        	if (ENABLE_ZOPIM) {
+				window.$zopim ||
+	            (function(d, s){
+	                var z = $zopim = function(c){
+	                    z._.push(c)
+	                }, $ = z.s = d.createElement(s), e = d.getElementsByTagName(s)[0];
+	                z.set = function(o){
+	                    z.set._.push(o)
+	                };
+	                z._ = [];
+	                z.set._ = [];
+	                $.async = !0;
+	                $.setAttribute('charset', 'utf-8');
+	                $.src = '//cdn.zopim.com/?yUlZMlln6qDfObYzYoZiApbspV3KB8vW';
+	                z.t = +new Date;
+	                $.type = 'text/javascript';
+	                e.parentNode.insertBefore($, e)
+	            })(document, 'script');	
+			}
+        </script>
+        <!--End of Zopim Live Chat Script-->
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-31831598-1']);
+		  _gaq.push(['_setDomainName', 'demobo.com']);
+		  _gaq.push(['_trackPageview']);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="rc1.css" />
+    </head>
+    <body>
+    	<div id="fb-root"></div>
+		<script>
+			if (ENABLE_FACEBOOK) {
+				(function(d, s, id){
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) 
+						return;
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=229610010412672";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
+			}
+		</script>
+		<div id="social" class="social">			
+			<!-- Place this tag where you want the +1 button to render. -->
+			<div class="g-plusone social-item" data-size="medium" data-href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih"></div>
+			
+			<!-- Place this tag after the last +1 button tag. -->
+			<script type="text/javascript">
+				if (ENABLE_GOOGLEPLUS) {
+					(function(){
+						var po = document.createElement('script');
+						po.type = 'text/javascript';
+						po.async = true;
+						po.src = 'https://apis.google.com/js/plusone.js';
+						var s = document.getElementsByTagName('script')[0];
+						s.parentNode.insertBefore(po, s);
+					})();
+				}
+			</script>
+			<div class="fb-like social-item" data-href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+			
+			<a href="https://twitter.com/share" class="twitter-share-button social-item" data-url="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" data-text="Check out this app" data-via="de_mobo">Tweet</a>
+			<script>
+				if (ENABLE_TWITTER) {
+					!function(d, s, id){
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (!d.getElementById(id)) {
+							js = d.createElement(s);
+							js.id = id;
+							js.src = "//platform.twitter.com/widgets.js";
+							fjs.parentNode.insertBefore(js, fjs);
+						}
+					}(document, "script", "twitter-wjs");
+				}			
+			</script>
+		</div>
+		<div id="logo">
+			<img src="demobomusic.png"/>
+		</div>
+		<div id="qr">
+			<img id="qrImg"/>
+		</div>
+    	<div id="title" class="title">Download de Mobo and scan QR code to connect.</div>
+    	<div id="download" class="download">
+    		<a href="http://itunes.apple.com/us/app/de-mobo/id519605488?ls=1&mt=8" target="_blank">
+	    		<img src="http://www.demobo.com/app_store.png">
+	    	</a>
+			<a href="http://play.google.com/store/apps/details?id=com.demobo.mobile" target="_blank">
+	    		<img src="http://www.demobo.com/badge_android.png">
+	    	</a>
+		</div>
+		<script>
+			setTimeout(function(){
+				document.getElementById('social').style.opacity = 1;
+				document.getElementById('title').style.opacity = 1;
+				document.getElementById('download').style.opacity = 1;
+				document.getElementsByClassName('zopim meshim_components_FloatingButton')[0].style.opacity = 1;
+			},1000);
+			document.body.onclick = function() {
+				$zopim.livechat.window.hide();
+			}
+			$zopim(function() {
+				$zopim.livechat.bubble.setTitle('Need help?');
+				$zopim.livechat.bubble.setText('Click here for livechat!');
+				$zopim.livechat.bubble.hide();
+				document.getElementsByClassName('zopim meshim_components_FloatingButton')[0].style.opacity = 0;
+			});
+			window.addEventListener("message", function(evt){
+				if (evt.data.qrUrl) {
+					var qrImg = document.getElementById('qrImg');
+					qrImg.src = evt.data.qrUrl;
+					qrImg.onload = function() {
+						document.getElementById('logo').style.opacity = 0;
+						qrImg.style.opacity = 1;
+					}
+				}	
+			}, false);
+		</script>
+    </body>
+</html>

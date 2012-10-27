@@ -3,6 +3,7 @@
 		DEMOBO.developer = 'developer@demobo.com';
 		DEMOBO.maxPlayers = 1;
 		DEMOBO.stayOnBlur = true;
+		DEMOBO.autoConnect = false;
 		DEMOBO.init = init;
 		demobo.start();
 	}

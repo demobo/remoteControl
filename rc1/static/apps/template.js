@@ -61,6 +61,7 @@ function setDevice(data) {
 		DEMOBO.developer = 'developer@demobo.com';
 		DEMOBO.maxPlayers = 1;
 		DEMOBO.stayOnBlur = true;
+		DEMOBO.autoConnect = false;
 		DEMOBO.init = function() {
 			setDemoboController();
 			demobo.addEventListener('input', function(e) {

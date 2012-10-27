@@ -2,22 +2,13 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
-        </script>
-        <script>
-            $(document).bind("mobileinit", function(event){
-                $.extend($.mobile.zoom, {
-                    locked: true,
-                    enabled: false
-                });
-            });
-        </script>
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
-        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js">
-        </script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
         <script>
             $(document).ready(function(){
 				non480x320Adjust();
@@ -54,17 +45,19 @@
 					setSongAt(2,prevPrevSong);
 				}
 				if ($('.nowplayingItem:nth-child(3) .title').text()!=song.title) {
-					$('.nowplayingItem:nth-child(4) img').one('load', function(){
-						if ($('.nowplayingItem').length==5) $('.nowplayingItem:nth-child(1)').remove();
-					});
-					setTimeout(function(){
-						if ($('.nowplayingItem').length==5) $('.nowplayingItem:nth-child(1)').remove();
-					}, 1000);
 					setSongAt(4,song);
+					var noImageCase = setTimeout(function(){
+						if ($('.nowplayingItem:nth-child(4) .title').text()) $('.nowplayingItem:nth-child(1)').remove();
+					}, 1000);
+					$('.nowplayingItem:nth-child(4) img').one('load', function(){
+						if ($('.nowplayingItem:nth-child(4) .title').text()) $('.nowplayingItem:nth-child(1)').remove();
+						clearTimeout(noImageCase);
+					});
+				} else {
+					setSongAt(3,song);
 				}
             }
 			function setSongAt(n, song) {
-				if ($('.nowplayingItem').length<n) makeQueue(n);
 				var item = $('.nowplayingItem:nth-child('+n+')');
 				item.removeClass("empty");
 				item.find('.albumImage img').attr('src', song.image);
@@ -82,7 +75,7 @@
 	                clone.find('.album').html("");
 					$('.nowplayingItem').parent().append(clone);
 				}
-				$('.nowplayingItem:gt('+(n-1)+')').remove();
+//				$('.nowplayingItem:gt('+(n-1)+')').remove();
 			}
            
             function loadChannelList(items){
@@ -121,7 +114,7 @@
                     <a id="playButton" onclick="" class="playButton button" value="play"></a>
                     <a id="pauseButton" onclick="" class="pauseButton button" value="pause"></a>
                     <a id="nextButton" onclick="" class="nextButton smallButton" value="next"></a>
-	                <div class="volumeControl volumeBackground">
+	                <div class="volumeControl">
 	                    <div class="volumeButton" id="volumeButton">
 	                    </div>
 	                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
@@ -157,6 +150,7 @@
                 overflow: hidden;
                 font-family: "arial", Helvetica Neue, helvetica, sans-serif;
                 background: black;
+				-webkit-user-select: none;
             }
             input.ui-slider-input {
                 display: none !important;
@@ -174,7 +168,7 @@
                 z-index: 1111;
             }
 			.ui-select .ui-btn select {
-                font-size: 50px;
+                font-size: 20px;
             }
             #main {
                 overflow: hidden;
@@ -194,41 +188,82 @@
             }
             .button {
                 display: inline-block;
-				margin: 10px 5px;
-                width: 50px;
-                height: 50px;
+				margin: 9px 10px;
+                width: 47px;
+                height: 47px;
 				background-size: 150px;
+				vertical-align: middle;
             }
 			.smallButton {
                 display: inline-block;
-				margin: 10px 5px;
-                width: 40px;
-                height: 40px;
+				margin: 0px 10px;
+                width: 35px;
+                height: 35px;
 				background-size: 120px;
+				vertical-align: middle;
             }
-			.volumePosition {
-                padding: 14px 0 0 4px;
-                float: left;
-                width: 19px;
-                height: 15px;
+			
+			/* volume control */
+			.volumeButton {
+                width: 24px;
+                height: 20px;
+                background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAPCAMAAAAxmgQeAAACB1BMVEX6/P9OTk7v9PpOTk75/P9OTk5OTk5OTk5OTk5ZWltOTk5aWltOTk7v9fr4+/5OTk5ZWlrr8PVOTk5OTk5OTk5OTk5OTk61trjj5+lOTk7v9Pju8fSys7Xu8fVbXFzs7/P2+f1OTk7y9Pf4+v2Dg4SGh4n19/nV2t9fYGBOTk7z9vlOTk7o6+709/piY2Pz9/pzdHRzdHTs8vl8foDNz9LDyM5OTk7y9fj2+fy5u73r8vlOTk7j5+qeoqaws7XW2+FOTk5OTk7a3eHw8/ft7vHP0tXt8vZOTk7l6eyhpamtsLPW299OTk72+PvZ3OCfoqXs8PSvsrVvcXLw9Ph2eXvBxsrGy9DZ3N/JzNDR1tu8xMuLjI1OTk50dnnh5+3Ex8thYmOIi41OTk5OTk5OTk5OTk6Hi47T3edhYWHKz9Lg5erg5OjU2d1SUlLN1NvZ3eJOTk5OTk5OTk5OTk5iY2S6wsri5uxkZWfN1dzj5+xeX2BOTk5OTk7n6u1OTk5OTk6Xm6DV4exZWltOTk5OTk7JztLc4udsbnBOTk5OTk7c3uJOTk5OTk5vcHJVVVZOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk7g6/X1+f3e6fTu9fzw9vzw9frw9fz0+f3v9vzw9/3s8/vq8vrx9vvl7vf5/P/3+/74+/7i7Pbn8Pjz9/y6FwR6AAAAmXRSTlMAAABHAAIEARHHLMcOAAAFx/V0AxIUHQW0MvK8Qya3sP1MQuExG1rPd0WaNQqRfLsOYPqSxtBcONtC+WPhsazccCRHnw1V9H/krq/Zdc5HqLOXjPqUw8eGMLvpZRhg5b6PmWoiCDS9+lLL6KG/gdbZhFMgOHPjy1LS5Yt2LkIZSrf8u0YJZsqIfUJHDDGAgTYLN15EBh4WFQ/B2R2uAAABDUlEQVR4Xi3I05rDQBgA0H8yjWutbdu2bdu2bRtpuzYecrP5ei4PWGXa0CBBCFnL3cNTT4N3kSNDiicTBQZ9fAbb6WShtvYNjSQCpVIZE/v1+OzsR/k79Pb1uzEInDJcXE1PFguPKa9pH19NSYAKlkx3Dy8iHofUhIVHREZFG2D/91XC47j4hMSk5JTUNEh/+5GwOCs7Jzcvv6CQg+L7dwmLS8vKKyqrqrUc1NbVf/9jsbGpuaVV09beAZ1d2u4eQRDUWD4wODQ8MjrGACkfn5icMpvVmDLMzM7NLyxSoFAoVMsrq2vrG9Tm1vbO7p4cASGiDw6Pjk90xOnZ+YWeFk9yecVdk4TqxnhLIvQHt7dNP6kdfqYAAAAASUVORK5CYII=) no-repeat;
+                background-size: 24px 20px;
+                display: inline-block;
+                top: -5px;
+				left: 5px;
+				position: relative;
             }
             .volumeControl {
-                width: 270px;
-                height: 29px;
-                margin-left: -3px;
-                margin-top: -3px;
-            }
-            .volumeBackground {
-                width: 220px;
-				height: 100%;
+                width: 210px;
+				height: 40px;
 				-webkit-border-radius: 28px;
 				display: inline-block;
 				vertical-align: middle;
-				margin: 15px;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJIAAAAdCAMAAAB2Q8WxAAABm1BMVEUdJjf///8dJjf///////8dJjf///////////+VmqP///8dJjcdJjf///8dJjcdJjcyO0sdJjf///9haXYdJjf///////8dJjd6go7///8dJjf///8dJjf////l5+v///////////89RlcdJjf///+mrbj///////9WYHAgKjn///8dJjf////////k5+zf4uja3uQdJjeqsr/JztjFy9UdJje9xM/Bx9IdJjemr79/ip2YorSNma0dJjcsNkkdJjd3hZ0iLT1caoNygJkdJjdpeJNod5IdJjdldI8dJjcdJjcdJjddbYodJjdbbIlYaYYdJjcvO1JUZoRWZ4VUZYMdJjc7SWIpNUpKW3lPYYAdJjdKXHpOYH9OYH9MXn5KXHwdJjdHWnodJjc9TmxBVHVBVXYdJjc6TGkdJjc+UnQ+UXM7Tm89UXM8UHI5TGwdJjc1R2U2SGY3SmkjL0MlMkcoNk0rOVEsOlMuPVcwQFwxQl4yQ2AzRGE0RmM1RmQgKz4iLUE3SWggKjw4S2ogKz05TW07TnA7T3EmM0mu+DdsAAAAiXRSTlMAAAEBAwQFBgcICAkKCgsNDg8PEBMUFRcZGRwcHR0eHyAhISEiIyMkJSYnKCkqLS4vMDIyMzQ0NDo6OzxBQ0NGSEtLS01OT1FRUlNUVFZWV1lZWVlaW1tcXFxdXV1eX2BhYmJjZmZnZ2hoaWpqa2tra2tra2tra2tra2tra2tra2tra2tra2trazOBwTcAAAE2SURBVHhezdflUsNQEIbhL1AIroWiUlwS3N29uGuKUzhJBXWXyyaZMGfoFZx9r+CZ/bPzgYfkhj7PhiGiOU9PTTzsJImD8qaM56u7wDsT0Wvg9nLAGU5KGDYu/Exs971R/0gu7e2BiW8lhZNcRyGdUWg//Y+UpIW+GI3WYm3SxIfOqDQYaZFKjCdGJl+ZRVr+YYSalgGnEaREOi0AWl4YqbqAsWtapBFAe6RFWgROdFqkLZP0TY60R4y0AEx+0iKNAu1+WqRuIOeGlOi8HohYJUWaUQBUBSkdqTUXZvOESONKDMxSj8mIdmuzJVgVnxERHTaXO2wSKg9IiLxt1TIfTVmbBESzdRUyOAlyp1f0b+tQ8x2wSLy0xqH1HTEa3/ZSf5PqTuRrlxeXWVSqCklxF2ZEAzbpF29jkWcVdU2nAAAAAElFTkSuQmCC) no-repeat;
+            	background-size: 210px 40px;
+				margin: 0px 10px;
+			}
+			
+			.volumeControl input.ui-slider-input {
+                display: none !important;
             }
-            div.ui-slider {
-                top: 0px;
-            }
+			
+			.volumeControl div.ui-slider {
+				width: 145px;
+				height: 5px;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH8AAAADCAYAAAC6XdCpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAFFJREFUOE9j8PPzYyAXKxt5dwHxTyD+P4rpHgavgGEOjDry44/siAdZCrT8g4Zl2H8d+/hRPABhoG0Xt3ogIz8H6IBXo5E/IIn/PDDcbSiJfAAYJEZI5hknWwAAAABJRU5ErkJggg%3D%3D) no-repeat;
+				margin: 0px 0px 0px 10px;
+				padding: 15px 0px;
+				border: none;
+				top: 2px;
+				left: 0px;
+				position: relative;
+				background-position: -15px 15px;
+				background-size: 180px 5px;
+			}
+			.volumeControl div.ui-slider-bg.ui-btn-active {
+		    	background-image: -webkit-linear-gradient(#2B3F5E,#0D1E3F);
+				border: none;
+		    }
+			
+			.volumeControl .ui-controlgroup a.ui-slider-handle, a.ui-slider-handle {
+				position: absolute;
+				z-index: 1;
+				top: 50%;
+				width: 20px;
+				height: 20px;
+				margin-top: -10px;
+				margin-left: -10px;
+				outline: 0;
+			}
+			.volumeControl .ui-shadow {
+				-moz-box-shadow: none;
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+			/* end of volume control */
+			
             .nowplayingItem .albumInfo {
                 position: absolute;
 				top: 0px;
@@ -265,9 +300,6 @@
 				opacity: 0.2;
 				position: absolute;
             }
-			.nowplayingItem.empty {
-				
-			}
 			.nowplayingItem:nth-child(1) {
 				left: -95px;
 			}
@@ -284,9 +316,11 @@
 			.nowplayingItem:nth-child(5) {
 				left: 545px;
 			}
-			
+			.nowplayingItem.empty {
+				opacity: 0.1;
+			}
 			.updowngroup{
-				margin: 85px 25px;
+				margin: 85px 20px;
 				display: none;
 			}
 			
@@ -395,16 +429,6 @@
             
             .nextButton:active {
                 background-position-x: -80px;
-            }
-            
-            .volumeButton {
-                width: 24px;
-                height: 20px;
-                background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAAPCAMAAAAxmgQeAAACB1BMVEX6/P9OTk7v9PpOTk75/P9OTk5OTk5OTk5OTk5ZWltOTk5aWltOTk7v9fr4+/5OTk5ZWlrr8PVOTk5OTk5OTk5OTk5OTk61trjj5+lOTk7v9Pju8fSys7Xu8fVbXFzs7/P2+f1OTk7y9Pf4+v2Dg4SGh4n19/nV2t9fYGBOTk7z9vlOTk7o6+709/piY2Pz9/pzdHRzdHTs8vl8foDNz9LDyM5OTk7y9fj2+fy5u73r8vlOTk7j5+qeoqaws7XW2+FOTk5OTk7a3eHw8/ft7vHP0tXt8vZOTk7l6eyhpamtsLPW299OTk72+PvZ3OCfoqXs8PSvsrVvcXLw9Ph2eXvBxsrGy9DZ3N/JzNDR1tu8xMuLjI1OTk50dnnh5+3Ex8thYmOIi41OTk5OTk5OTk5OTk6Hi47T3edhYWHKz9Lg5erg5OjU2d1SUlLN1NvZ3eJOTk5OTk5OTk5OTk5iY2S6wsri5uxkZWfN1dzj5+xeX2BOTk5OTk7n6u1OTk5OTk6Xm6DV4exZWltOTk5OTk7JztLc4udsbnBOTk5OTk7c3uJOTk5OTk5vcHJVVVZOTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk5OTk7g6/X1+f3e6fTu9fzw9vzw9frw9fz0+f3v9vzw9/3s8/vq8vrx9vvl7vf5/P/3+/74+/7i7Pbn8Pjz9/y6FwR6AAAAmXRSTlMAAABHAAIEARHHLMcOAAAFx/V0AxIUHQW0MvK8Qya3sP1MQuExG1rPd0WaNQqRfLsOYPqSxtBcONtC+WPhsazccCRHnw1V9H/krq/Zdc5HqLOXjPqUw8eGMLvpZRhg5b6PmWoiCDS9+lLL6KG/gdbZhFMgOHPjy1LS5Yt2LkIZSrf8u0YJZsqIfUJHDDGAgTYLN15EBh4WFQ/B2R2uAAABDUlEQVR4Xi3I05rDQBgA0H8yjWutbdu2bdu2bRtpuzYecrP5ei4PWGXa0CBBCFnL3cNTT4N3kSNDiicTBQZ9fAbb6WShtvYNjSQCpVIZE/v1+OzsR/k79Pb1uzEInDJcXE1PFguPKa9pH19NSYAKlkx3Dy8iHofUhIVHREZFG2D/91XC47j4hMSk5JTUNEh/+5GwOCs7Jzcvv6CQg+L7dwmLS8vKKyqrqrUc1NbVf/9jsbGpuaVV09beAZ1d2u4eQRDUWD4wODQ8MjrGACkfn5icMpvVmDLMzM7NLyxSoFAoVMsrq2vrG9Tm1vbO7p4cASGiDw6Pjk90xOnZ+YWeFk9yecVdk4TqxnhLIvQHt7dNP6kdfqYAAAAASUVORK5CYII=) no-repeat;
-                background-size: 24px 20px;
-                display: inline-block;
-                top: 2px;
-                position: relative;
             }
             
         </style>

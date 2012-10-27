@@ -3,23 +3,29 @@
     <head>
         <!--Start of Zopim Live Chat Script-->
         <script type="text/javascript">
-            window.$zopim ||
-            (function(d, s){
-                var z = $zopim = function(c){
-                    z._.push(c)
-                }, $ = z.s = d.createElement(s), e = d.getElementsByTagName(s)[0];
-                z.set = function(o){
-                    z.set._.push(o)
-                };
-                z._ = [];
-                z.set._ = [];
-                $.async = !0;
-                $.setAttribute('charset', 'utf-8');
-                $.src = '//cdn.zopim.com/?yUlZMlln6qDfObYzYoZiApbspV3KB8vW';
-                z.t = +new Date;
-                $.type = 'text/javascript';
-                e.parentNode.insertBefore($, e)
-            })(document, 'script');
+        	var ENABLE_ZOPIM = ENABLE_GOOGLEPLUS = ENABLE_FACEBOOK = ENABLE_TWITTER = true;
+			if (location.search == "?rdio.com") {
+				ENABLE_ZOPIM = ENABLE_GOOGLEPLUS = ENABLE_FACEBOOK = ENABLE_TWITTER = true;
+			}
+        	if (ENABLE_ZOPIM) {
+				window.$zopim ||
+	            (function(d, s){
+	                var z = $zopim = function(c){
+	                    z._.push(c)
+	                }, $ = z.s = d.createElement(s), e = d.getElementsByTagName(s)[0];
+	                z.set = function(o){
+	                    z.set._.push(o)
+	                };
+	                z._ = [];
+	                z.set._ = [];
+	                $.async = !0;
+	                $.setAttribute('charset', 'utf-8');
+	                $.src = '//cdn.zopim.com/?yUlZMlln6qDfObYzYoZiApbspV3KB8vW';
+	                z.t = +new Date;
+	                $.type = 'text/javascript';
+	                e.parentNode.insertBefore($, e)
+	            })(document, 'script');	
+			}
         </script>
         <!--End of Zopim Live Chat Script-->
 		<script type="text/javascript">
@@ -38,27 +44,107 @@
 				text-align: center;
 				font-family : Helvetica, Arial;
 				font-weight : normal;
-				text-shadow : 0 1px white;
+			}
+			a {
+				text-decoration: none;
 			}
 			.title {
 				text-align : center;
                 width : 90%;
                 margin : auto;
-                padding-top : 30px;
+                padding : 10px 0px;
                 color : black;
-				font-size : 24px;
-			}
-			img {
-				padding: 7px;
+				font-size : 15px;
 			}
 			.try div {
 				padding: 3px;
 			}
+			.try a {
+				color: grey;
+				font-size: 13px;
+				text-decoration: underline;
+			}
+			.social {
+			}
+			
+			.fb-like {
+				margin-right: 30px;
+				top: -4px;
+			}
+			
+			.social-item {
+			}
+			#logo {
+				opacity: 1;
+				transition:opacity 2s ease-in;
+				-webkit-transition:opacity 2s ease-in;
+				margin-top: 51px;
+			}
+			#logo img {
+				width: 203px;
+				height: 200px;
+			}
+			.download img {
+				padding: 4px;
+				width: 120px;
+				height: 40px;
+			}
 		</style>
     </head>
     <body>
-    	<div class="title">First time users, download "de Mobo" on your smartphone and click "Create Connection" to scan the QR code above. Otherwise just click the browser icon on the phone app to connect.</div>
-    	<div>
+    	<div id="fb-root"></div>
+		<script>
+			if (ENABLE_FACEBOOK) {
+				(function(d, s, id){
+					var js, fjs = d.getElementsByTagName(s)[0];
+					if (d.getElementById(id)) 
+						return;
+					js = d.createElement(s);
+					js.id = id;
+					js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=229610010412672";
+					fjs.parentNode.insertBefore(js, fjs);
+				}(document, 'script', 'facebook-jssdk'));
+			}
+		</script>
+		<div id="logo">
+			<img src="demobomusic.png"/>
+		</div>	
+		<div class="social">			
+			<!-- Place this tag where you want the +1 button to render. -->
+			<div class="g-plusone social-item" data-size="medium" data-href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih"></div>
+			
+			<!-- Place this tag after the last +1 button tag. -->
+			<script type="text/javascript">
+				if (ENABLE_GOOGLEPLUS) {
+					(function(){
+						var po = document.createElement('script');
+						po.type = 'text/javascript';
+						po.async = true;
+						po.src = 'https://apis.google.com/js/plusone.js';
+						var s = document.getElementsByTagName('script')[0];
+						s.parentNode.insertBefore(po, s);
+					})();
+				}
+			</script>
+			<div class="fb-like social-item" data-href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+			
+			<a href="https://twitter.com/share" class="twitter-share-button social-item" data-url="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" data-text="Check out this app" data-via="de_mobo">Tweet</a>
+			<script>
+				if (ENABLE_TWITTER) {
+					!function(d, s, id){
+						var js, fjs = d.getElementsByTagName(s)[0];
+						if (!d.getElementById(id)) {
+							js = d.createElement(s);
+							js.id = id;
+							js.src = "//platform.twitter.com/widgets.js";
+							fjs.parentNode.insertBefore(js, fjs);
+						}
+					}(document, "script", "twitter-wjs");
+				}			
+			</script>
+		</div>
+    	<div class="title">First, download "de Mobo" on your smartphone. On the phone, tap "Create Connection" to scan the QR code above for the first time connection or just tap the browser icon to reconnect. Use WIFI for better experience.</div>
+    	<div class="download">
     		<a href="http://itunes.apple.com/us/app/de-mobo/id519605488?ls=1&mt=8" target="_blank">
 	    		<img src="http://www.demobo.com/app_store.png">
 	    	</a>
@@ -68,11 +154,15 @@
 		</div>
 		<div class="try">
 			Try de Mobo on <br>
+			<div><a href="http://pandora.com/" target="_blank">Pandora</a></div>
 			<div><a href="http://grooveshark.com/" target="_blank">Grooveshark</a></div>
 			<div><a href="http://www.last.fm/listen/" target="_blank">LAST.FM</a></div>
-			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote-contr/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Google Docs</a></div>
-			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote-contr/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Slideshare</a></div>
-			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote-contr/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Scribd</a></div>
+			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Google Docs</a></div>
+			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Slideshare</a></div>
+			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Scribd</a></div>
 		</div>
+		<script>
+			setTimeout(function(){document.getElementById('logo').style.opacity = 0;},3000);
+		</script>
     </body>
 </html>

@@ -3,7 +3,7 @@ function getCurrentDomain(){
 }
 function setController(){
   DEMOBO.controller = {page: "default", url: "http://www.demobo.com/app/chrome_ext.html", touchEnabled: true};
-  d$.demobo.setController(DEMOBO.controller);  
+  demobo.setController(DEMOBO.controller);  
 }
 
 function setDevice(data) {
@@ -35,41 +35,41 @@ function sendToPhone(string) { //string is the text the user selected on the pag
     if (device) 
       var origin = device.latitude + ',' + device.longitude;
     else {
-      d$.demobo.getDeviceInfo("", "setDevice");
+      demobo.getDeviceInfo("", "setDevice");
       origin = "";
     }
     data.text = string;
     data.link = 'http://maps.google.com/maps?saddr=' + origin + '&daddr=' + encodeURIComponent(string);
     data.action = "Driving Direction";
   }
-  d$.demobo.callFunction('popup',data);
+  demobo.callFunction('popup',data);
   console.log(string);
   return 'successful';
 }
 
 function sendSelection(string){
-  djQuery('body').trigger({
+  $('body').trigger({
     'type' : 'demobo',
     'string' : string
   });
 }
 
 function connect(){
-   djQuery('body').trigger({
+   $('body').trigger({
     'type' : 'demobo',
     'cmd' : 'connect',
   });
 }
 
 function disconnect(){
-   djQuery('body').trigger({
+   $('body').trigger({
     'type' : 'demobo',
     'cmd' : 'disconnect',
   });
 }
 
 function init(){
-   djQuery('body').trigger({
+   $('body').trigger({
     'type' : 'demobo',
     'cmd' : 'initt',
   });
@@ -78,10 +78,10 @@ function init(){
 function demoboDispatcher(e){
   if (e.cmd == 'disconnect'){
     console.log('disconnect');
-    d$.demobo.disconnect();
+    demobo.disconnect();
   }else if (e.cmd == 'connect') {
     console.log('connect');
-    d$.demobo.connect();
+    demobo.connect();
     setController();
   } else if ( e.string ) {
     sendToPhone( msg.string );
@@ -95,13 +95,13 @@ function handleRemoteInput(evt) {
   if (typeof(evt.value) == 'object') {
     handleDnd(evt);
   } else {
-    var target = d$('#'+evt.source)[0]?d$('#'+evt.source):d$('.'+evt.source);
+    var target = $('#'+evt.source)[0]?$('#'+evt.source):$('.'+evt.source);
     var tagName = (target.first().prop('tagName')||"").toLowerCase();
     var type = (target.first().prop('type')||"").toLowerCase();
     if (tagName == 'input' && type == 'text') 
     { 
       target.first().prop('value',evt.value).change().focus().keyup();
-      //d$('.item.paddedItem').first().click();
+      //$('.item.paddedItem').first().click();
     } else {
       target.click();
     }
@@ -113,17 +113,17 @@ function handleDnd(e) {
   var curleft= parseInt(e.value.left)*dpiAdjust;
   var prevTop = parseInt(e.value.prevTop)*dpiAdjust;
   var prevLeft= parseInt(e.value.prevLeft)*dpiAdjust;
-  var target = d$(e.value.html);
-  d$('#iphoneDockScreen').append(target);
+  var target = $(e.value.html);
+  $('#iphoneDockScreen').append(target);
   target.css({top:curtop, left:curleft, width: target.width()*dpiAdjust, height: target.height()*dpiAdjust});
   var deltaTop = 10*(curtop-prevTop);
   var deltaLeft = 10*(curleft-prevLeft);
   
-  var focus = d$("*:focus");
+  var focus = $("*:focus");
   if (focus[0]) {
     target.animate({top: "+="+deltaTop+"px", left: "+="+deltaLeft+"px"}, 500);
-    var top = focus.position().top - d$('#iphoneDockScreen').position().top + 50;
-    var left = focus.position().left - d$('#iphoneDockScreen').position().left + 450;
+    var top = focus.position().top - $('#iphoneDockScreen').position().top + 50;
+    var left = focus.position().left - $('#iphoneDockScreen').position().left + 450;
     target.animate({top: top, left: left}, 1000, function(){
       target.fadeOut('slow', function() {
         focus.text(target.children('img').prop('src')).change();
@@ -168,7 +168,7 @@ function onMenuClick(e) {
       if (device) 
         var origin = device.latitude + ',' + device.longitude;
       else {
-        d$.demobo.getDeviceInfo("", "setDevice");
+        demobo.getDeviceInfo("", "setDevice");
         origin = "";
       }
       data.text = e.selectionText;
@@ -181,7 +181,7 @@ function onMenuClick(e) {
     data.link = e.pageUrl;
     data.action = "Launch Page";
   }
-  if (data.text) d$.demobo.callFunction('popup',data);
+  if (data.text) demobo.callFunction('popup',data);
   return true;
 }
 
@@ -195,26 +195,27 @@ if (chrome && chrome.contextMenus){
 //***************华丽的分割线***************************************************
 
 //main logic
-d$(document).ready(function(){
+$(document).ready(function(){
   console.log('fuck');
   if (DEMOBO) {
     //developer authentication, now hardcoded
     DEMOBO.developer = 'developer@demobo.com';
     DEMOBO.maxPlayers = 1;
+    DEMOBO.autoConnect = false;
     DEMOBO.init = function(){
       setController();
-      d$.demobo.addEventListener('input', function(e){
+      demobo.addEventListener('input', function(e){
         console.log(e);
         var evt = JSON.stringify({source: e.source, value: e.value});
         handleRemoteInput(evt);
       });
-      d$.demobo.addEventListener('connected', function(e){
+      demobo.addEventListener('connected', function(e){
         console.log('connected');
         hideDemobo();
         setController();
       });
       showDemobo();
-      d$.demobo.getDeviceInfo('','setDevice');
+      demobo.getDeviceInfo('','setDevice');
     }
   }
   

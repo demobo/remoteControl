@@ -32,7 +32,8 @@ if (DEMOBO) {
 						};
 					if (!$('#orientation').is(':checked')) c.orientation = "portrait";
 					demobo.setController(c);
-					$('iframe').attr('src', localStorage.getItem("url"));
+//					$('iframe').attr('src', localStorage.getItem("url"));
+					$('iframe').attr('src', url);
 					$('#controllerUrl').attr('href', url);
 				});
 		$('button#upload').click(function() {
@@ -62,9 +63,10 @@ if (DEMOBO) {
 				console.log(testCases);
 				for ( var i = 0; i < testCases.length; i++) {
 					var test = testCases[i];
-					$('iframe')[0].contentWindow[test.fn](test.param);
-					console.log(test.param);
-					demobo.callFunction(test.fn, test.param);
+//					$('iframe')[0].contentWindow[test.functionName](test.data);
+					$('iframe')[0].contentWindow.postMessage(test,'*');
+					console.log(test.data);
+					demobo.callFunction(test.functionName, test.data);
 				}
 			});
 		});
@@ -93,4 +95,102 @@ if (DEMOBO) {
 		$($('input[type=radio]')[0]).click();
 		$('button#set').click();
 	};
+}
+
+window.showDemobo = function() {
+	var demoboCover = document.getElementById('demoboCover');
+	if (demoboCover) {
+		demoboCover.style.display='block';
+		demobo.showQR();
+		return;
+	}
+	var id = 'demoboCover';
+	var demoboCover = document.createElement('div');
+	demoboCover.setAttribute('id', 'demoboCover');
+	document.getElementById('demoboBody').appendChild(demoboCover);
+
+	var demoboCoverDiv = document.createElement("div");
+	demoboCoverDiv.setAttribute('id', 'demoboCoverDiv');
+	demoboCover.appendChild(demoboCoverDiv);
+
+	var div = document.createElement("div");
+	div.setAttribute('id', 'demoboClose');
+	demoboCoverDiv.appendChild(div);
+	var a = document.createElement("a");
+	a.setAttribute("onclick", "hideDemobo();");
+	newContent = document.createTextNode('✕');
+	a.appendChild(newContent);
+	div.appendChild(a);
+	
+	if (demobo.getState()!=1) {
+		var div = document.createElement("div");
+		div.appendChild(document.createTextNode('Failed to connect with de Mobo:'));
+		demoboCoverDiv.appendChild(div);
+		var div = document.createElement("div");
+		div.appendChild(document.createTextNode('Unable to connect to the server. If you have a firewall, it may be blocking the connection.'));
+		demoboCoverDiv.appendChild(div);
+		demoboCover.style.opacity = 1;
+	} else {
+		var div = document.createElement("div");
+		div.setAttribute('id','settings');
+		var label = document.createElement("label");
+		label.setAttribute("class","info");
+		label.setAttribute("for","alwaysOnCheckbox");
+		label.setAttribute("onclick","");
+		label.appendChild(document.createTextNode('AUTO CONNECT'));
+		div.appendChild(label);
+		var ul = document.createElement("ul");
+		ul.setAttribute("id","checked");
+		div.appendChild(ul);
+		var li = document.createElement("li");
+		ul.appendChild(li);
+		var p = document.createElement("p");
+		li.appendChild(p);
+		var alwaysOn = document.createElement("input");
+		alwaysOn.id = "alwaysOnCheckbox";
+		alwaysOn.type = "checkbox";
+		alwaysOn.name = "alwaysOnCheckbox";
+		p.appendChild(alwaysOn);
+		var label = document.createElement("label");
+		label.setAttribute("class","check");
+		label.setAttribute("for","alwaysOnCheckbox");
+		label.setAttribute("onclick","");
+		p.appendChild(label);
+		
+		demoboCoverDiv.appendChild(div);
+		alwaysOn.checked = localStorage.isAutoLoad;
+		var OnChangeCheckbox = function() {
+			localStorage.isAutoLoad = alwaysOn.checked?"true":"";
+		};
+		alwaysOn.addEventListener ("click", OnChangeCheckbox, false);
+		
+		demobo.renderQR('demoboCoverDiv', 1);
+		var temp = document.querySelector('#demoboCoverDiv > img');
+		
+		var iframe = document.createElement("iframe");
+		iframe.setAttribute('id','demoboHelpPage');
+		iframe.src = helpUrl;	
+		demoboCoverDiv.appendChild(iframe);
+		iframe.onload = function() {
+			demoboCover.style.opacity = 1;
+		};
+	}
+}
+
+window.hideDemobo = function() {
+	var demoboCover = document.getElementById('demoboCover');
+	if (demoboCover) {
+		demoboCover.style.display='none';
+		demobo.hideQR();
+	}
+}
+
+window.toggleDemobo = function() {
+	var demoboCover = document.getElementById('demoboCover');
+	if (demoboCover && demoboCover.style.display!='none') {
+		hideDemobo();
+	} else {
+		showDemobo();
+		demobo.setController();
+	}
 }

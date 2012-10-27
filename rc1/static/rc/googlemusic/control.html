@@ -2,22 +2,13 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <title></title>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js">
-        </script>
-        <script>
-            $(document).bind("mobileinit", function(event){
-                $.extend($.mobile.zoom, {
-                    locked: true,
-                    enabled: false
-                });
-            });
-        </script>
-        <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
-        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js">
-        </script>
+		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
         <script>
             $(document).ready(function(){
                 var screenHeight = $(window).height();
@@ -130,6 +121,7 @@
                 overflow: hidden;
                 font-family: "arial", Helvetica Neue, helvetica, sans-serif;
                 background: black;
+				-webkit-user-select: none;
             }
             
             input.ui-slider-input {

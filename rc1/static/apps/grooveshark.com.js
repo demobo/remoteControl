@@ -3,6 +3,7 @@
 		DEMOBO.developer = 'developer@demobo.com';
 		DEMOBO.maxPlayers = 1;
 		DEMOBO.stayOnBlur = true;
+		DEMOBO.autoConnect = false;
 		DEMOBO.init = init;
 		demobo.start();
 	}
@@ -11,7 +12,7 @@
 	// do all the iniations you need here
 	function init() {
 		demobo.setController( {
-			url : "http://rc1.demobo.com/rc/grooveshark?0927"
+			url : "http://rc1.demobo.com/rc/grooveshark?1020"
 		});
 		// your custom demobo input event dispatcher
 		demobo.inputEventDispatcher.addCommands( {

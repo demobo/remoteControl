@@ -1,48 +1,78 @@
-var activeTabId = null;
-var controllers = {};
-var qrUrl = null;
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-	if (changeInfo.status == 'complete') {
-		pingTab(tab.id);
-	}
-});
-chrome.tabs.onCreated.addListener(function (tab) {
-	pingTab(tab.id);
-});
-chrome.tabs.onRemoved.addListener(function(tabid, removeInfo) {
-	delete controllers[tabid];
-	activeTabId = parseInt(Object.keys(controllers)[0]);
+var extensionData = {};
+extensionData.activeTabId = null;
+extensionData.controllers = {};
+extensionData.qrUrl = localStorage.getItem('qrUrl');
+extensionData.autoConnect = localStorage.getItem('autoConnect')=='true';
+extensionData.details = chrome.app.getDetails();
+
+setIcon();
+chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
+	delete extensionData.controllers[tabId];
+	if (extensionData.activeTabId==tabId) setActiveTabIdFromQueue();
 });
 chrome.browserAction.onClicked.addListener(function(tab){
 	chrome.tabs.sendMessage(tab.id,{action:'toggleDemobo'});
 });
 chrome.extension.onMessage.addListener(onMessage);
 
+function setIcon() {
+	if (extensionData.autoConnect) {
+		chrome.browserAction.setIcon({
+			path: 'images/icon_blue_19.png'
+		});
+	} else {
+		chrome.browserAction.setIcon({
+			path: 'images/icon_bw_19.png'
+		});
+	}
+}
 function onMessage(message, sender, sendResponse) {
-	if (message.action == 'FromFrontground') {
+	switch (message.action) {
+	case 'FromFrontground':
 		if (message.detail) {
 			if (message.detail.type == 'register') {
 				if (sender.tab.id && message.detail.data) {
 					setActiveController(sender.tab.id, message.detail.data);
 				}
-			} else if (message.detail.type == 'setQRUrl') {
-				qrUrl = message.detail.data;
+				if (extensionData.activeTabId && extensionData.autoConnect) chrome.tabs.sendMessage(extensionData.activeTabId,{action:'connectDemobo'});
+			} else if (message.detail.type == 'setData') {
+				setData(message.detail.data.key, message.detail.data.value);
 			}
 		}
-	} else if (message.action == 'FromPopup') {
-		sendResponse({tabId: activeTabId, controller: getActiveController(), qrUrl: qrUrl});
+		break;
+	case 'getData':
+		sendResponse(extensionData);
+		break;
+	case 'setData':
+		if (message.detail && message.detail.key) {
+			setData(message.detail.key, message.detail.value);
+		}
+		break;
+	default:
 	}
 };
-function pingTab(tabId) {
-	chrome.tabs.sendMessage(tabId,{action:'ping', extesionDetail: chrome.app.getDetails()}, function(response) {
-		chrome.browserAction.enable(tabId);
-//		chrome.browserAction.setPopup({tabId: tabId, popup: ""});
-	});
+function setData(key, value){
+	extensionData[key] = value;
+	if (key=='qrUrl' || key=='autoConnect') localStorage.setItem(key,value);
+	setIcon();
+}
+function setActiveTabIdFromQueue() {
+	var nextTabId = parseInt(Object.keys(extensionData.controllers)[0]);
+	if (nextTabId) {
+		chrome.tabs.get(nextTabId, function(tab) { 
+			if (!tab) { 
+				delete extensionData.controllers[nextTabId];
+				setActiveTabIdFromQueue();
+			} else {
+				extensionData.activeTabId = nextTabId;
+			}
+		});
+	} else extensionData.activeTabId = null;
 }
 function setActiveController(tabId, controller) {
-	activeTabId = tabId;
-	controllers[tabId] = controller;
+	extensionData.activeTabId = tabId;
+	extensionData.controllers[tabId] = controller;
 }
 function getActiveController() {
-	return controllers[activeTabId];
+	return extensionData.controllers[extensionData.activeTabId];
 }

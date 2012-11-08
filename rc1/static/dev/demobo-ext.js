@@ -8,8 +8,6 @@
 	var appVersion = "1024";
 	var curDomain = document.domain.split('.').reverse();
 	curDomain = curDomain[1] + '.' + curDomain[0];
-	
-	var helpUrl = "http://localhost:1242/help.html?" + curDomain + "#" + demoboBody.detail.version;
 	var appUrl = (dev ? 'http://localhost:' + rcPort + '/apps/' : 'http://rc1.demobo.com/apps/') + curDomain + '.js?' + appVersion;
 	var apiUrl = "http://localhost:8082/demobo_1_2.js";
 	
@@ -28,15 +26,8 @@
 			demoboBody.injectScript(apiUrl,function() {demoboBody.injectScript(appUrl);});
 		}
 	}
-	
-	window.showDemobo = function() {
-
-	}
-	
-	window.hideDemobo = function() {
-
-	}
-	
+	window.showDemobo = function() {}
+	window.hideDemobo = function() {}
 	window.toggleDemobo = function() {
 		demobo.setController();
 	}

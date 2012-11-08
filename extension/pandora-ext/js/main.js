@@ -1,5 +1,5 @@
 (function() {
-	var dev = true;
+	var dev = false;
 	var injectedExtScript;
 	if (dev) {
 		injectedExtScript = function() {
@@ -35,6 +35,9 @@
 		});
 		demoboBody.addEventListener("connectDemobo", function(e) {
 			demobo.connect();
+		});
+		demoboBody.addEventListener("disconnectDemobo", function(e) {
+			demobo.disconnect();
 		});
 		demoboBody.addEventListener("FromPopup", function(e) {
 			if (e.detail && e.detail.type) {
@@ -74,6 +77,8 @@
 			sendResponse({active: true});
 		} else if (message.action == 'connectDemobo') {
 			sendToFrontPage("connectDemobo");
+		} else if (message.action == 'disconnectDemobo') {
+			sendToFrontPage("disconnectDemobo");
 		}
 	}
 	function sendToFrontPage(evtName, evtDetail) {

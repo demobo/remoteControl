@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
+    	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    	<script type="text/javascript" src="http://api.demobo.com/demobo.1.2.min.js"></script>
         <!--Start of Zopim Live Chat Script-->
         <script type="text/javascript">
+        	var promoUrl = "https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih";
         	var ENABLE_ZOPIM = ENABLE_GOOGLEPLUS = ENABLE_FACEBOOK = ENABLE_TWITTER = true;
-			if (location.search == "?rdio.com") {
-				ENABLE_ZOPIM = ENABLE_GOOGLEPLUS = ENABLE_FACEBOOK = ENABLE_TWITTER = true;
+			if (location.search == "?vimeo") {
+				promoUrl = "https://chrome.google.com/webstore/detail/vimeo-remote/pkikdceobndeifbhnpaalalnkkmnklfg";
 			}
         	if (ENABLE_ZOPIM) {
 				window.$zopim ||
@@ -39,10 +42,9 @@
 		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
 		  })();
 		</script>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<link rel="stylesheet" href="rc1.css" />
     </head>
-    <body>
+    <body style="opacity: 0;">
     	<div id="fb-root"></div>
 		<script>
 			if (ENABLE_FACEBOOK) {
@@ -59,7 +61,7 @@
 		</script>
 		<div id="social" class="social">			
 			<!-- Place this tag where you want the +1 button to render. -->
-			<div class="g-plusone social-item" data-size="medium" data-href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih"></div>
+			<div class="g-plusone social-item" data-size="medium"></div>
 			
 			<!-- Place this tag after the last +1 button tag. -->
 			<script type="text/javascript">
@@ -74,9 +76,9 @@
 					})();
 				}
 			</script>
-			<div class="fb-like social-item" data-href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" data-layout="button_count" data-width="450" data-show-faces="true"></div>
+			<div class="fb-like social-item" data-layout="button_count" data-width="450" data-show-faces="true"></div>
 			
-			<a href="https://twitter.com/share" class="twitter-share-button social-item" data-url="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" data-text="Check out this app" data-via="de_mobo">Tweet</a>
+			<a href="https://twitter.com/share" class="twitter-share-button social-item" data-text="Check out this app" data-via="de_mobo">Tweet</a>
 			<script>
 				if (ENABLE_TWITTER) {
 					!function(d, s, id){
@@ -97,7 +99,10 @@
 		<div id="qr">
 			<img id="qrImg"/>
 		</div>
-    	<div id="title" class="title">Download de Mobo and scan QR code to connect.</div>
+		<div id="version" class="version">Known issue: First time connection keeps on loading and needs restart. de Mobo Version 2.26+ fixes this.</div>
+		<div class="step1 triangle-border">1. Turn on this</div>
+    	<div class="step2 triangle-border">2. Download de Mobo phone app</div>
+		<div class="step3 triangle-border right">3. Scan QR code</div>
     	<div id="download" class="download">
     		<a href="http://itunes.apple.com/us/app/de-mobo/id519605488?ls=1&mt=8" target="_blank">
 	    		<img src="http://www.demobo.com/app_store.png">
@@ -106,32 +111,67 @@
 	    		<img src="http://www.demobo.com/badge_android.png">
 	    	</a>
 		</div>
+		<div id="settings">
+			<label class="info" for="phoneConnection" onclick="">Phone Connection</label>
+			<ul id="checked">
+				<li>
+					<p>
+						<input type="checkbox" id="phoneConnection" name="phoneConnection">
+						<label class="check" for="phoneConnection" onclick=""></label>
+					</p>
+				</li>
+			</ul>
+		</div>
 		<script>
-			setTimeout(function(){
-				document.getElementById('social').style.opacity = 1;
-				document.getElementById('title').style.opacity = 1;
-				document.getElementById('download').style.opacity = 1;
-				document.getElementsByClassName('zopim meshim_components_FloatingButton')[0].style.opacity = 1;
-			},1000);
-			document.body.onclick = function() {
-				$zopim.livechat.window.hide();
-			}
+			$('.g-plusone').attr('data-href', promoUrl);
+			$('.fb-like').attr('data-href', promoUrl);
+			$('.twitter-share-button').attr('data-url', promoUrl);
+			var extensionData={};
+			var qrUrl;
 			$zopim(function() {
 				$zopim.livechat.bubble.setTitle('Need help?');
 				$zopim.livechat.bubble.setText('Click here for livechat!');
 				$zopim.livechat.bubble.hide();
-				document.getElementsByClassName('zopim meshim_components_FloatingButton')[0].style.opacity = 0;
 			});
-			window.addEventListener("message", function(evt){
-				if (evt.data.qrUrl) {
+			DEMOBO.autoConnect = false;
+			DEMOBO.init = function(){
+				qrUrl = demobo.getQRUrl();
+				if (qrUrl) {
 					var qrImg = document.getElementById('qrImg');
-					qrImg.src = evt.data.qrUrl;
-					qrImg.onload = function() {
-						document.getElementById('logo').style.opacity = 0;
-						qrImg.style.opacity = 1;
+					qrImg.src = qrUrl;
+					qrImg.onload = function(){
+						$('body').css('opacity',1);
 					}
+				}
+			};
+			demobo.start();
+			$(document).ready(function(){
+				document.body.onclick = function() {
+					$zopim.livechat.window.hide();
+				};
+				window.addEventListener("message", function(evt){
+					if (evt.data.action == 'syncData') {
+						extensionData = evt.data.detail;
+						$("#phoneConnection").attr('checked', extensionData.autoConnect);
+						toggleConnectPage();
+//						var version = 'version: '+extensionData.details.version;
+//						if (parseFloat(extensionData.details.version)<3.1) version += '. Please update.';
+//						$("#version").text(version);
+					}
+				}, false);
+				$("#phoneConnection").change(function(){
+					extensionData.autoConnect = ($(this).attr('checked')=='checked');
+					if (parent) parent.postMessage({action: 'phoneConnection', detail: extensionData.autoConnect},'*');
+					toggleConnectPage();			
+				});
+			});
+			function toggleConnectPage() {
+				if (extensionData.autoConnect) {
+					$('body').addClass('connected');
+				} else {
+					$('body').removeClass('connected');	
 				}	
-			}, false);
+			}
 		</script>
     </body>
 </html>

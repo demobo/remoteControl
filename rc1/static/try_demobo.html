@@ -3,16 +3,39 @@
     <head>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<link rel="stylesheet" href="rc1.css" />
+		<script>
+			$(document).ready(function(){
+				if (location.search == "?vimeo") {
+					$('#step1').append('<a href="http://vimeo.com/couchmode/" target="_blank">Vimeo Couch Mode</a>');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Pandora</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Grooveshark</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">LAST.FM</a>, ');
+				} else {
+					$('#step1').append('<a href="http://pandora.com/" target="_blank">Pandora</a>, ');
+					$('#step1').append('<a href="http://grooveshark.com/" target="_blank">Grooveshark</a>, ');
+					$('#step1').append('<a href="http://www.last.fm/listen/" target="_blank">LAST.FM</a>');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/vimeo-remote/pkikdceobndeifbhnpaalalnkkmnklfg" target="_blank">Vimeo Couch Mode</a>, ');
+				}
+				$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Google Docs</a>, ');
+				$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Slideshare</a>, ');
+				$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Scribd</a>');
+			});
+		</script>
     </head>
-    <body>
-		<div class="try">
-			Try it on <br>
-			<div><a href="http://pandora.com/" target="_blank">Pandora</a></div>
-			<div><a href="http://grooveshark.com/" target="_blank">Grooveshark</a></div>
-			<div><a href="http://www.last.fm/listen/" target="_blank">LAST.FM</a></div>
-			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Google Docs</a></div>
-			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Slideshare</a></div>
-			<div><a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Scribd</a></div>
+    <body class="tutorial">
+    	<div>Step One:</div>
+		<div id="step1">
+			Try it on
+		</div>
+		<br>
+		<div>Step Two:</div>
+		<div>Come back here to control your website</div>
+		<br>
+		<div>Step Three:</div>
+		<div>Click home button to see instruction on how to connect with your phone.</div>
+		<br>
+		<div id="otherProducts">
+			de Mobo also works on<br>
 		</div>
 		<div class="arrow"></div>
 		<div id="smalllogo">

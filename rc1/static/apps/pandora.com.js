@@ -24,7 +24,7 @@
 		title: 				'.playerBarSong',
 		artist: 			'.playerBarArtist',
 		album: 				'.playerBarAlbum',
-		coverart: 			'.playerBarArt',
+		coverart:			'.stationSlides:visible .art[src], .playerBarArt',
 		songTrigger: 		'#playerBar .nowplaying',
 		stationTrigger: 	'.middlecolumn',
 		selectedStation:	'.stationChangeSelector .textWithArrow, .stationChangeSelectorNoMenu p',
@@ -108,27 +108,31 @@
 			oldCoverart : $(ui.coverart).attr('src'),
 			oldTitle : $(ui.title).text()
 		};
-		var onChangeCoverart = function() {
-			var newCoverart = $(ui.coverart).attr('src');
-			if (newCoverart && _this.oldCoverart !== newCoverart) {
-				_this.oldCoverart = newCoverart;
-				_this.oldTitle = $(ui.title).text();
-				sendNowPlaying();
-			}
-		};
-		var onChangeTitle = function() {
+		var maxChecks = 10;
+		var checkTitle = function() {
 			var newTitle = $(ui.title).text();
 			if (newTitle && _this.oldTitle !== newTitle) {
 				_this.oldTitle = newTitle;
-				setTimeout(function(){
-					_this.oldCoverart = $(ui.coverart).attr('src');
-					sendNowPlaying();
-				}, longDelay);
+				checkCoverart(maxChecks);
 			}
 		};
+		var checkCoverart = function(checksLeft) {
+			var newCoverart = $(ui.coverart).attr('src');
+			if (newCoverart && _this.oldCoverart !== newCoverart) {
+				_this.oldCoverart = newCoverart;
+				sendNowPlaying();
+			} else if (checksLeft) {
+				setTimeout(function(){
+					checkCoverart(checksLeft-1);
+				}, longDelay);
+			} else {
+				var newCoverart = $(ui.coverart).attr('src');
+				_this.oldCoverart = newCoverart;
+				sendNowPlaying();
+			}
+		}
 		var delay = function() {
-			if (_this.oldCoverart && _this.oldCoverart.substr(0,4)!='http') setTimeout(onChangeTitle, triggerDelay);
-			else setTimeout(onChangeCoverart, triggerDelay);
+			setTimeout(checkTitle, triggerDelay);
 		};
 		if (trigger) trigger.addEventListener('DOMSubtreeModified', delay, false);
 	}
@@ -173,7 +177,7 @@
 	function getCurrentSong() {
 		var imgURL = $(ui.coverart).attr('src');
 		if (!imgURL) return;
-		if (imgURL.substr(0,4)!='http') imgURL = document.location.origin + imgURL;
+		if (imgURL.substr(0,4)!='http') imgURL = "http://www.pandora.com/img/no_album_art.jpg"; //document.location.origin + imgURL;
 		return {
 			'title' : $(ui.title).text(),
 			'artist' : $(ui.artist).text(),

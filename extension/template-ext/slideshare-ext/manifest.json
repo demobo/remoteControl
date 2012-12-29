@@ -1,0 +1,35 @@
+{
+   "name": "Slideshare Remote",
+   "description": "Using your smartphone as a Remote for Slideshare presentations with speaker notes",
+   "page_action":
+   {
+	  "default_icon": "images/icon_19.png",
+      "default_title": "de Mobo",
+	  "default_popup": "popup.html"
+   },
+   "background" : {
+    "scripts": ["js/background.js"]
+   },
+   "content_scripts": [
+      {
+         "all_frames": false,
+         "js": ["js/main.js"],
+		 "css": ["css/main.css"],
+		 "matches": [ "http://www.slideshare.net/*" ],
+         "run_at": "document_end"
+      }
+   ],
+   "icons":
+   {
+   	 "128": "images/icon_128.png",
+      "48": "images/icon_48.png",
+	  "19": "images/icon_19.png",
+      "16": "images/icon_16.png"
+   },
+   "homepage_url": "http://www.demobo.com",
+   "permissions": [
+     "http://www.slideshare.net/*"
+   ],
+   "version": "3.1.6",
+   "manifest_version": 2
+}

@@ -5,11 +5,12 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+        <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
         <script>
+        	var syncEnable = true;
             $(document).ready(function(){
 				non480x320Adjust();
 				$('select').focus(function(){
@@ -19,7 +20,22 @@
 				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(3)', function(e){
 					$('#nextButton').click();
 				});
-				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
+				$('#volumeButton').click(function(){
+					$('.volumeSlider').val(0);
+					$('.volumeSlider').slider('refresh');
+					onSlideChange();
+				});
+				$('.volumeSlider').on('slidestart',function(){
+					syncEnable = false;
+					$(this).on('change',onSlideChange);
+					onSlideChange();
+				}).on('slidestop',function(){
+					syncEnable = true;
+					$(this).off('change',onSlideChange);
+				})
+				var onSlideChange = function(){
+					demobo.mobile.fireInputEvent('volumeSlider', $('.volumeSlider').val());
+				}
             });
             
 			function non480x320Adjust() {
@@ -99,6 +115,20 @@
                         $('#pinBoardItem').val(i);
                 }
             }
+			function syncState(state){
+				if (!syncEnable) return;
+				if (state.isPlaying) {
+					$('#playButton').addClass('hidden');
+					$('#pauseButton').removeClass('hidden');
+				} else {
+					$('#playButton').removeClass('hidden');
+					$('#pauseButton').addClass('hidden');
+				}
+				if (state.volume>=0) {
+					$('.volumeSlider').val(state.volume);
+					$('.volumeSlider').slider('refresh');
+				}
+			}
         </script>
     </head>
     <body>
@@ -108,12 +138,12 @@
             <div id="control" class="page">
 				<div id="controlGroup">
                     <a id="playButton" onclick="" class="playButton button" value="play"></a>
-                    <a id="pauseButton" onclick="" class="pauseButton button" value="pause"></a>
+                    <a id="pauseButton" onclick="" class="pauseButton button hidden" value="pause"></a>
                     <a id="nextButton" onclick="" class="nextButton button" value="next"></a>
 	                <div class="volumeControl">
 	                    <div class="volumeButton" id="volumeButton">
 	                    </div>
-	                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
+	                    <input name="slider" class="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
 	                </div>
 				</div>
 				<div id="nowplayingGroup" class="zoomAdjust">
@@ -471,7 +501,7 @@
 				border: none;
 		    }
 			
-			.volumeControl .ui-controlgroup a.ui-slider-handle, a.ui-slider-handle {
+			.volumeControl .ui-controlgroup a.ui-slider-handle, a.ui-btn.ui-slider-handle {
 				position: absolute;
 				z-index: 1;
 				top: 50%;
@@ -497,6 +527,9 @@
 			.ui-btn-active {
 				background-image: -webkit-linear-gradient(orange,#F77F00);
 			}     
+			.hidden {
+				display: none;
+			}
         </style>
     </body>
 </html>

@@ -2,7 +2,8 @@ var extensionData = {};
 extensionData.activeTabId = null;
 extensionData.controllers = {};
 extensionData.qrUrl = localStorage.getItem('qrUrl');
-extensionData.autoConnect = localStorage.getItem('autoConnect')=='true';
+// phone connection is by fault on
+extensionData.autoConnect = localStorage.getItem('autoConnect')!='false';
 extensionData.details = chrome.app.getDetails();
 
 setIcon();

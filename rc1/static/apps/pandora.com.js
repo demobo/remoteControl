@@ -9,10 +9,12 @@
 	}
 	demoboLoading = undefined;
 	var last3PlayedSongs = [];
+	var curState = {isPlaying: false, volume: 50};
+	var slideChangeTimeout = null;
 	
 	var ui = {
 		name: 				'pandora',
-		version: 			'1024',
+		version: 			'1119',
 		playPauseButton: 	'.playButton:visible, .pauseButton:visible',
 		playButton: 		'.playButton',
 		pauseButton: 		'.pauseButton',
@@ -53,6 +55,7 @@
 		showDemobo();
 		setupSongTrigger();
 		setupStationTrigger();
+		setupStateTrigger();
 	}
 
 	// ********** custom event handler functions *************
@@ -78,12 +81,13 @@
 	function dislike() {
 		$(ui.dislikeButton).click();
 	}
-	function setVolume(num) {
+	function setVolume(num, evt) {
 		num = parseInt(num);
+		if (num==getVolume()) return;
 		$(ui.volume).show();
 		var min = getAbsPosition($('.volumeBar')[0]).left + 22;
-		var max = min + $('.volumeBar').width();
-		var target = Math.floor(num / 100.0 * (max - min)) + min - 22;
+		var max = (min - 22) + $('.volumeBar').width() -22;
+		var target = Math.round((num / 100) * (max - min)) + min;
 		$(ui.volume).show().trigger( {
 			type : 'click',
 			pageX : target
@@ -97,6 +101,7 @@
 	function refreshController() {
 		sendStationList();
 		setTimeout(sendLast3,100);
+		syncState();
 	}
 
 	/* helpers */
@@ -153,6 +158,10 @@
 			setTimeout(onChange, triggerDelay);
 		};
 		if (trigger) trigger.addEventListener('DOMSubtreeModified', delay, false);
+	}
+	function setupStateTrigger() {
+		$(ui.volume).on('drag click', syncState);
+		$(ui.playButton + ',' + ui.pauseButton).on('click', syncState);
 	}
 	function getAbsPosition(element) {
 		if (element) {
@@ -218,6 +227,7 @@
 			last3PlayedSongs[last3PlayedSongs.length-1] = curSong;
 		}
 		demobo.callFunction('loadSongInfo', curSong);
+		syncState();
 	}
 	function sendLast3() {
 		if (last3PlayedSongs.length) var curSong = last3PlayedSongs;
@@ -227,5 +237,22 @@
 			last3PlayedSongs.push(curSong);
 		}
 		demobo.callFunction('loadSongInfo', curSong);
+	}
+	function syncState(e) {
+		setTimeout(function() {
+			curState = {isPlaying: getIsPlaying(), volume: getVolume()};
+			demobo.callFunction('syncState', curState);
+		}, 30);
+	}
+	
+	function getIsPlaying() {
+		return !$(ui.playButton+':visible').length;
+	}
+	function getVolume() {
+		$(ui.volume).show();
+		var min = getAbsPosition($('.volumeBar')[0]).left + 22;
+		var max = (min - 22) + $('.volumeBar').width() - 22;
+		var target = getAbsPosition($('.volumeKnob')[0]).left + 22;
+		return Math.round(100*(target-min)/(max-min));
 	}
 })();

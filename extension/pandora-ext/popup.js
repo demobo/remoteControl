@@ -41,6 +41,7 @@ function syncData() {
 		
 		var source = 'none';
 		if (activeController) source = activeController.url.split('/').reverse()[0].split('?')[0];
+		if (source=='none') simulator.style.display = 'none';
 		var url = connectPageUrl+'?' + source + '#'+extensionData.details.version+'&'+extensionData.autoConnect;
 		if (connectPage.src!=url) {
 			connectPage.src = url;

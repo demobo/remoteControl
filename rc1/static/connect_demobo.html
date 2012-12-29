@@ -6,10 +6,25 @@
         <!--Start of Zopim Live Chat Script-->
         <script type="text/javascript">
         	var promoUrl = "https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih";
+			var logoUrl = "demobomusic.png";
         	var ENABLE_ZOPIM = ENABLE_GOOGLEPLUS = ENABLE_FACEBOOK = ENABLE_TWITTER = true;
+			var showStep4 = false;
 			if (location.search == "?vimeo") {
 				promoUrl = "https://chrome.google.com/webstore/detail/vimeo-remote/pkikdceobndeifbhnpaalalnkkmnklfg";
+				showStep4 = true;
+			} else if (location.search == "?youtube") {
+				promoUrl = "https://chrome.google.com/webstore/detail/youtube-couch-mode/aopkakfkhllgogflkeoejmmmngcmaohf";
+				showStep4 = true;
+			} else if (location.search == "?slideshare") {
+				promoUrl = "https://chrome.google.com/webstore/detail/presentation-remote-for-s/oichkmlpbknppmikofjkafoifgpnilph";
+				logoUrl = "demobopresentation.png";
+			} else if (location.search == "?docsgoogle") {
+				promoUrl = "https://chrome.google.com/webstore/detail/presentation-remote-for-g/fjdgmdaaacgdbfdohoidfjiipmbnbnho";
+				logoUrl = "demobopresentation.png";
+			} else {
+				showStep4 = true;
 			}
+			var reviewUrl = promoUrl+"/reviews";
         	if (ENABLE_ZOPIM) {
 				window.$zopim ||
 	            (function(d, s){
@@ -44,7 +59,7 @@
 		</script>
 		<link rel="stylesheet" href="rc1.css" />
     </head>
-    <body style="opacity: 0;">
+    <body class="preload">
     	<div id="fb-root"></div>
 		<script>
 			if (ENABLE_FACEBOOK) {
@@ -92,17 +107,21 @@
 					}(document, "script", "twitter-wjs");
 				}			
 			</script>
+			
+			<div class="review"><a target="_blank">Leave us a kind review</a></div>
 		</div>
 		<div id="logo">
-			<img src="demobomusic.png"/>
+			<img/>
 		</div>
 		<div id="qr">
 			<img id="qrImg"/>
 		</div>
-		<div id="version" class="version">Known issue: First time connection keeps on loading and needs restart. de Mobo Version 2.26+ fixes this.</div>
-		<div class="step1 triangle-border">1. Turn on this</div>
+		<div id="version" class="version"></div>
+		<div class="step1 triangle-border">1. Turn on Phone Connection</div>
     	<div class="step2 triangle-border">2. Download de Mobo phone app</div>
 		<div class="step3 triangle-border right">3. Scan QR code</div>
+		<div class="step4 triangle-border">4. Visit supported sites</div>
+		<div id="sites"></div>
     	<div id="download" class="download">
     		<a href="http://itunes.apple.com/us/app/de-mobo/id519605488?ls=1&mt=8" target="_blank">
 	    		<img src="http://www.demobo.com/app_store.png">
@@ -112,7 +131,7 @@
 	    	</a>
 		</div>
 		<div id="settings">
-			<label class="info" for="phoneConnection" onclick="">Phone Connection</label>
+			<!--<label class="info" for="phoneConnection" onclick="">Phone Connection</label>-->
 			<ul id="checked">
 				<li>
 					<p>
@@ -123,9 +142,11 @@
 			</ul>
 		</div>
 		<script>
+			$('#logo img').attr('src',logoUrl);
 			$('.g-plusone').attr('data-href', promoUrl);
 			$('.fb-like').attr('data-href', promoUrl);
 			$('.twitter-share-button').attr('data-url', promoUrl);
+			$('.social .review a').attr('href', reviewUrl);
 			var extensionData={};
 			var qrUrl;
 			$zopim(function() {
@@ -140,7 +161,7 @@
 					var qrImg = document.getElementById('qrImg');
 					qrImg.src = qrUrl;
 					qrImg.onload = function(){
-						$('body').css('opacity',1);
+						$('body').removeClass('preload');
 					}
 				}
 			};
@@ -164,6 +185,17 @@
 					if (parent) parent.postMessage({action: 'phoneConnection', detail: extensionData.autoConnect},'*');
 					toggleConnectPage();			
 				});
+				if (showStep4) {
+					$('.step4').show();
+					if (location.search == "?vimeo" || location.search == "?youtube") {
+						$('#sites').append('<a href="http://youtube.com/" target="_blank">Youtube</a><br>');
+						$('#sites').append('<a href="http://vimeo.com/couchmode/" target="_blank">Vimeo</a><br>');
+					} else {
+						$('#sites').append('<a href="http://pandora.com/" target="_blank">Pandora</a><br>');
+						$('#sites').append('<a href="http://retro.grooveshark.com/" target="_blank">Grooveshark Retro</a><br>');
+						$('#sites').append('<a href="http://www.last.fm/listen/" target="_blank">LAST.FM</a>');		
+					}
+				}
 			});
 			function toggleConnectPage() {
 				if (extensionData.autoConnect) {

@@ -64,8 +64,8 @@ if (DEMOBO) {
 				for ( var i = 0; i < testCases.length; i++) {
 					var test = testCases[i];
 //					$('iframe')[0].contentWindow[test.functionName](test.data);
-					$('iframe')[0].contentWindow.postMessage(test,'*');
-					console.log(test.data);
+//					$('iframe')[0].contentWindow.postMessage(test,'*');
+//					console.log(test.data);
 					demobo.callFunction(test.functionName, test.data);
 				}
 			});
@@ -94,6 +94,17 @@ if (DEMOBO) {
 		});
 		$($('input[type=radio]')[0]).click();
 		$('button#set').click();
+		// simulator eventListener
+		document.getElementById('demoboBody').addEventListener(
+				"FromFrontground",
+				function(e) {
+					$('#simulator iframe')[0].contentWindow.postMessage(e.detail.data, '*');
+					if (e.detail.type == 'register') {
+						var url = e.detail.data.url;
+						setSimulator(url);
+					}
+				}
+		);
 	};
 }
 
@@ -169,7 +180,7 @@ window.showDemobo = function() {
 		
 		var iframe = document.createElement("iframe");
 		iframe.setAttribute('id','demoboHelpPage');
-		iframe.src = helpUrl;	
+//		iframe.src = helpUrl;	
 		demoboCoverDiv.appendChild(iframe);
 		iframe.onload = function() {
 			demoboCover.style.opacity = 1;
@@ -193,4 +204,8 @@ window.toggleDemobo = function() {
 		showDemobo();
 		demobo.setController();
 	}
+}
+
+function setSimulator(url) {
+	$('#simulator iframe').attr('src', url);
 }

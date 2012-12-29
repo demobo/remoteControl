@@ -5,11 +5,11 @@
 	var rcPort = window.demoboRcPort || 1280;
 	// this is set through bookmarklet, default port of demobo is 1281
 	var demoboPort = window.demoboPort || 1281;
-	var appVersion = "1024";
+	var appVersion = "1119";
 	var curDomain = document.domain.split('.').reverse();
 	curDomain = curDomain[1] + '.' + curDomain[0];
 	var appUrl = (dev ? 'http://localhost:' + rcPort + '/apps/' : 'http://rc1.demobo.com/apps/') + curDomain + '.js?' + appVersion;
-	var apiUrl = "http://localhost:8082/demobo_1_2.js";
+	var apiUrl = "http://localhost:8082/demobo_1_4.js";
 	
 	// if another demobo is loading, do nothing
 	if (typeof demoboLoading == 'undefined') {

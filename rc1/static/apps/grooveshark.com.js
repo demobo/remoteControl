@@ -8,11 +8,37 @@
 		demobo.start();
 	}
 	demoboLoading = undefined;
+	var curState = {isPlaying: false, volume: 50};
+	var slideChangeTimeout = null;
+	
+	var ui = {
+		name: 				'grooveshark',
+		version: 			'1119',
+		playPauseButton: 	'#player_play_pause',
+		playButton: 		'#player_play_pause.play',
+		pauseButton: 		'#player_play_pause.pause',
+		nextButton: 		'#player_next',
+		previousButton: 	'#player_previous',
+		likeButton: 		'.queue-item.queue-item-active .smile:not(.active)',
+		dislikeButton:		'.queue-item.queue-item-active .frown',
+		volume:				'#volumeControl',
+		title: 				'',
+		artist: 			'',
+		album: 				'',
+		coverart:			'',
+		songTrigger: 		'#queue_list',
+		stationTrigger: 	'',
+		selectedStation:	'',
+		stationCollection:	'',
+		albumCollection:	'',
+		playlistTrigger: 	''
+	};
+	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
 	
 	// do all the iniations you need here
 	function init() {
 		demobo.setController( {
-			url : "http://rc1.demobo.com/rc/grooveshark?1024"
+			url : ui.controllerUrl
 		});
 		// your custom demobo input event dispatcher
 		demobo.inputEventDispatcher.addCommands( {
@@ -30,64 +56,64 @@
 			}
 		});
 		showDemobo();
-		setupSongUpdateListener();
+		setupSongTrigger();
+		setupStateTrigger();
 	}
 
 	// ********** custom event handler functions *************
 	function play() {
-		// jQuery('#player_play_pause.play').click();
+//		 jQuery(ui.playButton).click();
 		GS.player.togglePlayPause();
 	}
 
 	function pause() {
-		// jQuery('#player_play_pause.pause').click();
+//		 jQuery(ui.pauseButton).click();
 		GS.player.togglePlayPause();
 	}
 
 	function prev() {
-		// jQuery('#player_previous').click();
+//		 jQuery(ui.previousButton).click();
 		player.previousSong();
 	}
 
 	function next() {
-		// jQuery('#player_next').click();
+		// jQuery(ui.nextButton).click();
 		GS.player.nextSong();
 	}
 
 	function love() {
-		jQuery('.queue-item.queue-item-active .smile:not(.active)').click();
+		jQuery(ui.likeButton).click();
 	}
 
 	function spam() {
-		jQuery('.queue-item.queue-item-active .frown').click();
+		jQuery(ui.dislikeButton).click();
 	}
 
 	function setVolume(num) {
 		num = parseInt(num / 10) * 10;
 		GS.player.setVolume(num);
+		syncState();
 	}
 
 	function sendNowPlaying() {
-		console.log('sendNowPlaying');
 		demobo.callFunction('loadSongInfo', getNowPlayingData());
 	}
 
 	function refreshController() {
-		console.log('refresh');
 		sendStationList();
 		setTimeout(sendNowPlaying,100);
+		syncState();
 	}
 
 	/* helpers */
-	function setupSongUpdateListener() {
-		// make sure the target is an element that will not be destroyed after meta
-		// data updates
+	function setupSongTrigger() {
+		var triggerDelay = 100;
+		var trigger = $(ui.songTrigger)[0];
 		var _this = {
-			target : jQuery('#queue_list')[0],
+			target : trigger,
 			oldValue : ''
 		};
 		_this.onChange = function() {
-			console.log('onChange send now playing');
 			var newValue = "";
 			if (GS.player.activeSong)
 				newValue += GS.player.activeSong.SongName;
@@ -99,9 +125,13 @@
 			}
 		};
 		_this.delay = function() {
-			setTimeout(_this.onChange, 100);
+			setTimeout(_this.onChange, triggerDelay);
 		};
 		_this.target.addEventListener('DOMSubtreeModified', _this.delay, false);
+	}
+	function setupStateTrigger() {
+		$(ui.volume).on('drag mouseup', syncState);
+		Grooveshark.setSongStatusCallback(syncState);
 	}
 	function getNowPlayingData() {
 		var toReturn = [];
@@ -189,5 +219,19 @@
 	function sendStationList() {
 		demobo.callFunction('loadChannelList', getStationList());
 		setTimeout(function(){demobo.callFunction('loadPinBoard', getPinBoard());},200);
+	}
+	
+	function syncState(e) {
+		setTimeout(function() {
+			curState = {isPlaying: getIsPlaying(), volume: getVolume()};
+			demobo.callFunction('syncState', curState);
+		}, 30);
+	}
+	function getIsPlaying() {
+		var playbackStatus = GS.player.getPlaybackStatus();
+		return playbackStatus && playbackStatus.status == GS.player.PLAY_STATUS_PLAYING;
+	}
+	function getVolume() {
+		return GS.player.getVolume();
 	}
 })();

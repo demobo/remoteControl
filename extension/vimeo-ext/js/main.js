@@ -1,15 +1,15 @@
 (function() {
-	var dev = false;
+	var dev = true;
 	var injectedExtScript;
 	if (dev) {
 		injectedExtScript = function() {
 			window.demoboRcPort = 1242;
 			window.demoboPort = 1242;
-			demoboBody.extScriptUrl = 'http://localhost:'+window.demoboRcPort+'/dev/demobo-ext-3.1.1.js';
+			demoboBody.extScriptUrl = 'http://localhost:'+window.demoboRcPort+'/dev/demobo-ext-secure-3.1.1.js';
 		};
 	} else {
 		injectedExtScript = function() {
-			demoboBody.extScriptUrl = 'http://rc1.demobo.com/core/demobo-ext-3.1.1.js?1024';
+			demoboBody.extScriptUrl = '//rc1-dot-de-mobo.appspot.com/core/demobo-ext-secure-3.1.1.js?1024';
 		}
 	}
 	var injectedScript = function() {

@@ -8,7 +8,7 @@
 	
 	var ui = {
 		name: 				'vimeo',
-		version: 			'1106',
+		version: 			'1120',
 		playPauseButton: 	'.interactive_element.play_pause_button',
 		playButton: 		'.interactive_element.play_pause_button:not(.playing)',
 		pauseButton: 		'.interactive_element.play_pause_button.playing',
@@ -30,6 +30,11 @@
 		videoCollection:	'.item_stream li a',
 		playlistTrigger: 	'',
 		staffPicks: 		'#nav_item_staffpicks',
+		inbox:				'#nav_item_inbox',
+		watchLater:			'#nav_item_watchlater',
+		myStuff:			'#nav_item_my_stuff',
+		likes:				'#context_item_likes',
+		channels:			'#context_item_channels',
 		searchLightbox:		'#search_lightbox',
 		searchButton:		'#nav_item_search',
 		searchInput:		'.search_input input[type=text]',
@@ -38,13 +43,15 @@
 		lightboxOverlay:	'#lightbox_overlay'
 	};
 	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
+	var curChannel = 0;
 	
 	// do all the iniations you need here
 	function init() {
 		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 		if (!/couchmode/.test(location.pathname)) return;
 		demobo.setController( {
-			url : ui.controllerUrl
+			url : ui.controllerUrl,
+			orientation: 'portrait'
 		});
 		// your custom demobo input event dispatcher
 		demobo.inputEventDispatcher.addCommands( {
@@ -63,11 +70,21 @@
 			'search':			search,
 			'searchKeyword':	searchKeyword,
 			'reloadButton':		reload,
+			'youtubeButton':	youtubeButton,
+			'channelUp':		next,
+			'channelDown':		previous,
+			'menu':				toggleMenu,
+			'upButton':			upButton,
+			'downButton':		downButton,
+			'leftButton':		leftButton,
+			'rightButton':		rightButton,
+			'okButton':			okButton,
 			'demoboApp' : 		onReady
 		});
 		setupSongTrigger();
 		setupStationTrigger();
 		setupStateTrigger();
+		setupVolume();
 	}
 
 	// ********** custom event handler functions *************
@@ -104,6 +121,9 @@
 		$(ui.dislikeButton).click();
 	}
 	function setVolume(num) {
+		if (num>=0) localStorage.setItem('demoboVolume',num);
+		else num = localStorage.getItem('demoboVolume')||50;
+		$('#demoboVolume').html('<span width>VOL '+num+' </span>'+Array(Math.floor(parseInt(num)/5)+1).join("|")).stop().css('opacity',1).fadeTo(3000,0);
 		num = num / 100;
 		BigScreen.getVideo().setVolume(num);
 	}
@@ -161,7 +181,36 @@
 	function reload() {
 		location.reload();
 	}
-	
+	function youtubeButton() {
+		window.location="http://www.youtube.com";
+	}
+	function toggleMenu(value) {
+		if (value=='on') {
+			if (CouchApplication.getCurrentMode()=="cinema_mode") callMenuMethod();
+		} else {
+			if (CouchApplication.getCurrentMode()=="browse_mode") callMenuMethod();
+		}
+	}
+	function upButton() {
+		callUpMethod();
+		toggleMenu('on');
+	}
+	function downButton() {
+		callDownMethod();
+		toggleMenu('on');
+	}
+	function leftButton() {
+		callLeftMethod();
+		toggleMenu('on');
+	}
+	function rightButton() {
+		callRightMethod();
+		toggleMenu('on');
+	}
+	function okButton() {
+		callSelectMethod();
+		toggleMenu('on');
+	}
 	/* helpers */
 	function setupSongTrigger() {
 		var triggerDelay = 50;
@@ -208,6 +257,10 @@
 			syncState();
 			$(ui.lightboxOverlay).click();
 		});
+	}
+	function setupVolume() {
+		$('#the_couch').append('<div id="demoboVolume" style="position: absolute;width: 100%;margin: auto;bottom: 0px;color: #00adef;font-size: 40px;z-index: 1000;padding: 30px 100px;"></div>');
+		setVolume();
 	}
 	function getNowPlayingData() {
 		if (!$(ui.title).text()) return null;

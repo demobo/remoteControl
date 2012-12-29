@@ -1,6 +1,6 @@
 {
-   "name": "Vimeo Remote",
-   "description": "Using your smartphone as a Remote for Vimeo Couch Mode",
+   "name": "YouTube Couch Mode",
+   "description": "Watch youtube in fullscreen by default. Use your smartphone as a TV Remote on Youtube",
    "page_action":
    {
 	  "default_icon": "images/icon_19.png",
@@ -15,7 +15,7 @@
          "all_frames": false,
          "js": ["js/main.js"],
 		 "css": ["css/main.css"],
-		 "matches": [ "http://vimeo.com/*", "https://vimeo.com/*" ],
+		 "matches": [ "http://vimeo.com/*", "https://vimeo.com/*", "http://www.youtube.com/*", "https://www.youtube.com/*" ],
          "run_at": "document_end"
       }
    ],
@@ -28,8 +28,8 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "http://vimeo.com/*", "https://vimeo.com/*"
+     "http://vimeo.com/*", "https://vimeo.com/*", "http://www.youtube.com/*", "https://www.youtube.com/*"
    ],
-   "version": "3.1.6",
+   "version": "3.2.2",
    "manifest_version": 2
 }

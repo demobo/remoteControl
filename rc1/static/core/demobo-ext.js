@@ -20,7 +20,7 @@ function loadMain() {
 	case 'last.fm':
 	case 'play.google.com':
 	case 'grooveshark.com':
-		s.src = base + domain + '.js?0930';
+		s.src = base + domain + '.js?1119';
 		break;
 	default:
 		s.src = base + 'pandora.com.js';

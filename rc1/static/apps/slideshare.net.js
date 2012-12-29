@@ -1,4 +1,4 @@
-//(function() {
+(function() {
 	if (DEMOBO) {
 		DEMOBO.developer = 'developer@demobo.com';
 		DEMOBO.autoConnect = false;
@@ -9,7 +9,7 @@
 	
 	var ui = {
 		name: 				'slideshare',
-		version: 			'1028',
+		version: 			'1104',
 		nextButton: 		'.btnNext',
 		previousButton: 	'.btnPrevious',
 		firstButton: 		'.btnFirst',
@@ -21,13 +21,16 @@
 		pageTrigger: 		'.player'
 	};
 	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
+	slideChangeTimeout = null;
 	
 	// do all the iniations you need here
 	function init() {
+		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 		demobo.setController( {
 			url : ui.controllerUrl,
 			orientation: 'portrait'
 		});
+		if (typeof player == 'undefined') return;
 		// your custom demobo input event dispatcher
 		demobo.inputEventDispatcher.addCommands( {
 			'nextButton' : 		next,
@@ -46,10 +49,12 @@
 		refreshController();
 	}
 	function next() {
-		$(ui.nextButton).click();
+		_setSlide(getCurrentPageNumber()+1);
+//		$(ui.nextButton).click();
 	}
 	function previous() {
-		$(ui.previousButton).click();
+		_setSlide(getCurrentPageNumber()-1);
+//		$(ui.previousButton).click();
 	}
 	function firstSlide() {
 		$(ui.firstButton).click();
@@ -58,7 +63,15 @@
 		$(ui.lastButton).click();
 	}
 	function setSlide(num) {
-		$.slideshareEventManager.controller.play(num);
+		if (slideChangeTimeout) clearTimeout(slideChangeTimeout);
+		slideChangeTimeout = setTimeout(function() {
+			_setSlide(num);
+			slideChangeTimeout = null;
+		}, 100);
+	}
+	function _setSlide(num) {
+		if (player.controller) player.controller.play(num);
+		else player.jumpTo(num);
 	}
 	function refreshController() {
 		loadNotes();
@@ -68,13 +81,13 @@
 	/* helpers */
 	function setupPageTrigger() {
 		var triggerDelay = 50;
-		var trigger = $(ui.pageTrigger)[0];
+		if (player.controller) var trigger = $(ui.pageTrigger)[0];
+		else var trigger = $('body')[0];
 		var _this = {
 			oldValue : getCurrentPageNumber()
 		};
 		var onChange = function() {
 			var newValue = getCurrentPageNumber();
-			console.log('page changed', newValue);
 			if (newValue && _this.oldValue !== newValue) {
 				_this.oldValue = newValue;
 				setCurrentPage(newValue);
@@ -92,10 +105,12 @@
 		demobo.callFunction('setCurrentPage', num);
 	}
 	function getCurrentPageNumber() {
-		return $.slideshareEventManager.controller.currentPosition;
+		if (player.controller) return parseInt(player.controller.currentPosition);
+		else return player.getCurrentSlide();
 	}
 	function getPageCount() {
-		return $.slideshareEventManager.controller.slideCount;
+		if (player.controller) return player.controller.slideCount;
+		else return slideshare_object.totalSlides;
 	}
 	function getNotes() {
 		var toReturn = [];
@@ -112,4 +127,4 @@
 		}
 		return toReturn;
 	}
-//})();
+})();

@@ -39,7 +39,7 @@ function syncData() {
 		if (extensionData.phoneColor) document.body.className = extensionData.phoneColor;
 		var source = 'none';
 		if (extensionData.url) source = extensionData.url.split('/')[2].split('.').reverse()[1];
-		if (/couchmode/.test(extensionData.url)) {
+		if (/couchmode/.test(extensionData.url) || /youtube/.test(extensionData.url)) {
 			simulator.style.display = 'none';
 		}
 		var url = tryDemoboUrl+'?' + source + '#'+extensionData.details.version+'&'+extensionData.autoConnect;

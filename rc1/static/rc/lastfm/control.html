@@ -5,16 +5,36 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+        <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
         <script>
+        	var syncEnable = true;
         	$(document).ready(function(){
 				non480x320Adjust();
 				$('img').bind('load', flipAlbumArt);
-				$('#volumeButtonMin').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
-				$('#volumeButtonMax').click(function(){$('#volumeSlider').val(100);$('#volumeSlider').slider('refresh');});
+				$('#volumeButtonMin').click(function(){
+					$('.volumeSlider').val(0);
+					$('.volumeSlider').slider('refresh');
+					onSlideChange();
+				});
+				$('#volumeButtonMax').click(function(){
+					$('.volumeSlider').val(100);
+					$('.volumeSlider').slider('refresh');
+					onSlideChange();
+				});
+				$('.volumeSlider').on('slidestart',function(){
+					syncEnable = false;
+					$(this).on('change',onSlideChange);
+					onSlideChange();
+				}).on('slidestop',function(){
+					syncEnable = true;
+					$(this).off('change',onSlideChange);
+				})
+				var onSlideChange = function(){
+					demobo.mobile.fireInputEvent('volumeSlider', $('.volumeSlider').val());
+				}
 			});
 			
 			function non480x320Adjust() {
@@ -62,6 +82,20 @@
 				$('#stationItem').val(index);
 				$('#stationsTab .ui-btn-text').html($('#stationItem option')[index].text + " &#9660;");
 			}
+			function syncState(state){
+				if (!syncEnable) return;
+				if (state.isPlaying) {
+					$('#playButton').addClass('hidden');
+					$('#pauseButton').removeClass('hidden');
+				} else {
+					$('#playButton').removeClass('hidden');
+					$('#pauseButton').addClass('hidden');
+				}
+				if (state.volume>=0) {
+					$('.volumeSlider').val(state.volume);
+					$('.volumeSlider').slider('refresh');
+				}
+			}
         </script>
     </head>
     <body>
@@ -92,11 +126,11 @@
 	                        <a id="spamButton" onclick="" class="spamButton button asset" value="spam"></a>
 		                    <a id="nextButton" onclick="" class="nextButton button asset" value="next"></a>
 		                    <a id="playButton" onclick="" class="playButton redbutton asset" value="play"></a>
-							<a id="pauseButton" onclick="" class="pauseButton redbutton asset" value="pause"></a>
+							<a id="pauseButton" onclick="" class="pauseButton redbutton asset hidden" value="pause"></a>
 						</div>
 						<div class="volumeControl row volumeBackground">
 		                    <div class="volumeButtonMin asset" id="volumeButtonMin"></div>
-		                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
+		                    <input name="slider" class="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
 							<div class="volumeButtonMax asset" id="volumeButtonMax"></div>
 		                </div>
 	                </div>
@@ -194,12 +228,18 @@
               margin-top:40px;
               margin-left:20px;
 			  height: 29px;
+			  white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
             
             #songName {
               margin-top:20px;
               margin-left:20px;
-			  height: 18px;
+			  height: 19px;
+			  white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
             }
 			
 			/* assets */
@@ -217,7 +257,7 @@
 			.redbutton {
 				top: 0px;
 				position: absolute;
-				width: 17px;
+				width: 26px;
 				height: 26px;
 				background-color: #D11;
 				background-size: 156px 156px;
@@ -225,28 +265,28 @@
             
 			.playButton {
 				left: 155px;
-				background-position: -56px 2px;
+				background-position: -52px 2px;
 			}
 				
             .playButton:hover {
-				background-position: -56px -20px;
+				background-position: -52px -20px;
             }
             
             .playButton:active {
-				background-position: -56px -42px;
+				background-position: -52px -42px;
             }
             
             .pauseButton {
-            	left: 171px;
-                background-position: -140px 2px;
+            	left: 155px;
+                background-position: -135px 2px;
             }
             
             .pauseButton:hover {
-                background-position: -140px -20px;
+                background-position: -135px -20px;
             }
             
             .pauseButton:active {
-                background-position: -140px -42px;
+                background-position: -135px -42px;
             }
             
             .loveButton {
@@ -338,7 +378,7 @@
 				border: none;
 		    }
 			
-			.volumeControl .ui-controlgroup a.ui-slider-handle, a.ui-slider-handle {
+			.volumeControl .ui-controlgroup a.ui-slider-handle, a.ui-btn.ui-slider-handle {
 				position: absolute;
 				z-index: 1;
 				top: 50%;
@@ -360,6 +400,9 @@
 				box-shadow: none;
 			}
 			/* end of volume control */
+			.hidden {
+				display: none;
+			}
         </style>
     </body>
 </html>

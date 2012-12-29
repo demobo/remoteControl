@@ -3,17 +3,65 @@
     <head>
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 		<link rel="stylesheet" href="rc1.css" />
+		<!--Start of Zopim Live Chat Script-->
+        <script type="text/javascript">
+        	var ENABLE_ZOPIM = true;
+        	if (ENABLE_ZOPIM) {
+				window.$zopim ||
+	            (function(d, s){
+	                var z = $zopim = function(c){
+	                    z._.push(c)
+	                }, $ = z.s = d.createElement(s), e = d.getElementsByTagName(s)[0];
+	                z.set = function(o){
+	                    z.set._.push(o)
+	                };
+	                z._ = [];
+	                z.set._ = [];
+	                $.async = !0;
+	                $.setAttribute('charset', 'utf-8');
+	                $.src = '//cdn.zopim.com/?yUlZMlln6qDfObYzYoZiApbspV3KB8vW';
+	                z.t = +new Date;
+	                $.type = 'text/javascript';
+	                e.parentNode.insertBefore($, e);
+	            })(document, 'script');	
+				$zopim(function() {
+					$zopim.livechat.bubble.setTitle('Need help?');
+					$zopim.livechat.bubble.setText('Click here for livechat!');
+					$zopim.livechat.bubble.hide();
+				});
+			}
+        </script>
+        <!--End of Zopim Live Chat Script-->
 		<script>
 			$(document).ready(function(){
-				if (location.search == "?vimeo") {
+				document.body.onclick = function() {
+					$zopim.livechat.window.hide();
+				};
+				if (location.search == "?slideshare") {
+					$('#tutorial').html('Step 1, download "de Mobo" on your smartphone.<br><br>Step 2, click extension button on the address bar and enable "Phone Connection".<br><br>Step 3, pair your phone with this browser by scanning the QR code.<br><br>Step 4, start your presentation on slideshare.net and use your phone as a remote.');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Pandora</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Grooveshark</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">LAST.FM</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/youtube-couch-mode/aopkakfkhllgogflkeoejmmmngcmaohf" target="_blank">YouTube</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/vimeo-remote/pkikdceobndeifbhnpaalalnkkmnklfg" target="_blank">Vimeo Couch Mode</a>, ');
+				} else if (location.search == "?docsgoogle") {
+					$('#tutorial').html('Step 1, download "de Mobo" on your smartphone.<br><br>Step 2, click extension button on the address bar and enable "Phone Connection".<br><br>Step 3, pair your phone with this browser by scanning the QR code.<br><br>Step 4, start your presentation on docs.google.com and use your phone as a remote.');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Pandora</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Grooveshark</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">LAST.FM</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/youtube-couch-mode/aopkakfkhllgogflkeoejmmmngcmaohf" target="_blank">YouTube</a>, ');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/vimeo-remote/pkikdceobndeifbhnpaalalnkkmnklfg" target="_blank">Vimeo Couch Mode</a>, ');
+				} else if (location.search == "?vimeo" || location.search == "?youtube") {
+					$('#step1').append('<a href="http://youtube.com/" target="_blank">Youtube</a>, ');
 					$('#step1').append('<a href="http://vimeo.com/couchmode/" target="_blank">Vimeo Couch Mode</a>');
 					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Pandora</a>, ');
 					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">Grooveshark</a>, ');
 					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/pandora-remote/mgoggfiblaeihbhpnplbkaeeeockebih" target="_blank">LAST.FM</a>, ');
 				} else {
 					$('#step1').append('<a href="http://pandora.com/" target="_blank">Pandora</a>, ');
-					$('#step1').append('<a href="http://grooveshark.com/" target="_blank">Grooveshark</a>, ');
+					$('#step1').append('<a href="http://retro.grooveshark.com/" target="_blank">Grooveshark Retro</a>, ');
 					$('#step1').append('<a href="http://www.last.fm/listen/" target="_blank">LAST.FM</a>');
+					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/youtube-couch-mode/aopkakfkhllgogflkeoejmmmngcmaohf" target="_blank">YouTube</a>, ');
 					$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/vimeo-remote/pkikdceobndeifbhnpaalalnkkmnklfg" target="_blank">Vimeo Couch Mode</a>, ');
 				}
 				$('#otherProducts').append('<a href="https://chrome.google.com/webstore/detail/presentation-remote/mhfdnafbhfglkcjgkgoopjoadaopcomi" target="_blank">Google Docs</a>, ');
@@ -23,16 +71,18 @@
 		</script>
     </head>
     <body class="tutorial">
-    	<div>Step One:</div>
-		<div id="step1">
-			Try it on
+    	<div id="tutorial">
+	    	<div>Step One:</div>
+			<div id="step1">
+				Try it on
+			</div>
+			<br>
+			<div>Step Two:</div>
+			<div id="step2">Come back here to control your website</div>
+			<br>
+			<div>Step Three:</div>
+			<div id="step3">Click home button on the right to see instruction on how to connect with your phone.</div>
 		</div>
-		<br>
-		<div>Step Two:</div>
-		<div>Come back here to control your website</div>
-		<br>
-		<div>Step Three:</div>
-		<div>Click home button to see instruction on how to connect with your phone.</div>
 		<br>
 		<div id="otherProducts">
 			de Mobo also works on<br>

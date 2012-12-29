@@ -38,6 +38,7 @@ a {
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+	-webkit-transition: opacity 4s ease-in;
 }
 
 body.connected .triangle-border {
@@ -133,7 +134,7 @@ body.connected .triangle-border.right:before {
     border-color: transparent #fff;
 }
 
-.step1, .step2, .step3 {
+.step1, .step2, .step3, .step4 {
     color: black;
     font-size: 11px;
     text-align: center;
@@ -143,23 +144,31 @@ body.connected .triangle-border.right:before {
 
 .step1 {
     opacity: 1;
-    top: 64px;
-    right: 25px;
+    top: 20px;
+    left: 5px;
     -webkit-transition: opacity 0.2s linear;
 }
 
 .step2 {
     opacity: 0.3;
-    bottom: -6px;
-    left: 10px;
+    top: 20px;
+    right: 5px;
     -webkit-transition: opacity 0.2s linear;
 }
 
 .step3 {
-    opacity: 0;
-    top: 36px;
+    opacity: 0.3;
+    top: 190px;
     left: 12px;
     -webkit-transition: opacity 0.2s linear;
+}
+.step4 {
+	display: none;
+	opacity: 0.3;
+	top: 120px;
+	right: 10px;
+	-webkit-transition: opacity 0.2s linear;
+	width: 100px;
 }
 
 body.connected .step1 {
@@ -175,11 +184,31 @@ body.connected .step3 {
     opacity: 1;
     -webkit-transition-delay: 2s;
 }
+body.connected .step4 {
+    opacity: 1;
+    -webkit-transition-delay: 3s;
+}
 
 .social {
-    height: 30px;
+	height: 30px;
     width: 100%;
+	height: 100%;
     overflow: hidden;
+	opacity: 1;
+	-webkit-transition: opacity 3s ease-in;
+}
+
+body.preload .social {
+	opacity: 0;
+}
+
+.zopim {
+	opacity: 1;
+	-webkit-transition: opacity 3s ease-in;
+}
+
+body.preload .zopim {
+	opacity: 0;
 }
 
 .fb-like {
@@ -191,10 +220,10 @@ body.connected .step3 {
 }
 
 #qr {
-    position: absolute;
-    top: 63px;
-    left: 168px;
-    z-index: -1;
+	position: absolute;
+	top: 135px;
+	left: 168px;
+	z-index: -1;
 }
 
 #qrImg {
@@ -204,8 +233,11 @@ body.connected .step3 {
 }
 
 #logo {
-    padding-top: 20px;
-    -webkit-transition: opacity 0.2s linear;
+	padding-top: 20px;
+	-webkit-transition: opacity 0.2s linear;
+	top: 110px;
+	position: absolute;
+	left: 158px;
 }
 
 body.connected #logo {
@@ -220,8 +252,8 @@ body.connected #logo {
 .download {
     position: absolute;
     width: 300px;
-    bottom: -15px;
-    left: -40px;
+    top: 95px;
+	right: -17px;
 }
 
 .download img {
@@ -236,8 +268,17 @@ body.connected #logo {
     margin: auto;
     font-size: 14px;
     position: absolute;
-    top: 120px;
-    right: -25px;
+    top: 83px;
+	left: -10px;
+	opacity: 1;
+	-webkit-transition: opacity 3s ease-in;
+}
+body.preload #settings {
+	opacity: 0;
+}
+
+body.preload .triangle-border {
+	opacity: 0;
 }
 
 ul#checked {
@@ -385,4 +426,41 @@ body.connected label.info {
 #smalllogo img {
 	width: 70px;
 	height: 70px;
+}
+
+.social .review {
+	display: inline-block;
+	top: -6px;
+	position: relative;
+	-moz-box-shadow: inset 0 1px 0 0 #eee;
+	-webkit-box-shadow: inset 0 1px 0 0 #eee;
+	box-shadow: inset 0 1px 0 0 #eee;
+	background: -webkit-gradient( linear,left top,left bottom,color-stop(0.05, white),color-stop(1, #eee) );
+	background: -moz-linear-gradient( center top, white 5%, #eee 100% );
+	background-color: white;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	border: 0px solid #eee;
+	font-family: arial;
+	font-size: 11px;
+	font-weight: 700;
+	padding: 3px 6px;
+	text-shadow: 1px 1px 0 #eee;
+	cursor: pointer;
+	margin-top: 4px;
+}
+.social .review a {
+	text-decoration: none;
+	color: #333;
+}
+#sites {
+	position: absolute;
+	right: 10px;
+	top: 210px;
+	width: 141px;
+}
+#sites a:-webkit-any-link {
+	color: white;
+	text-decoration:underline;
 }

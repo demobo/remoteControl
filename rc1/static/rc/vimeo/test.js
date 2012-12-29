@@ -3,8 +3,8 @@ var testCases = [
 			functionName : "loadSongInfo",
 			data : {
 				image : "http://cont-sv5-3.pandora.com/images/public/amz/7/2/0/1/886976911027_500W_500H.jpg",
-				title : "Older",
-				artist : "Band Of Horses",
+				title : "Older afsdaf afewefvad fasfawe efaew",
+				artist : "Band Of Horses afewafaf fa aefadd we afeww",
 				album : "Infinite Arms - 2012/08/09"
 			}
 		},

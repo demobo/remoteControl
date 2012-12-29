@@ -1,9 +1,9 @@
 (function() {
-	var appVersion = "1101";
+	var appVersion = "1128";
 	var curDomain = document.domain.split('.').reverse();
 	curDomain = curDomain[1] + '.' + curDomain[0];
 	var appUrl = 'http://rc1.demobo.com/apps/' + curDomain + '.js?' + appVersion;
-	var apiUrl = 'http://api.demobo.com/demobo.1.3.min.js';
+	var apiUrl = 'http://api.demobo.com/demobo.1.6.0.min.js';
 	
 	// if another demobo is loading, do nothing
 	if (typeof demoboLoading == 'undefined') {
@@ -19,6 +19,7 @@
 			// inject api then app js
 			demoboBody.injectScript(apiUrl,function() {
 				demoboBody.injectScript(appUrl, function() {
+					demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 					document.getElementsByTagName('title')[0].addEventListener('DOMCharacterDataModified', function(){
 						demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 					});

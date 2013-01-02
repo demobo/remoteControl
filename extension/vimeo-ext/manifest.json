@@ -19,6 +19,9 @@
          "run_at": "document_end"
       }
    ],
+   "web_accessible_resources": [
+   		"jquery-1.7.2.min.js"
+   ],
    "icons":
    {
    	 "128": "images/icon_128.png",

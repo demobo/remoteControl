@@ -1,4 +1,4 @@
-//(function() {
+(function() {
 var ui = {
 	name: 				'youtube',
 	version: 			'1124',
@@ -9,7 +9,8 @@ var ui = {
 	searchInput:		'input[type=text].search-term',
 	searchSubmit:		'.search-button',
 	player:				null,
-	playerType:			null
+	playerType:			null,
+	isFullScreen: 		false
 };
 demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function(){
 	jQuery.noConflict();
@@ -59,14 +60,14 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		setupStateTrigger();
 		setupVolume();
 		fullScreen();
-		setTimeout(function() {
-			onReady();
-		}, 1000);
+		setTimeout(onReady, 1000);
+		setTimeout(onReady, 5000);
 	}
 
 	// ********** custom event handler functions *************
 	function onReady() {
-		refreshController();
+		sendStationList();
+		sendNowPlaying();
 		syncState();
 	}
 	function playPause() {
@@ -134,10 +135,6 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		var nowplayingdata = getNowPlayingData();
 		demobo.callFunction('loadSongInfo', nowplayingdata);
 	}
-	function refreshController() {
-		sendNowPlaying();
-		setTimeout(sendStationList,500);
-	}
 	function playAlbum(index) {
 		index = parseInt(index);
 		if (jQuery('.video-list-item .related-video')[index]) {
@@ -171,12 +168,9 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 			syncState();
 			sendNowPlaying();
 		});
-// yt.config_.PLAYER_REFERENCE.addEventListener("onVolumeChange", function(e){
-// syncState();
-// });
 	}
 	function setupVolume() {
-		jQuery('body').append('<div id="demoboVolume" style="position: absolute;width: 100%;margin: auto;bottom: -70px;left: 165px; color: #00adef;font-size: 30px;z-index: 1000;padding: 30px 100px;"></div>');
+		jQuery('body').append('<div id="demoboVolume" style="position: fixed;width: 100%;margin: auto;bottom: 10%;left: 5%; color: #00adef;font-weight: bolder; font-size: 50px;z-index: 9999;padding: 30px 100px;"></div>');
 		setVolume();
 	}
 	function getNowPlayingData() {
@@ -229,37 +223,31 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 	}
 	
 	function toggleScreen() {
-		if (jQuery('body').css('zoom')=="1") fullScreen();
+		if (!ui.isFullScreen) fullScreen();
 		else regularScreen();
 	}
+	
 	function fullScreen() {
 		if (!yt.config_.PLAYER_REFERENCE) return;
-		var z = Math.min(jQuery('body').width()/jQuery(ui.player).width(),jQuery('body').height()/jQuery(ui.player).height());
-		var ol = parseInt((jQuery(ui.player).offset().left - (jQuery('body').width()/z-jQuery(ui.player).width())/2)*z);
-		var ot = parseInt((jQuery(ui.player).offset().top - (jQuery('body').height()/z-jQuery(ui.player).height())/2)*z);
-//		var ot = parseInt(jQuery(ui.player).offset().top*z);
-		jQuery('#footer-hh-container').hide();
-		jQuery('.yt-uix-clickcard-card, .video-list-item img, .collapsible-guide, .yt-grid-box, #watch7-sidebar').css({opacity:0});
-		jQuery('html,#watch7-video-container,#body-container,#watch7-headline').css({'background':'black', border: 'none'});
-		jQuery('#demoboVolume').css({'bottom':'-70px','background':''});
-		jQuery('body').css({zoom:z, overflow:'hidden'}).scrollTop(ot).scrollLeft(ol);
-		setTimeout(function() {
-			jQuery('body').scrollLeft(ol);
-		},50);
-		
+		jQuery('#watch7-video').css({position:'fixed',top:0,left:0,'z-index':9998,width:'100%',height:'100%'});
+		jQuery('#watch7-player').css({width:'100%',height:'100%'});
+		jQuery('body').css({overflow:'hidden'});
+		ui.isFullScreen = true;
 	}
 	function regularScreen() {
 		if (!yt.config_.PLAYER_REFERENCE) return;
-		jQuery('body').css({zoom:1, overflow:''}).scrollLeft(0).scrollTop(0);
-		jQuery('#footer-hh-container').show();
-		jQuery('.yt-uix-clickcard-card, .video-list-item img, .collapsible-guide, .yt-grid-box, #watch7-sidebar').css({opacity:''});
-		jQuery('html,#watch7-video-container,#body-container,#watch7-headline').css({'background':'', border: ''});
-		jQuery('#demoboVolume').css({'bottom':'0px','background':''});
+		jQuery('#watch7-video').css({position:'',top:'',left:'','z-index':'',width:'',height:''});
+		jQuery('#watch7-player').css({width:'',height:''});
+		jQuery('body').css({overflow:''});
+		ui.isFullScreen = false;
 	}
 	document.addEventListener("keyup", function(event) {
 		if(event.which == 27) { // esc trigger toggleScreen
 			toggleScreen();
 		}
-	}, true);	
+	}, true);
+	ui.fullScreen = fullScreen;
+	ui.regularScreen = regularScreen;
+	ui.sendStationList = sendStationList;
 });
-// })();
+})();

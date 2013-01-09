@@ -8,7 +8,7 @@
 	
 	var ui = {
 		name: 				'docsgoogle',
-		version: 			'1106'
+		version: 			'1107'
 	};
 	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
 	slideChangeTimeout = null;

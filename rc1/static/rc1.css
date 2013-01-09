@@ -134,14 +134,19 @@ body.connected .triangle-border.right:before {
     border-color: transparent #fff;
 }
 
-.step1, .step2, .step3, .step4 {
+.step0, .step1, .step2, .step3, .step4 {
     color: black;
     font-size: 11px;
     text-align: center;
     font-size: 15px;
     position: absolute;
 }
-
+.step0 {
+    opacity: 1;
+    top: 20px;
+    left: 35px;
+    -webkit-transition: opacity 0.2s linear;
+}
 .step1 {
     opacity: 1;
     top: 20px;

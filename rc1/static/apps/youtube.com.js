@@ -1,7 +1,7 @@
 (function() {
 var ui = {
 	name: 				'youtube',
-	version: 			'1124',
+	version: 			'1125',
 	songTrigger: 		'#interstitial',
 	stationTrigger: 	'#film_strip',
 	videoCollection:	'.related-video .yt-thumb-clip-inner',
@@ -15,7 +15,7 @@ var ui = {
 demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function(){
 	jQuery.noConflict();
 	if (DEMOBO) {
-		DEMOBO.autoConnect = false;
+		DEMOBO.autoConnect = true;
 		DEMOBO.init = init;
 		demobo.start();
 	}
@@ -33,6 +33,14 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 	}
 	// do all the iniations you need here
 	function init() {
+		demobo.connect = function() {};
+		demobo.disconnect = function() {};
+		demoboBody.addEventListener("connectDemobo", function(e) {
+			fullScreen();
+		});
+		demoboBody.addEventListener("disconnectDemobo", function(e) {
+			regularScreen();
+		});
 		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 		demobo.setController( {
 			url : ui.controllerUrl,
@@ -59,7 +67,7 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		});
 		setupStateTrigger();
 		setupVolume();
-		fullScreen();
+		if (localStorage.getItem('couchMode')!='false') fullScreen();
 		setTimeout(onReady, 1000);
 		setTimeout(onReady, 5000);
 	}
@@ -149,7 +157,6 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 	function searchKeyword(keyword) {
 		keyword = keyword.trim();
 		if (!keyword) return;
-		regularScreen();
 		jQuery(ui.searchInput).val(keyword);
 		setTimeout(function() {
 			if (jQuery(ui.searchInput).val()) jQuery('#masthead-search')[0].submit();
@@ -233,6 +240,8 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		jQuery('#watch7-player').css({width:'100%',height:'100%'});
 		jQuery('body').css({overflow:'hidden'});
 		ui.isFullScreen = true;
+		demobo._sendToSimulator('setData', {key: 'autoConnect', value: true});
+		localStorage.setItem('couchMode','true');
 	}
 	function regularScreen() {
 		if (!yt.config_.PLAYER_REFERENCE) return;
@@ -240,6 +249,8 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		jQuery('#watch7-player').css({width:'',height:''});
 		jQuery('body').css({overflow:''});
 		ui.isFullScreen = false;
+		demobo._sendToSimulator('setData', {key: 'autoConnect', value: false});
+		localStorage.setItem('couchMode','false');
 	}
 	document.addEventListener("keyup", function(event) {
 		if(event.which == 27) { // esc trigger toggleScreen

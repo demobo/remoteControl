@@ -5,10 +5,10 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 		<script src="http://api.demobo.com/demobo.mobile.1.0.2.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+        <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 		<script src="http://api.demobo.com/jquery.kinectic.min.js"></script>
         <script>
             $(document).ready(function(){
@@ -156,7 +156,8 @@
             body {
                 height: 100%;
                 width: 100%;
-                overflow: hidden;
+                overflow-x: scroll;
+                overflow-y: hidden;
                 font-family: "arial", Helvetica Neue, helvetica, sans-serif;
                 background: black;
 				-webkit-user-select: none;
@@ -164,7 +165,6 @@
             input.ui-slider-input {
                 display: none !important;
             }
-			
 			#controlGroup {
 				text-align: center;
 			}
@@ -191,7 +191,6 @@
 				-webkit-border-radius: 28px;
 				display: inline-block;
 				vertical-align: middle;
-				margin: 5px 0px 0px 10px;
 			}
 			
 			.notesControl input.ui-slider-input {
@@ -202,7 +201,7 @@
 				width: 215px;
 				height: 5px;
 				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH8AAAADCAYAAAC6XdCpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAFFJREFUOE9j8PPzYyAXKxt5dwHxTyD+P4rpHgavgGEOjDry44/siAdZCrT8g4Zl2H8d+/hRPABhoG0Xt3ogIz8H6IBXo5E/IIn/PDDcbSiJfAAYJEZI5hknWwAAAABJRU5ErkJggg%3D%3D) no-repeat;
-				margin: 0px 0px 0px 10px;
+				margin: 0px 0px 0px 30px;
 				padding: 15px 0px;
 				border: none;
 				top: -12px;

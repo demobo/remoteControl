@@ -1,5 +1,5 @@
 (function() {
-	var appVersion = "1128";
+	var appVersion = "1131";
 	var curDomain = document.domain.split('.').reverse();
 	curDomain = curDomain[1] + '.' + curDomain[0];
 	var appUrl = 'http://rc1.demobo.com/apps/' + curDomain + '.js?' + appVersion;

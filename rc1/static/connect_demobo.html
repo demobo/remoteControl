@@ -142,6 +142,14 @@
 			</ul>
 		</div>
 		<script>
+			if (location.search == "?vimeo" || location.search == "?youtube") {
+				$('body').addClass('connected');
+				if (location.search == "?youtube") $('.step1').text('Couch Mode').addClass('step0').removeClass('step1');
+				else $('.step1, #settings').hide();
+				$('.step2').text('1. Download de Mobo phone app');
+				$('.step3').text('2. Scan QR code');
+				$('.step4').text('3. Visit supported sites');
+			}
 			$('#logo img').attr('src',logoUrl);
 			$('.g-plusone').attr('data-href', promoUrl);
 			$('.fb-like').attr('data-href', promoUrl);
@@ -198,6 +206,7 @@
 				}
 			});
 			function toggleConnectPage() {
+				if (location.search == "?youtube") return;
 				if (extensionData.autoConnect) {
 					$('body').addClass('connected');
 				} else {

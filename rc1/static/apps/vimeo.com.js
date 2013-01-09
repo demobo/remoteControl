@@ -1,6 +1,6 @@
 (function() {
 	if (DEMOBO) {
-		DEMOBO.autoConnect = false;
+		DEMOBO.autoConnect = true;
 		DEMOBO.init = init;
 		demobo.start();
 	}

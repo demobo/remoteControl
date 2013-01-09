@@ -1,5 +1,5 @@
 (function() {
-	var appVersion = "1130";
+	var appVersion = "1131";
 	var curDomain = document.domain.split('.').reverse();
 	if (curDomain[1]=='google') curDomain = curDomain[2] + '.' + curDomain[1] + '.' + curDomain[0];
 	else curDomain = curDomain[1] + '.' + curDomain[0];

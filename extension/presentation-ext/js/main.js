@@ -61,9 +61,9 @@
 			chrome.extension.sendMessage({action:'FromFrontground', detail: e.detail});
 		});
 
-		var timeToWait = 3000;
+		var timeToWait = 100;
 		if (!localStorage.isDemobo) localStorage.isAutoLoad = "true";
-		setTimeout(pageActionOnClick, timeToWait + 1000);
+		setTimeout(pageActionOnClick, timeToWait + 200);
 	}
 	
 	function onMessage(message, sender, sendResponse) {

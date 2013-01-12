@@ -20,6 +20,7 @@ if (DEMOBO) {
 			if (e.source) $('#eventSource').text(e.source).css(messageCss).show().fadeOut(1000);
 			messageCss.top = '30%';
 			if (e.value) $('#eventValue').text(e.value).css(messageCss).show().fadeOut(1000);
+			console.log(e.source, e.value);
 		}, false);
 		$('button#set').click(
 				function() {

@@ -2,136 +2,55 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
-        <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
 		<link rel="stylesheet" href="http://trivia.playableitem.demobo.com/main.css?"/>
+		<script>
+			$(document).bind( "mobileinit", function(event) {
+			    $.extend($.mobile.zoom, {locked:true,enabled:false});
+			});
+		</script>
+		<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
         <script>
         	var syncEnable = true;
             $(document).ready(function(){
 				non480x320Adjust();
-				// click 4th album trigger next
-				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(4)', function(e){
-					$('#nextButton').click();
-				});
-				// silent button
-				$('#volumeButton').click(function(){
-					$('.volumeSlider').val(0);
-					$('.volumeSlider').slider('refresh');
-					onSlideChange();
-				});
-				$('.volumeSlider').on('slidestart',function(){
-					syncEnable = false;
-					$(this).on('change',onSlideChange);
-					onSlideChange();
-				}).on('slidestop',function(){
-					syncEnable = true;
-					$(this).off('change',onSlideChange);
-				})
-				var onSlideChange = function(){
-					demobo.mobile.fireInputEvent('volumeSlider', $('.volumeSlider').val());
-				}
+				$('.answer').hide();
+				document.body.addEventListener('touchstart', sendTouchEvent, false);
+				document.body.addEventListener('touchmove', sendTouchEvent, false);
+				document.body.addEventListener('touchend', sendTouchEvent, false);
             });
-			
+			function sendTouchEvent(event) {
+				event.preventDefault();
+				if (event.targetTouches.length == 1) {
+				    var touch = event.targetTouches[0];
+				    demobo.mobile.fireInputEvent('demoboEvent', {type: event.type, x: touch.pageX, y: touch.pageY});
+				}
+			}
 			function non480x320Adjust() {
 				var screenHeight = $(window).height();
 				// zoomAdjust for non iphones
-                $('#header, #controlGroup, #nowplayingGroup').css('zoom', screenHeight / 320);
-                // jquery mobile input range is not working with zoom
-                $('.volumeControl').css('zoom', 320 / screenHeight);
-			}
-            
-            function loadSongInfo(songs){
-                if ($.isArray(songs)) {
-                    var song = songs.pop();
-                    var prevSong = songs.pop();
-					var prevPrevSong = songs.pop();
-                }
-                else 
-                    var song = songs;
-				if (!song || !song.title) return;
-				makeQueue(5);	
-				if (prevSong)  {
-					setSongAt(3,prevSong);
-				}
-				if (prevPrevSong)  {
-					setSongAt(2,prevPrevSong);
-				}
-				if ($('.nowplayingItem:nth-child(3) .title').text()!=song.title) {
-					setSongAt(4,song);
-					var noImageCase = setTimeout(function(){
-						if ($('.nowplayingItem:nth-child(4) .title').text()) $('.nowplayingItem:nth-child(1)').remove();
-					}, 1000);
-					$('.nowplayingItem:nth-child(4) img').one('load', function(){
-						if ($('.nowplayingItem:nth-child(4) .title').text()) $('.nowplayingItem:nth-child(1)').remove();
-						clearTimeout(noImageCase);
-					});
-				} else {
-					setSongAt(3,song);
-				}
-            }
-			function setSongAt(n, song) {
-				var item = $('.nowplayingItem:nth-child('+n+')');
-				item.removeClass("empty");
-				item.find('.albumImage img').attr('src', song.image);
-				item.find('.title').html(song.title);
-                item.find('.artist').html(song.artist);
-                item.find('.album').html(song.album);
-			}
-			function makeQueue(n) {
-				while ($('.nowplayingItem').length<n) {
-					var clone = $('.nowplayingItem').first().clone();
-					clone.addClass("empty");
-					clone.find('.albumImage img').attr('src', "");
-					clone.find('.title').html("");
-	                clone.find('.artist').html("");
-	                clone.find('.album').html("");
-					$('.nowplayingItem').parent().append(clone);
-				}
-//				$('.nowplayingItem:gt('+(n-1)+')').remove();
-			}
-           
-            function loadChannelList(items){
-                $('#stationItem').html('');
-                for (var i = 0; i < items.length; i++) {
-					var option = $('<option value="' + i + '">' + items[i].title + '</option>');
-                    $('#stationItem').append(option);
-					if (items[i].selected) setCurrentChannel(i);
-                }
-            }
-			
-			function setCurrentChannel(index) {
-				$('#stationItem').val(index);
-				$('#stationsTab .ui-btn-text').html($('#stationItem option')[index].text + " &#9660;");
-			}
-			function syncState(state){
-				if (!syncEnable) return;
-				if (state.isPlaying) {
-					$('#playButton').addClass('hidden');
-					$('#pauseButton').removeClass('hidden');
-				} else {
-					$('#playButton').removeClass('hidden');
-					$('#pauseButton').addClass('hidden');
-				}
-				if (state.volume>=0) {
-					$('.volumeSlider').val(state.volume);
-					$('.volumeSlider').slider('refresh');
-				}
+                $('body').css('zoom', screenHeight / 320);
 			}
 			
+			function renderAnswers(answers) {
+				$('.answer').show();
+				for (var i in answers) {
+					$('.answer button').eq(i).text(answers[i]);
+				}
+			}
         </script>
     </head>
     <body>
-        <div id="main" data-role=page>
+        <div id="main">
 			<div class="answer">
-				<button id="b1"></button>
-				<button id="b2"></button>
-				<button id="b3"></button>
-				<button id="b4"></button>
+				<button id="b1" data-role="none"></button>
+				<button id="b2" data-role="none"></button>
+				<button id="b3" data-role="none"></button>
+				<button id="b4" data-role="none"></button>
 			</div>
         </div>
         <style>

@@ -469,3 +469,15 @@ body.connected label.info {
 	color: white;
 	text-decoration:underline;
 }
+.poweredby {
+	font-size:10px;
+	color: #bbb;
+	margin:20px 0px 5px 20px;
+	position: fixed;
+	bottom: 0px;
+}
+.poweredby .appLink{
+	font-size:14px;
+	color: #bbb;
+	text-decoration: none;
+}

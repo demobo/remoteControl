@@ -49,6 +49,7 @@
 			'spamButton' : spam,
 			'volumeSlider' : setVolume,
 			'stationItem' : chooseStation,
+			'demoboVolume' : onVolume,
 			'demoboApp' : function() {
 				refreshController();
 				hideDemobo();
@@ -83,7 +84,11 @@
 		getLFMControls()._setVolume(num, true);
 		syncState();
 	}
-
+	function onVolume(value) {
+		if (value=='up') setVolume(parseInt(getVolume())+10);
+		else if (value=='down') setVolume(parseInt(getVolume())-10);
+		else setVolume(value*100);
+	}
 	function sendNowPlaying() {
 		var nowplayingdata = getNowPlayingData();
 		if (!nowplayingdata)

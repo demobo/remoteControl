@@ -50,6 +50,7 @@
 			'spamButton' : 		dislike,
 			'volumeSlider' : 	setVolume,
 			'stationItem' : 	chooseStation,
+			'demoboVolume' : 	onVolume,
 			'demoboApp' : 		onReady
 		});
 		showDemobo();
@@ -92,6 +93,11 @@
 			type : 'click',
 			pageX : target
 		});
+	}
+	function onVolume(value) {
+		if (value=='up') setVolume(parseInt(getVolume())+5);
+		else if (value=='down') setVolume(parseInt(getVolume())-5);
+		else setVolume(value*100);
 	}
 	function chooseStation(index) {
 		index = parseInt(index);

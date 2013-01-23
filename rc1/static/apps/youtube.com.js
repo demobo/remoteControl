@@ -63,7 +63,8 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 			'channelDown':		previous,
 			'fullScreenButton':	toggleScreen,
 			'vimeoButton':		vimeoButton,
-			'demoboApp' : 		onReady
+			'demoboApp' : 		onReady,
+			'demoboVolume' : 	onVolume
 		});
 		setupStateTrigger();
 		setupVolume();
@@ -124,6 +125,7 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 	function setVolume(num) {
 		if (num>=0) localStorage.setItem('demoboVolume',num);
 		else num = localStorage.getItem('demoboVolume')||50;
+		num = Math.min(100,num);
 		jQuery('#demoboVolume').show().html('<span width>VOL '+num+' </span>'+Array(Math.floor(parseInt(num)/5)+1).join("|")).stop().css('opacity',1).fadeTo(3000,0,function(){jQuery('#demoboVolume').hide()});
 		num = num / 100;
 		if(ui.playerType == "flash") {
@@ -138,6 +140,11 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		} else if(ui.playerType == "html5") {
 			return parseInt(ui.player.volume*100);
 		}
+	}
+	function onVolume(value) {
+		if (value=='up') setVolume(parseInt(localStorage.getItem('demoboVolume'))+5);
+		else if (value=='down') setVolume(parseInt(localStorage.getItem('demoboVolume'))-5);
+		else setVolume(value*100);
 	}
 	function sendNowPlaying() {
 		var nowplayingdata = getNowPlayingData();

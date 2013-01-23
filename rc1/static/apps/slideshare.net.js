@@ -1,4 +1,4 @@
-(function() {
+//(function() {
 	if (DEMOBO) {
 		DEMOBO.developer = 'developer@demobo.com';
 		DEMOBO.autoConnect = false;
@@ -9,7 +9,7 @@
 	
 	var ui = {
 		name: 				'slideshare',
-		version: 			'1104',
+		version: 			'1108',
 		nextButton: 		'.btnNext',
 		previousButton: 	'.btnPrevious',
 		firstButton: 		'.btnFirst',
@@ -38,7 +38,8 @@
 			'firstButton' : 	firstSlide,
 			'lastButton' : 		lastSlide,
 			'notesSlider':		setSlide,
-			'demoboApp' : 		onReady
+			'demoboApp' : 		onReady,
+			'demoboVolume' : 	onVolume
 		});
 		setupPageTrigger();
 		setTimeout(refreshController,2000);
@@ -77,7 +78,10 @@
 		loadNotes();
 		setCurrentPage(1);
 	}
-
+	function onVolume(value) {
+		if (value=='up') next();
+		else if (value=='down') previous();
+	}
 	/* helpers */
 	function setupPageTrigger() {
 		var triggerDelay = 50;
@@ -127,4 +131,4 @@
 		}
 		return toReturn;
 	}
-})();
+//})();

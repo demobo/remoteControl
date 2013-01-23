@@ -79,7 +79,8 @@
 			'leftButton':		leftButton,
 			'rightButton':		rightButton,
 			'okButton':			okButton,
-			'demoboApp' : 		onReady
+			'demoboApp' : 		onReady,
+			'demoboVolume' : 	onVolume
 		});
 		setupSongTrigger();
 		setupStationTrigger();
@@ -123,9 +124,18 @@
 	function setVolume(num) {
 		if (num>=0) localStorage.setItem('demoboVolume',num);
 		else num = localStorage.getItem('demoboVolume')||50;
+		num = Math.min(100,num);
 		$('#demoboVolume').html('<span width>VOL '+num+' </span>'+Array(Math.floor(parseInt(num)/5)+1).join("|")).stop().css('opacity',1).fadeTo(3000,0);
 		num = num / 100;
 		BigScreen.getVideo().setVolume(num);
+	}
+	function getVolume() {
+		return parseInt(BigScreen.getVideo().volume*100);
+	}
+	function onVolume(value) {
+		if (value=='up') setVolume(getVolume()+5);
+		else if (value=='down') setVolume(getVolume()-5);
+		else setVolume(value*100);
 	}
 	function sendNowPlaying() {
 		var nowplayingdata = getNowPlayingData();
@@ -313,7 +323,7 @@
 	}
 	
 	function syncState() {
-		var state = {isPlaying: BigScreen.getVideo().playing, volume: parseInt(BigScreen.getVideo().volume*100)};
+		var state = {isPlaying: BigScreen.getVideo().playing, volume: getVolume()};
 		demobo.callFunction('syncState', state);
 	}
 	

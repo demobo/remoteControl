@@ -50,6 +50,7 @@
 			'volumeSlider' : setVolume,
 			'stationItem' : chooseStation,
 			'pinBoardItem' : choosePinBoard,
+			'demoboVolume' : onVolume,
 			'demoboApp' : function() {
 				refreshController();
 				hideDemobo();
@@ -94,7 +95,11 @@
 		GS.player.setVolume(num);
 		syncState();
 	}
-
+	function onVolume(value) {
+		if (value=='up') setVolume(parseInt(getVolume())+10);
+		else if (value=='down') setVolume(parseInt(getVolume())-10);
+		else setVolume(value*100);
+	}
 	function sendNowPlaying() {
 		demobo.callFunction('loadSongInfo', getNowPlayingData());
 	}

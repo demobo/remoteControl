@@ -8,7 +8,7 @@
 	
 	var ui = {
 		name: 				'docsgoogle',
-		version: 			'1107'
+		version: 			'1108'
 	};
 	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
 	slideChangeTimeout = null;
@@ -26,7 +26,8 @@
 			'nextButton' : 		next,
 			'previousButton' : 	previous,
 			'notesSlider':		setSlide,
-			'demoboApp' : 		onReady
+			'demoboApp' : 		onReady,
+			'demoboVolume' : 	onVolume
 		});
 		slides = getSlides();
 		setupPageTrigger();
@@ -55,6 +56,10 @@
 	function refreshController() {
 		loadNotes();
 		setCurrentPage(1);
+	}
+	function onVolume(value) {
+		if (value=='up') next();
+		else if (value=='down') previous();
 	}
 
 	/* helpers */

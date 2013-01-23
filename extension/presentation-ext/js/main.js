@@ -1,5 +1,5 @@
 (function() {
-	var dev = false;
+	var dev = true;
 	var injectedExtScript;
 	if (dev) {
 		injectedExtScript = function() {

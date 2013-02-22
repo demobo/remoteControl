@@ -4,6 +4,7 @@ if (DEMOBO) {
 	DEMOBO.maxPlayers = 1;
 	DEMOBO.stayOnBlur = true;
 	var imgID = 0;
+	var testSuite;
 	DEMOBO.init = function() {
 		if (localStorage.getItem("url"))
 			$('#url').val(localStorage.getItem("url"));
@@ -24,7 +25,7 @@ if (DEMOBO) {
 		}, false);
 		$('button#set').click(
 				function() {
-					var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID
+					var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID.substr(0,5)
 							+ ".html?" + Math.random();
 					var c = {
 							page : "default",
@@ -45,7 +46,7 @@ if (DEMOBO) {
 					crossDomain : true,
 					data : {
 						data : data,
-						roomID : DEMOBO.roomID
+						roomID : DEMOBO.roomID.substr(0,5)
 					},
 					dataType : 'json',
 					success : function() {
@@ -55,12 +56,17 @@ if (DEMOBO) {
 				localStorage.setItem("url", $('#url').val());
 			});
 		});
+		var testCounter=0;
 		$('button#test').click(function() {
+			testSuite = null;
 			var testfile = 'test.js';
 			if ($('#url').val().split("/").length == 3)
 				testfile = $('#url').val() + "/" + testfile;
-			console.log(testfile);
 			$.getScript(testfile, function(data, textStatus, jqxhr) {
+				if (testSuite) {
+					testCases = testSuite[testCounter%testSuite.length];
+					testCounter++;
+				}
 				console.log(testCases);
 				for ( var i = 0; i < testCases.length; i++) {
 					var test = testCases[i];

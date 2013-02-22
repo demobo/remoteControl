@@ -8,7 +8,7 @@
 	
 	var ui = {
 		name: 				'vimeo',
-		version: 			'1120',
+		version: 			'0130',
 		playPauseButton: 	'.interactive_element.play_pause_button',
 		playButton: 		'.interactive_element.play_pause_button:not(.playing)',
 		pauseButton: 		'.interactive_element.play_pause_button.playing',

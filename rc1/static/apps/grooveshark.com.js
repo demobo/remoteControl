@@ -13,7 +13,7 @@
 	
 	var ui = {
 		name: 				'grooveshark',
-		version: 			'1119',
+		version: 			'0203',
 		playPauseButton: 	'#player_play_pause',
 		playButton: 		'#player_play_pause.play',
 		pauseButton: 		'#player_play_pause.pause',
@@ -44,6 +44,7 @@
 		demobo.inputEventDispatcher.addCommands( {
 			'playButton' : play,
 			'pauseButton' : pause,
+			'prevButton' : prev,
 			'nextButton' : next,
 			'loveButton' : love,
 			'spamButton' : spam,
@@ -74,7 +75,7 @@
 
 	function prev() {
 //		 jQuery(ui.previousButton).click();
-		player.previousSong();
+		GS.player.previousSong();
 	}
 
 	function next() {

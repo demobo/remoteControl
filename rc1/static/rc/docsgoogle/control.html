@@ -10,6 +10,18 @@
 		<script src="http://api.demobo.com/demobo.mobile.1.0.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 		<script src="http://api.demobo.com/jquery.kinectic.min.js"></script>
+		<!--Start of Google Analytics Script-->
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-33969241-1']);
+		  _gaq.push(['_trackPageview']);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+		<!--End of Google Analytics Script-->
         <script>
             $(document).ready(function(){
 				non480x320Adjust();
@@ -277,10 +289,10 @@
 				display: inline-block;
 				vertical-align: top;
 				width: 298px;
-				height: 90%;
+				height: 96%;
 				border: 1px black solid;
 				border-radius: 5px;
-				margin: 15px 10px;
+				margin: 0px 10px;
 				overflow: auto;
 			}
 			#touchcarousel .carouselItem div.note { 
@@ -288,15 +300,22 @@
 				font-size: 15px;
 				color: #111;
 				text-shadow: none;
+				height: 100%;
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space: normal;
+				height: 93%;
 			}
 			#touchcarousel .carouselItem div.title {
 				white-space:nowrap;
 				overflow: hidden;
 				margin: 0px 10px;
-				font-size: 15px;
+				font-size: 100%;
+				height: 7%;
 				color: #111;
 				text-shadow: none;
-				font-weight: bold;	
+				font-weight: bold;
+				margin-top: 0px;
 			}
 			#clock {
 				display: inline-block;

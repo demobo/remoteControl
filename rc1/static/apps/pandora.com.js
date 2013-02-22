@@ -14,7 +14,7 @@
 	
 	var ui = {
 		name: 				'pandora',
-		version: 			'1119',
+		version: 			'0201',
 		playPauseButton: 	'.playButton:visible, .pauseButton:visible',
 		playButton: 		'.playButton',
 		pauseButton: 		'.pauseButton',

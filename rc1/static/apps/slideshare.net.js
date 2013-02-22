@@ -9,7 +9,7 @@
 	
 	var ui = {
 		name: 				'slideshare',
-		version: 			'1108',
+		version: 			'0201',
 		nextButton: 		'.btnNext',
 		previousButton: 	'.btnPrevious',
 		firstButton: 		'.btnFirst',

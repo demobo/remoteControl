@@ -1,7 +1,7 @@
 (function() {
 var ui = {
 	name: 				'youtube',
-	version: 			'1125',
+	version: 			'0130',
 	songTrigger: 		'#interstitial',
 	stationTrigger: 	'#film_strip',
 	videoCollection:	'.related-video .yt-thumb-clip-inner',

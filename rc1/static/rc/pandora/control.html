@@ -9,6 +9,18 @@
 		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<!--Start of Google Analytics Script-->
+		<script type="text/javascript">
+		  var _gaq = _gaq || [];
+		  _gaq.push(['_setAccount', 'UA-37723804-1']);
+		  _gaq.push(['_trackPageview']);
+		  (function() {
+		    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+		    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+		    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		  })();
+		</script>
+		<!--End of Google Analytics Script-->
         <script>
         	var syncEnable = true;
             $(document).ready(function(){
@@ -16,6 +28,9 @@
 				// click 4th album trigger next
 				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(4)', function(e){
 					$('#nextButton').click();
+				});
+				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(3) .albumInfo', function(e){
+					$('#playButton, #pauseButton').not('.hidden').click();
 				});
 				// silent button
 				$('#volumeButton').click(function(){
@@ -32,10 +47,14 @@
 					$(this).off('change',onSlideChange);
 				})
 				var onSlideChange = function(){
+					updateVolume();
 					demobo.mobile.fireInputEvent('volumeSlider', $('.volumeSlider').val());
 				}
             });
-			
+			function updateVolume() {
+				if ($('.volumeSlider').val()==0) $('#volumeButton').addClass('off');
+				else $('#volumeButton').removeClass('off');
+			}
 			function non480x320Adjust() {
 				var screenHeight = $(window).height();
 				// zoomAdjust for non iphones
@@ -119,6 +138,7 @@
 				if (state.volume>=0) {
 					$('.volumeSlider').val(state.volume);
 					$('.volumeSlider').slider('refresh');
+					updateVolume();
 				}
 			}
 			
@@ -156,10 +176,6 @@
 	                        <img>
 	                    </div>
 	                    <div class="albumInfo">
-	                    	<div class="updowngroup">
-	                    		<a id="spamButton" class="spamButton smallButton" value="spam"></a>
-	                            <a id="loveButton" class="loveButton smallButton" value="love"></a>
-	                        </div>
 	                        <div class="albumInfoGroup">
 	                            <div class="title">
 	                            </div>
@@ -169,6 +185,10 @@
 	                            </div>
 	                        </div>
 	                    </div>
+						<div class="updowngroup">
+                    		<a id="spamButton" class="spamButton smallButton" value="spam"></a>
+                            <a id="loveButton" class="loveButton smallButton" value="love"></a>
+                        </div>
 	                </div>
 				</div>
             </div>
@@ -244,6 +264,10 @@
 				left: 5px;
 				position: relative;
             }
+			.volumeButton.off {
+				width: 12px;
+				margin-right: 12px;
+			}
             .volumeControl {
                 width: 210px;
 				height: 40px;
@@ -260,7 +284,7 @@
             }
 			
 			.volumeControl div.ui-slider {
-				width: 145px;
+				width: 130px;
 				height: 5px;
 				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH8AAAADCAYAAAC6XdCpAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAadEVYdFNvZnR3YXJlAFBhaW50Lk5FVCB2My41LjEwMPRyoQAAAFFJREFUOE9j8PPzYyAXKxt5dwHxTyD+P4rpHgavgGEOjDry44/siAdZCrT8g4Zl2H8d+/hRPABhoG0Xt3ogIz8H6IBXo5E/IIn/PDDcbSiJfAAYJEZI5hknWwAAAABJRU5ErkJggg%3D%3D) no-repeat;
 				margin: 0px 0px 0px 10px;
@@ -350,7 +374,8 @@
 				opacity: 0.1;
 			}
 			.updowngroup{
-				margin: 85px 20px;
+				position: absolute;
+				margin: -60px 20px;
 				display: none;
 			}
 			

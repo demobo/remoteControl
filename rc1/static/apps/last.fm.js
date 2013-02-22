@@ -13,7 +13,7 @@
 	
 	var ui = {
 		name: 				'lastfm',
-		version: 			'1119',
+		version: 			'0201',
 		playPauseButton: 	'#radioControlPause:visible, #radioControlPlay:visible',
 		playButton: 		'#radioControlPlay',
 		pauseButton: 		'#radioControlPause',

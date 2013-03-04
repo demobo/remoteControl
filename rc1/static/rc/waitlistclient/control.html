@@ -15,7 +15,7 @@
 		<!-- User-generated css -->
         <style>
         	.ui-body-c, .ui-overlay-c {
-				-webkit-user-select: none;
+				-webkit-user-select: text;
             }
         	.ui-btn-up-a, .ui-btn-hover-a, .ui-btn-down-a, .ui-btn-up-c, .ui-btn-hover-c, .ui-btn-down-c {
         		font-family: 'Nova Square', cursive;
@@ -57,18 +57,19 @@
 				var html ='';
 				for (var i in queue.list) {
 					var item = queue.list[i];
-					html += '<li data-theme="">'+
+					var theme = "";
+					if (item.status=="notified") theme = "b";
+					html += '<li data-theme="'+theme+'">'+
 					'<div class="partyQID">#'+item.id+'</div>'+
         			'<p><h2>'+item.name+'</h2></p>'+
         			'<p class="ui-li-aside"><strong>'+(item.time?item.time:'')+'</strong></p>'+
 					'<span class="ui-li-count">'+item.number+' people</span>'+
-					'<div class="partyButtons"><button id="removeParty" value="'+item.id+'">-</button>'+
+					'<div class="partyButtons"><button id="removeParty" value="'+item.id+'">remove</button>'+
 					'<button id="seatParty" value="'+item.id+'">seat</button>'+
 					'<button id="notifyParty" value="'+item.id+'">notify</button></div>'+
 					'<p>'+(item.notes?item.notes:'')+'</p>'+
 //					'<a class="ui-li-count" href="#removeQueue" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">-</a>'+
 //					'<a class="ui-li-count" href="#removeQueue" data-rel="popup" data-position-to="window" data-transition="pop" data-role="button">+</a>'+
-//					
 					'</li>';
 				}
 				var ul_id = '#'+queue.name;
@@ -370,7 +371,7 @@ function closestEnabledButton( element ) {
               <fieldset data-role="controlgroup">
 	                <label for="partyName">
 	                </label>
-	                <input name="" class="partyName" placeholder="Name" value="" type="text" />
+	                <input class="partyName" placeholder="Name" value="" type="text" />
 	          </fieldset>
           </div>
           <div data-role="fieldcontain">
@@ -385,7 +386,7 @@ function closestEnabledButton( element ) {
               <fieldset data-role="controlgroup">
                     <label for="partyNotes">
                     </label>
-                    <textarea name="" class="partyNotes" placeholder="Notes"></textarea>
+                    <textarea class="partyNotes" placeholder="Notes"></textarea>
                 </fieldset>
           </div>
 		  <div id="partySubmit" data-inline="true" data-role="button" data-icon="plus" data-iconpos="left">

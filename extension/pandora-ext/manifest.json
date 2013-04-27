@@ -1,6 +1,6 @@
 {
    "name": "Pandora Remote",
-   "description": "Using your smartphone as a Pandora Remote, Grooveshark Remote, Last FM Remote, Google Music Remote, 8 Tracks Remote, Rdio Remote ...",
+   "description": "Using your smartphone as a Pandora Remote, Grooveshark Remote, Last FM Remote, Douban FM Remote ...",
    "browser_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
@@ -15,7 +15,7 @@
          "all_frames": false,
          "js": ["js/main.js"],
 		 "css": ["css/main.css"],
-		 "matches": [ "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://retro.grooveshark.com/*" ],
+		 "matches": [ "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://retro.grooveshark.com/*", "http://douban.fm/*" ],
 		 "exclude_matches": [ "http://www.pandora.com/radioAdEmbed.html*" ],
          "run_at": "document_end"
       }
@@ -29,8 +29,8 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://retro.grooveshark.com/*"
+     "http://www.pandora.com/*", "http://www.last.fm/listen*", "http://retro.grooveshark.com/*", "http://douban.fm/*"
    ],
-   "version": "3.1.8",
+   "version": "3.2.1",
    "manifest_version": 2
 }

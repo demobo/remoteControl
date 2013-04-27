@@ -33,7 +33,7 @@
 					$('#nextButton').click();
 				});
 				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(2) .albumInfo', function(e){
-					$('#playButton, #pauseButton').not('.hidden').click();
+					$('#playPauseButton').click();
 				});
 				$('#volumeButton').click(function(){
 					$('.volumeSlider').val(0);
@@ -138,11 +138,9 @@
 			function syncState(state){
 				if (!syncEnable) return;
 				if (state.isPlaying) {
-					$('#playButton').addClass('hidden');
-					$('#pauseButton').removeClass('hidden');
+					$('#playPauseButton').removeClass('playButton').addClass('pauseButton');
 				} else {
-					$('#playButton').removeClass('hidden');
-					$('#pauseButton').addClass('hidden');
+					$('#playPauseButton').removeClass('pauseButton').addClass('playButton');
 				}
 				if (state.volume>=0) {
 					$('.volumeSlider').val(state.volume);
@@ -199,8 +197,7 @@
 	                </div>
 				</div>
 				<div id="controlGroup">
-                    <a id="playButton" onclick="" class="playButton player_control main_asset hidden" value="play"></a>
-                    <a id="pauseButton" onclick="" class="pauseButton player_control main_asset" value="pause"></a>
+					<a id="playPauseButton" onclick="" class="playButton player_control main_asset"></a>
 					<a id="prevButton" onclick="" class="prevButton player_control main_asset" value="prev"></a>
                     <a id="nextButton" onclick="" class="nextButton player_control main_asset" value="next"></a>
 	                <div class="volumeControl">
@@ -559,7 +556,7 @@
 				z-index: 1;
 				top: 50%;
 				width: 30px;
-				height: 50px;
+				height: 20px;
 				margin-top: -12px;
 				margin-left: -5px;
 				outline: 0;

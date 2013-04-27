@@ -15,7 +15,7 @@
 			url : "http://rc1.demobo.com/rc/8tracks?0926"
 		});
 		// your custom demobo input event dispatcher
-		demobo.inputEventDispatcher.addCommands( {
+		demobo.mapInputEvents( {
 			'playButton' : playPause,
 			'pauseButton' : playPause,
 			'nextButton' : next,

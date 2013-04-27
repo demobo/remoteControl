@@ -41,7 +41,8 @@
 			url : ui.controllerUrl
 		});
 		// your custom demobo input event dispatcher
-		demobo.inputEventDispatcher.addCommands( {
+		demobo.mapInputEvents( {
+			'playPauseButton' : playPause,
 			'playButton' : play,
 			'pauseButton' : pause,
 			'prevButton' : prev,
@@ -63,13 +64,15 @@
 	}
 
 	// ********** custom event handler functions *************
+	function playPause() {
+		GS.player.togglePlayPause();
+	}
+	
 	function play() {
-//		 jQuery(ui.playButton).click();
 		GS.player.togglePlayPause();
 	}
 
 	function pause() {
-//		 jQuery(ui.pauseButton).click();
 		GS.player.togglePlayPause();
 	}
 

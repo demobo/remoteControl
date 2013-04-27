@@ -22,7 +22,7 @@
 		});
 		if (typeof SK_viewerApp == 'undefined') return;
 		// your custom demobo input event dispatcher
-		demobo.inputEventDispatcher.addCommands( {
+		demobo.mapInputEvents( {
 			'nextButton' : 		next,
 			'previousButton' : 	previous,
 			'notesSlider':		setSlide,

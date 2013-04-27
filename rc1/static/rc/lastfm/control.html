@@ -27,7 +27,7 @@
 				non480x320Adjust();
 				$('img').bind('load', flipAlbumArt);
 				$('body').on('click', '#albumArt', function(){
-					$('#playButton, #pauseButton').not('.hidden').click();
+					$('#playPauseButton').click();
 				});
 				$('#volumeButtonMin').click(function(){
 					$('.volumeSlider').val(0);
@@ -100,11 +100,9 @@
 			function syncState(state){
 				if (!syncEnable) return;
 				if (state.isPlaying) {
-					$('#playButton').addClass('hidden');
-					$('#pauseButton').removeClass('hidden');
+					$('#playPauseButton').removeClass('playButton').addClass('pauseButton');
 				} else {
-					$('#playButton').removeClass('hidden');
-					$('#pauseButton').addClass('hidden');
+					$('#playPauseButton').removeClass('pauseButton').addClass('playButton');
 				}
 				if (state.volume>=0) {
 					$('.volumeSlider').val(state.volume);
@@ -140,8 +138,7 @@
 							<a id="loveButton" onclick="" class="loveButton button asset" value="love"></a>
 	                        <a id="spamButton" onclick="" class="spamButton button asset" value="spam"></a>
 		                    <a id="nextButton" onclick="" class="nextButton button asset" value="next"></a>
-		                    <a id="playButton" onclick="" class="playButton redbutton asset" value="play"></a>
-							<a id="pauseButton" onclick="" class="pauseButton redbutton asset hidden" value="pause"></a>
+							<a id="playPauseButton" onclick="" class="playButton redbutton asset"></a>
 						</div>
 						<div class="volumeControl row volumeBackground">
 		                    <div class="volumeButtonMin asset" id="volumeButtonMin"></div>

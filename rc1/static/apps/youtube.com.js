@@ -47,7 +47,8 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 			orientation: 'portrait'
 		});
 		// your custom demobo input event dispatcher
-		demobo.inputEventDispatcher.addCommands( {
+		demobo.mapInputEvents( {
+			'playPauseButton' : playPause,
 			'playButton' : 		playPause,
 			'pauseButton' : 	playPause,
 			'nextButton' : 		next,
@@ -243,7 +244,7 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 	
 	function fullScreen() {
 		if (!yt.config_.PLAYER_REFERENCE) return;
-		jQuery('#watch7-video').css({position:'fixed',top:0,left:0,'z-index':9998,width:'100%',height:'100%'});
+		jQuery('#watch7-video,#player-api').css({position:'fixed',top:0,left:0,'z-index':9998,width:'100%',height:'100%'});
 		jQuery('#watch7-player').css({width:'100%',height:'100%'});
 		jQuery('body').css({overflow:'hidden'});
 		ui.isFullScreen = true;
@@ -252,7 +253,7 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 	}
 	function regularScreen() {
 		if (!yt.config_.PLAYER_REFERENCE) return;
-		jQuery('#watch7-video').css({position:'',top:'',left:'','z-index':'',width:'',height:''});
+		jQuery('#watch7-video,#player-api').css({position:'',top:'',left:'','z-index':'',width:'',height:''});
 		jQuery('#watch7-player').css({width:'',height:''});
 		jQuery('body').css({overflow:''});
 		ui.isFullScreen = false;

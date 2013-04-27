@@ -39,7 +39,7 @@
 			url : ui.controllerUrl
 		});
 		// your custom demobo input event dispatcher
-		demobo.inputEventDispatcher.addCommands( {
+		demobo.mapInputEvents( {
 			'playButton' : 		playPause,
 			'pauseButton' : 	playPause,
 			'nextButton' : 		next,

@@ -9,19 +9,29 @@
 	}
 	demoboLoading = undefined;
 
+	var ui = {
+			name: 				'douban',
+			version: 			'0301'
+		};
+	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
+		
 	// do all the iniations you need here
 	function init() {
 		demobo.setController( {
-			url : "http://rc1.demobo.com/rc/douban?0924"
+			url : ui.controllerUrl
 		});
 		// your custom demobo input event dispatcher
-		demobo.inputEventDispatcher.addCommands( {
+		demobo.mapInputEvents( {
 			'playPauseButton' : playPause,
+			'playButton' : playPause,
+			'pauseButton' : playPause,
 			'loveButton' : love,
 			'spamButton' : ban,
 			'nextButton' : next,
 			'channelTab' : sendStationList,
 			'stationItem' : chooseStation,
+			'volumeSlider' : setVolume,
+			'demoboVolume' : onVolume,
 			'demoboApp' : function() {
 				refreshController();
 				hideDemobo();
@@ -34,6 +44,7 @@
 	// ********** custom event handler functions *************
 	function playPause() {
 		DBR.act('pause');
+		syncState();
 	}
 
 	function next() {
@@ -47,7 +58,19 @@
 	function ban() {
 		DBR.act('ban');
 	}
-
+	
+	function setVolume(num) {
+		num = parseInt(num / 10) * 10;
+//		getLFMControls()._setVolume(num, true);
+		syncState();
+	}
+	
+	function onVolume(value) {
+		if (value=='up') setVolume(parseInt(getVolume())+10);
+		else if (value=='down') setVolume(parseInt(getVolume())-10);
+		else setVolume(value*100);
+	}
+	
 	function sendStationList() {
 		var list = $.map($('.channel'), function(value, index) {
 			var s = {
@@ -111,5 +134,19 @@
 	function sendNowPlaying() {
 		demobo.callFunction('loadSongInfo', getNowPlayingData());
 		demobo.callFunction('setCurrentChannel', getCurrentStationIndex());
+		syncState();
+	}
+	
+	function syncState(e) {
+		setTimeout(function() {
+			curState = {isPlaying: getIsPlaying(), volume: getVolume()};
+			demobo.callFunction('syncState', curState);
+		}, 30);
+	}
+	function getIsPlaying() {
+		return !DBR.is_paused();
+	}
+	function getVolume() {
+		return 50;
 	}
 })();

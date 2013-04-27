@@ -32,7 +32,7 @@
 		});
 		if (typeof player == 'undefined') return;
 		// your custom demobo input event dispatcher
-		demobo.inputEventDispatcher.addCommands( {
+		demobo.mapInputEvents( {
 			'nextButton' : 		next,
 			'previousButton' : 	previous,
 			'firstButton' : 	firstSlide,

@@ -26,14 +26,14 @@
             $(document).ready(function(){
 				non480x320Adjust();
 				// click 4th album trigger next
-				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(4)', function(e){
+				$('.nowplayingItem').parent().on('vclick', '.nowplayingItem:nth-child(4)', function(e){
 					$('#nextButton').click();
 				});
-				$('.nowplayingItem').parent().on('click', '.nowplayingItem:nth-child(3) .albumInfo', function(e){
-					$('#playButton, #pauseButton').not('.hidden').click();
+				$('.nowplayingItem').parent().on('vclick', '.nowplayingItem:nth-child(3) .albumInfo', function(e){
+					$('#playPauseButton').click();
 				});
 				// silent button
-				$('#volumeButton').click(function(){
+				$('#volumeButton').on('vclick', function(){
 					$('.volumeSlider').val(0);
 					$('.volumeSlider').slider('refresh');
 					onSlideChange();
@@ -129,11 +129,9 @@
 			function syncState(state){
 				if (!syncEnable) return;
 				if (state.isPlaying) {
-					$('#playButton').addClass('hidden');
-					$('#pauseButton').removeClass('hidden');
+					$('#playPauseButton').removeClass('playButton').addClass('pauseButton');
 				} else {
-					$('#playButton').removeClass('hidden');
-					$('#pauseButton').addClass('hidden');
+					$('#playPauseButton').removeClass('pauseButton').addClass('playButton');
 				}
 				if (state.volume>=0) {
 					$('.volumeSlider').val(state.volume);
@@ -161,8 +159,7 @@
             </div>
             <div id="control" class="page">
 				<div id="controlGroup">
-                    <a id="playButton" onclick="" class="playButton button" value="play"></a>
-                    <a id="pauseButton" onclick="" class="pauseButton button hidden" value="pause"></a>
+					<a id="playPauseButton" onclick="" class="playButton button"></a>
                     <a id="nextButton" onclick="" class="nextButton smallButton" value="next"></a>
 	                <div class="volumeControl">
 	                    <div class="volumeButton" id="volumeButton">

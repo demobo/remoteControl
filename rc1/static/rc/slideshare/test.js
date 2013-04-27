@@ -1,4 +1,14 @@
-var testCases = [
+var testCases1 = [
+		{
+			functionName : "syncState",
+			data : {isPlaying: true, volume: 70}
+		}];
+var testCases2 = [
+ 		{
+ 			functionName : "syncState",
+ 			data : {isPlaying: false, volume: 20}
+ 		}];
+var testCases3 = [
 		{
 			functionName : "loadNotes",
 			data : [{"note":"Page 2"},
@@ -26,10 +36,4 @@ var testCases = [
 			        {"note":"Local Business"}]
 		}
 		];
-
-//var testCases = [
-// 		{
-// 			functionName : "setCurrentPage",
-// 			data: 4
-// 		}
-// 		];
+var testSuite = [testCases1,testCases2,testCases3];

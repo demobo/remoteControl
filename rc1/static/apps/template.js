@@ -9,7 +9,7 @@ function demoboInitiation() {
 }
 
 //your custom demoboApp event dispatcher
-demoboInputDispatcher.addCommands( {
+demobo.mapInputEvents( {
 	'playButton' : play,
 	'pauseButton' : pause,
 	'nextButton' : next,

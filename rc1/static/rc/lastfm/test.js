@@ -1,4 +1,14 @@
-var testCases = [
+var testCases1 = [
+		{
+			functionName : "syncState",
+			data : {isPlaying: true, volume: 70}
+		}];
+var testCases2 = [
+ 		{
+ 			functionName : "syncState",
+ 			data : {isPlaying: false, volume: 20}
+ 		}];
+var testCases3 = [
 		{
 			functionName : "loadSongInfo",
 			data : {
@@ -32,3 +42,4 @@ var testCases = [
 			functionName : "setCurrentChannel",
 			data : 1
 		}];
+var testSuite = [testCases1,testCases2,testCases3];

@@ -15,7 +15,7 @@
          "all_frames": false,
          "js": ["js/main.js"],
 		 "css": ["css/main.css"],
-		 "matches": [ "http://vimeo.com/*", "https://vimeo.com/*", "http://www.youtube.com/*", "https://www.youtube.com/*" ],
+		 "matches": [ "http://vimeo.com/*", "https://vimeo.com/*", "http://www.youtube.com/*", "https://www.youtube.com/*", "http://*.youku.com/*" ],
          "run_at": "document_end"
       }
    ],
@@ -31,8 +31,8 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "http://vimeo.com/*", "https://vimeo.com/*", "http://www.youtube.com/*", "https://www.youtube.com/*"
+     "http://vimeo.com/*", "https://vimeo.com/*", "http://www.youtube.com/*", "https://www.youtube.com/*", "http://*.youku.com/*"
    ],
-   "version": "3.2.5",
+   "version": "3.2.6",
    "manifest_version": 2
 }

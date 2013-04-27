@@ -5,9 +5,10 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
         <meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
-		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-		<script src="http://api.demobo.com/demobo.mobile.1.0.1.min.js"></script>
+		<link rel="Stylesheet" type="text/css" href='http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css' />
+        <script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
+		<!-- load demobo mobile api before jqm -->
+		<script src="http://api.demobo.com/demobo.mobile.1.0.2.min.js"></script>
         <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
 		<script src="http://api.demobo.com/jquery.kinectic.min.js"></script>
 		<!--Start of Google Analytics Script-->
@@ -27,22 +28,29 @@
 				non480x320Adjust();
 				$('img.albumArt').bind('load', flipAlbumArt);
 				setupVolume();
-				$('#chGroup .upButton').click(function(){
+				$('#chGroup .upButton').on('vclick', function(){
 					demobo.mobile.fireInputEvent('channelUp', '');
 				});
-				$('#chGroup .downButton').click(function(){
+				$('#chGroup .downButton').on('vclick', function(){
 					demobo.mobile.fireInputEvent('channelDown', '');
 				});
 				var notmoving;
-				$('#touchcarouselFrame').on('touchstart mousedown', '.carouselItem', function(e){
-					notmoving = true;
-					$(this).one('touchend mouseup', function(e){
-						if (notmoving) demobo.mobile.fireInputEvent('playAlbum', $(this).index());
+				if (demobo.mobile.isAndroid()) {
+					$('#touchcarouselFrame').on('vclick', '.carouselItem', function(e){
+						demobo.mobile.fireInputEvent('playAlbum', $(this).index());
 					});
-				});
-				$('#touchcarouselFrame').on('touchmove mousemove', '.carouselItem', function(e){
-					notmoving = false;
-				});
+				} else {
+					$('#touchcarouselFrame').on('touchstart mousedown', '.carouselItem', function(e){
+						notmoving = true;
+						$(this).one('touchend mouseup', function(e){
+							if (notmoving) demobo.mobile.fireInputEvent('playAlbum', $(this).index());
+						});
+					});
+					$('#touchcarouselFrame').on('touchmove mousemove', '.carouselItem', function(e){
+						notmoving = false;
+					});
+				}
+				
 				$('.search').blur(function(){
 					// give it some time to clear input
 					setTimeout(function() {
@@ -55,7 +63,7 @@
 						$('.search').blur();
 				    }
 				});
-				$('#header').on('click', '.ui-input-clear', function(){
+				$('#header').on('vclick', '.ui-input-clear', function(){
 					$(this).parent().find('input[type=text]').val('');
 				});
 				$('#touchcarouselFrame').kinetic({
@@ -74,7 +82,7 @@
                         demobo.mobile.fireInputEvent('menu', 'off');
                     }
 				});
-				$( "#popupPanel button" ).on( "click", function() {	
+				$( "#popupPanel button" ).on( "vclick", function() {	
 					$( "#popupPanel" ).popup('close');
 				});
 			});
@@ -122,11 +130,9 @@
 			}
 			function syncState(state){
 				if (state.isPlaying) {
-					$('#playButton').addClass('hidden');
-					$('#pauseButton').removeClass('hidden');
+					$('#playPauseButton').removeClass('playButton').addClass('pauseButton');
 				} else {
-					$('#playButton').removeClass('hidden');
-					$('#pauseButton').addClass('hidden');
+					$('#playPauseButton').removeClass('pauseButton').addClass('playButton');
 				}
 				if (state.volume) {
 					$('#volumeSlider').val(state.volume);
@@ -135,7 +141,9 @@
 			}
 			function setupVolume() {
 				var refreshIntervalId, curVolume;
-				$('#volGroup .upButton').on('touchstart', function(){
+				$('#volGroup .upButton').on('touchstart', function(e){
+					// need e.preventDefault() to fix some old android bug
+					e.preventDefault();
 					if ($('#volumeSlider').val() == 0 && curVolume) {
 						$('#volumeSlider').val(curVolume);
 						$('#volumeSlider').slider('refresh');
@@ -143,7 +151,9 @@
 					volUp();
 					refreshIntervalId = setInterval(volUp, 200);
 				});
-				$('#volGroup .downButton').on('touchstart', function(){
+				$('#volGroup .downButton').on('touchstart', function(e){
+					// need e.preventDefault() to fix some old android bug
+					e.preventDefault();
 					if ($('#volumeSlider').val() == 0 && curVolume) {
 						$('#volumeSlider').val(curVolume);
 						$('#volumeSlider').slider('refresh');
@@ -151,18 +161,26 @@
 					volDown();
 					refreshIntervalId = setInterval(volDown, 200);
 				});
-				$('#rewindButton').on('touchstart', function(){
+				$('#rewindButton').on('touchstart', function(e){
+					// need e.preventDefault() to fix some old android bug
+					e.preventDefault();
 					rewind();
 					refreshIntervalId = setInterval(rewind, 400);
 				});
-				$('#fastforwardButton').on('touchstart', function(){
+				$('#fastforwardButton').on('touchstart', function(e){
+					// need e.preventDefault() to fix some old android bug
+					e.preventDefault();
 					fastforward();
 					refreshIntervalId = setInterval(fastforward, 400);
 				});
-				$('#volGroup .upButton, #volGroup .downButton, #rewindButton, #fastforwardButton').on('touchend', function(){
+				$('#volGroup .upButton, #volGroup .downButton, #rewindButton, #fastforwardButton').on('touchmove', function(e){
+					// need e.preventDefault() to fix some old android bug
+					e.preventDefault();
+				});
+				$('#volGroup .upButton, #volGroup .downButton, #rewindButton, #fastforwardButton').on('touchend', function(e){
 					clearInterval(refreshIntervalId);
 				});
-				$('#volumeButton').click(function(){
+				$('#volumeButton').on('vclick', function(){
 					if ($('#volumeSlider').val() > 0) {
 						curVolume = $('#volumeSlider').val();
 						$('#volumeSlider').val(0);
@@ -171,13 +189,6 @@
 						$('#volumeSlider').val(curVolume);
 						$('#volumeSlider').slider('refresh');
 					}
-				});
-				$('.menuButton').click(function(){
-                    $("#popupPanel").popup('open', {
-                        transition: 'fade',
-                        x: 0,
-                        y: 0
-                    });
 				});
 			}
 			function volUp() {
@@ -200,8 +211,6 @@
     <body>
     	<div id="main" data-role=page>
         	<div id="header">
-        		<!--<a id="staffPicks" onclick>Staff Picks</a>-->
-			    <!--<label for="search">Search:</label>-->
 			    <input type="search" name="search" class="search" value="" data-theme="a"/>
             </div>
 			<div id="touchcarouselFrame">
@@ -217,16 +226,13 @@
 				</div>
 				<div id='content'>
 					<div class="playbackControl">
-						<!--<a id="previousButton" onclick="" class="previousButton button" value="previous"></a>-->
 						<div id="rewindButton" class="rewindButton button" value="rewind"></div>
 						<div id="fastforwardButton" class="fastforwardButton button" value="fastforward"></div>
-	                    <!--<a id="nextButton" onclick="" class="nextButton button" value="next"></a>-->
 					</div>
 	            	<div class="albumArtFrame">
 		                <img class='albumArt currentAlbumArt to0'/>
 						<img class='albumArt newAlbumArt to90' />
-						<a id="playButton" onclick="" class="playButton button" value="play"></a>
-						<a id="pauseButton" onclick="" class="pauseButton button hidden" value="pause"></a>
+						<a id="playPauseButton" onclick="" class="playButton button"></a>
 					</div>
 	                <div id='controlPanel'>
 	                    <div id='songName'>
@@ -234,7 +240,6 @@
 	                </div>
 					<a id="fullScreenButton" data-role="button" data-icon="fullScreenButton" data-theme="a" data-iconpos="top"></a>
 					<a id="vimeoButton" data-role="button" data-icon="vimeoButton" data-theme="a" data-iconpos="top"></a>
-					<!--<button data-theme="a" data-icon="grid" data-mini="true" class="menuButton">Menu</button>-->
 	            </div>
 				<div id="chGroup">
 					<div class="upButton">∧</div>
@@ -711,16 +716,7 @@
 				-webkit-border-top-right-radius: 0em;
 				border-top-right-radius: 0em;
 			}
-			.menuButton {
-				height: 25px;
-				-webkit-border-radius: .3em;
-				background-color: #333;
-				text-align: center;
-				border: .3em solid #333;
-				margin: 10px;
-				background-position: 12px 0px;
-				text-shadow: none;
-            }
+			
         </style>
     </body>
 </html>

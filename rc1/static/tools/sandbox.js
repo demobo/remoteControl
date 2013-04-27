@@ -8,6 +8,7 @@ if (DEMOBO) {
 	DEMOBO.init = function() {
 		if (localStorage.getItem("url"))
 			$('#url').val(localStorage.getItem("url"));
+		demobo.setupShakeConnect();
 		demobo.addEventListener('input', function(e) {
 			var messageCss = {
 				'font-size' : 50,
@@ -25,8 +26,13 @@ if (DEMOBO) {
 		}, false);
 		$('button#set').click(
 				function() {
-					var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID.substr(0,5)
-							+ ".html?" + Math.random();
+					var link = $('#url').val();
+					if (link.indexOf("http")==0) {
+						var url = link +"?" + Math.random();
+					} else {
+						var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID.substr(0,5)
+								+ ".html?" + Math.random();
+					}
 					var c = {
 							page : "default",
 							url : url,
@@ -39,7 +45,12 @@ if (DEMOBO) {
 					$('#controllerUrl').attr('href', url);
 				});
 		$('button#upload').click(function() {
-			$.get($('#url').val(), function(data) {
+			var link = $('#url').val();
+			if (link.indexOf("http")==0) {
+				$('button#set').click();
+				return;
+			}
+			$.get(link, function(data) {
 				$.ajax( {
 					type : 'POST',
 					url : "http://net.demobo.com/server/upload.php",

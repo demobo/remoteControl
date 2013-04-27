@@ -1,4 +1,4 @@
-var testCases = [
+var testCases1 = [
 		{
 			functionName : "loadNotes",
 			data : [{"note":"Page 2"},
@@ -27,9 +27,18 @@ var testCases = [
 		}
 		];
 
-//var testCases = [
-// 		{
-// 			functionName : "setCurrentPage",
-// 			data: 4
-// 		}
-// 		];
+var testCases2 = [
+          		{
+          			functionName : "setCurrentPage",
+          			data: 3
+          		}
+          		];
+
+var testCases3 = [
+          		{
+          			functionName : "setCurrentPage",
+          			data: 6
+          		}
+          		];
+
+var testSuite = [testCases1,testCases2,testCases3];

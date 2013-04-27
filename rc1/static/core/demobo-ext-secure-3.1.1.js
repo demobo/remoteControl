@@ -5,7 +5,7 @@
 	else curDomain = curDomain[1] + '.' + curDomain[0];
 	
 	var appUrl = '//rc1-dot-de-mobo.appspot.com/apps/' + curDomain + '.js?' + appVersion;
-	var apiUrl = '//api-dot-de-mobo.appspot.com/demobo.1.6.2.min.js';
+	var apiUrl = '//api-dot-de-mobo.appspot.com/demobo.1.6.4.min.js';
 	
 	// if another demobo is loading, do nothing
 	if (typeof demoboLoading == 'undefined') {

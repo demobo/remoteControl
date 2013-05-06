@@ -26,6 +26,7 @@ if (DEMOBO) {
 		}, false);
 		$('button#set').click(
 				function() {
+					localStorage.setItem("url", $('#url').val());
 					var link = $('#url').val();
 					if (link.indexOf("http")==0) {
 						var url = link +"?" + Math.random();
@@ -45,6 +46,7 @@ if (DEMOBO) {
 					$('#controllerUrl').attr('href', url);
 				});
 		$('button#upload').click(function() {
+			localStorage.setItem("url", $('#url').val());
 			var link = $('#url').val();
 			if (link.indexOf("http")==0) {
 				$('button#set').click();

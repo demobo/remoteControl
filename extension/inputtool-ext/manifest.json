@@ -1,0 +1,38 @@
+{
+   "name": "Phone to Chrome input tool",
+   "description": "Use your smartphone's input tool on your chrome browser",
+   "page_action":
+   {
+	  "default_icon": "images/icon_19.png",
+      "default_title": "Phone to Chrome input tool",
+	  "default_popup": "popup.html"
+   },
+   "background" : {
+    "scripts": ["js/background.js"]
+   },
+   "content_scripts": [
+      {
+         "all_frames": false,
+         "js": ["js/main.js"],
+		 "css": ["css/main.css"],
+		 "matches": ["<all_urls>"],
+         "run_at": "document_end"
+      }
+   ],
+   "web_accessible_resources": [
+   		"jquery-1.7.2.min.js"
+   ],
+   "icons":
+   {
+   	 "128": "images/icon_128.png",
+      "48": "images/icon_48.png",
+	  "19": "images/icon_19.png",
+      "16": "images/icon_16.png"
+   },
+   "homepage_url": "http://www.demobo.com",
+   "permissions": [
+     "<all_urls>"
+   ],
+   "version": "3.2.6",
+   "manifest_version": 2
+}

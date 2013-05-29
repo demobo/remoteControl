@@ -48,9 +48,14 @@
 	        element.selectionStart = startPos + text.length;
 	        element.selectionEnd = startPos + text.length;
 	        element.scrollTop = scrollTop;
-	    } else {
+	    } else if (element.value!=undefined){
 	        element.value += text;
 	        element.focus();
-	    }
+	    } else{
+          var e = document.createEvent('TextEvent');
+          e.initTextEvent('textInput', true, true, null, text, 'zh-CN');
+          element.dispatchEvent(e);
+          element.focus();
+      }
 	}
 //})();

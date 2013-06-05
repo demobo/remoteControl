@@ -5,19 +5,37 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
     <meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
+	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" >
     <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
 	<script src="http://api.demobo.com/demobo.mobile.1.0.2.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
 	<script src="/rc/inputtool/lettering.js"></script>
 	<script>
             $(document).ready(function(){
             	non480x320Adjust();
 				$('.done-button').on('vclick', function(){
 					var str = $('.typing-area').val();
+					if (!str) return;
 					demobo.mobile.fireInputEvent('typing-area', str);
-					var entry = $('<div class="entry">'+str+'</div>').lettering();
+					var entry = $('<div class="entry">'+str+'</div>').lettering(isWords(str)?'words':null);
 					$('#history').prepend(entry);
 					$('.typing-area').val('');
+				});
+				$('.typing-area').on('swipe', function(){
+					$('.typing-area').val('');
+				});
+				var curSpan;
+				$('#history').on("vmousemove", ".entry span", function(e){
+					var newSpan = $(document.elementFromPoint(e.pageX, e.pageY)).closest('.entry span')[0];
+					if (!newSpan || curSpan==newSpan) return;
+					curSpan = newSpan;
+					insertSpan(newSpan);
+				});
+				$('.tab-pane').on("vclick", "span", function(e){
+					var newSpan = this;
+					curSpan = null;
+					insertSpan(newSpan);
 				});
 			});
 			function non480x320Adjust() {
@@ -25,51 +43,129 @@
 				// zoomAdjust for non iphones
                 $('body').css('zoom', screenWidth / 320);
 			}
+			function insertSpan(newSpan) {
+				$(newSpan).addClass('hover');
+				var str = $(newSpan).text();
+				setTimeout(function() {
+					$(newSpan).removeClass('hover');
+					insertTextAtCursor(str);
+				}, 200);
+			}
+			function insertTextAtCursor(text){
+				var element = $('.typing-area')[0];
+				element.focus();
+				if (isWords(text) && $('.typing-area').val().length) text = ' '+text;
+				var e = document.createEvent('TextEvent');
+				e.initTextEvent('textInput', true, true, null, text, 'zh-CN');
+				element.dispatchEvent(e);
+				element.blur();
+			}
+			function isWords(str) {
+			    return  /^[\000-\177]*$/.test(str);
+			}
 	</script>			
 </head>	
 <body>
 	<div id="main" data-role=page>
-		<textarea class="typing-area" rows="4" cols="40"></textarea>
-		<button class="done-button">Done</button>
-		<div id="history">
-			
+		<div class="control-bar">
+			<button id="enter-button">Enter</button>
+			<button id="select-button">Select All</button>
+			<textarea class="typing-area"></textarea>
+			<button class="done-button">Send</button>
+		</div>
+		<div>
+			<ul class="nav nav-tabs" id="myTab">
+			  <li class="active"><a href="#history" data-toggle="tab">History</a></li>
+			  <li><a href="#emoji" data-toggle="tab">Emoji</a></li>
+			</ul>
+			 
+			<div class="tab-content">
+			  <div class="tab-pane active" id="history"></div>
+			  <div class="tab-pane" id="emoji">
+			  	<span>(￣(エ)￣)</span><span>(｡･ω･｡)</span><span>(●｀･(ｴ)･´●)</span>
+<span>(*ノ・ω・）</span><span>川´･ω･`川</span><span>( (ﾐ´ω`ﾐ))</span>
+<span>ヾ(T(エ)Tヽ)</span><span>＼(・｀(ｪ)・)/</span><span>⊂(ο･㉨･ο）⊃</span>
+<span>(^(エ)^)</span><span>(^(I)^)</span><span>(￣(ｴ)￣)ﾉ</span>
+<span>⊂(￣(工)￣)⊃</span><span>⊂(^(工)^)⊃</span><span>⊂(・(ェ)・)⊃</span>
+<span>(*￣(ｴ)￣*)</span><span>ヾ(´(ｴ)｀ﾉﾞ</span><span>(／(ｴ)＼)</span>
+<span>⊂(￣(ｴ)￣)⊃</span><span>“(`(エ)´)ノ</span><span>(｀(エ)´)ﾉ</span>
+<span>(ó㉨ò)</span><span>(♥ó㉨ò)ﾉ♡</span><span>(/-(ｴ)-＼)</span>
+<span>(´(エ)｀)</span><span>ヽ(￣(ｴ)￣)ﾉ</span><span>(／￣(ｴ)￣)／</span>
+<span>⊂(◎(工)◎)⊃</span><span>(●￣(ｴ)￣●)</span><span>《/(￣(ｴ)￣)ゞ》</span>
+<span>⁝⁞⁝⁞ʕु•̫͡•ʔु☂⁝⁞⁝⁝</span><span>(✪㉨✪)</span>
+			  </div>
+			</div>
 		</div>
 	</div>
 	<style>
-		body {
-			background:#0F67A1;
+		html, body {
+			background: rgba(181,189,200,1);
 			color:white;
-			font-size:30px;
-			overflow:hidden;
 			-webkit-user-select: none;
 		}
-		#history .entry {
-			display: inline-block;
+		.typing-area {
+			font-size: 20px;
+			width: 220px;
+			height: 51px;
+			margin: 5px 0px;
+			border-top-left-radius: 5px;
+			border-bottom-left-radius: 5px;
+			border: 1px solid #000;
 		}
-		#history{font-weight: normal;
-			text-transform:uppercase;
-			font-family:'FranchiseRegular','HelveticaNeue-Bold','League Gothic','Impact',sans-serif;
+		.done-button {
+			position: absolute;
+			left: 250px;
+			height: 61px;
+			margin: 5px 0px;
+			font-size: 13px;
+			text-align: left;
+			border-top-right-radius: 5px;
+			border-bottom-right-radius: 5px;
+			background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+		}
+		.control-bar {
+			display: block;
+			top: 0px;
+			height: 100px;
+			margin-top: 10px;
+		}
+		.nav-tabs>.active>a, .nav-tabs>.active>a:hover {
+			background: rgba(181,189,200,1);
+			border: 1px solid #000;
+			border-bottom-color: transparent;
+		}
+		.nav-tabs {
+			border-bottom: 1px solid #000;
+		}
+		.tab-pane{
+			color:#333;
+			text-shadow:#999 -1px 1px 0;
+			margin-top: 10px;
+		}
+		.tab-pane .entry {
+			display: block;
+		}
+		.tab-pane span{
+			font-size:15px;
+			display:inline-block;
+			position:relative;
+			letter-spacing:-1px;
+			-webkit-transition:all 0.2s ease-out;
+			border: 1px #333 solid;
+			-webkit-border-radius: 20px;
+			margin: 1px;
+			padding: 0px 5px;
+			line-height: 40px;
+			background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+		}
+		.tab-pane .entry span{
+			font-weight: normal;
+			font-family:'Impact','HelveticaNeue-Bold','League Gothic',sans-serif;
 			font-size:30px;
-			color:#c44032;
-			text-shadow:#863027 -1px 1px 0;
 		}
-		#history span{display:inline-block;position:relative;letter-spacing:-1px;-webkit-transition:all 0.2s ease-out;}
-		#history span:hover{top:3px}
-		#history .char2, #history .char11{color:#e36b23;text-shadow:#9b4d1f -1px 1px 0}
-		#history .char3, #history .char10{z-index:10;color:#e6c92e;text-shadow:#9c8b26 -1px 1px 0}
-		#history .char4, #history .char9{color:#5da028;text-shadow:#427021 -1px 1px 0}
-		#history .char5, #history .char8{color:#4584be;text-shadow:#2f597f -1px 1px 0}
-		#history .char6, #history .char7{color:#7073cf;text-shadow:#4a4d88 -1px 1px 0}
-		#history .char1{-webkit-transform:rotate(-3deg)}
-		#history .char3{top:-1px;-webkit-transform:rotate(2deg)}
-		#history .char4{top:-7px}
-		#history .char6{top:-7px;-webkit-transform:rotate(2deg)}
-		#history .char7{}
-		#history .char8{top:1px;-webkit-transform:rotate(-2deg)}
-		#history .char9{-webkit-transform:rotate(2deg)}
-		#history .char10{}
-		#history .char11{top:2px;left:-30px;width:50px;-webkit-transform:rotate(-3deg)}
-		#history .char12{left:-24px}
+		.tab-pane span.hover{color:white;}
+		.tab-pane span:nth-child(even) {-webkit-transform:rotate(1deg)}
+		.tab-pane span:nth-child(odd) {-webkit-transform:rotate(-2deg)}
 	</style>	
 </body>
 </html>

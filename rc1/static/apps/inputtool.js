@@ -9,10 +9,10 @@
 	
 	var ui = {
 		name: 				'inputtool',
-		version: 			'0201'
+		version: 			'0601'
 	};
 	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
-//	ui.controllerUrl = "http://10.0.0.15:1242/rc/"+ui.name+"?"+ui.version;
+//	ui.controllerUrl = "http://10.0.0.14:1242/rc/"+ui.name+"?"+ui.version;
 	
 	// do all the iniations you need here
 	function init() {
@@ -23,7 +23,9 @@
 		// your custom demobo input event dispatcher
 		demobo.mapInputEvents( {
 			'demoboApp' : 		onReady,
-			'typing-area' : insertTextAtCursor
+			'typing-area' : insertTextAtCursor,
+			'enter-button' : onEnter,
+			'select-button' : onSelect
 		});
 	}
 
@@ -31,9 +33,20 @@
 	function onReady() {
 
 	}
-	
+	function onEnter() {
+		var element = document.activeElement;
+		var e = document.createEvent('TextEvent');
+        e.initTextEvent('textInput', true, true, null, "\n", 'zh-CN');
+        element.dispatchEvent(e);
+        element.focus();
+	}
+	function onSelect() {
+		var element = document.activeElement;
+        element.focus();
+        element.select();
+	}
 	function insertTextAtCursor(text) {
-		element = document.activeElement;
+		var element = document.activeElement;
 //		if (document.selection) {
 //	        element.focus();
 //	        var sel = document.selection.createRange();

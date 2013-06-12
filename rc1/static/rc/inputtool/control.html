@@ -1,206 +1,110 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
-	<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" >
-    <script src="http://code.jquery.com/jquery-1.8.0.min.js"></script>
-	<script src="http://api.demobo.com/demobo.mobile.1.0.2.min.js"></script>
-	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
-	<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-	<script src="/rc/inputtool/lettering.js"></script>
-	<script>
-            $(document).ready(function(){
-				$('.tab-content').height($('body').height()-$('.control-bar').height()-$('.nav').height());
-            	$('.nav-tabs').width(90*$('.nav li').length);
-				non480x320Adjust();
-				$('.done-button').on('vclick', function(){
-					var str = $('.typing-area').val();
-					if (!str) return;
-					demobo.mobile.fireInputEvent('typing-area', str);
-					var entry = $('<div class="entry">'+str+'</div>').lettering(isWords(str)?'words':null);
-					$('#history').prepend(entry);
-					$('.typing-area').val('');
-				});
-				$('.typing-area').on('swipe', function(){
-					$('.typing-area').val('');
-				});
-				var curSpan;
-				$('body').on("vmousemove", ".entry span", function(e){
-					var newSpan = $(document.elementFromPoint(e.pageX, e.pageY)).closest('.entry span')[0];
-					if (!newSpan || curSpan==newSpan) return;
-					curSpan = newSpan;
-					insertSpan(newSpan);
-				});
-				$('body').on("vclick", "span", function(e){
-					var newSpan = this;
-					curSpan = null;
-					insertSpan(newSpan);
-				});
-			});
-			function non480x320Adjust() {
-				var screenWidth = $(window).width();
-				// zoomAdjust for non iphones
-                $('body').css('zoom', screenWidth / 320);
-			}
-			function insertSpan(newSpan) {
-				$(newSpan).addClass('hover');
-				var str = $(newSpan).text();
-				setTimeout(function() {
-					$(newSpan).removeClass('hover');
-					insertTextAtCursor(str);
-				}, 200);
-			}
-			function insertTextAtCursor(text){
-				var element = $('.typing-area')[0];
-				element.focus();
-				if (isWords(text) && $('.typing-area').val().length) text = ' '+text;
-				var e = document.createEvent('TextEvent');
-				e.initTextEvent('textInput', true, true, null, text, 'zh-CN');
-				element.dispatchEvent(e);
-				element.blur();
-			}
-			function isWords(str) {
-			    return /\ /.test(str) || /[\000-\177]/.test(str);
-			}
-	</script>			
-</head>	
-<body>
-	<div id="main">
-		<div class="control-bar">
-			<div class="btn-group">
-				<button class="btn" id="enter-button">Enter</button>
-				<button class="btn" id="select-button">Select All</button>
-			</div>
-			<textarea class="typing-area"></textarea>
-			<button class="done-button">Send</button>
-		</div>
-		<div class="content-area">
-			<div class="tab-bar">
-				<ul class="nav nav-tabs" id="myTab">
-				  <li class="active"><a href="#history" data-toggle="tab">History</a></li>
-				  <li><a href="#bear" data-toggle="tab">Bear</a></li>
-				  <li><a href="#happy" data-toggle="tab">Happy</a></li>
-				  <li><a href="#angry" data-toggle="tab">Angry</a></li>
-				  <li><a href="#love" data-toggle="tab">Love</a></li>
-				  <li><a href="#confused" data-toggle="tab">Confused</a></li>
-				</ul>
-			</div>
-			<div class="tab-content">
-			  <div class="tab-pane active" id="history"></div>
-			  <div class="tab-pane" id="bear">
-			  	<span>(￣(エ)￣)</span><span>(｡･ω･｡)</span><span>(●｀･(ｴ)･´●)</span><span>(*ノ・ω・）</span><span>川´･ω･`川</span><span>( (ﾐ´ω`ﾐ))</span><span>ヾ(T(エ)Tヽ)</span><span>＼(・｀(ｪ)・)/</span><span>⊂(ο･㉨･ο）⊃</span><span>(^(エ)^)</span><span>(^(I)^)</span><span>(￣(ｴ)￣)ﾉ</span><span>⊂(￣(工)￣)⊃</span><span>⊂(^(工)^)⊃</span><span>⊂(・(ェ)・)⊃</span><span>(*￣(ｴ)￣*)</span><span>ヾ(´(ｴ)｀ﾉﾞ</span><span>(／(ｴ)＼)</span><span>⊂(￣(ｴ)￣)⊃</span><span>“(`(エ)´)ノ</span><span>(｀(エ)´)ﾉ</span><span>(ó㉨ò)</span><span>(♥ó㉨ò)ﾉ♡</span><span>(/-(ｴ)-＼)</span><span>(´(エ)｀)</span><span>ヽ(￣(ｴ)￣)ﾉ</span><span>(／￣(ｴ)￣)／</span><span>⊂(◎(工)◎)⊃</span><span>(●￣(ｴ)￣●)</span><span>《/(￣(ｴ)￣)ゞ》</span><span>⁝⁞⁝⁞ʕु•̫͡•ʔु☂⁝⁞⁝⁝</span><span>(✪㉨✪)</span>
-			  </div>
-			  <div class="tab-pane" id="happy">
-			  	<span>(●´∀｀●)</span><span>(｀・ω・´)”</span><span>ヽ(；▽；)ノ</span><span>ヽ(；▽；)ノ</span><span>(*´・ｖ・)</span><span>(((o(*ﾟ▽ﾟ*)o)))</span><span>☆*:.｡. o(≧▽≦)o .｡.:*☆</span><span>(⌒▽⌒)☆</span><span>⊂((・▽・))⊃</span><span>(≧∇≦)/</span><span>(´∇ﾉ｀*)ノ</span><span>（・◇・）</span><span>( ´ ▽ ` )ﾉ</span><span>（＾_＾）</span><span>（￣ー￣）</span><span>(*^▽^*)</span><span>(＾▽＾)</span><span>（’-’*)</span><span>∩( ・ω・)∩</span><span>(*≧▽≦)</span><span>＼（＾ ＾）／</span><span>Ｏ(≧∇≦)Ｏ</span><span>（　´∀｀）</span><span>(^～^)</span><span>＼（＠￣∇￣＠）／</span><span>(☆^O^☆)</span><span>(★^O^★)</span><span>(☆^ー^☆)</span><span>(´ω｀★)</span><span>＼（Ｔ∇Ｔ）／</span><span>ヽ(*≧ω≦)ﾉ</span><span>*(*´∀｀*)☆</span><span>Ｏ(≧▽≦)Ｏ</span><span>ヽ(*⌒∇⌒*)ﾉ</span><span>d=(´▽｀)=b</span><span>＼(*T▽T*)／</span><span>ヽ(‘ ∇‘ )ノ</span><span>（*＾ワ＾*）</span><span>ヽ(＾Д＾)ﾉ</span><span>(´∀`)</span><span>(°◇°;)</span><span>(゜▽゜;)</span><span>(/^▽^)/</span><span>(ﾉ´ｰ`)ﾉ</span><span>ヽ(´ー`)ﾉ</span><span>(　＾∇＾)</span><span>＼( ｀.∀´)／</span><span>(●⌒∇⌒●)</span><span>o(≧∇≦o)</span><span>ヽ(｀◇´)/</span><span>ヽ(*・ω・)ﾉ</span><span>（＾ω＾）</span><span>｡◕‿◕｡</span><span>⊙ω⊙</span><span>⊙△⊙</span><span>⊙▽⊙</span><span>o (◡‿◡✿)</span><span>(◕‿◕✿)</span><span>(∩_∩)</span><span>｡◕‿◕｡</span><span>(•ิ_•ิ)</span><span>(/•ิ_•ิ)/</span><span>（ΦωΦ）</span><span>（*＾＾*)</span><span>（＾⊆＾）</span><span>(-^〇^-)</span><span>(ノ*゜▽゜*)</span><span>ヾ(´▽｀;)ゝ</span><span>(゜▼゜＊）</span><span>(￣个￣)</span><span>＼(^▽^＠)ノ</span><span>(“⌒∇⌒”)</span><span>へ(゜∇、°)へ</span><span>（-＾〇＾-）</span><span>（＞ｙ＜）</span><span>ヽ(^。^)丿</span><span>(ヘ。ヘ)</span><span>（＾ｖ＾）</span><span>ヾ(@^▽^@)ノ</span><span>ヾ(@°▽°@)ノ</span><span>ヾ（＠＾▽＾＠）ノ</span><span>ヾ(＠^∇^＠)ノ</span><span>o((*^▽^*))o</span><span>ヾ(@゜∇゜@)ノ</span><span>ヾ(＠゜▽゜＠）ノ</span><span>（＠´＿｀＠）</span><span>ヾ(＠† ▽ †＠）ノ</span><span>(ノ＞▽＜。)ノ</span><span>＼（＠；◇；＠）／</span><span>＼(☆o◎)／</span><span>(((＼（＠v＠）／)))</span><span>(°◇°;)</span><span>(゜▽゜;)</span><span>(o;TωT)o</span><span>ヽ(;^o^ヽ)</span><span>（⌒▽⌒ゞ</span><span>“ヽ(´▽｀)ノ”</span><span>(((o(*ﾟ▽ﾟ*)o)))</span><span>ヾ(＠⌒ー⌒＠)ノ</span><span>Ψ(´▽｀)Ψ</span><span>（ｖ＾＿＾）ｖ</span><span>(ી(΄◞ิ౪◟ิ‵)ʃ)♥</span><span>(❁´◡`❁)*✲ﾟ*</span><span>(ღ˘⌣˘ღ) ♫･*:.｡. .｡.:*･</span><span>ლ(╹◡╹ლ)</span><span>(✿◠‿◠)</span><span>(◑‿◐)</span><span>ლ(́◉◞౪◟◉‵ლ)</span><span>✖‿✖</span><span>(*~▽~)</span><span>(─‿‿─)</span><span>∩(︶▽︶)∩</span><span>(︶ω︶)</span><span>(∩▂∩)</span><span>(¬‿¬)</span><span>(n˘v˘•)¬</span><span>ಥ‿ಥ</span><span>≖‿≖</span><span>ʘ‿ʘ</span><span>☆ﾐ(o*･ω･)ﾉ</span><span>(ﾉ´ヮ´)ﾉ*:･ﾟ✧</span><span>(✌ﾟ∀ﾟ)☞</span><span>(ᅌᴗᅌ* )</span><span>(;ﾞ°´ω°´)</span><span>°˖✧◝(⁰▿⁰)◜✧˖°</span><span>( ͡° ͜ʖ ͡°)</span><span>(•‿•)</span><span>(⊙ヮ⊙)</span><span>☆*･゜ﾟ･*\(^O^)/*･゜ﾟ･*☆</span><span>(*¬*)</span><span>ヾ(＠°▽°＠)ﾉ</span><span>(^∇^)</span><span>(*^▽^*)</span><span>(＝⌒▽⌒＝)</span><span>(≡^∇^≡)</span><span>o(〃＾▽＾〃)o</span><span>≧(´▽｀)≦</span><span>（‐＾▽＾‐）</span><span>(￣▽+￣*)</span><span>ヾ(＠^▽^＠)ﾉ</span><span>o(^▽^)o</span><span>(°∀°)b</span><span>о(ж＞▽＜)ｙ ☆</span><span>(*⌒∇⌒*)</span><span>°˖✧◝(⁰▿⁰)◜✧˖°</span><span>(๑╹っ╹๑)</span>
-			  </div>
-			  <div class="tab-pane" id="angry">
-			    <span>(*≧m≦*)</span><span>(>_<)</span><span>(,,#ﾟДﾟ)</span><span>ヽ(ｏ`皿′ｏ)ﾉ</span><span>o(>< )o</span><span>ｏ( ><)o</span><span>ヽ(≧Д≦)ノ</span><span>（＞д＜）</span><span>（;≧皿≦）</span><span>[○･｀Д´･○]</span><span>ヽ(#`Д´)ﾉ</span><span>Σ(-`Д´-ﾉ；)ﾉ</span><span>(((p(>o<)q)))</span><span>(/ﾟДﾟ)/</span><span>(¬д¬。)</span><span>ヽ(#`Д´)ﾉ</span><span> (¬､¬)</span><span> （；¬＿¬)</span><span> (;¬_¬)</span><span> (；¬д¬)</span><span> (≧σ≦)</span><span> o(-`д´- ｡)</span><span> ヽ(●-`Д´-)ノ</span><span> (*￣m￣)</span><span> (´Д｀)</span><span> (；￣Д￣）</span><span> (¬_¬)ﾉ</span><span>(＃｀д´)ﾉ</span><span>(」゜ロ゜)」</span><span>Σ(▼□▼メ)</span><span>(━┳━ _ ━┳━)</span><span>(┳◇┳)</span><span>{{|└(>o< )┘|}}</span><span>＼(＠O＠)／</span><span>（≧▼≦；)</span><span>＼(〇O〇)／</span><span>s(・｀ヘ´・;)ゞ</span><span>（▼へ▼メ）</span><span>＼(`O´θ／</span><span>θ＼(；￢_￢)</span><span> ヽ(｀⌒´メ)ノ</span><span> 凸(-0-メ)</span><span> 凸(｀△´＋）</span><span> 凸(｀0´)凸</span><span> 凸(｀⌒´メ)凸</span><span> ＼(｀0´)／</span><span> -`д´-</span><span> (>人<)</span><span>щ(ಠ益ಠщ)</span><span>(ノಠ益ಠ)ノ</span><span>щ(ಥДಥщ)</span><span>o(≧o≦)o</span><span> (⋋▂⋌)</span><span>(◣_◢)</span><span>ᕙ(⇀‸↼‶)ᕗ</span><span>ᕦ(ò_óˇ)ᕤ</span><span>( ಠ ಠ )</span><span> (¬▂¬)</span><span> (¬_¬)</span><span>ಥ⌣ಥ</span><span>ಠ_ಠ</span><span>s(・｀ヘ´・；)</span><span> ლ(ಠ益ಠლ</span><span>ლಠ益ಠ)ლ</span><span> 凸ಠ益ಠ)凸</span><span> ╭(๑¯д¯๑)╮</span><span>ಠ▃ಠ</span><span> t(-_-t)</span><span> ヽ(#ﾟДﾟ)ﾉ┌┛</span><span>(҂⌣̀_⌣́)</span><span> ͼ(ݓ_ݓ)ͽ</span><span> (ಥ⌣ಥ)</span>
-			  </div>
-			  <div class="tab-pane" id="love">
-			    <span>(´∀｀)♡</span><span> (‘∀’●)♡</span><span> （*´▽｀*）</span><span>(*°∀°)=3</span><span>（´ω｀♡%）</span><span>ヽ(愛´∀｀愛)ノ</span><span>♡o｡.(✿ฺ｡ ✿ฺ)</span><span>(｡･ω･｡)ﾉ♡</span><span>（●´∀｀）ノ♡</span><span>♡＾▽＾♡</span><span> (｡-_-｡ )人( ｡-_-｡)</span><span> (●♡∀♡)</span><span> （＿´ω｀）</span><span> (´ ▽｀).。ｏ♡</span><span> (o⌒．⌒o)</span><span>（人´∀`*）</span><span>（〃・・〃）</span><span>♥（ﾉ´∀`）</span><span>(ღ˘⌣˘ღ)</span><span>(｡’▽’｡)♡</span><span> (●´□`)♡</span><span> (｡♥‿♥｡)</span><span>(✿ ♥‿♥)</span><span>♥╣[-_-]╠♥</span><span>(๑・ω-)～♥”</span><span> ✿♥‿♥✿</span><span> ♥～(‘▽^人)</span>
-			  </div>
-			  <div class="tab-pane" id="confused">
-			  	<span>(´･_･`)</span><span>(◎_◎;)</span><span>(｀_´)ゞ</span><span>(◎-◎；)</span><span>(・_・ヾ</span><span>(￣(エ)￣)ゞ</span><span>(-_-)ゞ゛</span><span>(‘◇’)?</span><span>ヽ(゜Q。)ノ？</span><span>(´｀;) ？</span><span>【・ヘ・?】</span><span>【・_・?】</span><span>( ・◇・)？</span><span> (゜-゜)</span><span> ヾ(´･ ･｀｡)ノ”</span><span> ｢(ﾟﾍﾟ)</span><span> ( ?´_ゝ｀)</span><span> o(´^｀)o</span><span>(´−｀) ﾝｰ</span><span>(」ﾟヘﾟ)」</span><span>(•ิ_•ิ)?</span><span>「(°ヘ°)</span><span>(。ヘ°)</span><span>ヽ(゜Q。)ノ？</span><span>(´｀;) ？</span><span>〈(゜。゜)</span><span>(゜。゜)</span><span>く（＾_・）ゝ</span><span> (^～^;)ゞ</span><span> ٩(͡๏̯͡๏)۶</span><span>٩(̾●̮̮̃̾•̃̾)۶</span><span>(⊙_◎)</span><span> ಠ_ರೃ</span><span>щ(ºДºщ)</span><span> ﴾͡๏̯͡๏﴿</span><span> ఠ_ఠ</span><span>(●__●)</span><span> (ﾟｰﾟ;</span><span> (●´ω｀●)ゞ</span><span>(＃⌒∇⌒＃)ゞ</span><span> (・・。)ゞ</span><span> ⁀⊙﹏☉⁀</span><span>(♠_♦)</span><span> (⊙_☉)</span><span> (⊙.☉)7</span><span>`(๑ △ ๑)`*</span><span>(」ﾟﾛﾟ)｣</span><span>(C_C)</span>
-			  </div>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<!--
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" >
+		<link rel="stylesheet" type="text/css" href="/fui/css/flat-ui.css">
+		<link rel="stylesheet" type="text/css" href="/rc/inputtool/control.css">
+		-->
+	    <link href="/fui/bootstrap/css/bootstrap.css" rel="stylesheet">
+	    <link href="/fui/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	    <link href="/fui/css/flat-ui.css" rel="stylesheet">
+	    <!--<link rel="stylesheet" type="text/css" href="/rc/inputtool/control.css">-->
+	</head>
+	<body>
+		<div id="wrap">
+			<div class="container">
+				<div id="header">
+					<div class="textbar">
+			          <div class="control-group success">
+			            <textarea value="Success" class="typing-area span3"></textarea>
+			            <i class="done-button input-icon fui-check-inverted"></i>
+			          </div>
+			        </div>
+			        <div class="btn-group">
+						<button class="btn btn-success" id="enter-button">Enter</button>
+						<button class="btn btn-success" id="select-button">Select All</button>
+					</div>
+					<!--<div class="navbar-inner">
+						<ul class="nav nav-pills" id="myTab">
+						  <li class="active"><a href="#history" data-toggle="tab">History</a></li>
+						  <li class="dropdown">
+			                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+			                <ul class="dropdown-menu">
+			                  <li><a href="#dropdown1" data-toggle="tab">@fat</a></li>
+			                  <li><a href="#dropdown2" data-toggle="tab">@mdo</a></li>
+			                </ul>
+			              </li>
+						  <li><a href="#bear" data-toggle="tab">Bear</a></li>
+						  <li><a href="#happy" data-toggle="tab">Happy</a></li>
+						  <li><a href="#angry" data-toggle="tab">Angry</a></li>
+						  <li><a href="#love" data-toggle="tab">Love</a></li>
+						  <li><a href="#confused" data-toggle="tab">Confused</a></li>
+						</ul>
+					</div>-->
+					<ul class="nav nav-tabs nav-append-content">
+			            <li class="active"><a href="#history" data-toggle="tab">History</a></li>
+			            <li><a href="#bear" data-toggle="tab">Bear</a></li>
+			            <li class="dropdown">
+			              <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+			                Emotion
+			                <b class="caret"></b>
+			              </a>
+			              <ul class="dropdown-menu">
+			                <li><a href="#happy" data-toggle="tab">Happy</a></li>
+						    <li><a href="#angry" data-toggle="tab">Angry</a></li>
+						  	<li><a href="#love" data-toggle="tab">Love</a></li>
+						    <li><a href="#confused" data-toggle="tab">Confused</a></li>
+			              </ul>
+			            </li>
+			        </ul>
+				</div>
+				<div class="tab-content">
+				  <div class="tab-pane active" id="history"></div>
+				  <div class="tab-pane" id="bear">
+				  	<span>(￣(エ)￣)</span><span>(｡･ω･｡)</span><span>(●｀･(ｴ)･´●)</span><span>(*ノ・ω・）</span><span>川´･ω･`川</span><span>( (ﾐ´ω`ﾐ))</span><span>ヾ(T(エ)Tヽ)</span><span>＼(・｀(ｪ)・)/</span><span>⊂(ο･㉨･ο）⊃</span><span>(^(エ)^)</span><span>(^(I)^)</span><span>(￣(ｴ)￣)ﾉ</span><span>⊂(￣(工)￣)⊃</span><span>⊂(^(工)^)⊃</span><span>⊂(・(ェ)・)⊃</span><span>(*￣(ｴ)￣*)</span><span>ヾ(´(ｴ)｀ﾉﾞ</span><span>(／(ｴ)＼)</span><span>⊂(￣(ｴ)￣)⊃</span><span>“(`(エ)´)ノ</span><span>(｀(エ)´)ﾉ</span><span>(ó㉨ò)</span><span>(♥ó㉨ò)ﾉ♡</span><span>(/-(ｴ)-＼)</span><span>(´(エ)｀)</span><span>ヽ(￣(ｴ)￣)ﾉ</span><span>(／￣(ｴ)￣)／</span><span>⊂(◎(工)◎)⊃</span><span>(●￣(ｴ)￣●)</span><span>《/(￣(ｴ)￣)ゞ》</span><span>⁝⁞⁝⁞ʕु•̫͡•ʔु☂⁝⁞⁝⁝</span><span>(✪㉨✪)</span>
+				  </div>
+				  <div class="tab-pane" id="happy">
+				  	<span>(●´∀｀●)</span><span>(｀・ω・´)”</span><span>ヽ(；▽；)ノ</span><span>ヽ(；▽；)ノ</span><span>(*´・ｖ・)</span><span>(((o(*ﾟ▽ﾟ*)o)))</span><span>☆*:.｡. o(≧▽≦)o .｡.:*☆</span><span>(⌒▽⌒)☆</span><span>⊂((・▽・))⊃</span><span>(≧∇≦)/</span><span>(´∇ﾉ｀*)ノ</span><span>（・◇・）</span><span>( ´ ▽ ` )ﾉ</span><span>（＾_＾）</span><span>（￣ー￣）</span><span>(*^▽^*)</span><span>(＾▽＾)</span><span>（’-’*)</span><span>∩( ・ω・)∩</span><span>(*≧▽≦)</span><span>＼（＾ ＾）／</span><span>Ｏ(≧∇≦)Ｏ</span><span>（　´∀｀）</span><span>(^～^)</span><span>＼（＠￣∇￣＠）／</span><span>(☆^O^☆)</span><span>(★^O^★)</span><span>(☆^ー^☆)</span><span>(´ω｀★)</span><span>＼（Ｔ∇Ｔ）／</span><span>ヽ(*≧ω≦)ﾉ</span><span>*(*´∀｀*)☆</span><span>Ｏ(≧▽≦)Ｏ</span><span>ヽ(*⌒∇⌒*)ﾉ</span><span>d=(´▽｀)=b</span><span>＼(*T▽T*)／</span><span>ヽ(‘ ∇‘ )ノ</span><span>（*＾ワ＾*）</span><span>ヽ(＾Д＾)ﾉ</span><span>(´∀`)</span><span>(°◇°;)</span><span>(゜▽゜;)</span><span>(/^▽^)/</span><span>(ﾉ´ｰ`)ﾉ</span><span>ヽ(´ー`)ﾉ</span><span>(　＾∇＾)</span><span>＼( ｀.∀´)／</span><span>(●⌒∇⌒●)</span><span>o(≧∇≦o)</span><span>ヽ(｀◇´)/</span><span>ヽ(*・ω・)ﾉ</span><span>（＾ω＾）</span><span>｡◕‿◕｡</span><span>⊙ω⊙</span><span>⊙△⊙</span><span>⊙▽⊙</span><span>o (◡‿◡✿)</span><span>(◕‿◕✿)</span><span>(∩_∩)</span><span>｡◕‿◕｡</span><span>(•ิ_•ิ)</span><span>(/•ิ_•ิ)/</span><span>（ΦωΦ）</span><span>（*＾＾*)</span><span>（＾⊆＾）</span><span>(-^〇^-)</span><span>(ノ*゜▽゜*)</span><span>ヾ(´▽｀;)ゝ</span><span>(゜▼゜＊）</span><span>(￣个￣)</span><span>＼(^▽^＠)ノ</span><span>(“⌒∇⌒”)</span><span>へ(゜∇、°)へ</span><span>（-＾〇＾-）</span><span>（＞ｙ＜）</span><span>ヽ(^。^)丿</span><span>(ヘ。ヘ)</span><span>（＾ｖ＾）</span><span>ヾ(@^▽^@)ノ</span><span>ヾ(@°▽°@)ノ</span><span>ヾ（＠＾▽＾＠）ノ</span><span>ヾ(＠^∇^＠)ノ</span><span>o((*^▽^*))o</span><span>ヾ(@゜∇゜@)ノ</span><span>ヾ(＠゜▽゜＠）ノ</span><span>（＠´＿｀＠）</span><span>ヾ(＠† ▽ †＠）ノ</span><span>(ノ＞▽＜。)ノ</span><span>＼（＠；◇；＠）／</span><span>＼(☆o◎)／</span><span>(((＼（＠v＠）／)))</span><span>(°◇°;)</span><span>(゜▽゜;)</span><span>(o;TωT)o</span><span>ヽ(;^o^ヽ)</span><span>（⌒▽⌒ゞ</span><span>“ヽ(´▽｀)ノ”</span><span>(((o(*ﾟ▽ﾟ*)o)))</span><span>ヾ(＠⌒ー⌒＠)ノ</span><span>Ψ(´▽｀)Ψ</span><span>（ｖ＾＿＾）ｖ</span><span>(ી(΄◞ิ౪◟ิ‵)ʃ)♥</span><span>(❁´◡`❁)*✲ﾟ*</span><span>(ღ˘⌣˘ღ) ♫･*:.｡. .｡.:*･</span><span>ლ(╹◡╹ლ)</span><span>(✿◠‿◠)</span><span>(◑‿◐)</span><span>ლ(́◉◞౪◟◉‵ლ)</span><span>✖‿✖</span><span>(*~▽~)</span><span>(─‿‿─)</span><span>∩(︶▽︶)∩</span><span>(︶ω︶)</span><span>(∩▂∩)</span><span>(¬‿¬)</span><span>(n˘v˘•)¬</span><span>ಥ‿ಥ</span><span>≖‿≖</span><span>ʘ‿ʘ</span><span>☆ﾐ(o*･ω･)ﾉ</span><span>(ﾉ´ヮ´)ﾉ*:･ﾟ✧</span><span>(✌ﾟ∀ﾟ)☞</span><span>(ᅌᴗᅌ* )</span><span>(;ﾞ°´ω°´)</span><span>°˖✧◝(⁰▿⁰)◜✧˖°</span><span>( ͡° ͜ʖ ͡°)</span><span>(•‿•)</span><span>(⊙ヮ⊙)</span><span>☆*･゜ﾟ･*\(^O^)/*･゜ﾟ･*☆</span><span>(*¬*)</span><span>ヾ(＠°▽°＠)ﾉ</span><span>(^∇^)</span><span>(*^▽^*)</span><span>(＝⌒▽⌒＝)</span><span>(≡^∇^≡)</span><span>o(〃＾▽＾〃)o</span><span>≧(´▽｀)≦</span><span>（‐＾▽＾‐）</span><span>(￣▽+￣*)</span><span>ヾ(＠^▽^＠)ﾉ</span><span>o(^▽^)o</span><span>(°∀°)b</span><span>о(ж＞▽＜)ｙ ☆</span><span>(*⌒∇⌒*)</span><span>°˖✧◝(⁰▿⁰)◜✧˖°</span><span>(๑╹っ╹๑)</span>
+				  </div>
+				  <div class="tab-pane" id="angry">
+				    <span>(*≧m≦*)</span><span>(>_<)</span><span>(,,#ﾟДﾟ)</span><span>ヽ(ｏ`皿′ｏ)ﾉ</span><span>o(>< )o</span><span>ｏ( ><)o</span><span>ヽ(≧Д≦)ノ</span><span>（＞д＜）</span><span>（;≧皿≦）</span><span>[○･｀Д´･○]</span><span>ヽ(#`Д´)ﾉ</span><span>Σ(-`Д´-ﾉ；)ﾉ</span><span>(((p(>o<)q)))</span><span>(/ﾟДﾟ)/</span><span>(¬д¬。)</span><span>ヽ(#`Д´)ﾉ</span><span> (¬､¬)</span><span> （；¬＿¬)</span><span> (;¬_¬)</span><span> (；¬д¬)</span><span> (≧σ≦)</span><span> o(-`д´- ｡)</span><span> ヽ(●-`Д´-)ノ</span><span> (*￣m￣)</span><span> (´Д｀)</span><span> (；￣Д￣）</span><span> (¬_¬)ﾉ</span><span>(＃｀д´)ﾉ</span><span>(」゜ロ゜)」</span><span>Σ(▼□▼メ)</span><span>(━┳━ _ ━┳━)</span><span>(┳◇┳)</span><span>{{|└(>o< )┘|}}</span><span>＼(＠O＠)／</span><span>（≧▼≦；)</span><span>＼(〇O〇)／</span><span>s(・｀ヘ´・;)ゞ</span><span>（▼へ▼メ）</span><span>＼(`O´θ／</span><span>θ＼(；￢_￢)</span><span> ヽ(｀⌒´メ)ノ</span><span> 凸(-0-メ)</span><span> 凸(｀△´＋）</span><span> 凸(｀0´)凸</span><span> 凸(｀⌒´メ)凸</span><span> ＼(｀0´)／</span><span> -`д´-</span><span> (>人<)</span><span>щ(ಠ益ಠщ)</span><span>(ノಠ益ಠ)ノ</span><span>щ(ಥДಥщ)</span><span>o(≧o≦)o</span><span> (⋋▂⋌)</span><span>(◣_◢)</span><span>ᕙ(⇀‸↼‶)ᕗ</span><span>ᕦ(ò_óˇ)ᕤ</span><span>( ಠ ಠ )</span><span> (¬▂¬)</span><span> (¬_¬)</span><span>ಥ⌣ಥ</span><span>ಠ_ಠ</span><span>s(・｀ヘ´・；)</span><span> ლ(ಠ益ಠლ</span><span>ლಠ益ಠ)ლ</span><span> 凸ಠ益ಠ)凸</span><span> ╭(๑¯д¯๑)╮</span><span>ಠ▃ಠ</span><span> t(-_-t)</span><span> ヽ(#ﾟДﾟ)ﾉ┌┛</span><span>(҂⌣̀_⌣́)</span><span> ͼ(ݓ_ݓ)ͽ</span><span> (ಥ⌣ಥ)</span>
+				  </div>
+				  <div class="tab-pane" id="love">
+				    <span>(´∀｀)♡</span><span> (‘∀’●)♡</span><span> （*´▽｀*）</span><span>(*°∀°)=3</span><span>（´ω｀♡%）</span><span>ヽ(愛´∀｀愛)ノ</span><span>♡o｡.(✿ฺ｡ ✿ฺ)</span><span>(｡･ω･｡)ﾉ♡</span><span>（●´∀｀）ノ♡</span><span>♡＾▽＾♡</span><span> (｡-_-｡ )人( ｡-_-｡)</span><span> (●♡∀♡)</span><span> （＿´ω｀）</span><span> (´ ▽｀).。ｏ♡</span><span> (o⌒．⌒o)</span><span>（人´∀`*）</span><span>（〃・・〃）</span><span>♥（ﾉ´∀`）</span><span>(ღ˘⌣˘ღ)</span><span>(｡’▽’｡)♡</span><span> (●´□`)♡</span><span> (｡♥‿♥｡)</span><span>(✿ ♥‿♥)</span><span>♥╣[-_-]╠♥</span><span>(๑・ω-)～♥”</span><span> ✿♥‿♥✿</span><span> ♥～(‘▽^人)</span>
+				  </div>
+				  <div class="tab-pane" id="confused">
+				  	<span>(´･_･`)</span><span>(◎_◎;)</span><span>(｀_´)ゞ</span><span>(◎-◎；)</span><span>(・_・ヾ</span><span>(￣(エ)￣)ゞ</span><span>(-_-)ゞ゛</span><span>(‘◇’)?</span><span>ヽ(゜Q。)ノ？</span><span>(´｀;) ？</span><span>【・ヘ・?】</span><span>【・_・?】</span><span>( ・◇・)？</span><span> (゜-゜)</span><span> ヾ(´･ ･｀｡)ノ”</span><span> ｢(ﾟﾍﾟ)</span><span> ( ?´_ゝ｀)</span><span> o(´^｀)o</span><span>(´−｀) ﾝｰ</span><span>(」ﾟヘﾟ)」</span><span>(•ิ_•ิ)?</span><span>「(°ヘ°)</span><span>(。ヘ°)</span><span>ヽ(゜Q。)ノ？</span><span>(´｀;) ？</span><span>〈(゜。゜)</span><span>(゜。゜)</span><span>く（＾_・）ゝ</span><span> (^～^;)ゞ</span><span> ٩(͡๏̯͡๏)۶</span><span>٩(̾●̮̮̃̾•̃̾)۶</span><span>(⊙_◎)</span><span> ಠ_ರೃ</span><span>щ(ºДºщ)</span><span> ﴾͡๏̯͡๏﴿</span><span> ఠ_ఠ</span><span>(●__●)</span><span> (ﾟｰﾟ;</span><span> (●´ω｀●)ゞ</span><span>(＃⌒∇⌒＃)ゞ</span><span> (・・。)ゞ</span><span> ⁀⊙﹏☉⁀</span><span>(♠_♦)</span><span> (⊙_☉)</span><span> (⊙.☉)7</span><span>`(๑ △ ๑)`*</span><span>(」ﾟﾛﾟ)｣</span><span>(C_C)</span>
+				  </div>
+				</div>
 			</div>
 		</div>
-	</div>
-	<style>
-		html, body {
-			background: rgba(181,189,200,1);
-			color:white;
-			-webkit-user-select: none;
-			overflow: hidden;
-		}
-		.typing-area {
-			font-size: 20px;
-			width: 220px;
-			height: 51px;
-			margin: 5px 0px;
-			border-top-left-radius: 5px;
-			border-bottom-left-radius: 5px;
-			border: 1px solid #000;
-		}
-		.done-button {
-			position: absolute;
-			left: 250px;
-			height: 61px;
-			margin: 5px 0px;
-			font-size: 13px;
-			text-align: left;
-			border-top-right-radius: 5px;
-			border-bottom-right-radius: 5px;
-			background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
-		}
-		.control-bar {
-			display: block;
-			top: 0px;
-			height: 100px;
-		}
-		.tab-bar {
-			overflow-x: scroll;
-			width: 100%;
-		}
-		.nav {
-			margin-bottom: 0px;
-		}
-		.nav > li > a:hover {
-		    color: black;
-			background: rgba(181,189,200,1)	;
-			border-color: transparent;
-			border-bottom: 1px solid #000;
-		}
-		.nav-tabs>.active>a, .nav-tabs>.active>a:hover {
-			background: rgba(181,189,200,1);
-			border: 1px solid #000;
-			border-bottom-color: transparent;
-		}
-		.nav-tabs {
-			border-bottom: 1px solid #000;
-		}
-		.tab-pane{
-			color:#333;
-			background: rgba(0,0,0,0);
-		}
-		.tab-pane .entry {
-			display: block;
-			text-decoration: none;
-		}
-		.tab-pane span{
-			font-size:15px;
-			line-height: 26px;
-			display:inline-block;
-			position:relative;
-			letter-spacing:-1px;
-			-webkit-transition:all 0.2s ease-out;
-			border: 1px #333 solid;
-			-webkit-border-radius: 20px;
-			margin: 4px;
-			padding: 0px 5px;
-			background: rgba(204,204,204,1);
-			/*background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
-			*/
-		}
-		.tab-pane .entry span{
-			font-weight: normal;
-			font-family:'Impact','HelveticaNeue-Bold','League Gothic',sans-serif;
-			font-size:30px;
-			line-height: 40px;
-		}
-		.tab-pane span.hover{color:white;}
-		/*.tab-pane span:nth-child(even) {-webkit-transform:rotate(1deg)}
-		.tab-pane span:nth-child(odd) {-webkit-transform:rotate(-2deg)}
-		*/
-		.ui-loader {
-			display: none;
-		}
-		.btn-group {
-			margin-top: 7px;
-			margin-bottom: -5px;
-		}
-	</style>	
-</body>
+		<!--
+		<script src="/fui/js/jquery-1.8.3.min.js"></script>
+	    <script src="/fui/js/jquery-ui-1.10.3.custom.min.js"></script>
+	    <script src="/fui/js/jquery.ui.touch-punch.min.js"></script>
+	    <script src="/fui/js/bootstrap.min.js"></script>
+	    <script src="/fui/js/bootstrap-select.js"></script>
+	    <script src="/fui/js/bootstrap-switch.js"></script>
+	    <script src="/fui/js/flatui-checkbox.js"></script>
+	    <script src="/fui/js/flatui-radio.js"></script>
+	    <script src="/fui/js/jquery.tagsinput.js"></script>
+	    <script src="/fui/js/jquery.placeholder.js"></script>
+	    <script src="/fui/js/jquery.stacktable.js"></script>
+	    <script src="/fui/js/application.js"></script>
+	-->
+		<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+		<script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.2.min.js"></script>
+		<script src="http://api.demobo.com/jquery.mobile.touch.1.2.0.min.js"></script>
+		<script src="http://api.demobo.com/lettering.js"></script>
+		<script src="/rc/inputtool/control.js"></script>
+		<script src="/fui/js/flatui-checkbox.js"></script>
+		<script src="/fui/js/flatui-radio.js"></script>
+		<script src="/fui/js/jquery.tagsinput.js"></script>
+		<script src="/fui/js/jquery.placeholder.js"></script>
+		<script src="/fui/js/jquery.stacktable.js"></script>
+	</body>
 </html>

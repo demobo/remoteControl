@@ -1,0 +1,92 @@
+html, body {
+	color: white;
+	-webkit-user-select: none;
+	overflow: hidden;
+	height: 100%;
+	padding: 0px;
+	background-color: #ecf0f1;
+}
+a {
+	text-decoration: none;
+}
+#header {
+	/*background: rgba(181,189,200,1);*/
+	padding: 15px 0px 0px 15px;
+}
+.container {
+	width: auto;
+	max-width: 680px;
+}
+
+.textbar {
+	padding: 0px 35px 0px 0px;
+}
+.control-group > .input-icon.done-button {
+	top: 12px;
+	right: 5px;
+}
+.navbar-inner {
+	overflow-x: scroll;
+	overflow-y: hidden;
+	height: 28px;
+	min-height: 28px;
+	margin: 10px 0px 0px 0px;
+	background: transparent;
+}
+.navbar {
+	height: 50px;
+	min-height: 50px;
+}
+.nav {
+	margin-bottom: 0px;
+}
+.nav > li > a:hover {
+
+}
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+
+}
+.nav-tabs {
+	border-bottom: 1px solid #000;
+}
+.tab-pane {
+	color: #fff;
+	background: rgba(0,0,0,0);
+	padding: 20px;
+}
+.tab-pane .entry {
+	display: block;
+	text-decoration: none;
+}
+.tab-pane span {
+	font-size: 15px;
+	line-height: 26px;
+	display: inline-block;
+	position: relative;
+	letter-spacing: -1px;
+	-webkit-transition: all 0.2s ease-out;
+	-webkit-border-radius: 20px;
+	margin: 4px;
+	padding: 0px 5px;
+	background-color: #7f8c8d;
+}
+.tab-pane .entry span {
+	font-size: 20px;
+	line-height: 30px;
+}
+.tab-pane span.hover {
+	color: #666;
+}
+.btn-group button {
+	margin-right: 1px;
+}
+.tab-content {
+	overflow: auto;
+	background-color: #BDC3C7;
+}
+.nav-pills > .active > a, .nav-pills > .active > a:hover {
+	color: #fff;
+	background-color: #BDC3C7;
+}
+.nav-tabs > li, .nav-pills > li {
+}

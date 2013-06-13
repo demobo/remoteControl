@@ -1,5 +1,9 @@
-dev = true
 ### set this to false if production ###
+dev = window.demoboDev
+if dev
+  base = window.demoboBase+'/apps/'
+else
+  base = 'http://rc1.demobo.com/apps/'
 
 if not window.demoboLoading
   window.demoboLoading = 1 
@@ -240,15 +244,16 @@ if not window.demoboLoading
 
       initialize: ()->
         ### called immediately upon the object's instantiation (guaranteed) ###
+        boboRoutes = #hardcoded for now
+          'pandora': base + 'pandora.com-new.js'
+          'inputtool': base + 'inputtool-new.js'
+
         this.set('bobos', {})
         this.set('eventHandlers', {})
         this.set('deviceBoboMap', {})
         this.set('boboDeviceMap', {})
         this.set('curBobo', null)
-        this.set('boboRoutes', {
-          'pandora': 'http://localhost:1240/apps/pandora.com-new.js'
-          'inputtool': 'http://localhost:1240/apps/inputtool-new.js'
-        })
+        this.set('boboRoutes', boboRoutes)
 
         @demobo.addEventListener('connected', demoboHandlers.connectedHandler(this))
         @demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this))
@@ -256,7 +261,14 @@ if not window.demoboLoading
         this.on('change:bobos', demoboHandlers.handlerBobosChange)
         this.on('change:curBobo', demoboHandlers.handlerCurBoboChange)
         this.on('add:bobos', demoboHandlers.handleBoboAdd)
+
+        window.DEMOBO.init = ()->
+        window.demobo.start()
+
+        for name, route of boboRoutes
+          loadJS(route)
         this.addExistingDevices()
+        
         true
       
       addExistingDevices:()->
@@ -424,8 +436,6 @@ if not window.demoboLoading
     ### End of demobo session ###
 
     loadJS('http://api.demobo.com/demobo.1.7.0.min.js',()->
-      window.DEMOBO.init = ()->
-      window.demobo.start()
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
     
@@ -480,7 +490,6 @@ if not window.demoboLoading
       '
       demoboCss.innerText = cssContent
       document.body.appendChild(demoboCss)
-  
   
       icon = document.createElement('img')
       icon.className = 'demoboIMG'

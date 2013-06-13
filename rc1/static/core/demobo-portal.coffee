@@ -261,7 +261,9 @@ if not window.demoboLoading
         this.set('boboRoutes', boboRoutes)
 
         @demobo.addEventListener('connected', demoboHandlers.connectedHandler(this))
+        ### handlers when a device is connected ###
         @demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this))
+        ### handlers when a device is disconnected ###
 
         this.on('change:bobos', demoboHandlers.handlerBobosChange)
         this.on('change:curBobo', demoboHandlers.handlerCurBoboChange)
@@ -278,7 +280,9 @@ if not window.demoboLoading
         true
       
       addExistingDevices:()->
+        ###TODO: for now, do nothing###
         devices = @demobo.getDevices()
+        
 
       callFunction: (functionName, data, deviceID, boboID)->
         ### make an rpc on the device. if deviceID is not specified, make the rpc on all devices connected to the specified bobo ###
@@ -291,6 +295,7 @@ if not window.demoboLoading
           return false #this return doesn't make much sense...
 
       addEventListener: (eventName, handler, boboID)->
+        ### if the event is already registered, add a handler to its dispatcher; otherwise create a new dispatcher###
         handlers = this.get('eventHandlers')
         dispatcher = handlers[eventName]
         console.log(dispatcher?)
@@ -307,10 +312,12 @@ if not window.demoboLoading
         return true
 
       getDeviceBoboID: (deviceID)->
+        ### the the boboID of the device, based on the current mapping ###
         map = this.get('deviceBoboMap')
         return map[deviceID]
 
       setDeviceController: (boboObj, deviceID)->
+        ### set a device's controller ###
         return @demobo.setController(boboObj.getInfo('controller'), deviceID)
       
       hasDevice: (deviceID)->
@@ -353,9 +360,11 @@ if not window.demoboLoading
           return this.addDevice(deviceID)
 
       setController: (controller)->
-        @demobo.setController()
+        ### TODO: might be remvoed? ###
+        @demobo.setController(controller)
 
       switchBobo: (boboID)->
+        ### switch to another bobo ###
         oldBoboID = this.get('curBobo').getInfo('boboID')
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
@@ -375,6 +384,7 @@ if not window.demoboLoading
         return true
       
       addBobo: (boboClass)->
+        ### add another bobo to portal###
         boboObj = new boboClass(this)
         if not this.get('curBobo')
           this.set('curBobo', boboObj)
@@ -400,16 +410,16 @@ if not window.demoboLoading
         return false
 
       get: (key)->
-        #return the value of the key
+        ###return the value of the key###
         @attributes[key]
   
       on: (eventName, handler) ->
-        #register a event with its handler
+        ###register a event with its handler###
         @_events[eventName] = handler
         true
   
       trigger: (eventName) ->
-        #trigger event
+        ###trigger event###
         if (handler=@_events[eventName])
           handler.apply(this, [].slice.apply(arguments, [1]))
           return true
@@ -417,14 +427,16 @@ if not window.demoboLoading
           return false
   
       set: (key, val)->
-      #set the value of the key. If the old value is different from the new value, 'change:key' is triggered
+        ###set the value of the key. If the old value is different from the new value, 'change:key' is triggered###
         oldVal = @attributes[key]
         unless (oldVal is val)
           @attributes[key] = val
           this.trigger 'change:'+key, oldVal, val
         
         return oldVal
+
       createBoboView: (boboID, boboInfo)->
+        ### create the view of a bobo, which would be showed up in portal ###
         menuContainer = document.getElementById('demoboMenuContainer')
         if menuContainer
           d = document.createElement('div')
@@ -499,6 +511,9 @@ if not window.demoboLoading
       demoboCss.innerText = cssContent
       document.body.appendChild(demoboCss)
   
+      ###
+      small demobo icon at the right bottom of the page
+      ###
       icon = document.createElement('img')
       icon.className = 'demoboIMG'
       icon.id = 'demoboMiniIcon' 
@@ -514,8 +529,10 @@ if not window.demoboLoading
       #   menuContainer.onmouseout = () ->
       #     menuContainer.style.height = '0px'
       icon.onclick = () ->
+        ### when the icon is clicked, show bobos ###
         menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length*30+'px'
       document.onclick = (e)->
+        ### when others are clicked, unshow bobos ###
         ele = e.srcElement
         if ele.className.indexOf('demobo') isnt 0
           setTimeout(()->

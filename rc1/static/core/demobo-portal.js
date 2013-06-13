@@ -352,7 +352,13 @@
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
           this.demobo.addEventListener('connected', demoboHandlers.connectedHandler(this));
+          /* handlers when a device is connected
+          */
+
           this.demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this));
+          /* handlers when a device is disconnected
+          */
+
           this.on('change:bobos', demoboHandlers.handlerBobosChange);
           this.on('change:curBobo', demoboHandlers.handlerCurBoboChange);
           this.on('add:bobos', demoboHandlers.handleBoboAdd);
@@ -367,6 +373,9 @@
         };
 
         DemoboPortal.prototype.addExistingDevices = function() {
+          /*TODO: for now, do nothing
+          */
+
           var devices;
 
           return devices = this.demobo.getDevices();
@@ -391,6 +400,9 @@
         };
 
         DemoboPortal.prototype.addEventListener = function(eventName, handler, boboID) {
+          /* if the event is already registered, add a handler to its dispatcher; otherwise create a new dispatcher
+          */
+
           var dispatcher, handlers, _temp;
 
           handlers = this.get('eventHandlers');
@@ -412,6 +424,9 @@
         };
 
         DemoboPortal.prototype.getDeviceBoboID = function(deviceID) {
+          /* the the boboID of the device, based on the current mapping
+          */
+
           var map;
 
           map = this.get('deviceBoboMap');
@@ -419,6 +434,8 @@
         };
 
         DemoboPortal.prototype.setDeviceController = function(boboObj, deviceID) {
+          /* set a device's controller
+          */
           return this.demobo.setController(boboObj.getInfo('controller'), deviceID);
         };
 
@@ -480,10 +497,15 @@
         };
 
         DemoboPortal.prototype.setController = function(controller) {
-          return this.demobo.setController();
+          /* TODO: might be remvoed?
+          */
+          return this.demobo.setController(controller);
         };
 
         DemoboPortal.prototype.switchBobo = function(boboID) {
+          /* switch to another bobo
+          */
+
           var boboDeviceMap, deviceBoboMap, deviceID, devices, newBobo, oldBoboID, _i, _len;
 
           oldBoboID = this.get('curBobo').getInfo('boboID');
@@ -504,6 +526,9 @@
         };
 
         DemoboPortal.prototype.addBobo = function(boboClass) {
+          /* add another bobo to portal
+          */
+
           var boboID, boboObj, bobos, eventName, handler, handlers, temp;
 
           boboObj = new boboClass(this);
@@ -534,15 +559,22 @@
         };
 
         DemoboPortal.prototype.get = function(key) {
+          /*return the value of the key
+          */
           return this.attributes[key];
         };
 
         DemoboPortal.prototype.on = function(eventName, handler) {
+          /*register a event with its handler
+          */
           this._events[eventName] = handler;
           return true;
         };
 
         DemoboPortal.prototype.trigger = function(eventName) {
+          /*trigger event
+          */
+
           var handler;
 
           if ((handler = this._events[eventName])) {
@@ -554,6 +586,9 @@
         };
 
         DemoboPortal.prototype.set = function(key, val) {
+          /*set the value of the key. If the old value is different from the new value, 'change:key' is triggered
+          */
+
           var oldVal;
 
           oldVal = this.attributes[key];
@@ -565,6 +600,9 @@
         };
 
         DemoboPortal.prototype.createBoboView = function(boboID, boboInfo) {
+          /* create the view of a bobo, which would be showed up in portal
+          */
+
           var boboObj, d, i, menuContainer;
 
           menuContainer = document.getElementById('demoboMenuContainer');
@@ -650,6 +688,10 @@
       ';
         demoboCss.innerText = cssContent;
         document.body.appendChild(demoboCss);
+        /*
+        small demobo icon at the right bottom of the page
+        */
+
         icon = document.createElement('img');
         icon.className = 'demoboIMG';
         icon.id = 'demoboMiniIcon';
@@ -661,9 +703,14 @@
         menuContainer.id = 'demoboMenuContainer';
         document.body.appendChild(menuContainer);
         icon.onclick = function() {
+          /* when the icon is clicked, show bobos
+          */
           return menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length * 30 + 'px';
         };
         return document.onclick = function(e) {
+          /* when others are clicked, unshow bobos
+          */
+
           var ele;
 
           ele = e.srcElement;

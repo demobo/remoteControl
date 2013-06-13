@@ -242,11 +242,16 @@ if not window.demoboLoading
         @_events = {}
         this.initialize()
 
-      initialize: ()->
-        ### called immediately upon the object's instantiation (guaranteed) ###
-        boboRoutes = #hardcoded for now
+      getBoboRoutes: ()->
+        ###hard coded for now###
+        return {
           'pandora': base + 'pandora.com-new.js'
           'inputtool': base + 'inputtool-new.js'
+        }
+
+      initialize: ()->
+        ### called immediately upon the object's instantiation (guaranteed) ###
+        boboRoutes = this.getBoboRoutes()
 
         this.set('bobos', {})
         this.set('eventHandlers', {})
@@ -267,6 +272,7 @@ if not window.demoboLoading
 
         for name, route of boboRoutes
           loadJS(route)
+
         this.addExistingDevices()
         
         true
@@ -286,7 +292,9 @@ if not window.demoboLoading
 
       addEventListener: (eventName, handler, boboID)->
         handlers = this.get('eventHandlers')
-        if eventName in handlers
+        dispatcher = handlers[eventName]
+        console.log(dispatcher?)
+        if dispatcher?
           handlers[eventName].addHandler(boboID, handler)
         else
           dispatcher = new Dispatcher(eventName, this)

@@ -329,16 +329,22 @@
           this.initialize();
         }
 
+        DemoboPortal.prototype.getBoboRoutes = function() {
+          /*hard coded for now
+          */
+          return {
+            'pandora': base + 'pandora.com-new.js',
+            'inputtool': base + 'inputtool-new.js'
+          };
+        };
+
         DemoboPortal.prototype.initialize = function() {
           /* called immediately upon the object's instantiation (guaranteed)
           */
 
           var boboRoutes, name, route;
 
-          boboRoutes = {
-            'pandora': base + 'pandora.com-new.js',
-            'inputtool': base + 'inputtool-new.js'
-          };
+          boboRoutes = this.getBoboRoutes();
           this.set('bobos', {});
           this.set('eventHandlers', {});
           this.set('deviceBoboMap', {});
@@ -388,7 +394,9 @@
           var dispatcher, handlers, _temp;
 
           handlers = this.get('eventHandlers');
-          if (__indexOf.call(handlers, eventName) >= 0) {
+          dispatcher = handlers[eventName];
+          console.log(dispatcher != null);
+          if (dispatcher != null) {
             handlers[eventName].addHandler(boboID, handler);
           } else {
             dispatcher = new Dispatcher(eventName, this);

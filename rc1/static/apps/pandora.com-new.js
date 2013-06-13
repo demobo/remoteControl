@@ -52,11 +52,6 @@
 
   Pandora.prototype.resume = function(){
     console.log('resume is called');
-		this.refreshController();
-    this.sendStationList();
-    this.sendNowPlaying();
-    this.sendLast3();
-    this.syncState();
   };
 	// ********** custom event handler functions *************
 	Pandora.prototype.onReady = function () {
@@ -64,7 +59,7 @@
 		this.refreshController();
     this.sendStationList();
     this.sendNowPlaying();
-    this.sendLast3();
+//    this.sendLast3();
     this.syncState();
 	};
 

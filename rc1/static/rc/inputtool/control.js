@@ -1,6 +1,5 @@
 $(document).ready(function() {
-	$('.tab-content').height($('body').height() - $('#header').height());
-	$('.nav').width(90 * $('.nav li').length);
+	$('.tab-content').outerHeight($('body').height() - $('#header').outerHeight());
 	non480x320Adjust();
 	$('.done-button').on('vclick', function() {
 		var str = $('.typing-area').val();

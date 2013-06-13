@@ -443,7 +443,7 @@ if not window.demoboLoading
           d.className='demoboBoboItem'
           i = document.createElement('img')
           i.className='demoboBoboIcon'
-          i.src='http://localhost:1240/'+boboInfo.iconUrl
+          i.src=base+boboInfo.iconUrl
           boboObj = this
           i.onclick = ()->
             boboObj.switchBobo(boboID) 
@@ -518,7 +518,7 @@ if not window.demoboLoading
       icon.className = 'demoboIMG'
       icon.id = 'demoboMiniIcon' 
       icon.title='demobo mini' 
-      icon.src='http://localhost:1240/demobo.png'
+      icon.src=base+'demobo.png'
       document.body.appendChild(icon)
   
       menuContainer = document.createElement('div')

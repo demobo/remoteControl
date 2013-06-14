@@ -404,7 +404,7 @@ if not window.demoboLoading
           for eventName, handler of handlers
             this.addEventListener(eventName, handler, boboID)
 
-          this.setController(boboObj.getInfo('controller'))
+          #this.setController(boboObj.getInfo('controller'))
           this.trigger('add:bobos', boboID, boboObj)
           return true
         return false

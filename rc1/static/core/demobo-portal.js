@@ -551,7 +551,6 @@
               handler = handlers[eventName];
               this.addEventListener(eventName, handler, boboID);
             }
-            this.setController(boboObj.getInfo('controller'));
             this.trigger('add:bobos', boboID, boboObj);
             return true;
           }

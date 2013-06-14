@@ -10,7 +10,7 @@ $(document).ready(function() {
 		$('#history').prepend(entry);
 		$('.typing-area').val('');
 	});
-	$('.typing-area').on('swipe', function() {
+	$('.typing-area').on('swipeleft', function() {
 		$('.typing-area').val('');
 	});
 	var curSpan;
@@ -50,7 +50,7 @@ function insertTextAtCursor(text) {
 	var e = document.createEvent('TextEvent');
 	e.initTextEvent('textInput', true, true, null, text, 'zh-CN');
 	element.dispatchEvent(e);
-	element.blur();
+	// element.blur();
 }
 
 function isWords(str) {

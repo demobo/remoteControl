@@ -2,8 +2,11 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" >
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css">
 		<link rel="stylesheet" type="text/css" href="/fui/css/flat-ui.css">
 		<link rel="stylesheet" type="text/css" href="/rc/inputtool/control.css">
 	</head>
@@ -12,23 +15,26 @@
 			<div class="container">
 				<div id="header">
 					<div class="textbar">
-			          <div class="control-group info">
-			            <textarea value="Successs" class="typing-area span3"></textarea>
-			            <i class="done-button input-icon fui-check-inverted"></i>
+			          <div class="control-group huge info">
+			            <div class="input-append">
+			              <input class="typing-area span2" id="appendedInputButton-01" type="text" placeholder="Type">
+			              <button class="btn btn-huge done-button btn-info" type="button"><span class="fui-check-inverted"></span></button>
+			            </div>
 			          </div>
 			        </div>
 			        <div class="btn-group">
-						<button class="btn btn-info" id="enter-button">Enter</button>
+						<button class="btn btn-info" id="enter-button">Enter Key</button>
 						<button class="btn btn-info" id="select-button">Select All</button>
+						<button class="btn btn-info" id="next-button">Next Text</button>
 					</div>
 			        <div class="iconbar iconbar-horizontal iconbar-info">
 			            <ul>
-			              <li class="active"><a href="#history" class="fui-user" data-toggle="tab"></a></li>
-			              <li><a href="#bear" class="fui-calendar" data-toggle="tab"></a></li>
-			              <li><a href="#happy" class="fui-chat" data-toggle="tab"></a></li>
-			              <li><a href="#angry" class="fui-mail" data-toggle="tab"></a></li>
+			              <li class="active"><a href="#history" class="icon-list icon-large" data-toggle="tab"></a></li>
+			              <li><a href="#bear" class="icon-smile icon-large" data-toggle="tab"></a></li>
+			              <li><a href="#happy" class="icon-smile icon-large" data-toggle="tab"></a></li>
+			              <li><a href="#angry" class="icon-smile icon-large" data-toggle="tab"></a></li>
 			              <li>
-			                <a href="#love" class="fui-gear" data-toggle="tab">
+			                <a href="#love" class="icon-smile icon-large" data-toggle="tab">
 			                  <span class="iconbar-unread">1</span>
 			                </a>
 			              </li>

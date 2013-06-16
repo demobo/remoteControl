@@ -42,7 +42,7 @@
 
 
     this.setController({
-     url: 'http://rc1.demobo.com/rc/inputtool?0613',
+     url: 'http://rc1.demobo.com/rc/inputtool?0614',
      orientation: 'portrait'
     });
 

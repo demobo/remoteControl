@@ -8,7 +8,7 @@ handlers:
   static_files: static/index.html
   upload: static/.*
   
-- url: /(.*\.(html|css|json|txt|png|jpg|gif|jpg|jpeg|ico|mp3|ogg|ttf|js|svg|apk))
+- url: /(.*\.(.*))
   static_files: static/\1
   upload: static/.*
   secure: optional

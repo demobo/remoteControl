@@ -2,18 +2,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>demo</title>
+        <title>Awesome Bookmarklet!</title>
     </head>
     <body>
-      <div>This is the <a href="javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js'; document.body.appendChild(s);}}())">DeMobo</a> bookmarklet</div>
+<!--      <div>This is the <a href="javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');s.src = 'http://rc1.demobo.com/core/demobo-ext.js'; document.body.appendChild(s);}}())">DeMobo</a> bookmarklet</div>
       <div>Enter the port number that you wanna load demobo-ext.js and util.js from: <input id='demoboPort' /></div>
       <div>Enter the port number that you wanna load controllers from:<input id='rcPort' /></div>
-      <div><button onclick='javascript:generateBookmarklet()'>Generate dev bookmarklet</button></div>
+      <div><button onclick='javascript:generateBookmarklet()'>Generate dev bookmarklet</button></div>-->
+      <h1>The fucking awesome new version of demobo bookmarklet: </h1>
+      <div> This is the fucking awesome <a href="javascript:(function(){var s = document.createElement('script'); s.src='http://rc1.demobo.com/core/demobo-portal.js'; document.body.appendChild(s);}())">demobo</a> bookmarklet</div>
+      <div>This is the dev version: <a id='devLink' href="">DemoboDev</a> (assume the current url is ur dev server)</div>
     </body>
 </html>
 
 <script>
-function generateBookmarklet(){
+var base = document.location.origin;
+
+document.getElementById('devLink').href="javascript:(function(){window.demoboDev = true; window.demoboBase='"+base+"'; var s = document.createElement('script'); s.src='"+base+"/core/demobo-portal.js'; document.body.appendChild(s);}())";
+/*function generateBookmarklet(){
   var current = document.getElementById('bookmarklet');
   if (current){
     current.parentNode.removeChild(current);
@@ -23,5 +29,5 @@ function generateBookmarklet(){
   elem.href = "javascript:(function(){if(typeof toggleDemobo!='undefined'){toggleDemobo();}else{var s = document.createElement('script');window.demoboRcPort = "+document.getElementById('rcPort').value+";window.demoboPort = "+document.getElementById('demoboPort').value+";s.src='http://localhost:"+document.getElementById('demoboPort').value+"/dev/demobo-ext.js';document.body.appendChild(s);}}())";
   elem.innerText = "DemoboDev";
   document.body.appendChild(elem);
-}
+}*/
 </script>

@@ -15,7 +15,7 @@
          "all_frames": false,
          "js": ["js/main.js"],
 		 "css": ["css/main.css"],
-		 "matches": ["<all_urls>"],
+		 "matches": ["http://translate.google.com/*"],
          "run_at": "document_end"
       }
    ],
@@ -31,7 +31,7 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "<all_urls>"
+     "http://translate.google.com/*"
    ],
    "version": "3.2.6",
    "manifest_version": 2

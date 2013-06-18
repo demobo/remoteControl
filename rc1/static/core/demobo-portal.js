@@ -368,17 +368,15 @@
             route = boboRoutes[name];
             loadJS(route);
           }
-          this.addExistingDevices();
           return true;
         };
 
-        DemoboPortal.prototype.addExistingDevices = function() {
-          /*TODO: for now, do nothing
-          */
+        DemoboPortal.prototype.addExistentDevice = function(data) {
+          var deviceID;
 
-          var devices;
-
-          return devices = this.demobo.getDevices();
+          deviceID = data.deviceID;
+          this.setDeviceController(this.get('curBobo'), deviceID);
+          return this.addDevice(deviceID);
         };
 
         DemoboPortal.prototype.callFunction = function(functionName, data, deviceID, boboID) {
@@ -532,9 +530,9 @@
           var boboID, boboObj, bobos, eventName, handler, handlers, temp;
 
           boboObj = new boboClass(this);
-          if (!this.get('curBobo')) {
-            this.set('curBobo', boboObj);
-          }
+          /* if boboID dosn't exist, set it to its controller url
+          */
+
           temp = boboObj.getInfo('boboID');
           if (temp) {
             boboID = temp;
@@ -550,6 +548,15 @@
             for (eventName in handlers) {
               handler = handlers[eventName];
               this.addEventListener(eventName, handler, boboID);
+            }
+            if (!this.get('curBobo')) {
+              this.set('curBobo', boboObj);
+              /* shame to have to code this like this...
+              */
+
+              setTimeout(function() {
+                return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
+              }, 1000);
             }
             this.trigger('add:bobos', boboID, boboObj);
             return true;

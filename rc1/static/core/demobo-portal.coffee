@@ -274,15 +274,13 @@ if not window.demoboLoading
 
         for name, route of boboRoutes
           loadJS(route)
-
-        this.addExistingDevices()
         
         true
       
-      addExistingDevices:()->
-        ###TODO: for now, do nothing###
-        devices = @demobo.getDevices()
-        
+      addExistentDevice: (data)->
+        deviceID = data.deviceID
+        this.setDeviceController(this.get('curBobo'), deviceID)
+        this.addDevice(deviceID)
 
       callFunction: (functionName, data, deviceID, boboID)->
         ### make an rpc on the device. if deviceID is not specified, make the rpc on all devices connected to the specified bobo ###
@@ -386,9 +384,8 @@ if not window.demoboLoading
       addBobo: (boboClass)->
         ### add another bobo to portal###
         boboObj = new boboClass(this)
-        if not this.get('curBobo')
-          this.set('curBobo', boboObj)
 
+        ### if boboID dosn't exist, set it to its controller url###
         temp = boboObj.getInfo('boboID')
         if temp
           boboID = temp
@@ -404,6 +401,13 @@ if not window.demoboLoading
           for eventName, handler of handlers
             this.addEventListener(eventName, handler, boboID)
 
+          if not this.get('curBobo')
+            this.set('curBobo', boboObj)
+            ### shame to have to code this like this... ###
+            setTimeout(()->
+              window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
+            , 1000)
+           
           #this.setController(boboObj.getInfo('controller'))
           this.trigger('add:bobos', boboID, boboObj)
           return true
@@ -525,7 +529,7 @@ if not window.demoboLoading
       menuContainer.className = 'demoboDIV'
       menuContainer.id = 'demoboMenuContainer'
       document.body.appendChild(menuContainer)
-  
+
       #   menuContainer.onmouseout = () ->
       #     menuContainer.style.height = '0px'
       icon.onclick = () ->

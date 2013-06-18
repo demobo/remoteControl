@@ -333,7 +333,7 @@
           /*hard coded for now
           */
           return {
-            'pandora': base + 'pandora.com-new.js',
+            'douban': base + 'douban.fm-new.js',
             'inputtool': base + 'inputtool-new.js'
           };
         };
@@ -637,7 +637,7 @@
       */
 
       loadJS('http://api.demobo.com/demobo.1.7.0.min.js', function() {
-        var cssContent, demoboCss, demoboPortal, icon, menuContainer;
+        var cssContent, demoboCss, demoboPortal, icon, k, menuContainer;
 
         demoboPortal = new DemoboPortal();
         window.demoboPortal = demoboPortal;
@@ -648,6 +648,7 @@
         demoboCss.className = 'demoboCSS';
         cssContent = '\
       #demoboMiniIcon {\
+        z-index:10000;\
         width:30px;\
         opacity:0.15;\
         position:fixed;\
@@ -663,12 +664,12 @@
       }\
       \
       #demoboMenuContainer {\
+        z-index:10001;\
         width:30px;\
         height:0px;\
         position:fixed;\
         background:rgba(20, 20, 20, 0.8);\
         right:20px;\
-        z-index:1;\
         -webkit-transition: height 0.5s ease;\
         transition: height 0.5s ease;\
         bottom:60px;\
@@ -698,21 +699,25 @@
         small demobo icon at the right bottom of the page
         */
 
+        k = document.createElement('div');
         icon = document.createElement('img');
         icon.className = 'demoboIMG';
         icon.id = 'demoboMiniIcon';
         icon.title = 'demobo mini';
         icon.src = base + 'demobo.png';
-        document.body.appendChild(icon);
         menuContainer = document.createElement('div');
         menuContainer.className = 'demoboDIV';
         menuContainer.id = 'demoboMenuContainer';
-        document.body.appendChild(menuContainer);
+        k.appendChild(icon);
+        k.appendChild(menuContainer);
+        document.body.appendChild(k);
+        console.log('fuck');
         icon.onclick = function() {
           /* when the icon is clicked, show bobos
           */
           return menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length * 30 + 'px';
         };
+        console.log('fuck2');
         return document.onclick = function(e) {
           /* when others are clicked, unshow bobos
           */

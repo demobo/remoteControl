@@ -1,5 +1,5 @@
 (function(){
-  var DEBUG=true;
+  var DEBUG=false;
 
   Douban = Bobo.extend();
 
@@ -99,7 +99,7 @@
 		_this.onChange = function() {
 			if (_this.oldValue !== document.title) {
 				_this.oldValue = document.title;
-				doubanObj.sendNowPlaying();
+				doubanObj.sendNowPlaying.apply(doubanObj, []);
 			}
 		};
 		_this.delay = function() {

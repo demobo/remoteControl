@@ -1,5 +1,7 @@
 (function(){
-  Pandora = Bobo.extend();
+  var DEBUG = false;
+
+  var Pandora = Bobo.extend();
 
   Pandora.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test2.png';

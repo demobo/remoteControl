@@ -1,11 +1,14 @@
 (function(){
-  var DEBUG=false;
+  var DEBUG=true;
 
-  Douban = Bobo.extend();
+  var Douban = Bobo.extend();
 
   Douban.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test2.png';
     
+    this.setInfo('currentSongInfo', {});
+    this.setInfo('playingState', {isPlaying:false, volume: 0});
+
     this.setController({
       url:'http://rc1.demobo.com/rc/douban?0301'
     });
@@ -24,38 +27,61 @@
       'demoboApp' :       'refreshController'  
     });
     this.setupSongUpdateListener();
+
+    this.on('change:currentSongInfo', this.onSongChange);
+    this.on('change:playingState', this.syncState);//if playingState changes, sync state
   };
 	// ********** custom event handler functions *************
 	Douban.prototype.playPause = function () {
     DEBUG && console.log('playPause called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		DBR.act('pause');
-		this.syncState();
+    this.updatePlayingState();
 	}
+
+  Douban.prototype.updatePlayingState = function(){
+    //update play/pause state and volume, sync to phone if necessary
+    var state = {};
+    state.isPlaying = this.getIsPlaying();
+    state.volume = this.getVolume(); 
+    return this.setInfo('playingState', state);
+  }
 
 	Douban.prototype.next = function () {
     DEBUG && console.log('next called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		DBR.act('skip');
 	}
 
 	Douban.prototype.love = function () {
-    DEBUG && console.log('love called');
+    DEBUG && console.log('love called') && console.log('should be instance of Bobo: ') && console.log(this);
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		DBR.act('love');
 	}
 
 	Douban.prototype.ban = function () {
     DEBUG && console.log('ban called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		DBR.act('ban');
 	}
 	
 	Douban.prototype.setVolume = function (num) {
     DEBUG && console.log('setVolume called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		num = parseInt(num / 10) * 10;
 //		getLFMControls()._setVolume(num, true);
-		this.syncState();
+		//this.syncState();
 	}
 	
 	Douban.prototype.onVolume = function (value) {
     DEBUG && console.log('onVolume called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		if (value=='up') this.setVolume(parseInt(this.getVolume())+10);
 		else if (value=='down') this.setVolume(parseInt(this.getVolume())-10);
 		else this.setVolume(value*100);
@@ -63,6 +89,8 @@
 	
 	Douban.prototype.sendStationList = function () {
     DEBUG && console.log('sendStationList called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		var list = $.map($('.channel'), function(value, index) {
 			var s = {
 				'title' : $(value).find('.chl_name').text()
@@ -76,12 +104,16 @@
 
 	Douban.prototype.chooseStation = function (index) {
     DEBUG && console.log('chooseStation called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		index = parseInt(index);
 		$($('.chl_name')[index]).trigger('click');
 	}
 
 	Douban.prototype.refreshController = function () {
 		DEBUG && console.log('refreshController called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		this.sendStationList();
 		this.sendNowPlaying();
 	}
@@ -89,6 +121,8 @@
 	/* helpers */
 	Douban.prototype.setupSongUpdateListener = function() {
     DEBUG && console.log('setupSongUpdateListener called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		// make sure the target is an element that will not be destroyed after
 		// meta data updates
 		var _this = {
@@ -110,6 +144,8 @@
 
 	Douban.prototype.getNowPlayingData = function() {
     DEBUG && console.log('getNowPlayingData called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		var temp = FM.getCurrentSongInfo();
 		return {
 			'title' : temp['songName'],
@@ -120,6 +156,8 @@
 
 	Douban.prototype.getCurrentStationIndex = function() {
     DEBUG && console.log('getCurrentStationIndex called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		var toReturn = 0;
 		var list = $.map($('.channel'), function(value, index) {
 			if ($(value).hasClass('selected'))
@@ -130,27 +168,37 @@
 
 	Douban.prototype.sendNowPlaying = function() {
     DEBUG && console.log('sendNowPlaying called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		this.callFunction('loadSongInfo', this.getNowPlayingData());
 		this.callFunction('setCurrentChannel', this.getCurrentStationIndex());
-		this.syncState();
+		//this.syncState();
 	};
 	
-	Douban.prototype.syncState = function(e) {
+	Douban.prototype.syncState = function(oldState, curState) {
+    //sync state of isPlaying and volume
     DEBUG && console.log('syncState called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
     var doubanObj = this;
 		setTimeout(function() {
-			curState = {isPlaying: doubanObj.getIsPlaying(), volume: doubanObj.getVolume()};
+      console.log('this should be an instance of Douban');
+      console.log(this);
 			doubanObj.callFunction('syncState', curState);
 		}, 30);
 	};
 
 	Douban.prototype.getIsPlaying = function () {
     DEBUG && console.log('getIsPlaying called');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		return !DBR.is_paused();
 	};
 
 	Douban.prototype.getVolume = function () {
     DEBUG && console.log('getVolume');
+    DEBUG && console.log('should be instance of Bobo: ');
+    DEBUG && console.log(this);
 		return 50;
 	};
 

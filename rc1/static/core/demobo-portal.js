@@ -191,7 +191,12 @@
         Bobo.prototype.setInfo = function(key, val) {
           var oldVal;
 
+          console.log('set: ' + key);
           oldVal = this.boboInfos[key];
+          console.log('old: ');
+          console.log(oldVal);
+          console.log('new: ');
+          console.log(val);
           if (oldVal !== val) {
             this.boboInfos[key] = val;
             this.trigger('change:' + key, oldVal, val);

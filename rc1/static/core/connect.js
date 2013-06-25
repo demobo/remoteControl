@@ -25,6 +25,7 @@ window._showDemoboConnect = function(){
   c.style.filter = 'alpha(opacity=100)';
   c.style.opacity = 1;
   c.style.top = '10%';
+  document.getElementById('demoboMiniIcon').classList.add('selected');
 };
 
 window._hideDemoboConnect = function(){
@@ -33,6 +34,7 @@ window._hideDemoboConnect = function(){
   c.style.filter = '';
   c.style.opacity = '';
   c.style.top = '';
+  document.getElementById('demoboMiniIcon').classList.remove('selected');
 };
 
 var e = document.querySelector('#demoboConnect #dontShow');
@@ -45,7 +47,7 @@ if (window.localStorage && window.localStorage.getItem('demoboNotShow')==="1"){
     window._hideDemoboConnect();
     e.parentNode.removeChild(e);
   };
-  setTimeout(window._showDemoboConnect, 500);
+  window._showDemoboConnect();
 }
 
 document.querySelector('#demoboConnect #closeTutorial').onclick = window._hideDemoboConnect;

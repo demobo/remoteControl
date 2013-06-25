@@ -2,8 +2,10 @@
 dev = window.demoboDev
 if dev
   base = window.demoboBase+'/apps/'
+  connectScript = window.demoboBase+'/core/connect.js'
 else
   base = 'http://rc1.demobo.com/apps/'
+  connectScript = 'http://rc1.demobo.com/core/connect.js'
 
 remotes = {
   'www.pandora.com':     'pandora.com-new.js'
@@ -15,6 +17,7 @@ remotes = {
   'youku.com':           'youku.com-new.js'
   'www.rdio.com':        'rdio.com-new.js'
   'grooveshark.com':     'grooveshark.com-new.js'
+
 }
 
 if not window.demoboLoading
@@ -45,6 +48,7 @@ if not window.demoboLoading
       document.body.appendChild(cache)
 
     cacheJS('http://api.demobo.com/demobo.1.7.0.min.js')
+    cacheJS(connectScript)
     ### try to preload the demobo api ###
 
     loadJS = (src, f) ->
@@ -225,7 +229,7 @@ if not window.demoboLoading
         console.log 'current bobo changed from '+oldVal+' to '+newVal
 
       handleBoboAdd: (boboID, boboObj)->
-        this.createBoboView(boboID, boboObj.getInfo('config'))
+        #this.createBoboView(boboID, boboObj.getInfo('config'))
         console.log('new bobo added, id: '+boboID)
 
       connectedHandler: (portal)->
@@ -502,6 +506,14 @@ if not window.demoboLoading
       }
   
       #demoboMiniIcon:hover {
+        opacity:0.7;
+      }
+
+      #demoboMiniIcon.selected {
+        opacity:0.7;
+      }
+      
+      #demoboMiniIcon:active {
         opacity:1;
       }
       
@@ -555,23 +567,31 @@ if not window.demoboLoading
       menuContainer.id = 'demoboMenuContainer'
       #document.body.appendChild(menuContainer)
       k.appendChild(icon)
-      k.appendChild(menuContainer)
+      #k.appendChild(menuContainer)
       document.body.appendChild(k)
 
       #   menuContainer.onmouseout = () ->
       #     menuContainer.style.height = '0px'
+      loadJS(connectScript)
+
       icon.onclick = () ->
+        if icon.classList.length is 1
+          window._showDemoboConnect()
+        else
+          window._hideDemoboConnect()
+
         ### when the icon is clicked, show bobos ###
-        menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length*30+'px'
-      
+        #menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length*30+'px'
+
+      ###
       document.onclick = (e)->
-        ### when others are clicked, unshow bobos ###
+        ## when others are clicked, unshow bobos ##
         ele = e.srcElement
         if ele.className.indexOf('demobo') isnt 0
           setTimeout(()->
             menuContainer.style.height = '0px'
           ,500)
-  
+      ###
     )
   
   ### end of critical section ###

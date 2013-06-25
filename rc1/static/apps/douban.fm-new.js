@@ -45,7 +45,7 @@
     var state = {};
     state.isPlaying = this.getIsPlaying();
     state.volume = this.getVolume(); 
-    return this.setInfo('playingState', state);
+    return this.setInfo('playingState', state); //will triger syncState
   }
 
 	Douban.prototype.next = function () {

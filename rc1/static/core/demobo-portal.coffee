@@ -5,6 +5,18 @@ if dev
 else
   base = 'http://rc1.demobo.com/apps/'
 
+remotes = {
+  'www.pandora.com':     'pandora.com-new.js'
+  'douban.fm':           'douban.fm-new.js'
+  'www.youtube.com':     'youtube.com-new.js'
+  'www.last.fm':         'last.fm-new.js'
+  '8tracks.com':         '8tracks.com-new.js'
+  'vimeo.com':           'vimeo.com-new.js'
+  'youku.com':           'youku.com-new.js'
+  'www.rdio.com':        'rdio.com-new.js'
+  'grooveshark.com':     'grooveshark.com-new.js'
+}
+
 if not window.demoboLoading
   window.demoboLoading = 1 
   ### set the flag so that another demobo script wont interrupt ###
@@ -242,12 +254,22 @@ if not window.demoboLoading
         @_events = {}
         this.initialize()
 
+      getRemote: ()->
+        ### gets remote control name for curren twebsite ###
+        domain = document.domain
+        for key, val of remotes
+          if key is domain
+            return val
+        return null
+
       getBoboRoutes: ()->
         ###hard coded for now###
-        return {
-          'douban': base + 'douban.fm-new.js'
-          'inputtool': base + 'inputtool-new.js'
-        }
+        toReturn = {}
+        remote = this.getRemote()
+        if remote
+          toReturn['remote'] = base + remote
+        return toReturn
+          #'inputtool': base + 'inputtool-new.js'
 
       initialize: ()->
         ### called immediately upon the object's instantiation (guaranteed) ###
@@ -536,14 +558,12 @@ if not window.demoboLoading
       k.appendChild(menuContainer)
       document.body.appendChild(k)
 
-      console.log('fuck')
       #   menuContainer.onmouseout = () ->
       #     menuContainer.style.height = '0px'
       icon.onclick = () ->
         ### when the icon is clicked, show bobos ###
         menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length*30+'px'
       
-      console.log('fuck2')
       document.onclick = (e)->
         ### when others are clicked, unshow bobos ###
         ele = e.srcElement

@@ -4,7 +4,7 @@
 
 
 (function() {
-  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, demoboHandlers, dev, extend, loadJS, nativeForEach, _,
+  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, demoboHandlers, dev, extend, loadJS, nativeForEach, remotes, _,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   dev = window.demoboDev;
@@ -14,6 +14,18 @@
   } else {
     base = 'http://rc1.demobo.com/apps/';
   }
+
+  remotes = {
+    'www.pandora.com': 'pandora.com-new.js',
+    'douban.fm': 'douban.fm-new.js',
+    'www.youtube.com': 'youtube.com-new.js',
+    'www.last.fm': 'last.fm-new.js',
+    '8tracks.com': '8tracks.com-new.js',
+    'vimeo.com': 'vimeo.com-new.js',
+    'youku.com': 'youku.com-new.js',
+    'www.rdio.com': 'rdio.com-new.js',
+    'grooveshark.com': 'grooveshark.com-new.js'
+  };
 
   if (!window.demoboLoading) {
     window.demoboLoading = 1;
@@ -191,12 +203,7 @@
         Bobo.prototype.setInfo = function(key, val) {
           var oldVal;
 
-          console.log('set: ' + key);
           oldVal = this.boboInfos[key];
-          console.log('old: ');
-          console.log(oldVal);
-          console.log('new: ');
-          console.log(val);
           if (oldVal !== val) {
             this.boboInfos[key] = val;
             this.trigger('change:' + key, oldVal, val);
@@ -334,13 +341,35 @@
           this.initialize();
         }
 
+        DemoboPortal.prototype.getRemote = function() {
+          /* gets remote control name for curren twebsite
+          */
+
+          var domain, key, val;
+
+          domain = document.domain;
+          for (key in remotes) {
+            val = remotes[key];
+            if (key === domain) {
+              return val;
+            }
+          }
+          return null;
+        };
+
         DemoboPortal.prototype.getBoboRoutes = function() {
           /*hard coded for now
           */
-          return {
-            'douban': base + 'douban.fm-new.js',
-            'inputtool': base + 'inputtool-new.js'
-          };
+
+          var remote, toReturn;
+
+          toReturn = {};
+          remote = this.getRemote();
+          if (remote) {
+            toReturn['remote'] = base + remote;
+          }
+          alert(remote);
+          return toReturn;
         };
 
         DemoboPortal.prototype.initialize = function() {
@@ -716,13 +745,11 @@
         k.appendChild(icon);
         k.appendChild(menuContainer);
         document.body.appendChild(k);
-        console.log('fuck');
         icon.onclick = function() {
           /* when the icon is clicked, show bobos
           */
           return menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length * 30 + 'px';
         };
-        console.log('fuck2');
         return document.onclick = function(e) {
           /* when others are clicked, unshow bobos
           */

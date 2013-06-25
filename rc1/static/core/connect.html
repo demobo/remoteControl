@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset=utf-8 />
+    <link type='text/css' rel='stylesheet' href='connect.css'></link>
+  </head>
+  <body style="background:red">
+   <div id="demoboConnect">
+     <div class="modal-body">
+	   <div id="intro">
+         <div class="instructions">
+		   <div class="steps">
+		     <div class="step" id="step1">
+               <div class="step-to-computer">
+                 <div class="number">
+                   1
+                 </div>
+                 <div class="text">
+                   Get <strong>deMobo</strong> for
+                   <br>
+                   <a href="http://itunes.apple.com/us/app/de-mobo/id519605488?ls=1&mt=8" target="_blank">iPhone</a>
+                   and use WIFI.
+                 </div>
+                 <a href="http://itunes.apple.com/us/app/de-mobo/id519605488?ls=1&mt=8">
+                   <img src="http://www.demobo.com/img/parallax-slider/demobo.png" class="instructions-1">
+                 </a>
+               </div>
+             </div>
+             <div class="step" id="step2">
+               <div class="step-to-computer">
+                 <div class="number">
+                   2
+                 </div>
+                 <div class="text">
+                   Press and hold <strong>"Enter"</strong> key
+                   <br>
+                   to accept connections.
+                 </div>
+                 <img src="http://10.0.0.16:1240/core/enterhold.png" class="instructions-2">
+               </div>
+             </div>
+             <div class="step" id="step3">
+               <div>
+                 <div class="number">
+                   3
+                 </div>
+                 <div class="text">
+                   Start <strong>deMobo</strong> and <strong>shake</strong> your phone to connect.
+                 </div>
+                 <img src="http://10.0.0.16:1240/core/shake.png" class="instructions-3">
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>     
+     </div>
+     <div class="modal-footer">
+       <button class="btn" id='dontShow'>OK, I got it.</button>
+       <button id='closeTutorial' class="btn">Close</button>
+     </div>
+    </div>    
+    <script>
+      var closeConnect = function(){
+        var c = document.getElementById('demoboConnect');
+        c.style.opacity = '';
+        c.style.top = '';
+      };
+
+      var showConnect = function(){
+        var c = document.getElementById('demoboConnect');
+        c.style['-ms-filter'] = "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+        c.style.filter = 'alpha(opacity=100)';
+        c.style.opacity = 1;
+        c.style.top = '10%';
+      }
+
+      document.getElementById('closeTutorial').onclick = closeConnect;
+      showConnect();
+    </script>
+  </body>
+</html>

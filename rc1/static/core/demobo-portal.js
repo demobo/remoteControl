@@ -26,7 +26,8 @@
     'vimeo.com': 'vimeo.com-new.js',
     'youku.com': 'youku.com-new.js',
     'www.rdio.com': 'rdio.com-new.js',
-    'grooveshark.com': 'grooveshark.com-new.js'
+    'grooveshark.com': 'grooveshark.com-new.js',
+    'www.yelp.com': 'yelp.com.js'
   };
 
   if (!window.demoboLoading) {

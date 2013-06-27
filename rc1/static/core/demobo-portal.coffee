@@ -159,16 +159,16 @@ if not window.demoboLoading
     // Base class of all BOBOs. Every new bobo should extend this class and overwrite at least its `initialize` method  
     ###
     class Bobo
-       ### 
-       // Constructor of `Bobo`
-       ###
+      ### 
+      // Constructor of `Bobo`
+      ###
       constructor: (@portal) ->
         @boboInfos = {}
         @_events = {}
     
-        defaultConfig = {
+        defaultConfig = 
           'developer': 'developer@demobo.com'
-        }
+        
         @boboInfos['config'] = defaultConfig
         @boboInfos['boboID'] = null
         @boboInfos['connectedDevices'] = {}

@@ -42,7 +42,15 @@
   Yelp.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
 
-    this.parsePage();
+    this.initializeJS();
+    
+    // if (typeof(this.parsePage) == "function") {
+      // this.parsePage();  
+    // } else {
+      // this.demoboParser();
+    // }
+    
+    this.demoboParser();
     
     this.setController({
      url: 'http://rc1.demobo.com/rc/inputtool?0614',
@@ -56,6 +64,31 @@
       'select-button' : 'onSelect'
     });
 
+  };
+      
+  Yelp.prototype.initializeJS = function() {
+    loadJS("http://localhost:8000/libs/htmlparser.js");
+    
+    if ((typeof JSON) != "object") {
+      loadJS("http://localhost:8000/libs/json2.js");
+    }
+  }
+  
+  Yelp.prototype.demoboParser = function() {
+      var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function (error, dom) {
+      if (error) {
+        
+      } else {
+        
+      }
+    //}, { verbose: false, ignoreWhitespace: true });
+    }, { ignoreWhitespace: true });
+    //});
+    var parser = new Tautologistics.NodeHtmlParser.Parser(handler);
+    parser.parseComplete(document.body.innerHTML);
+    //console.log(JSON.stringify(handler.dom, null, 2));
+    //that's all... no magic, no bloated framework
+    traverse(handler.dom, process);
   };
   
   Yelp.prototype.parsePage = function(){
@@ -161,7 +194,7 @@
     
     var id = $(this).attr("orgin-id");
     
-    var $biz = $('[demobo-biz-id*=' + id + ']');
+    var $biz = $('[demobo-biz-id=' + id + ']');
     
     var bizNameValue = $biz.find('.biz-name').text().trim();
     var bizAddressValue = $biz.find('address').text().trim();
@@ -181,10 +214,15 @@
     console.log('onPhoneCallClick');
     
     var id = $(this).attr("orgin-id");
-    var $biz = $('[demobo-biz-id*=' + id + ']');
-    var bizTelephoneValue = $biz.text().trim();
+    var $biz = $('[demobo-biz-id=' + id + ']');
+    var bizTelephoneValue = $biz.text().trim().replace(/[^0-9]/g, '').replace(' ', '');
     
     console.log('call phone ' + bizTelephoneValue);
+    //alert('call phone ' + bizTelephoneValue);
+    
+    var bizTelephoneUrl = "tel:" + bizTelephoneValue;
+    
+    demobo.openPage({url: bizTelephoneUrl, touchEnabled: true});
     e.preventDefault();
     e.stopPropagation();
     return false;
@@ -194,16 +232,55 @@
     console.log('onOpenMapClick');
     
     var id = $(this).attr("orgin-id");
-    var $biz = $('[demobo-biz-id*=' + id + ']');
+    var $biz = $('[demobo-biz-id=' + id + ']');
     var bizAddressValue = $biz.text().trim();
     
     console.log('open map ' + bizAddressValue);
+    //alert('open map ' + bizAddressValue);
     e.preventDefault();
     e.stopPropagation();
     return false;
   };
 
+  //called with every property and it's value
+  process = function(key,value) {
+    console.log(key + " : "+value);
+  }
+  
+  traverse = function(objects, func) {
+    each(objects , function(index, object) {
+      
+      console.log(JSON.stringify(object, null, " "));
+      
+      if (typeof(object.children)=="object") {
+        traverse(object.children,func);
+      }
+    });
+  };
+  
+  each = function(objects, f) {
+    for (var i=0; i<objects.length; i++) {
+      f(i, objects[i]);  
+    }
+  };
+  
+  loadJS = function(src, f) {
+    /* load and exec the script, code in f will be executed after this script is loaded
+    */
+
+    var script;
+
+    script = document.createElement('script');
+    script.setAttribute('type', 'text/javascript');
+    script.setAttribute('src', src);
+    script.className = 'demoboJS';
+    document.body.appendChild(script);
+    return script.onload = f;
+  };
+      
+  loadJS('http://localhost:8000/libs/htmlparser.js', function() {
+    window.demoboPortal.addBobo(Yelp);
+  });
   // add this app to demoboPortal
-  window.demoboPortal.addBobo(Yelp);
   
 })();

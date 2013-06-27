@@ -1,45 +1,73 @@
-### set this to false if production ###
-dev = window.demoboDev
-if dev
-  base = window.demoboBase+'/apps/'
-  connectScript = window.demoboBase+'/core/connect.js'
-else
-  base = 'http://rc1.demobo.com/apps/'
-  connectScript = 'http://rc1.demobo.com/core/connect.js'
+###
+// demobo-portal.js 1.0.0
 
-remotes = {
-  'www.pandora.com':     'pandora.com-new.js'
-  'douban.fm':           'douban.fm-new.js'
-  'www.youtube.com':     'youtube.com-new.js'
-  'www.last.fm':         'last.fm-new.js'
-  '8tracks.com':         '8tracks.com-new.js'
-  'vimeo.com':           'vimeo.com-new.js'
-  'youku.com':           'youku.com-new.js'
-  'www.rdio.com':        'rdio.com-new.js'
-  'grooveshark.com':     'grooveshark.com-new.js'
+// (c) 2013 Jiahao Li, de Mobo LLC
+###
 
-}
 
+###
+//`window.demoboLoading` is a flag that keeps loading bookmarklet safe 
+###
 if not window.demoboLoading
+
+  ### 
+  //Set the flag so that another demobo script wont interrupt 
+  ###
   window.demoboLoading = 1 
-  ### set the flag so that another demobo script wont interrupt ###
 
   if window.demoboOn
-    ###demobo is already on. Do nothing ###
-    console.log('demobo is already on')
+    ### 
+    //If demobo is already on, do nothing 
+    ###
     delete window.demoboLoading 
 
   else
     window.demoboOn = 1
+  
+    ###
+    // Baseline Setup
+    // ---------------
+    // Current version
+    ###
+    version = '1.0.0'
+
+    ### 
+    //Set this to false if production. In local environment, the Google App Engine server serves as the http server, and Apache server(default on port 443) is the https server. In production environment, a server will serve both http and https requests.
+    ###
+    dev = window.demoboDev
+    if dev
+      base = window.demoboBase+'/apps/'
+      connectScript = window.demoboBase+'/core/connect.js'
+    else
+      base = '//rc1-dot-de-mobo.appspot.com/apps/'
+      connectScript = '//rc1-dot-de-mobo.appspot.com/core/connect.js'
+    
+    ###
+    // This sets the routing of controllers for websites (currently hardcoded)
+    ###
+    remotes = 
+      'www.pandora.com':     'pandora.com-new.js'
+      'douban.fm':           'douban.fm-new.js'
+      'www.youtube.com':     'youtube.com-new.js'
+      'www.last.fm':         'last.fm-new.js'
+      '8tracks.com':         '8tracks.com-new.js'
+      'vimeo.com':           'vimeo.com-new.js'
+      'youku.com':           'youku.com-new.js'
+      'www.rdio.com':        'rdio.com-new.js'
+      'grooveshark.com':     'grooveshark.com-new.js'
+      'play.spotify.com':    'spotify.com-new.js'
+      'www.yelp.com': 'yelp.com.js'
+      'sfbay.craigslist.org': 'yelp.com.js'
+      'www.yellowpages.com': 'yelp.com.js'
+      'www.foodspotting.com' : 'yelp.com.js'
+      'www.urbanspoon.com' : 'yelp.com.js'
 
     ###
-    *******************************************************
-    definitions of utilities 
-    *******************************************************
+    // definitions of utilities 
+    // ------------------------
+    // A function that caches a script using object tag
     ###
-
     cacheJS = (src) ->
-      ### create an object tag to preload a script  ###
       cache = document.createElement('object')
       cache.data = src
       cache.className = 'demoboCache'
@@ -47,12 +75,16 @@ if not window.demoboLoading
       cache.height = 0
       document.body.appendChild(cache)
 
-    cacheJS('http://api.demobo.com/demobo.1.7.0.min.js')
+    ###
+    // Try to preload demobo API and other scripts as early as possible
+    ###
+    cacheJS('//api.demobo.com/demobo.1.7.0.min.js')
     cacheJS(connectScript)
-    ### try to preload the demobo api ###
 
+    ###
+    // A function that loads a script and executes the call back after the script is executed
+    ###
     loadJS = (src, f) ->
-      ### load and exec the script, code in f will be executed after this script is loaded ###
       script = document.createElement('script')
       script.setAttribute('type', 'text/javascript')
       script.setAttribute('src', src)
@@ -60,12 +92,19 @@ if not window.demoboLoading
       document.body.appendChild(script)
       script.onload = f
 
-    ### some constants used by underscore.js codes ###
+    
+    ###
+    // external libraries 
+    // ------------------
+    // Constants used by underscore.js codes 
+    ###
     _ = {}
     nativeForEach = Array.prototype.forEach
     breaker = {}
     
-    ### functions defined by underscore.js ###
+    ### 
+    // Functions defined by underscore.js 
+    ###
     `
     _.each = function(obj, iterator, context) {
       if (obj == null) return;
@@ -98,7 +137,9 @@ if not window.demoboLoading
       return obj;
     }`
     
-    ### Codes copied and adapted from backbone.js. Used for inheritance ###
+    ### 
+    // Codes copied and adapted from backbone.js. Used for inheritance 
+    ###
     extend = (protoProps, staticProps) ->
       parent = this
      
@@ -117,64 +158,86 @@ if not window.demoboLoading
     
       return child
     
+    ###
+    // Bobo base class
+    // ----------------
+    // Base class of all BOBOs. Every new bobo should extend this class and overwrite at least its `initialize` method  
+    ###
     class Bobo
-      ### Base class of all BOBOs. Every new bobo should extend this class and overwrite at least its initialize method  ###
-
+      ### 
+      // Constructor of `Bobo`
+      ###
       constructor: (@portal) ->
-        ### constructor of Bobo ###
         @boboInfos = {}
         @_events = {}
     
-        defaultConfig = {
+        defaultConfig = 
           'developer': 'developer@demobo.com'
-        }
+        
         @boboInfos['config'] = defaultConfig
         @boboInfos['boboID'] = null
         @boboInfos['connectedDevices'] = {}
         @boboInfos['inputEventHandlers'] = {}
         this.initialize()
     
+      ### 
+      // Register a event handler to the Object's properties. In the handler, `this` refers to this object. Example:
+      ###
       on: (eventName, handler)->
-        ### register a event handler to the Object's properties. In the handler, "this" refers to this object ###
         @_events[eventName] = handler
         true
     
+      ### 
+      //Trigger specific event handler 
+      ###
       trigger: (eventName) ->
-        ### trigger specific event handler ###
         if (handler = @_events[eventName])
           handler.apply(this, [].slice.apply(arguments, [1]))
           return true
         else
           return false
 
+      ### 
+      //Call the function on device. if `devicedID` is not specified, call the function on all devices connected to this bobo 
+      ###
       callFunction: (functionName, data, deviceID)->
-        ### call the function on device. if deviced id is not specified, call the function on all devices connected to this bobo ###
         return @portal.callFunction(functionName, data, deviceID, this.getInfo('boboID'))
     
+      ###
+      //Called immediately upon this bobo's instantiation (guaranteed). A bobo that inherits the base `Bobo` class should overwrite this method
+      ###
       initialize:->
-        ### called immediately upon this bobo's instantiation (guaranteed). bobo's that inherits the base Bobo class should overwrite this method###
         this.setInfo('controller', {})
         this.setInfo('inputEventHandlers', {})
         return true
-    
+        
+      ### 
+      //Return the value of the key 
+      ###
       getInfo: (key)->
-        ### return the value of the key ###
         return @boboInfos[key]
     
+      ###
+      // set the value of the key. If the old value is different from the new value, 'change:`key`' event is triggered 
+      ###
       setInfo: (key, val)->
-        #### set the value of the key. If the old value is different from the new value, 'change:key' is triggered ###
         oldVal = @boboInfos[key]
         unless oldVal is val
           @boboInfos[key] = val
           this.trigger 'change:'+key, oldVal, val
         return oldVal
     
+      ### 
+      //set controller params. which will be passed to phone when new device is connected 
+      ###
       setController: (params)->
-        ### set controller params. which will be passed to phone when new device is connected ###
         return this.setInfo('controller', params)
     
+
+      ###
+      // set event listeners. which will be in turn set to demobo when the bobo is instantiated
+      ###
       setInputEventHandlers: (inputEventHandlers)->
-        ### set event listeners. which will be in turn set to demobo when the bobo is instantiated###
         _thisBobo = this
         wrapper = (bobo, functionName)->
           return ()->
@@ -187,29 +250,47 @@ if not window.demoboLoading
         this.setInfo('inputEventHandlers', hs)
         return true
     
+      ###
+      // reservered for future use 
+      ###
       run: ->
-        ### reservered for future use ###
-
+      
+      ###
+      // reservered for future use 
+      ###
       resume: ->
 
+      ###
+      // reservered for future use 
+      ###
       finish: ->
-        ### reservered for future use ###
      
+    ###
+    // Set up `Bobo` for global use
+    ###
     Bobo.extend = extend
     window.Bobo = Bobo
 
+    ### 
+    //a dispatcher object for event listeners 
+    ###
     class Dispatcher
-      ### a dispatcher object for event listeners ###
+      ###
+      //Constructor of `Dispatcher` 
+      ###
       constructor: (@eventListened, @portal)->
-        ### constructor of Dispatcher ###
         @handlers = {}
 
+      ###
+      //add a bobo's event handler 
+      ###
       addHandler: (boboID, handler)->
-        ### add a bobo's event handler ###
         @handlers[boboID] = handler
 
+      ###
+      // call corresponding handler based on `deviceID` (and its corresponding `boboID`) 
+      ###
       dispatch: (value, data)->
-        ### call corresponding handler based on deviceID (and its corresponding boboID) ###
         deviceID = data.deviceID
         boboID = @portal.getDeviceBoboID(deviceID)
         if boboID in Object.keys(@handlers)
@@ -217,9 +298,7 @@ if not window.demoboLoading
         return null
       
     ###
-    ***************************************************************
-    Handlers used by demoboPortal, which listen to the change of demoboPortal object's properties, e.g. change of bobos, addition of new bobo
-    ***************************************************************
+    // Handlers used by a `DemoboPortal` object, which listen to the change of the object's properties, e.g. change of bobos, addition of new bobo, etc.
     ###
     demoboHandlers = {
       handlerBobosChange: (oldVal, newVal)->
@@ -229,17 +308,22 @@ if not window.demoboLoading
         console.log 'current bobo changed from '+oldVal+' to '+newVal
 
       handleBoboAdd: (boboID, boboObj)->
-        #this.createBoboView(boboID, boboObj.getInfo('config'))
         console.log('new bobo added, id: '+boboID)
 
+
+      ###
+      // Handler that runs when a new device is connected
+      ###
       connectedHandler: (portal)->
         return (data)->
-          ### handler that runs when a new device is connected###
           console.log('connected')
           console.log(portal)
           portal.setDeviceController(portal.get('curBobo'), data.deviceID)
           portal.addDevice(data.deviceID)
 
+      ###
+      // Handler that runs when a new device is disconnected
+      ###
       disconnectedHandler: (portal)->
         return (data)->
           console.log('disconnected')
@@ -247,10 +331,14 @@ if not window.demoboLoading
           portal.removeDevice(data.deviceID)
     }
 
+    ###
+    // Class definition of DemoboPortal 
+    ###
     class DemoboPortal
-      ### class definition of DemoboPortal ###
+      ###
+      //constructor of `DemoboPortal`
+      ###
       constructor: ()->
-        ### constructor of DemoboPortal class ###
         @attributes = {}
         @DEMOBO = window.DEMOBO
         @demobo = window.demobo
@@ -258,26 +346,33 @@ if not window.demoboLoading
         @_events = {}
         this.initialize()
 
+      ###
+      // Get current website's remote control url
+      ###
       getRemote: ()->
-        ### gets remote control name for curren twebsite ###
         domain = document.domain
         for key, val of remotes
           if key is domain
             return val
         return null
 
+      ###
+      // Return an object that contains all available bobos for the current website.
+      ###
       getBoboRoutes: ()->
-        ###hard coded for now###
         toReturn = {}
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote
         return toReturn
-          #'inputtool': base + 'inputtool-new.js'
 
+
+      ###
+      //Called immediately upon the object's instantiation (guaranteed) 
+      ###
       initialize: ()->
-        ### called immediately upon the object's instantiation (guaranteed) ###
         boboRoutes = this.getBoboRoutes()
+        this.set('version', version)
 
         this.set('bobos', {})
         this.set('eventHandlers', {})
@@ -303,13 +398,18 @@ if not window.demoboLoading
         
         true
       
+      ###
+      // Add a connected device and map it to the current bobo
+      ###
       addExistentDevice: (data)->
         deviceID = data.deviceID
         this.setDeviceController(this.get('curBobo'), deviceID)
         this.addDevice(deviceID)
 
+      ###
+      // Make an rpc on the device. if `deviceID` is not specified, make the rpc on all devices connected to the specified bobo 
+      ###
       callFunction: (functionName, data, deviceID, boboID)->
-        ### make an rpc on the device. if deviceID is not specified, make the rpc on all devices connected to the specified bobo ###
         if deviceID
           return @demobo.callFunction(functionName, data, deviceID)
         else
@@ -318,8 +418,10 @@ if not window.demoboLoading
             @demobo.callFunction(functionName, data, dID)
           return false #this return doesn't make much sense...
 
+      ###
+      //If the event is already registered, add a handler to its dispatcher; otherwise create a new dispatcher
+      ###
       addEventListener: (eventName, handler, boboID)->
-        ### if the event is already registered, add a handler to its dispatcher; otherwise create a new dispatcher###
         handlers = this.get('eventHandlers')
         dispatcher = handlers[eventName]
         console.log(dispatcher?)
@@ -335,18 +437,28 @@ if not window.demoboLoading
           @demobo.mapInputEvents(_temp)
         return true
 
+      ###
+      //Get the boboID of the device, based on the current mapping 
+      ###
       getDeviceBoboID: (deviceID)->
-        ### the the boboID of the device, based on the current mapping ###
         map = this.get('deviceBoboMap')
         return map[deviceID]
 
+      ###
+      //Set a device's controller 
+      ###
       setDeviceController: (boboObj, deviceID)->
-        ### set a device's controller ###
         return @demobo.setController(boboObj.getInfo('controller'), deviceID)
       
+      ###
+      //Return true if `deviceID` is already in the mapping; false otherwise.
+      ###
       hasDevice: (deviceID)->
         return deviceID in this.get('deviceBoboMap')
 
+      ###
+      // Add a device
+      ###
       addDevice: (deviceID, boboID)->
         if not this.hasDevice(deviceID)
           if not boboID
@@ -358,8 +470,10 @@ if not window.demoboLoading
           return true
         return false
 
+      ###
+      //Delete `deviceID` from the mapping
+      ###
       removeDevice: (deviceID)->
-        ### delete the deviceID from keys of deviceBoboMap, and delete the deviceID from the corresponding bobo's devices list ###
         boboID = this.getDeviceBoboID(deviceID)
         devices = this.get('boboDeviceMap')[boboID]
         devices.splice(devices.indexOf(deviceID), 1)
@@ -367,8 +481,8 @@ if not window.demoboLoading
         this.trigger('delete:device', deviceID)
         true
 
+      ### Set the mappings so that `deviceID` points to `boboID` ###
       setDevice: (deviceID, boboID)->
-        ### set the mappings so that deviceID points to boboID ###
         if this.hasDevice(deviceID)
           oldBoboId = this.getDeviceBoboID(deviceID)
           if oldBoboId is boboID
@@ -383,12 +497,17 @@ if not window.demoboLoading
         else
           return this.addDevice(deviceID)
 
+
+      ###
+      //TODO: might be remvoed? 
+      ###
       setController: (controller)->
-        ### TODO: might be remvoed? ###
         @demobo.setController(controller)
 
+      ###
+      // Switch to another bobo 
+      ###
       switchBobo: (boboID)->
-        ### switch to another bobo ###
         oldBoboID = this.get('curBobo').getInfo('boboID')
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
@@ -406,12 +525,16 @@ if not window.demoboLoading
 
         newBobo.resume()
         return true
-      
+     
+      ###
+      // Take an argument of a extended `Bobo` class and create a new `Bobo` instance. 
+      ###
       addBobo: (boboClass)->
-        ### add another bobo to portal###
         boboObj = new boboClass(this)
 
-        ### if boboID dosn't exist, set it to its controller url###
+        ###
+        // If `boboID` dosn't exist, set `boboID` to this bobo's controller url
+        ###
         temp = boboObj.getInfo('boboID')
         if temp
           boboID = temp
@@ -439,25 +562,33 @@ if not window.demoboLoading
           return true
         return false
 
+      ###
+      // Return the value of the key
+      ###
       get: (key)->
-        ###return the value of the key###
         @attributes[key]
   
+      ###
+      // Register a event with its handler
+      ###
       on: (eventName, handler) ->
-        ###register a event with its handler###
         @_events[eventName] = handler
         true
   
+      ###
+      // Trigger event
+      ###
       trigger: (eventName) ->
-        ###trigger event###
         if (handler=@_events[eventName])
           handler.apply(this, [].slice.apply(arguments, [1]))
           return true
         else
           return false
   
+      ###
+      // Set an attribute's value. If the old value is different from the new value, 'change:`key`' is triggered
+      ###
       set: (key, val)->
-        ###set the value of the key. If the old value is different from the new value, 'change:key' is triggered###
         oldVal = @attributes[key]
         unless (oldVal is val)
           @attributes[key] = val
@@ -465,8 +596,10 @@ if not window.demoboLoading
         
         return oldVal
 
+      ###
+      // Create the view of a bobo, which would be showed up in portal 
+      ###
       createBoboView: (boboID, boboInfo)->
-        ### create the view of a bobo, which would be showed up in portal ###
         menuContainer = document.getElementById('demoboMenuContainer')
         if menuContainer
           d = document.createElement('div')
@@ -483,16 +616,21 @@ if not window.demoboLoading
           return d
         return null
     
-    ### End of demobo session ###
-
-    loadJS('http://api.demobo.com/demobo.1.7.0.min.js',()->
+    ###
+    //Execution
+    //----------------
+    // instantiate a `DemoboPortal` object and expose to global use
+    ###
+    loadJS('//api.demobo.com/demobo.1.7.0.min.js',()->
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
     
-      ### icon session ###
+      ### 
+      // Set up css for the small cute de Mobo icon. 
+      ###
       demoboCss = document.createElement('style')
       demoboCss.className = 'demoboCSS'
-      cssContent = '
+      cssContent = "
       #demoboMiniIcon {
         z-index:10000;
         width:30px;
@@ -516,84 +654,38 @@ if not window.demoboLoading
       #demoboMiniIcon:active {
         opacity:1;
       }
-      
-      #demoboMenuContainer {
-        z-index:10001;
-        width:30px;
-        height:0px;
-        position:fixed;
-        background:rgba(20, 20, 20, 0.8);
-        right:20px;
-        -webkit-transition: height 0.5s ease;
-        transition: height 0.5s ease;
-        bottom:60px;
-        overflow:hidden;
-      }
-  
-      #demoboMenuContainer.expand {
-        height:90px;
-      }
-
-      .demoboBoboItem {
-        height:30px;
-        width:30px;
-      }
-
-      .demoboBoboIcon {
-        width:30px;
-      }
-
-      .demoboBoboIcon:hover {
-        background:white;
-      }
-      '
+      "
       demoboCss.innerText = cssContent
       document.body.appendChild(demoboCss)
   
       ###
-      small demobo icon at the right bottom of the page
+      // Small demobo icon at the right bottom of the page
       ###
-      k = document.createElement('div')
+      container = document.createElement('div')
 
       icon = document.createElement('img')
       icon.className = 'demoboIMG'
       icon.id = 'demoboMiniIcon' 
       icon.title='demobo mini' 
       icon.src=base+'demobo.png'
-      #document.body.appendChild(icon)
   
-      menuContainer = document.createElement('div')
-      menuContainer.className = 'demoboDIV'
-      menuContainer.id = 'demoboMenuContainer'
-      #document.body.appendChild(menuContainer)
-      k.appendChild(icon)
-      #k.appendChild(menuContainer)
-      document.body.appendChild(k)
+      container.appendChild(icon)
+      document.body.appendChild(container)
 
-      #   menuContainer.onmouseout = () ->
-      #     menuContainer.style.height = '0px'
+      ###
+      // Load script of connection dialog and show the dialog if necessary
+      ###
       loadJS(connectScript)
 
+      ###
+      // Setup click handler of our small cute de Mobo icon
+      ###
       icon.onclick = () ->
         if icon.classList.length is 1
           window._showDemoboConnect()
         else
           window._hideDemoboConnect()
-
-        ### when the icon is clicked, show bobos ###
-        #menuContainer.style.height = Object.keys(demoboPortal.get('bobos')).length*30+'px'
-
-      ###
-      document.onclick = (e)->
-        ## when others are clicked, unshow bobos ##
-        ele = e.srcElement
-        if ele.className.indexOf('demobo') isnt 0
-          setTimeout(()->
-            menuContainer.style.height = '0px'
-          ,500)
-      ###
     )
-  
-  ### end of critical section ###
-  window.demoboLoading = undefined
+
+  delete window.demoboLoading
   

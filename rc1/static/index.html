@@ -10,15 +10,15 @@
       <div>Enter the port number that you wanna load controllers from:<input id='rcPort' /></div>
       <div><button onclick='javascript:generateBookmarklet()'>Generate dev bookmarklet</button></div>-->
       <h1>The fucking awesome new version of demobo bookmarklet: </h1>
-      <div> This is the fucking awesome <a href="javascript:(function(){var s = document.createElement('script'); s.src='http://rc1.demobo.com/core/demobo-portal.js'; document.body.appendChild(s);}())">demobo</a> bookmarklet</div>
-      <div>This is the dev version: <a id='devLink' href="">DemoboDev</a> (assume the current url is ur dev server)</div>
+      <div> This is the fucking awesome <a href="javascript:(function(){var s = document.createElement('script'); s.src='//rc1-dot-de-mobo.com/core/demobo-portal.js'; document.body.appendChild(s);}())">demobo</a> bookmarklet</div>
+      <div>This is the dev version: <a id='devLink' href="">DemoboDev</a> (assume the current url is ur dev server and localhost:443 is your secure apache server)</div>
     </body>
 </html>
 
 <script>
 var base = document.location.origin;
 
-document.getElementById('devLink').href="javascript:(function(){window.demoboDev = true; window.demoboBase='"+base+"'; var s = document.createElement('script'); s.src='"+base+"/core/demobo-portal.js'; document.body.appendChild(s);}())";
+document.getElementById('devLink').href="javascript:(function(){window.demoboDev = true; if(document.location.protocol==='https:'){window.demoboBase='https://dj4wup5b9bqsj.cloudfront.net';}else{window.demoboBase='"+base+"';} var s = document.createElement('script'); s.src=window.demoboBase+'/core/demobo-portal.js'; document.body.appendChild(s);}())";
 /*function generateBookmarklet(){
   var current = document.getElementById('bookmarklet');
   if (current){

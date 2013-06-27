@@ -27,7 +27,11 @@
     'youku.com': 'youku.com-new.js',
     'www.rdio.com': 'rdio.com-new.js',
     'grooveshark.com': 'grooveshark.com-new.js',
-    'www.yelp.com': 'yelp.com.js'
+    'www.yelp.com': 'yelp.com.js',
+    'sfbay.craigslist.org': 'yelp.com.js',
+    'www.yellowpages.com': 'yelp.com.js',
+    'www.foodspotting.com' : 'yelp.com.js',
+    'www.urbanspoon.com' : 'yelp.com.js'
   };
 
   if (!window.demoboLoading) {

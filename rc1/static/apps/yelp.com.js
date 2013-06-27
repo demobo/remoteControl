@@ -79,7 +79,11 @@
       if (error) {
         
       } else {
-        
+        // soupselect happening here...
+        var names = select(dom, '[itemprop=name]');
+        if (names.length<1) {
+          traverse(dom, process);
+        } 
       }
     //}, { verbose: false, ignoreWhitespace: true });
     }, { ignoreWhitespace: true });
@@ -88,7 +92,7 @@
     parser.parseComplete(document.body.innerHTML);
     //console.log(JSON.stringify(handler.dom, null, 2));
     //that's all... no magic, no bloated framework
-    traverse(handler.dom, process);
+    
   };
   
   Yelp.prototype.parsePage = function(){
@@ -251,6 +255,15 @@
     each(objects , function(index, object) {
       
       console.log(JSON.stringify(object, null, " "));
+      if (typeof(object.type)=="string") {
+        if ((object.type) == "text") {
+          var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
+          var match = pattern.exec(object.data.trim());
+          if (match != null) {
+            console.log('phone number matched ' + object.data.trim());
+          }
+        }
+      }
       
       if (typeof(object.children)=="object") {
         traverse(object.children,func);
@@ -279,7 +292,9 @@
   };
       
   loadJS('http://localhost:8000/libs/htmlparser.js', function() {
-    window.demoboPortal.addBobo(Yelp);
+    loadJS('http://localhost:8000/libs/soupselect.js', function() {
+      window.demoboPortal.addBobo(Yelp);
+    });
   });
   // add this app to demoboPortal
   

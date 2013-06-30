@@ -73,7 +73,7 @@ if not window.demoboLoading
     ###
     // Try to preload demobo API and other scripts as early as possible
     ###
-    cacheJS('//api.demobo.com/demobo.1.7.0.min.js')
+    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js')
     cacheJS(connectScript)
 
     ###
@@ -616,7 +616,7 @@ if not window.demoboLoading
     //----------------
     // instantiate a `DemoboPortal` object and expose to global use
     ###
-    loadJS('//api.demobo.com/demobo.1.7.0.min.js',()->
+    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
     

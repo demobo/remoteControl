@@ -12,7 +12,7 @@
 
 
 (function() {
-  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, dev, extend, loadJS, nativeForEach, remotes, version, _,
+  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, loadJS, nativeForEach, remotes, version, _,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   if (!window.demoboLoading) {
@@ -40,14 +40,8 @@
       //Set this to false if production. In local environment, the Google App Engine server serves as the http server, and Apache server(default on port 443) is the https server. In production environment, a server will serve both http and https requests.
       */
 
-      dev = window.demoboDev;
-      if (dev) {
-        base = window.demoboBase + '/apps/';
-        connectScript = window.demoboBase + '/core/connect.js';
-      } else {
-        base = '//rc1-dot-de-mobo.appspot.com/apps/';
-        connectScript = '//rc1-dot-de-mobo.appspot.com/core/connect.js';
-      }
+      base = window.demoboBase + '/apps/';
+      connectScript = window.demoboBase + '/core/connect.js';
       /*
       // This sets the routing of controllers for websites (currently hardcoded)
       */
@@ -84,7 +78,7 @@
       // Try to preload demobo API and other scripts as early as possible
       */
 
-      cacheJS('//api.demobo.com/demobo.1.7.0.min.js');
+      cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js');
       cacheJS(connectScript);
       /*
       // A function that loads a script and executes the call back after the script is executed
@@ -807,48 +801,27 @@
       // instantiate a `DemoboPortal` object and expose to global use
       */
 
-      loadJS('//api.demobo.com/demobo.1.7.0.min.js', function() {
-        var container, cssContent, demoboCss, demoboPortal, icon;
+      loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js', function() {
+        var demoboPortal;
 
         demoboPortal = new DemoboPortal();
         window.demoboPortal = demoboPortal;
-        /* 
-        // Set up css for the small cute de Mobo icon.
-        */
-
-        demoboCss = document.createElement('style');
-        demoboCss.className = 'demoboCSS';
-        cssContent = "      #demoboMiniIcon {        z-index:10000;        width:30px;        opacity:0.15;        position:fixed;        right:20px;        bottom:60px;        -webkit-transition: opacity 0.5s ease;        transition: opacity 0.5x ease;        cursor:pointer;      }        #demoboMiniIcon:hover {        opacity:0.7;      }      #demoboMiniIcon.selected {        opacity:0.7;      }            #demoboMiniIcon:active {        opacity:1;      }      ";
-        demoboCss.innerText = cssContent;
-        document.body.appendChild(demoboCss);
-        /*
-        // Small demobo icon at the right bottom of the page
-        */
-
-        container = document.createElement('div');
-        icon = document.createElement('img');
-        icon.className = 'demoboIMG';
-        icon.id = 'demoboMiniIcon';
-        icon.title = 'demobo mini';
-        icon.src = base + 'demobo.png';
-        container.appendChild(icon);
-        document.body.appendChild(container);
         /*
         // Load script of connection dialog and show the dialog if necessary
         */
 
-        loadJS(connectScript);
-        /*
-        // Setup click handler of our small cute de Mobo icon
-        */
+        return loadJS(connectScript, function() {
+          return window.__dmtg = function() {
+            var visible;
 
-        return icon.onclick = function() {
-          if (icon.classList.length === 1) {
-            return window._showDemoboConnect();
-          } else {
-            return window._hideDemoboConnect();
-          }
-        };
+            visible = document.getElementById('demoboConnect').style.top !== '';
+            if (visible) {
+              return window._hideDemoboConnect();
+            } else {
+              return window._showDemoboConnect();
+            }
+          };
+        });
       });
     }
     delete window.demoboLoading;

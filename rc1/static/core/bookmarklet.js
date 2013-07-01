@@ -1,3 +1,4 @@
+/*only a reference to the bookmarklet code. */
 (function(global){
   var a=global.demoboPortal, c=window.__dmtg;
   ((!a || function(){

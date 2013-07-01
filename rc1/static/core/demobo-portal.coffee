@@ -52,6 +52,7 @@ if not window.demoboLoading
       'www.yellowpages.com': 'yelp.com.js'
       'www.foodspotting.com':'yelp.com.js'
       'www.urbanspoon.com' : 'yelp.com.js'
+      'foursquare.com':      'yelp.com.js'
 
     ###
     // definitions of utilities 

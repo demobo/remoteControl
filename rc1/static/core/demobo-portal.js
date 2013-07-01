@@ -36,10 +36,6 @@
       */
 
       version = '1.0.0';
-      /* 
-      //Set this to false if production. In local environment, the Google App Engine server serves as the http server, and Apache server(default on port 443) is the https server. In production environment, a server will serve both http and https requests.
-      */
-
       base = window.demoboBase + '/apps/';
       connectScript = window.demoboBase + '/core/connect.js';
       /*
@@ -56,7 +52,11 @@
         'youku.com': 'youku.com-new.js',
         'www.rdio.com': 'rdio.com-new.js',
         'grooveshark.com': 'grooveshark.com-new.js',
-        'play.spotify.com': 'spotify.com-new.js'
+        'play.spotify.com': 'spotify.com-new.js',
+        'sfbay.craigslist.org': 'yelp.com.js',
+        'www.yellowpages.com': 'yelp.com.js',
+        'www.foodspotting.com': 'yelp.com.js',
+        'www.urbanspoon.com': 'yelp.com.js'
       };
       /*
       // definitions of utilities 
@@ -771,24 +771,6 @@
 
 
         DemoboPortal.prototype.createBoboView = function(boboID, boboInfo) {
-          var boboObj, d, i, menuContainer;
-
-          menuContainer = document.getElementById('demoboMenuContainer');
-          if (menuContainer) {
-            d = document.createElement('div');
-            d.className = 'demoboBoboItem';
-            i = document.createElement('img');
-            i.className = 'demoboBoboIcon';
-            i.src = base + boboInfo.iconUrl;
-            boboObj = this;
-            i.onclick = function() {
-              boboObj.switchBobo(boboID);
-              return console.log('wanna switched to ' + boboID);
-            };
-            d.appendChild(i);
-            menuContainer.appendChild(d);
-            return d;
-          }
           return null;
         };
 

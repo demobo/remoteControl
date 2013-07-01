@@ -42,8 +42,6 @@
   Yelp.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
 
-    this.initializeJS();
-    
     // if (typeof(this.parsePage) == "function") {
       // this.parsePage();  
     // } else {
@@ -65,14 +63,6 @@
     });
 
   };
-      
-  Yelp.prototype.initializeJS = function() {
-    loadJS("http://localhost:8000/libs/htmlparser.js");
-    
-    if ((typeof JSON) != "object") {
-      loadJS("http://localhost:8000/libs/json2.js");
-    }
-  }
   
   Yelp.prototype.demoboParser = function() {
       var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function (error, dom) {
@@ -80,8 +70,17 @@
         
       } else {
         // soupselect happening here...
-        var names = select(dom, '[itemprop=name]');
-        if (names.length<1) {
+        var telephones = select(dom, '[itemprop=telephone]');
+        //injectiframe('https://www.wunderlist.com/#/extension/add/Apple%20-%20iOS%207/%20%0Ahttp%3A%2F%2Fwww.apple.com%2Fios%2Fios7%2F%23videos');
+        
+        // Create a proxy window to send to and receive 
+        // messages from the iFrame
+        var windowProxy = new Porthole.WindowProxy(
+            'http://localhost:8000/microdata.html', 'demobo_overlay');
+        
+        windowProxy.post(telephones[0].children[0].data);
+        
+        if (telephones.length<1) {
           traverse(dom, process);
         } 
       }
@@ -261,6 +260,12 @@
           var match = pattern.exec(object.data.trim());
           if (match != null) {
             console.log('phone number matched ' + object.data.trim());
+            injectiframe('http://jsbin.com/uderi/7');
+            var win = document.getElementById("demobo_overlay").contentWindow;
+            win.postMessage(
+                    object.data.trim(),
+                    "http://jsbin.com"
+            );
           }
         }
       }
@@ -290,10 +295,22 @@
     document.body.appendChild(script);
     return script.onload = f;
   };
+  
+  injectiframe = function(src) {
+    iframe = document.createElement('iframe');
+    iframe.setAttribute('id', 'demobo_overlay');
+    iframe.setAttribute('src', src);
+    iframe.setAttribute('scrolling', 'no');
+    iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;');
+    document.body.appendChild(iframe);
+  }
       
-  loadJS('http://localhost:8000/libs/htmlparser.js', function() {
-    loadJS('http://localhost:8000/libs/soupselect.js', function() {
-      window.demoboPortal.addBobo(Yelp);
+  loadJS(window.demoboBase + '/libs/htmlparser.js', function() {
+    loadJS(window.demoboBase + '/libs/soupselect.js', function() {
+      loadJS(window.demoboBase + '/libs/porthole.js', function() {
+        injectiframe('http://localhost:8000/microdata.html');
+        window.demoboPortal.addBobo(Yelp);
+      });
     });
   });
   // add this app to demoboPortal

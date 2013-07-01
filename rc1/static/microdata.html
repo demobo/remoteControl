@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Demobo MicroData Guest</title>
+		<script type="text/javascript" src="libs/porthole.js"></script>
+		<script type="text/javascript">
+			function onMessage(messageEvent) {
+				if (messageEvent.data) {
+					var elem = document.createElement('div');
+					elem.innerText = messageEvent.data;
+					document.body.appendChild(elem);
+				}
+			}
+			var windowProxy;
+			window.onload=function(){ 
+				windowProxy = new Porthole.WindowProxy("http://localhost:8000/microdata.html"); 
+				windowProxy.addEventListener(onMessage);
+			}
+		</script>
+	</head>
+	<body>
+	</body>
+</html>

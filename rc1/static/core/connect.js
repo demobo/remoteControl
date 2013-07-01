@@ -8,7 +8,7 @@ var css = '@font-face{font-family:"Economica";font-style:normal;font-weight:700;
 var demoboConnect = document.createElement('div');
 demoboConnect.id = 'demoboConnect';
 var demoboCss = document.createElement('style');
-demoboCss.classList.add('demoboCss');
+demoboCss.classList.add('demoboCSS');
 demoboCss.innerHTML = css;
 demoboConnect.innerHTML = html;
 document.body.appendChild(demoboConnect);

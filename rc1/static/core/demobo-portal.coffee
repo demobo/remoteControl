@@ -31,16 +31,8 @@ if not window.demoboLoading
     ###
     version = '1.0.0'
 
-    ### 
-    //Set this to false if production. In local environment, the Google App Engine server serves as the http server, and Apache server(default on port 443) is the https server. In production environment, a server will serve both http and https requests.
-    ###
-    dev = window.demoboDev
-    if dev
-      base = window.demoboBase+'/apps/'
-      connectScript = window.demoboBase+'/core/connect.js'
-    else
-      base = '//rc1-dot-de-mobo.appspot.com/apps/'
-      connectScript = '//rc1-dot-de-mobo.appspot.com/core/connect.js'
+    base = window.demoboBase+'/apps/'
+    connectScript = window.demoboBase+'/core/connect.js'
     
     ###
     // This sets the routing of controllers for websites (currently hardcoded)
@@ -56,11 +48,12 @@ if not window.demoboLoading
       'www.rdio.com':        'rdio.com-new.js'
       'grooveshark.com':     'grooveshark.com-new.js'
       'play.spotify.com':    'spotify.com-new.js'
-      'www.yelp.com': 'yelp.com.js'
-      'sfbay.craigslist.org': 'yelp.com.js'
+      'www.yelp.com':        'yelp.com.js'
+      'sfbay.craigslist.org':'yelp.com.js'
       'www.yellowpages.com': 'yelp.com.js'
-      'www.foodspotting.com' : 'yelp.com.js'
+      'www.foodspotting.com':'yelp.com.js'
       'www.urbanspoon.com' : 'yelp.com.js'
+      'foursquare.com':      'yelp.com.js'
 
     ###
     // definitions of utilities 
@@ -78,7 +71,7 @@ if not window.demoboLoading
     ###
     // Try to preload demobo API and other scripts as early as possible
     ###
-    cacheJS('//api.demobo.com/demobo.1.7.0.min.js')
+    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js')
     cacheJS(connectScript)
 
     ###
@@ -600,20 +593,6 @@ if not window.demoboLoading
       // Create the view of a bobo, which would be showed up in portal 
       ###
       createBoboView: (boboID, boboInfo)->
-        menuContainer = document.getElementById('demoboMenuContainer')
-        if menuContainer
-          d = document.createElement('div')
-          d.className='demoboBoboItem'
-          i = document.createElement('img')
-          i.className='demoboBoboIcon'
-          i.src=base+boboInfo.iconUrl
-          boboObj = this
-          i.onclick = ()->
-            boboObj.switchBobo(boboID) 
-            console.log('wanna switched to '+boboID)
-          d.appendChild(i)
-          menuContainer.appendChild(d)
-          return d
         return null
     
     ###
@@ -621,70 +600,18 @@ if not window.demoboLoading
     //----------------
     // instantiate a `DemoboPortal` object and expose to global use
     ###
-    loadJS('//api.demobo.com/demobo.1.7.0.min.js',()->
+    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
     
-      ### 
-      // Set up css for the small cute de Mobo icon. 
-      ###
-      demoboCss = document.createElement('style')
-      demoboCss.className = 'demoboCSS'
-      cssContent = "
-      #demoboMiniIcon {
-        z-index:10000;
-        width:30px;
-        opacity:0.15;
-        position:fixed;
-        right:20px;
-        bottom:60px;
-        -webkit-transition: opacity 0.5s ease;
-        transition: opacity 0.5x ease;
-        cursor:pointer;
-      }
-  
-      #demoboMiniIcon:hover {
-        opacity:0.7;
-      }
-
-      #demoboMiniIcon.selected {
-        opacity:0.7;
-      }
-      
-      #demoboMiniIcon:active {
-        opacity:1;
-      }
-      "
-      demoboCss.innerText = cssContent
-      document.body.appendChild(demoboCss)
-  
-      ###
-      // Small demobo icon at the right bottom of the page
-      ###
-      container = document.createElement('div')
-
-      icon = document.createElement('img')
-      icon.className = 'demoboIMG'
-      icon.id = 'demoboMiniIcon' 
-      icon.title='demobo mini' 
-      icon.src=base+'demobo.png'
-  
-      container.appendChild(icon)
-      document.body.appendChild(container)
-
       ###
       // Load script of connection dialog and show the dialog if necessary
       ###
-      loadJS(connectScript)
-
-      ###
-      // Setup click handler of our small cute de Mobo icon
-      ###
-      icon.onclick = () ->
-        if icon.classList.length is 1
-          window._showDemoboConnect()
-        else
-          window._hideDemoboConnect()
+      loadJS(connectScript, ()->
+        window.__dmtg = ()->
+          visible = document.getElementById('demoboConnect').style.top isnt ''
+          if visible then window._hideDemoboConnect() else window._showDemoboConnect()
+      )
     )
 
   delete window.demoboLoading

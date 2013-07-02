@@ -383,9 +383,23 @@
         connectedHandler: function(portal) {
           return function(data) {
             console.log('connected');
-            console.log(portal);
             portal.setDeviceController(portal.get('curBobo'), data.deviceID);
             return portal.addDevice(data.deviceID);
+          };
+        },
+        /*
+        // Handler that runs when a new device is disconnected
+        */
+
+        mbHandler: function(portal) {
+          return function(data) {
+            console.log('mbcommand');
+            switch (data.command) {
+              case 'switchbobo':
+                return portal.switchBobo(data.boboID);
+              default:
+                return false;
+            }
           };
         },
         /*
@@ -395,7 +409,6 @@
         disconnectedHandler: function(portal) {
           return function(data) {
             console.log('disconnected');
-            console.log(portal);
             return portal.removeDevice(data.deviceID);
           };
         }
@@ -443,7 +456,9 @@
         DemoboPortal.prototype.getBoboRoutes = function() {
           var remote, toReturn;
 
-          toReturn = {};
+          toReturn = {
+            'input': base + 'inputtool-new.js'
+          };
           remote = this.getRemote();
           if (remote) {
             toReturn['remote'] = base + remote;
@@ -467,14 +482,13 @@
           this.set('boboDeviceMap', {});
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
+          /*
+          // Register event handlers for connected, disconnected,
+          */
+
           this.demobo.addEventListener('connected', demoboHandlers.connectedHandler(this));
-          /* handlers when a device is connected
-          */
-
           this.demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this));
-          /* handlers when a device is disconnected
-          */
-
+          this.demobo.addEventListener('mb', demoboHandlers.mbHandler(this));
           this.on('change:bobos', demoboHandlers.handlerBobosChange);
           this.on('change:curBobo', demoboHandlers.handlerCurBoboChange);
           this.on('add:bobos', demoboHandlers.handleBoboAdd);
@@ -564,7 +578,26 @@
 
 
         DemoboPortal.prototype.setDeviceController = function(boboObj, deviceID) {
-          return this.demobo.setController(boboObj.getInfo('controller'), deviceID);
+          var bobo, boboID, boboInfos, curBoboID, info, toSend, _ref;
+
+          toSend = {};
+          _.extend(toSend, boboObj.getInfo('controller'));
+          boboInfos = [];
+          curBoboID = this.get('curBobo').getInfo('boboID');
+          _ref = this.get('bobos');
+          for (boboID in _ref) {
+            bobo = _ref[boboID];
+            info = {};
+            info['id'] = boboID;
+            info['icon'] = bobo.getInfo('iconClass');
+            if (boboID === curBoboID) {
+              info['active'] = 1;
+            }
+            boboInfos.push(info);
+          }
+          toSend['bobos'] = boboInfos;
+          console.log(toSend);
+          return this.demobo.setController(toSend, deviceID);
         };
 
         /*

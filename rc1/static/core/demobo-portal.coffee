@@ -309,9 +309,19 @@ if not window.demoboLoading
       connectedHandler: (portal)->
         return (data)->
           console.log('connected')
-          console.log(portal)
           portal.setDeviceController(portal.get('curBobo'), data.deviceID)
           portal.addDevice(data.deviceID)
+
+      ###
+      // Handler that runs when a new device is disconnected
+      ###
+      mbHandler: (portal)->
+        return (data)->
+          console.log('mbcommand')
+          switch data.command
+            when 'switchbobo' then portal.switchBobo(data.boboID) 
+            else false
+              
 
       ###
       // Handler that runs when a new device is disconnected
@@ -319,7 +329,6 @@ if not window.demoboLoading
       disconnectedHandler: (portal)->
         return (data)->
           console.log('disconnected')
-          console.log(portal)
           portal.removeDevice(data.deviceID)
     }
 
@@ -352,7 +361,8 @@ if not window.demoboLoading
       // Return an object that contains all available bobos for the current website.
       ###
       getBoboRoutes: ()->
-        toReturn = {}
+        toReturn = 
+          'input': base+'inputtool-new.js'
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote
@@ -373,10 +383,12 @@ if not window.demoboLoading
         this.set('curBobo', null)
         this.set('boboRoutes', boboRoutes)
 
+        ###
+        // Register event handlers for connected, disconnected,  
+        ###
         @demobo.addEventListener('connected', demoboHandlers.connectedHandler(this))
-        ### handlers when a device is connected ###
         @demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this))
-        ### handlers when a device is disconnected ###
+        @demobo.addEventListener('mb', demoboHandlers.mbHandler(this))
 
         this.on('change:bobos', demoboHandlers.handlerBobosChange)
         this.on('change:curBobo', demoboHandlers.handlerCurBoboChange)
@@ -440,7 +452,21 @@ if not window.demoboLoading
       //Set a device's controller 
       ###
       setDeviceController: (boboObj, deviceID)->
-        return @demobo.setController(boboObj.getInfo('controller'), deviceID)
+        toSend = {}
+        _.extend(toSend, boboObj.getInfo('controller'))
+        boboInfos = []
+        curBoboID = this.get('curBobo').getInfo('boboID')
+        for boboID, bobo of this.get('bobos')
+          info = {}
+          info['id'] = boboID
+          info['icon'] = bobo.getInfo('iconClass')
+          if boboID is curBoboID
+            info['active'] = 1
+          boboInfos.push(info)
+        
+        toSend['bobos'] = boboInfos
+        console.log(toSend)
+        return @demobo.setController(toSend, deviceID)
       
       ###
       //Return true if `deviceID` is already in the mapping; false otherwise.

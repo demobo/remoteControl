@@ -394,9 +394,9 @@
         mbHandler: function(portal) {
           return function(data) {
             console.log('mbcommand');
-            switch (data.command) {
-              case 'switchbobo':
-                return portal.switchBobo(data.boboID);
+            switch (data.value.command) {
+              case 'switchBobo':
+                return portal.switchBobo(data.value.boboID);
               default:
                 return false;
             }
@@ -457,7 +457,8 @@
           var remote, toReturn;
 
           toReturn = {
-            'input': base + 'inputtool-new.js'
+            'input': base + 'inputtool-new.js',
+            'dummy': base + 'dummy.js'
           };
           remote = this.getRemote();
           if (remote) {
@@ -698,8 +699,8 @@
           boboDeviceMap[boboID] = devices.slice();
           boboDeviceMap[oldBoboID] = [];
           newBobo = this.get('bobos')[boboID];
-          this.setDeviceController(newBobo);
           this.set('curBobo', newBobo);
+          this.setDeviceController(newBobo);
           newBobo.resume();
           return true;
         };

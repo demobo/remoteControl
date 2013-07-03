@@ -5,6 +5,7 @@
 
   Douban.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test2.png';
+    this.setInfo('iconClass', 'fui-play-circle');
     
     this.setInfo('currentSongInfo', {});
     this.setInfo('playingState', {isPlaying:false, volume: 0});

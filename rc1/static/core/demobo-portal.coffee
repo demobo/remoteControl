@@ -318,8 +318,8 @@ if not window.demoboLoading
       mbHandler: (portal)->
         return (data)->
           console.log('mbcommand')
-          switch data.command
-            when 'switchbobo' then portal.switchBobo(data.boboID) 
+          switch data.value.command
+            when 'switchBobo' then portal.switchBobo(data.value.boboID) 
             else false
               
 
@@ -363,6 +363,7 @@ if not window.demoboLoading
       getBoboRoutes: ()->
         toReturn = 
           'input': base+'inputtool-new.js'
+          'dummy': base+'dummy.js'
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote
@@ -538,8 +539,8 @@ if not window.demoboLoading
         boboDeviceMap[oldBoboID] = []
 
         newBobo = this.get('bobos')[boboID]
-        this.setDeviceController(newBobo)
         this.set('curBobo', newBobo)
+        this.setDeviceController(newBobo)
 
         newBobo.resume()
         return true

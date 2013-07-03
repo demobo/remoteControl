@@ -5,6 +5,7 @@
 
   Pandora.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test2.png';
+    this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
       url: 'http://rc1.demobo.com/rc/pandora?0201'

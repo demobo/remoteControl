@@ -1,7 +1,7 @@
 (function(){
   // ******************* custom event handler functions ***************************
 
-  Inputtool = window.Bobo.extend();
+  var Inputtool = window.Bobo.extend();
 
   Inputtool.prototype.onReady = function(){
     console.log('onready is called')
@@ -39,7 +39,7 @@
   // override the initialize function of Bobo
   Inputtool.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
-
+    this.setInfo('iconClass', 'fui-keyboard')
 
     this.setController({
      url: 'http://rc1.demobo.com/rc/inputtool?0614',

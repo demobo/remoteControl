@@ -1,0 +1,33 @@
+{
+   "name": "de Mobo",
+   "description": "extend you",
+   "browser_action":
+   {
+	  "default_icon": "images/icon_bw_19.png",
+      "default_title": "de Mobo"
+   },
+   "background" : {
+    "scripts": ["js/background.js"]
+   },
+   "content_scripts": [
+      {
+         "all_frames": false,
+         "js": ["js/main.js"],
+		     "matches": [ "*://*/*" ],
+         "run_at": "document_end"
+      }
+   ],
+   "icons":
+   {
+   	 "128": "images/icon_128.png",
+      "48": "images/icon_48.png",
+	  "19": "images/icon_bw_19.png",
+      "16": "images/icon_bw_16.png"
+   },
+   "homepage_url": "http://www.demobo.com",
+   "permissions": [
+     "*://*/*"
+   ],
+   "version": "1.0.0",
+   "manifest_version": 2
+}

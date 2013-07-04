@@ -43,7 +43,8 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		});
 		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 		demobo.setController( {
-			url : ui.controllerUrl
+			url : ui.controllerUrl,
+			orientation: 'portrait'
 		});
 		// your custom demobo input event dispatcher
 		demobo.mapInputEvents( {

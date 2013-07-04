@@ -18,7 +18,8 @@
 	// do all the iniations you need here
 	function init() {
 		demobo.setController( {
-			url : ui.controllerUrl
+			url : ui.controllerUrl,
+			orientation: 'portrait'
 		});
 		// your custom demobo input event dispatcher
 		demobo.mapInputEvents( {

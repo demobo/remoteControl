@@ -12,7 +12,8 @@
 		<script>
 			var syncEnable = true;
         	$(document).ready(function(){
-				non480x320Adjust();
+				// normalScreen();
+				rotateScreen();
 	            $('#smallButton').bind('click', tabAnimation);
 				$('img').bind('load', flipAlbumArt);
 				$('body').on('click', '#albumArt', function(){
@@ -20,7 +21,25 @@
 				});
 			});
 			
-			function non480x320Adjust() {
+			function rotateScreen() {
+				var screenHeight = $(window).height();
+				var screenWidth = $(window).width();
+				var d = (screenHeight-screenWidth)/2;
+				$('body').css({
+					WebkitTransform: 'rotate(90deg)',
+					width: screenHeight+'px',
+					height: screenWidth+'px',
+					top: d+'px',
+					left: '-' + d + 'px',
+					position: 'absolute'
+				});
+				
+				// zoomAdjust for non iphones
+                $('#frame').css('zoom', screenWidth / 320);
+                // jquery mobile input range is not working with zoom
+                $('.volumeControl').css('zoom', 320 / screenWidth);
+			}
+			function normalScreen() {
 				var screenHeight = $(window).height();
 				// zoomAdjust for non iphones
                 $('#frame').css('zoom', screenHeight / 320);

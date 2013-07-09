@@ -19,6 +19,7 @@
 
   main = function(){
     var Youku = window.Bobo.extend();
+    this.setInfo('priority', 2);
 
     Youku.prototype.initialize = function(){
    	  this.setInfo('ui', {

@@ -165,7 +165,8 @@ if not window.demoboLoading
     
         defaultConfig = 
           'developer': 'developer@demobo.com'
-        
+
+        @boboInfos['priority'] = 1   
         @boboInfos['config'] = defaultConfig
         @boboInfos['boboID'] = null
         @boboInfos['connectedDevices'] = {}
@@ -398,6 +399,12 @@ if not window.demoboLoading
         window.DEMOBO.init = ()->
         window.demobo.start()
 
+        window.addEventListener('focus', ()->
+          setTimeout(()->
+            window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
+          , 1000)
+        )
+
         for name, route of boboRoutes
           loadJS(route)
         
@@ -408,8 +415,9 @@ if not window.demoboLoading
       ###
       addExistentDevice: (data)->
         deviceID = data.deviceID
-        this.setDeviceController(this.get('curBobo'), deviceID)
-        this.addDevice(deviceID)
+        if deviceID not in Object.keys(this.get('deviceBoboMap'))
+          this.setDeviceController(this.get('curBobo'), deviceID)
+          this.addDevice(deviceID)
 
       ###
       // Make an rpc on the device. if `deviceID` is not specified, make the rpc on all devices connected to the specified bobo 
@@ -429,7 +437,6 @@ if not window.demoboLoading
       addEventListener: (eventName, handler, boboID)->
         handlers = this.get('eventHandlers')
         dispatcher = handlers[eventName]
-        console.log(dispatcher?)
         if dispatcher?
           handlers[eventName].addHandler(boboID, handler)
         else
@@ -466,7 +473,6 @@ if not window.demoboLoading
           boboInfos.push(info)
         
         toSend['bobos'] = boboInfos
-        console.log(toSend)
         return @demobo.setController(toSend, deviceID)
       
       ###
@@ -540,7 +546,9 @@ if not window.demoboLoading
 
         newBobo = this.get('bobos')[boboID]
         this.set('curBobo', newBobo)
-        this.setDeviceController(newBobo)
+
+        for deviceID in devices
+          this.setDeviceController(newBobo, deviceID)
 
         newBobo.resume()
         return true
@@ -575,6 +583,8 @@ if not window.demoboLoading
             setTimeout(()->
               window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
             , 1000)
+          else if boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority')
+            this.switchBobo(boboObj.getInfo('boboID'))
            
           #this.setController(boboObj.getInfo('controller'))
           this.trigger('add:bobos', boboID, boboObj)
@@ -626,7 +636,9 @@ if not window.demoboLoading
     //----------------
     // instantiate a `DemoboPortal` object and expose to global use
     ###
-    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
+    loadJS('http://localhost:1240/core/demobo.1.7.0.js',()->
+#    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
+
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
     

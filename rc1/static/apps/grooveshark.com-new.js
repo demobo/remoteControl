@@ -1,11 +1,16 @@
 (function() {
-  GrooveShark = window.Bobo.extend();
+  /*
+  This Bobo is outdated since GrooveShark has a new UI and API system. 
+  TODO: accomondate the new system
+  */
+  var GrooveShark = window.Bobo.extend();
 
   GrooveShark.prototype.initialize = function(){
 	  
     //this.setInfo('curState',{isPlaying: false, volume: 50});
 	  this.setInfo('slideChangeTimeout', null);
-	
+	  this.setInfo('priority', 2);
+
 	  this.setInfo('ui', {
 	  	playPauseButton: 	'#player_play_pause',
 	  	playButton: 		'#player_play_pause.play',

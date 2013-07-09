@@ -1,4 +1,4 @@
-var DEMOBO_DEBUG = !1;
+var DEMOBO_DEBUG = 1;
 (function() {
     if (!window.demobo) {
         var h = {open: function() {

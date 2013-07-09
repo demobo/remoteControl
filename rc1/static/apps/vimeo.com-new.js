@@ -2,6 +2,7 @@
   var Vimeo = window.Bobo.extend();
 	
   Vimeo.prototype.extend = function(){
+    this.setInfo('priority', 2);
 
 	  this.setInfo('ui', {
 	  	playPauseButton: 	'.interactive_element.play_pause_button',

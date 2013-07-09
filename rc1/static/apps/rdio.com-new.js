@@ -1,7 +1,9 @@
 (function() {
-  Rdio = window.Bobo.extend();
+  var Rdio = window.Bobo.extend();
 	
   Rdio.prototype.initialize = function(){
+    this.setInfo('priority', 2);
+
 	  this.setInfo('ui', {
 		  playPauseButton: 	'#playButton:visible, #pauseButton:visible, .footer .play_pause',
 		  playButton: 		'#playButton, .footer .play_pause.playing',

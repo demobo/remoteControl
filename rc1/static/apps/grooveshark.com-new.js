@@ -9,7 +9,8 @@
 	  
     //this.setInfo('curState',{isPlaying: false, volume: 50});
 	  this.setInfo('slideChangeTimeout', null);
-	
+	  this.setInfo('priority', 2);
+
 	  this.setInfo('ui', {
 	  	playPauseButton: 	'#player_play_pause',
 	  	playButton: 		'#player_play_pause.play',

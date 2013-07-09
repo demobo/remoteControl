@@ -3,6 +3,7 @@
   
   Lastfm.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test2.png';
+	  this.setInfo('priority', 2);
 
     this.setController({
       url: 'http://rc1.demobo.com/rc/lastfm?0201'      

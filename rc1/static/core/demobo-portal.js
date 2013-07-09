@@ -57,7 +57,8 @@
         'www.yellowpages.com': 'yelp.com.js',
         'www.foodspotting.com': 'yelp.com.js',
         'www.urbanspoon.com': 'yelp.com.js',
-        'foursquare.com': 'yelp.com.js'
+        'foursquare.com': 'yelp.com.js',
+        'www.npr.org': 'npr.org.js',
       };
       /*
       // definitions of utilities 
@@ -457,13 +458,14 @@
           var remote, toReturn;
 
           toReturn = {
-            'input': base + 'inputtool-new.js',
-            'dummy': base + 'dummy.js'
+            // 'input': base + 'inputtool-new.js',
+            // 'dummy': base + 'dummy.js'
+            'myBobo': base + 'npr.org.js'
           };
-          remote = this.getRemote();
-          if (remote) {
-            toReturn['remote'] = base + remote;
-          }
+          // remote = this.getRemote();
+          // if (remote) {
+            // toReturn['remote'] = base + remote;
+          // }
           return toReturn;
         };
 

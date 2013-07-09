@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>new_file</title>
+		<meta name="author" content="Shawn" />
+		<!-- Date: 2013-07-06 -->
+	</head>
+	<body>
+		<div class="span4">
+			<ul class="jp-controls unstyled">
+				<li>
+					<a href="javascript:;" class="back jp-back sprite-back ui-link" tabindex="1">previous</a>
+				</li>
+				<li>
+					<a href="javascript:;" class="play jp-play sprite-play ui-link" tabindex="1" style="display: block;">play</a>
+				</li>
+				<li>
+					<a href="javascript:;" class="pause jp-pause sprite-pause ui-link" style="display: none;" tabindex="1">pause</a>
+				</li>
+				<li>
+					<a href="javascript:;" class="next jp-next sprite-next ui-link" tabindex="1" data-bind="click: playNext">next</a>
+				</li>
+			</ul>
+		</div>
+		
+		<style>
+			.span4 {
+				width: 300px;
+				float: left;
+				margin-left: 20px;
+			}
+			ul.unstyled, ol.unstyled {
+				margin-left: 0;
+				list-style: none;
+			}
+			.jp-controls {
+				margin-top: 35px;
+			}
+			ul {
+				list-style: disc;
+			}
+			ul, ol {
+				padding: 0;
+				margin: 0 0 9px 25px;
+			}
+			.jp-controls li a {
+				float: left;
+				text-indent: -9999px;
+			}
+			.jp-controls a {
+				outline: none;
+			}
+			.sprite-next, .sprite-back {
+				-webkit-user-select: none;
+				margin-top: 20px;
+				height: 66px;
+				width: 66px;
+				background-image: url('sprite.png');
+			}
+			.sprite-back, .sprite-play, .sprite-pause {
+				-webkit-user-select: none;
+				-webkit-tap-highlight-color: transparent;
+				margin-right: 16px;
+				background-image: url('sprite.png');
+				display: inline-block;
+			}
+			.sprite-back {
+				-webkit-user-select: none;
+				-webkit-tap-highlight-color: transparent;
+				background-position: -272px -85px;
+				background-image: url('sprite.png'
+				);
+				display: inline-block;
+			}
+			.sprite-play {
+				-webkit-user-select: none;
+				background-position: -352px -64px;
+				display: inline-block;
+			}
+			.sprite-play, .sprite-pause {
+				-webkit-user-select: none;
+				-webkit-tap-highlight-color: transparent;
+				height: 106px;
+				width: 106px;
+				display: inline-block;
+			}
+			.sprite-next, .sprite-back {
+				margin-top: 20px;
+				height: 66px;
+				width: 66px;
+				display: inline-block;
+			}
+			.sprite-next {
+				background-position: -471px -85px;
+				display: inline-block;
+			}
+			.sprite-back:hover {
+				background-position: -272px -208px;
+			}
+
+			.sprite-back:active {
+				background-position: -272px -454px;
+			}
+			.sprite-play:hover {
+				background-position: -352px -187px;
+			}
+
+			.sprite-play:active {
+				background-position: -352px -310px;
+			}
+			.sprite-pause {
+				background-position: -352px -433px;
+			}
+
+			.sprite-pause:hover {
+				background-position: -352px -556px;
+			}
+			.sprite-next {
+				background-position: -471px -85px;
+			}
+
+			.sprite-next:hover {
+				background-position: -471px -208px;
+			}
+
+			.sprite-next:active {
+				background-position: -471px -454px;
+			}
+
+			.sprite-next, .sprite-back {
+				margin-top: 20px;
+				height: 66px;
+				width: 66px;
+			}
+		</style>
+		
+	</body>
+</html>
+

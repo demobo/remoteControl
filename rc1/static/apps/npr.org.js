@@ -1,4 +1,3 @@
-bobo_external={};
 (function(){
   var DEBUG = false;
 
@@ -10,7 +9,6 @@ bobo_external={};
 		var eventName, handlerName, hs, wrapper, _thisBobo;
 
 		_thisBobo = this;
-		bobo_external = this; //make this bobo accessible outside Npr
 		wrapper = function(bobo, functionName) {
 			return function() {
 				//check if an Eventlistener is existed on the jPlayer, if not, add one. 
@@ -82,17 +80,18 @@ bobo_external={};
 		//bind volumechange event to jPlayer
 		var jp = $("#ip_player1");
 		var flag = false;
+		var thisBobo = this;
 		if (jp) {
 			if (jp.data('events') && jp.data('events')["jPlayer_volumechange"]) {
 				for (var i in jp.data('events')["jPlayer_volumechange"]) {
-					if (jp.data('events')["jPlayer_volumechange"][i].handler == Npr.prototype.onVolume_jPlayer) {
+					if (jp.data('events')["jPlayer_volumechange"][i].handler == thisBobo.onVolume_jPlayer) {
 						flag = true;
 					}
 				}
 			}
 			if (!flag) {
 				console.log('addjPlayerEventListener');
-				$("#ip_player1").bind($.jPlayer.event.volumechange, Npr.prototype.onVolume_jPlayer);
+				$("#ip_player1").bind($.jPlayer.event.volumechange, thisBobo, thisBobo.onVolume_jPlayer);
 			}
 		}
 	}
@@ -156,8 +155,9 @@ bobo_external={};
 	};
 	
 	Npr.prototype.onVolume_jPlayer = function(evt) {
+		var thisBobo=evt.data
 		console.log('jpVolume: ' + evt.jPlayer.options.volume);
-		Npr.prototype.syncState.apply(bobo_external);
+		thisBobo.syncState();
 	};
 
 	Npr.prototype.chooseStation = function(index) {

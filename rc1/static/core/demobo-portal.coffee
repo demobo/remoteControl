@@ -29,7 +29,7 @@ if not window.demoboLoading
     // ---------------
     // Current version
     ###
-    version = '1.0.0'
+    version = '0.9.0'
 
     base = window.demoboBase+'/apps/'
     connectScript = window.demoboBase+'/core/connect.js'

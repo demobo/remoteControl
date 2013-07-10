@@ -829,7 +829,7 @@
       // instantiate a `DemoboPortal` object and expose to global use
       */
 
-      loadJS('http://localhost:1240/core/demobo.1.7.0.js', function() {
+      loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js', function() {
         var demoboPortal;
 
         demoboPortal = new DemoboPortal();

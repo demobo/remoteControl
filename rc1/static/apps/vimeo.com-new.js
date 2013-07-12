@@ -1,8 +1,9 @@
 (function() {
   var Vimeo = window.Bobo.extend();
 	
-  Vimeo.prototype.extend = function(){
+  Vimeo.prototype.initialize = function(){
     this.setInfo('priority', 2);
+    this.setInfo('iconClass', 'fui-play-circle');
 
 	  this.setInfo('ui', {
 	  	playPauseButton: 	'.interactive_element.play_pause_button',
@@ -37,7 +38,7 @@
 	  	searchSubmit:		'.search_input input[type=submit]',
 	  	searchResult:		'.results_info a.interactive_element',
 	  	lightboxOverlay:	'#lightbox_overlay'
-	  };
+	  });
 	  
     this.setInfo('curChannel', 0);
 	
@@ -76,7 +77,7 @@
 			'rightButton':	    'rightButton',
 			'okButton':			    'okButton',
 			'demoboApp' : 	    'onReady',
-			'demoboVolume' :  	'onVolume
+			'demoboVolume' :  	'onVolume'
 		});
 		this.setupSongTrigger();
 		this.setupStationTrigger();
@@ -154,7 +155,7 @@
 		var nowplayingdata = this.getNowPlayingData();
 		if (!nowplayingdata)
 			return;
-		this..callFunction('loadSongInfo', nowplayingdata);
+		this.callFunction('loadSongInfo', nowplayingdata);
 	};
 
 	Vimeo.prototype.refreshController = function () {
@@ -285,7 +286,7 @@
 			var newValue = $($(ui.videoCollection + ' img')[0]).attr('alt')+$($(ui.videoCollection + ' img')[1]).attr('alt');
 			if (newValue && _this.oldValue !== newValue) {
 				_this.oldValue = newValue;
-				setTimeout(function(){ vimeo.sendStationList.apply(vimeo, []), 200);
+				setTimeout(function(){ vimeo.sendStationList.apply(vimeo, [])}, 200);
 			}
 		};
 		var delay = function() {

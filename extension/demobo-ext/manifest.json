@@ -1,6 +1,6 @@
 {
    "name": "de Mobo",
-   "description": "extend you",
+   "description": "An interactive second screen for all your web sites. Use your iPhone as a remote keyboard;",
    "browser_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
@@ -13,7 +13,7 @@
       {
          "all_frames": false,
          "js": ["js/main.js"],
-		     "matches": [ "*://*/*" ],
+		 "matches": [ "*://*/*" ],
          "run_at": "document_end"
       }
    ],
@@ -28,6 +28,6 @@
    "permissions": [
      "*://*/*"
    ],
-   "version": "1.0.0",
+   "version": "0.1.0",
    "manifest_version": 2
 }

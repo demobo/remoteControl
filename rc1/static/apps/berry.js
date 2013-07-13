@@ -142,6 +142,7 @@
       }
       
       function gotoUrl(url) {
+        debugger
         jQuery.each(window.call.val()['callinglist'], function(index, value){
           var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/' + value + '/webpage');
           shareWebPageRef.push({name: demobo_guid, url: url });

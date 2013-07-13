@@ -61,7 +61,7 @@
         incomingCallRef.on('child_added', function(snapshot) {
           debugger
           var message = snapshot.val();
-          displayChatMessage(message.name, message.text);
+          //displayChatMessage(message.name, message.text);
         });
       }
       
@@ -70,11 +70,6 @@
   		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
   		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
   		}
-  
-      function displayChatMessage(name, text) {
-        $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
-        $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
-      };
       
       window.outgoingCall = outgoingCall;
       

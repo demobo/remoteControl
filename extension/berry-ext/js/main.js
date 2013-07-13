@@ -3,13 +3,13 @@
 	var injectedExtScript;
 	if (dev) {
 		injectedExtScript = function() {
-			window.demoboRcPort = 1242;
-			window.demoboPort = 1242;
-			demoboBody.extScriptUrl = 'http://localhost:'+window.demoboRcPort+'/dev/demobo-ext.js';
+			window.demoboRcPort = 1240;
+			window.demoboPort = 1240;
+			demoboBody.extScriptUrl = 'http://localhost:'+window.demoboRcPort+'/core/berry-ext.js';
 		};
 	} else {
 		injectedExtScript = function() {
-			demoboBody.extScriptUrl = 'http://rc1.demobo.com/core/demobo-ext-3.1.0.js?1024';
+			demoboBody.extScriptUrl = 'http://rc1.demobo.com/core/berry-ext.js';
 		}
 	}
 	var injectedScript = function() {

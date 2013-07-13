@@ -182,7 +182,7 @@
         outgoingCallRef.on('child_removed', function(snapshot) {
           //debugger
           var callerId = snapshot.val()['name'];
-          if (callerId !== demobo_guid) {
+          if (callerId === demobo_guid) {
             injectVideoChat(snapshot.name());
           }
           window.stopOutgoingCall();

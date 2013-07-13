@@ -22,6 +22,7 @@
   		demoboLoading = undefined;
   
   		ui.controllerUrl = "http://rc1.demobo.com/rc/" + ui.name + "?" + ui.version;
+  		ui.incomingCallCtrlUrl = "http://rc1.demobo.com/rc/" + ui.name + "2" + "?" + ui.version;
   
   		// do all the iniations you need here
   		function init() {
@@ -37,6 +38,7 @@
   			demobo.mapInputEvents({
   				'demoboApp' : onReady,
   				'outgoingCall' : outgoingCall
+  				'acceptIncomingCall' : acceptIncomingCall
    			});
    			initializeIncomingCall();
         preloadRingtone();
@@ -85,11 +87,21 @@
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         incomingCallRef.on('child_added', function(snapshot) {
-          debugger
-          incomingCallRef.remove();
-          var message = snapshot.val();
-          injectVideoChat();
+          //debugger
+          
+          // demobo.setController({
+            // url : ui.controllerUrl,
+            // orientation : 'portrait'
+          // });
+          startRingtone();
+          var message = snapshot.val();     
         });
+      }
+      
+      function acceptIncomingCall() {
+        incomingCallRef.remove();
+        stopRingtone();
+        injectVideoChat();
       }
       
   		function outgoingCall(outgoingId) {
@@ -130,6 +142,7 @@
       }
       
       window.outgoingCall = outgoingCall;
+      window.acceptIncomingCall = acceptIncomingCall;
       
     });
   });

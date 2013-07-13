@@ -16,6 +16,8 @@
 
 		// do all the iniations you need here
 		function init() {
+			demobo.connect = function() {};
+			demobo.disconnect = function() {};
 			demobo._sendToSimulator('setData', {
 				key : 'url',
 				value : location.href

@@ -132,16 +132,19 @@
           window.call = snapshot;     
         });
         
-        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage');
+        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/' + demobo_guid + '/webpage');
         shareWebPageRef.on('child_added', function(snapshot){
           var url = snapshot.val()['url'];
+          shareWebPageRef.remove();
           openURL(url);
         });
       }
       
       function gotoUrl(url) {
-        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage');
-        shareWebPageRef.push({name: demobo_guid, url: url });
+        jQuery.each(window.call.val()['callinglist'], function(index, value){
+          var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/' + value + '/webpage');
+          shareWebPageRef.push({name: demobo_guid, url: url });
+        });
       }
       
       function acceptIncomingCall() {

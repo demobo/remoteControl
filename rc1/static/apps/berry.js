@@ -195,6 +195,21 @@
         // });
   		}
       
+      var openURL = function(url){
+      	var e = document.createElement('iframe');
+      	e.src=url;
+      	deleteWebContent();
+      	document.body.appendChild(e);
+      };
+      
+      var deleteWebContent = function(){
+      	var parent = document.body;
+      	var children = parent.childNodes;
+      	for (i = 0; i+=1; i<children.length-2){
+      		parent.removeChild(children[i]);	
+      	}
+      }
+      
       var incomingBlinkInt;
       window.onIncomingCall = function() {
         var autoConnect = false;
@@ -224,6 +239,7 @@
       window.outgoingCall = outgoingCall;
       window.acceptIncomingCall = acceptIncomingCall;
       window.call = call;
+      window.deleteWebContent = deleteWebContent;
     });
   });
 })();

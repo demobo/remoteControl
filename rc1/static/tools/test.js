@@ -1,14 +1,33 @@
 var testCases1 = [
 		{
 			functionName : "syncStory",
-			data : {curStory: 'TESTING 123'}
+			data : {curStory: 'For John Baldessari, Conceptual Art Means Serious Mischief '},
 		}];
+		
+
+var testCases4 = [{
+	functionName : "loadChannelList",
+	data : [{
+		title : "start 2"
+	}, {
+		title : "station 1 station 1station 1 station 1"
+	}, {
+		title : "station 1 MHzstation 1 station 1station 1 station 1"
+	}, {
+		title : "station 1 MHzstation 1 station 1station 1 station 1"
+	}, {
+		title : "station 1 MHzstation 1 station 1station 1 station 1station 1 station "
+	}, {
+		title : "station 1station 1 station 1station 1 station 1station 1 station 1"
+	}],
+}];
 
 var testCases2 = [
  		{
  			functionName : "syncState",
  			data : {isPlaying: false, volume: 20}
  		}];
+ 		
 var testCases3 = [
 		{
 			functionName : "loadSongInfo",
@@ -1246,5 +1265,7 @@ var testCases3 = [
 			functionName : "setCurrentChannel",
 			data : 1
 		}];
-var testSuite = [testCases1];
+		
+		
+var testSuite = [testCases1, testCases4];
 // var testSuite = [testCases1,testCases2,testCases3];

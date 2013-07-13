@@ -124,26 +124,30 @@
 				$('#volumeSlider').val(state.volume);
 				$('#volumeSlider').slider('refresh');
 			}
+			
+			function syncStory(story) {
+				console.log("synceSTORY");
+				if (!syncEnable)
+					return;
+				if (story.curStory) {
+					$('.story-title').text(story.curStory);
+				}
+			}
 		</script>
 	</head>
 	<body>
 		<div id="main">
 			<div id='frame'>
-				
 				<div id='content'>
-					<img id='albumArt' class='currentAlbumArt to0'/><img id='albumArt' class='newAlbumArt to90' />
-					<div class="volumeControl">
-						<div class="volumeButton" id="volumeButton" style="zoom: 1;"></div>
-						<input type="range" name="slider-mini" id="volumeSlider" value="25" min="0" max="100" data-highlight="true" data-mini="true" />
-						<!-- <div class="jp-volume-bar progress hidden" style="display: block;">
-							<div class="volume-bar-overlay"></div>
-						</div> -->
+					<div class="story">
+						<h1 class="story-title"></h1>
 					</div>
-					<div class="span12"></div>
 					<div id='controlPanel'>
-						<div id='artist'></div>
-						<div id='songName'></div>
-						<div class="span4">
+						<div class="volumeControl">
+							<div class="volumeButton" id="volumeButton"></div>
+							<input type="range" name="slider-mini" id="volumeSlider" value="25" min="0" max="100" data-highlight="true" data-mini="true" />
+						</div>
+						<div class="buttons">
 							<ul class="jp-controls unstyled">
 								<li>
 									<a href="javascript:;" class="backButton" id="previousButton" tabindex="1">previous</a>
@@ -157,8 +161,9 @@
 							</ul>
 						</div>
 					</div>
-					 
 					
+					<div class="border"></div>
+					 
 				</div>
 				
 				<div id='listTab'>
@@ -188,7 +193,8 @@
 			}
 			
 			.volumeControl {
-				margin-top: 30px;
+				margin-top: 6.5em;
+				position: absolute;
 				zoom: 1;
 			}
 		    .volume-bar-overlay {
@@ -230,8 +236,8 @@
 			height: 16px;
 			width: 16px;
 			background-position: -46px -283px;
-			margin-top: 7px;
-			margin-left: 5px;
+			margin-top: 11px;
+			margin-left: 7px;
 			float: left;
 			}
 			.volumeButton.off {
@@ -246,21 +252,18 @@
 			margin-left: 5px;
 			float: left;
 			}
-			.span12 {
+			.border {
 				background: url("http://www.npr.org/infiniteplayer/img/IP_dropshadow.png") no-repeat transparent;
 				height: 6px;
-				margin-top: 60px;
-				display: inline-block;
 				position: absolute;
 				width: 100%;
 				background-size: 480px 6px;
-				margin-left: -160px;
 			}
-			.span4 {
+			.buttons {
 				width: 300px;
 				float: left;
-				margin-left: -100px;
-				margin-top: 30px;
+				margin-left: 150px;
+				margin-top: -20px;
 			}
 			ul.unstyled, ol.unstyled {
 				margin-left: 0;
@@ -488,15 +491,26 @@
 			#controlPanel img {
 				margin-left: 10px;
 			}
-
-			#albumArt {
-				height: 240px;
+			
+			.story {
+				width: 100%;
+				height: 50%;
+			}	
+			
+			.story-title {
+				display: inline-block;
+				margin-left: 0.67em;
+				margin-top: 0.2em;
+				font-family: Georgia,serif;
+				line-height: 46px;
+				white-space: normal;
+				width: 400px;
+				font-weight: 400;
 			}
-
+			
 			#controlPanel {
-				width: 218px;
-				height: 100%;
-				position: absolute;
+				width: 100%;
+				height: 50%;
 				top: 0px;
 				left: 242px;
 				background-color: white;

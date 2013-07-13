@@ -13,6 +13,7 @@
 			return function() {
 				//check if an Eventlistener is existed on the jPlayer, if not, add one. 
 				bobo.addJplayerListener();
+				bobo.addNewsTitleListener();
 				return bobo[functionName].apply(bobo, arguments);
 			};
 		};
@@ -30,7 +31,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://192.168.1.11:1242/rc/npr/control.html?1243'
+      url: 'http://192.168.1.11:1242/rc/npr/control.html?12435678'
     });
 
     this.setInputEventHandlers({
@@ -66,15 +67,16 @@
   		songTrigger: 		'#playerBar .nowplaying',
   		stationTrigger: 	'.middlecolumn',
   		selectedStation:	'.stationChangeSelector .textWithArrow, .stationChangeSelectorNoMenu p',
-  		stationCollection:	'.stationListItem .stationName',
+  		stationCollection:	'.channel-dropdown .channel',
   		albumCollection:	'',
-  		playlistTrigger: 	''
+  		playlistTrigger: 	'',
     });
 		this.setupSongTrigger();
 		this.setupStationTrigger();
 		this.setupStateTrigger();
   };
   
+
 
 	Npr.prototype.addJplayerListener = function() {
 		//bind volumechange event to jPlayer
@@ -91,7 +93,27 @@
 			}
 			if (!flag) {
 				console.log('addjPlayerEventListener');
-				$("#ip_player1").bind($.jPlayer.event.volumechange, thisBobo, thisBobo.onVolume_jPlayer);
+				jp.bind($.jPlayer.event.volumechange, thisBobo, thisBobo.onVolume_jPlayer);
+			}
+		}
+	}
+	
+	Npr.prototype.addNewsTitleListener = function() {
+		//bing DOMchange event to news title
+		var news = $('.span8.story-content h1');
+		var flag = false;
+		var thisBobo = this;
+		if (news) {
+			if (news.data('events') && news.data('events')["DOMSubtreeModified"]) {
+				for (var i in news.data('events')["DOMSubtreeModified"]) {
+					if (news.data('events')["DOMSubtreeModified"][i].handler == thisBobo.onNewsChange) {
+						flag = true;
+					}
+				}
+			}
+			if (!flag) {
+				console.log('addNewsChangeEventListener');
+				news.bind("DOMSubtreeModified", thisBobo, thisBobo.onNewsChange);
 			}
 		}
 	}
@@ -108,6 +130,7 @@
     this.sendNowPlaying();
 //    this.sendLast3();
     this.syncState();
+    this.syncStory();
 	};
 
 	Npr.prototype.playPause = function() {
@@ -155,14 +178,20 @@
 	};
 	
 	Npr.prototype.onVolume_jPlayer = function(evt) {
-		var thisBobo=evt.data
+		var thisBobo=evt.data;
 		console.log('jpVolume: ' + evt.jPlayer.options.volume);
 		thisBobo.syncState();
 	};
+	
+	Npr.prototype.onNewsChange = function (evt) {
+		var thisBobo=evt.data;
+		console.log('newsChange: ' + evt.srcElement.data);
+		thisBobo.syncStory(evt);
+	}
 
 	Npr.prototype.chooseStation = function(index) {
 		index = parseInt(index);
-		$($(this.getInfo('ui').stationCollection)[index]).find('#shuffleIcon,.stationNameText').click();
+		$(this.getInfo('ui').stationCollection)[index].click();
 	};
 
 
@@ -341,6 +370,14 @@
 		setTimeout(function() {
 			npr.setInfo('curState', {isPlaying: npr.getIsPlaying(), volume: npr.getVolume()});
 			npr.callFunction('syncState', npr.getInfo('curState'));
+		}, 30);
+	};
+	
+	Npr.prototype.syncStory = function(evt) {
+    var npr = this;
+		setTimeout(function() {
+			npr.setInfo('curStory', {curStory: $('.story-content .title').text()});
+			npr.callFunction('syncStory', npr.getInfo('curStory'));
 		}, 30);
 	};
 	

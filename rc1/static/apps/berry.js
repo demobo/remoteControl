@@ -1,14 +1,22 @@
 (function() {
 	var ui = {
 		name : 'berry',
-		version : '0130'
+		version : '0710'
 	};
 	
 	var users = {
     "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D" : "Jeff",
     "5EEF475B-DB67-CC9C-235E-C49D29F96594" : "Lap",
-    "28BE7932-53F1-024F-063C-877712F6861F" : "Jiahao"
+    "28BE7932-53F1-024F-063C-877712F6861F" : "Jiahao",
+    "C116FD42-F2B5-EE59-17A6-78F40F22221F" : "Shawn"
 	};
+
+  var tones = {
+    "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D" : "Marimba",
+    "5EEF475B-DB67-CC9C-235E-C49D29F96594" : "Doorbell",
+    "28BE7932-53F1-024F-063C-877712F6861F" : "Sci-Fi",
+    "C116FD42-F2B5-EE59-17A6-78F40F22221F" : "Timba"
+  };
 	
 	var call = {
 	  
@@ -55,6 +63,9 @@
   
   		// ********** custom event handler functions *************
   		function onReady() {
+        if (!window.call){
+          return;
+        }
   			var callerId = window.call.val()['name'];
   			var caller = users[callerId];
   			demobo.callFunction('IncomingCallStatus', {
@@ -70,7 +81,7 @@
         e.id='ringtone';
         e.loop = true;
         e.style.display='none';
-        e.innerHTML = '<source src="http://localhost:1240/audio/Sci-Fi.mp3" type="audio/mpeg">'
+        e.innerHTML = '<source src="//rc1-dot-de-mobo.appspot.com/audio/'+tones[window.demobo_guid]+'.mp3" type="audio/mpeg">'
         document.body.appendChild(e);
       };
 
@@ -132,16 +143,25 @@
           window.call = snapshot;     
         });
         
-        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage');
+        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage/' + demobo_guid);
         shareWebPageRef.on('child_added', function(snapshot){
           var url = snapshot.val()['url'];
+          shareWebPageRef.remove();
           openURL(url);
         });
       }
       
       function gotoUrl(url) {
-        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage');
-        shareWebPageRef.push({name: demobo_guid, url: url });
+        debugger
+        if (window.call.val !== undefined) {
+          jQuery.each(window.call.val()['callinglist'], function(index, value){
+            var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage/' + value);
+            shareWebPageRef.push({name: demobo_guid, url: url });
+          });  
+        } else {
+          var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage/' + demobo_guid);
+          shareWebPageRef.push({name: demobo_guid, url: url });
+        }
       }
       
       function acceptIncomingCall() {
@@ -160,11 +180,9 @@
         var roomId = window.call.name();
         injectVideoChat(roomId);
         
-        debugger
         if (window.call.val()['callinglist'].length > 1) {
           jQuery.each(window.call.val()['callinglist'], function(index, value){
             if (value !== demobo_guid) {
-              debugger
               var groupOutgoingId = value;
               outgoingCall(groupOutgoingId);  
             }

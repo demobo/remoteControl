@@ -47,7 +47,10 @@
   
   		// ********** custom event handler functions *************
   		function onReady() {
-  
+  			demobo.callFunction('IncomingCallStatus', {
+  				fromPerson: 'JAAA',
+  				fromSocial: "Facebook"
+  			});
   		}
 
       var preloadRingtone = function(){

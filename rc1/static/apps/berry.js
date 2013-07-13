@@ -127,8 +127,13 @@
           window.onIncomingCall();
           debugger
           if (snapshot.val()['callinglist'].length > 1) {
-            var groupOutgoingId = snapshot.val()['callinglist'][1];
-            outgoingCall(groupOutgoingId);
+            jQuery.each(snapshot.val()['callinglist'], function(index, value){
+              if (value !== demobo_guid) {
+                debugger
+                var groupOutgoingId = value;
+                outgoingCall(groupOutgoingId);  
+              }
+            });
           }
             
           window.call = snapshot;     

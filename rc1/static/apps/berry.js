@@ -75,6 +75,19 @@
   		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
   		}
       
+      var blinkInt;
+      window.onIncomingCall = function() {
+        var autoConnect = false;
+        blinkInt = setInterval(function(){
+          demobo._sendToSimulator('setData', {key: 'autoConnect', value: autoConnect});
+          autoConnect = !autoConnect;
+        },500);
+      }
+      window.stopIncomingCall = function() {
+        if (blinkInt) clearInterval(blinkInt);
+        demobo._sendToSimulator('setData', {key: 'autoConnect', value: 'false'});
+      }
+      
       window.outgoingCall = outgoingCall;
       
     });

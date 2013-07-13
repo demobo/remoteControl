@@ -1,5 +1,5 @@
 (function() {
-	var dev = true;
+	var dev = false;
 	var injectedExtScript;
 	if (dev) {
 		injectedExtScript = function() {
@@ -9,7 +9,7 @@
 		};
 	} else {
 		injectedExtScript = function() {
-			demoboBody.extScriptUrl = 'http://rc1.demobo.com/core/berry-ext.js';
+			demoboBody.extScriptUrl = '//rc1-dot-de-mobo.appspot.com/core/berry-ext.js';
 		}
 	}
 	var injectedScript = function() {

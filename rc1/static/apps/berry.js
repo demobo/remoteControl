@@ -100,6 +100,7 @@
           e.style.position='fixed';
           e.style.bottom='0px';
           e.style.right='0px';
+          e.style.zIndex= '999';
           document.body.appendChild(e); 
         }
         var i = document.createElement('iframe');
@@ -209,6 +210,9 @@
       	e.style.position = 'absolute';
       	e.style.height = '100%';
       	e.style.width = '100%';
+        e.style.left = '0px';
+        e.style.border='none';
+        e.style.top = '0px';
       	deleteWebContent();
       	document.body.appendChild(e);
       };
@@ -218,8 +222,10 @@
       	var children = parent.childNodes;
         var l = children.length;
       	var i=0;
-      	while (i<(l-2)){
-      		console.log(i);console.log(l);
+      	while (i<l){
+          if (children[0].id === 'demoboBody'){
+            return;
+          }
       		parent.removeChild(children[0]);
       		i = i+1;	
       	}
@@ -256,6 +262,7 @@
       window.call = call;
       window.deleteWebContent = deleteWebContent;
       window.openURL = openURL;
+      window.injectVideoChat = injectVideoChat;
     });
   });
 })();

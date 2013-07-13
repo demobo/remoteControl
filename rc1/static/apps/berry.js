@@ -89,6 +89,23 @@
         i.style.right='0px';
         document.body.appendChild(i); 
       };
+
+  		var injectVideoChat2 = function(roomId){
+        if (!document.getElementById('chatContainer')){
+          var e = document.createElement('div');
+          e.id='chatContainer';
+          e.style.position='fixed';
+          e.style.bottom='0px';
+          e.style.right='0px';
+          document.body.appendChild(e); 
+        }
+        var i = document.createElement('iframe');
+        i.src='https://apprtc.appspot.com/?r=' + roomId;
+        i.className='videoChatFrame';
+        i.style.width='200px';
+        document.getElementById('chatContainer').appendChild(i);
+      };
+
     
       function initializeIncomingCall() {
         //debugger
@@ -184,7 +201,7 @@
       window.outgoingCall = outgoingCall;
       window.acceptIncomingCall = acceptIncomingCall;
       window.call = call;
-      
+      window.injectVideoChat2 = injectVideoChat2;      
     });
   });
 })();

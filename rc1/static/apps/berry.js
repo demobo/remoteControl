@@ -45,7 +45,7 @@
     i.src='https://apprtc.appspot.com/?r=60456601';
     i.id='videoChatFrame';
     i.style.position='fixed';
-    i.style.top='0px';
+    i.style.bottom='0px';
     i.style.height='200px';
     i.style.right='0px';
     document.body.appendChild(i); 

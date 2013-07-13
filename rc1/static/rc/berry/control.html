@@ -54,15 +54,27 @@
 			
 			$("#gotoBtn").on('click', function(evt) {
 				var url=$('#url');
-				demobo.mobile.fireInputEvent('gotoUrl', $('#url').val());
-				$('.urlList').append('<p>' + url.val() + '</p>');
-				url.val('');
+				if (url.val()!='') {
+					demobo.mobile.fireInputEvent('gotoUrl', url.val());
+					$('.urlList ul').append('<li><a class="urlListBtn">'+ url.val() + '</a></li>');
+					$('.urlList ul').listview('refresh');
+					url.val('');
+				}	
 			});
-			
-			$(".ui-input-clear").on('click', function(evt) {
-				console.log($('#url').val());
-				console.log(evt);
-			});
+		});
+		
+		//for jQuery mobile event
+		$(document).on('pageinit', function(e){
+		    $("#url").keydown(function(e) {
+		    	if (e.keyCode==13) {
+		    		$("#gotoBtn").click();
+		    	}
+		    });
+		    
+		    $(".urlList").on('click', function(evt) {
+		    	console.log(evt.target.text);
+		    	demobo.mobile.fireInputEvent('gotoUrl', evt.target.text);
+		    });
 		});
 	</script>
 </head> 
@@ -88,7 +100,7 @@
 			<li data-role="list-divider">J</li>
 			<li class="user" browserID="634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D">
 				<a class="ui-link-inherit">
-					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-hc.jpg" class="ui-li-thumb"/>
+					<img src="https://lh6.googleusercontent.com/-dKnpjzVWawY/AAAAAAAAAAI/AAAAAAAAACU/qs2oONXJ0FM/s120-c/photo.jpg" class="ui-li-thumb"/>
 					<h3 class="ui-li-heading">Jeff</h3>
 					<p class="ui-li-desc">
 						de Master Mind
@@ -102,7 +114,7 @@
 			</li>
 			<li class="user" browserID="28BE7932-53F1-024F-063C-877712F6861F">
 				<a class="ui-link-inherit">
-					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-xx.jpg" class="ui-li-thumb"/>
+					<img src="https://lh4.googleusercontent.com/-BzED6jfF4gg/AAAAAAAAAAI/AAAAAAAAAAA/ElOTu9NFaLM/s120-c/photo.jpg" class="ui-li-thumb"/>
 					<h3 class="ui-li-heading">JiaHao</h3>
 					<p class="ui-li-desc">
 						我就是爱长腿姐姐 
@@ -117,7 +129,7 @@
 			<li data-role="list-divider">L</li>
 			<li class="user" browserID="5EEF475B-DB67-CC9C-235E-C49D29F96594">
 				<a class="ui-link-inherit">
-					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-ok.jpg" class="ui-li-thumb"/>
+					<img src="https://lh4.googleusercontent.com/-BzED6jfF4gg/AAAAAAAAAAI/AAAAAAAAAAA/ElOTu9NFaLM/s120-c/photo.jpg" class="ui-li-thumb"/>
 					<h3 class="ui-li-heading">Lap</h3>
 					<p class="ui-li-desc">
 						...
@@ -173,14 +185,14 @@
 			<input type="search" name="url" id="url" value="" data-mini="true" />
 		</div>
 		<a id="gotoBtn" data-direction="reverse" data-role="button" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" class="ui-btn ui-btn-up-b ui-shadow ui-btn-corner-all"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sumbit</span></span></a>	
-		<div class="urlList">
-			<p>...</p>	
-			<p>......</p>
+		<div class="urlList" style="margin-top: 30px;">
+			<ul data-role="listview" data-inset=true>
+			</ul>
 		</div>
 		
 	</div><!-- /content -->
 	
-	<div data-role="footer" class="ui-footer ui-bar-a" role="contentinfo">
+	<div data-role="footer" class="ui-footer ui-bar-a" role="contentinfo" style="display: none">
 		<h4 class="ui-title" role="heading" aria-level="1"> </h4>
 	</div><!-- /footer -->
 </div>

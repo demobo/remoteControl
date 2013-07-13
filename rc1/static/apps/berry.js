@@ -54,8 +54,10 @@
   
   		// ********** custom event handler functions *************
   		function onReady() {
+  			var callerId = window.call.val()['name'];
+  			var caller = users[callerId];
   			demobo.callFunction('IncomingCallStatus', {
-  				fromPerson: 'JAAA',
+  				fromPerson: caller,
   				fromSocial: "Facebook"
   			});
   		}

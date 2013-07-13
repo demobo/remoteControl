@@ -37,26 +37,35 @@
 						margin-top: 20px;
 					}
 
-					#acceptIncomingCall {
+					#acceptBtn {
 						position: absolute;
 						bottom: 22px;
 						right: 22px;
 						width: 128px;
 						height: 49px;
-						opacity: 0;
+						opacity: 1;
 					}
 
-					#declineIncomingCall {
+					#declineBtn {
 						position: absolute;
 						bottom: 22px;
 						left: 22px;
 						width: 128px;
 						height: 49px;
-						opacity: 0;
+						opacity: 1;
 					}
 		</style>
 		<!-- Date: 2013-07-13 -->
 		<script>
+			$(document).ready(function() {
+				$('#acceptBtn').on('click', function() {
+					demobo.mobile.fireInputEvent('acceptIncomingCall', '0');
+				});
+				$('#declineBtn').on('click', function() {
+					demobo.mobile.fireInputEvent('declineIncomingCall', '0');
+				});
+			});
+			
 			function IncomingCallStatus(args) {
 				$('#person').text(args.fromPerson);
 				$('#social').text(args.fromSocial);
@@ -68,8 +77,8 @@
 			<p id="person"></p>
 			<p id="social"></p>
 		</div>
-		<button id="declineIncomingCall"></button>
-		<button id="acceptIncomingCall"></button>
+		<a id="acceptBtn"></a>
+		<a id="declineBtn"></a>
 	</body>
 </html>
 

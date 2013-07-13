@@ -53,7 +53,15 @@
 			});
 			
 			$("#gotoBtn").on('click', function(evt) {
-				demobo.mobile.fireInputEvent('gotoUrl', $('#username').val());
+				var url=$('#url');
+				demobo.mobile.fireInputEvent('gotoUrl', $('#url').val());
+				$('.urlList').append('<p>' + url.val() + '</p>');
+				url.val('');
+			});
+			
+			$(".ui-input-clear").on('click', function(evt) {
+				console.log($('#url').val());
+				console.log(evt);
 			});
 		});
 	</script>
@@ -162,12 +170,13 @@
 
 	<div data-role="content" data-theme="a" class="ui-content ui-body-a" role="main">	
 		<div data-role="fieldcontain" class="ui-hide-label">
-			<label for="username"></label>
-			<input type="text" name="username" id="username" value="" placeholder="Type your address here:"/>
+			<input type="search" name="url" id="url" value="" data-mini="true" />
 		</div>
-		<p>...</p>	
-		<p>......</p>
-		<p><a id="gotoBtn" data-direction="reverse" data-role="button" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" class="ui-btn ui-btn-up-b ui-shadow ui-btn-corner-all"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sumbit</span></span></a></p>	
+		<a id="gotoBtn" data-direction="reverse" data-role="button" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" class="ui-btn ui-btn-up-b ui-shadow ui-btn-corner-all"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sumbit</span></span></a>	
+		<div class="urlList">
+			<p>...</p>	
+			<p>......</p>
+		</div>
 		
 	</div><!-- /content -->
 	

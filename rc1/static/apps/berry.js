@@ -11,7 +11,7 @@
 	};
 	
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
-	  demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function(){ 
+	  demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() { 
 	  
   		jQuery.noConflict();
   		if (DEMOBO) {
@@ -22,7 +22,7 @@
   		demoboLoading = undefined;
   
   		ui.controllerUrl = "http://rc1.demobo.com/rc/" + ui.name + "?" + ui.version;
-  		ui.incomingCallCtrlUrl = "http://rc1.demobo.com/rc/" + ui.name + "2" + "?" + ui.version;
+  		ui.incomingCallCtrlUrl = "http://rc1.demobo.com/rc/" + ui.name + "incoming" + "?" + ui.version;
   
   		// do all the iniations you need here
   		function init() {

@@ -1,265 +1,272 @@
 (function() {
+var ui = {
+	name: 				'youtube',
+	version: 			'0130',
+	songTrigger: 		'#interstitial',
+	stationTrigger: 	'#film_strip',
+	videoCollection:	'.related-video .yt-thumb-clip-inner',
+	playlistTrigger: 	'',
+	searchInput:		'input[type=text].search-term',
+	searchSubmit:		'.search-button',
+	player:				null,
+	playerType:			null,
+	isFullScreen: 		false
+};
+demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function(){
+	jQuery.noConflict();
 	if (DEMOBO) {
-		DEMOBO.developer = 'developer@demobo.com';
-		DEMOBO.maxPlayers = 1;
-		DEMOBO.stayOnBlur = true;
-		DEMOBO.autoConnect = false;
+		DEMOBO.autoConnect = true;
 		DEMOBO.init = init;
 		demobo.start();
 	}
 	demoboLoading = undefined;
-	var last3PlayedSongs = [];
-	var curState = {isPlaying: false, volume: 50};
-	var slideChangeTimeout = null;
 	
-	var ui = {
-		name: 				'pandora',
-		version: 			'0201',
-		playPauseButton: 	'.playButton:visible, .pauseButton:visible',
-		playButton: 		'.playButton',
-		pauseButton: 		'.pauseButton',
-		nextButton: 		'.skipButton',
-		previousButton: 	'',
-		likeButton: 		'.thumbUpButton',
-		dislikeButton:		'.thumbDownButton',
-		volume:				'.volumeBackground',
-		title: 				'.playerBarSong',
-		artist: 			'.playerBarArtist',
-		album: 				'.playerBarAlbum',
-		coverart:			'.stationSlides:visible .art[src], .playerBarArt',
-		songTrigger: 		'#playerBar .nowplaying',
-		stationTrigger: 	'.middlecolumn',
-		selectedStation:	'.stationChangeSelector .textWithArrow, .stationChangeSelectorNoMenu p',
-		stationCollection:	'.stationListItem .stationName',
-		albumCollection:	'',
-		playlistTrigger: 	''
-	};
 	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
-	
+	var curChannel = 0;
+		
+	if (document.getElementById("movie_player")) {
+		ui.player = document.getElementById("movie_player");
+		ui.playerType = "flash";
+	} else if(document.getElementsByClassName("video-stream")[0]) {
+		ui.player = document.getElementsByClassName("video-stream")[0];
+		ui.playerType = "html5";
+	}
 	// do all the iniations you need here
 	function init() {
+		demobo.connect = function() {};
+		demobo.disconnect = function() {};
+		demoboBody.addEventListener("connectDemobo", function(e) {
+			fullScreen();
+		});
+		demoboBody.addEventListener("disconnectDemobo", function(e) {
+			regularScreen();
+		});
+		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 		demobo.setController( {
-			url : ui.controllerUrl
+			url : ui.controllerUrl,
+			orientation: 'portrait'
 		});
 		// your custom demobo input event dispatcher
 		demobo.mapInputEvents( {
 			'playPauseButton' : playPause,
-			'playButton' : 		play,
-			'pauseButton' : 	pause,
+			'playButton' : 		playPause,
+			'pauseButton' : 	playPause,
 			'nextButton' : 		next,
-			'loveButton' : 		like,
-			'spamButton' : 		dislike,
+			'previousButton' : 	previous,
+			'rewindButton' : 	rewind,
+			'fastforwardButton':fastforward,
 			'volumeSlider' : 	setVolume,
-			'stationItem' : 	chooseStation,
-			'demoboVolume' : 	onVolume,
-			'demoboApp' : 		onReady
+			'playAlbum' :		playAlbum,
+			'search':			search,
+			'searchKeyword':	searchKeyword,
+			'reloadButton':		reload,
+			'channelUp':		next,
+			'channelDown':		previous,
+			'fullScreenButton':	toggleScreen,
+			'vimeoButton':		vimeoButton,
+			'demoboApp' : 		onReady,
+			'demoboVolume' : 	onVolume
 		});
-		showDemobo();
-		setupSongTrigger();
-		setupStationTrigger();
 		setupStateTrigger();
+		setupVolume();
+		if (localStorage.getItem('couchMode')!='false') fullScreen();
+		setTimeout(onReady, 1000);
+		setTimeout(onReady, 5000);
 	}
 
 	// ********** custom event handler functions *************
 	function onReady() {
-		refreshController();
-		hideDemobo();
-	}
-	function playPause() {
-		$(ui.playPauseButton).click();
-	}	
-	function play() {
-		$(ui.playButton).click();
-	}
-	function pause() {
-		$(ui.pauseButton).click();
-	}
-	function next() {
-		$(ui.nextButton).click();
-	}
-	function like() {
-		$(ui.likeButton).click();
-	}
-	function dislike() {
-		$(ui.dislikeButton).click();
-	}
-	function setVolume(num, evt) {
-		num = parseInt(num);
-		if (num==getVolume()) return;
-		$(ui.volume).show();
-		var min = getAbsPosition($('.volumeBar')[0]).left + 22;
-		var max = (min - 22) + $('.volumeBar').width() -22;
-		var target = Math.round((num / 100) * (max - min)) + min;
-		$(ui.volume).show().trigger( {
-			type : 'click',
-			pageX : target
-		});
-	}
-	function onVolume(value) {
-		if (value=='up') setVolume(parseInt(getVolume())+5);
-		else if (value=='down') setVolume(parseInt(getVolume())-5);
-		else setVolume(value*100);
-	}
-	function chooseStation(index) {
-		index = parseInt(index);
-		$($(ui.stationCollection)[index]).find('#shuffleIcon,.stationNameText').click();
-	}
-
-	function refreshController() {
 		sendStationList();
-		setTimeout(sendLast3,100);
+		sendNowPlaying();
 		syncState();
 	}
-
-	/* helpers */
-	function setupSongTrigger() {
-		var triggerDelay = 50;
-		var longDelay = 500;
-		var trigger = $(ui.songTrigger)[0];
-		var _this = {
-			oldCoverart : $(ui.coverart).attr('src'),
-			oldTitle : $(ui.title).text()
-		};
-		var maxChecks = 10;
-		var checkTitle = function() {
-			var newTitle = $(ui.title).text();
-			if (newTitle && _this.oldTitle !== newTitle) {
-				_this.oldTitle = newTitle;
-				checkCoverart(maxChecks);
-			}
-		};
-		var checkCoverart = function(checksLeft) {
-			var newCoverart = $(ui.coverart).attr('src');
-			if (newCoverart && _this.oldCoverart !== newCoverart) {
-				_this.oldCoverart = newCoverart;
-				sendNowPlaying();
-			} else if (checksLeft) {
-				setTimeout(function(){
-					checkCoverart(checksLeft-1);
-				}, longDelay);
+	function playPause() {
+		if(ui.playerType == "flash") {
+			if(ui.player.getPlayerState() == 1) {
+				ui.player.pauseVideo();
 			} else {
-				var newCoverart = $(ui.coverart).attr('src');
-				_this.oldCoverart = newCoverart;
-				sendNowPlaying();
+				ui.player.playVideo();
+			}
+		} else if(ui.playerType == "html5") {
+			if(!ui.player.paused) {
+				ui.player.pause();
+			} else {
+				ui.player.play();
 			}
 		}
-		var delay = function() {
-			setTimeout(checkTitle, triggerDelay);
-		};
-		if (trigger) trigger.addEventListener('DOMSubtreeModified', delay, false);
 	}
-	function setupStationTrigger() {
-		var triggerDelay = 50;
-		var trigger = $(ui.stationTrigger)[0];
-		var _this = {
-			oldValue : $(ui.selectedStation).text()
-		};
-		var onChange = function() {
-			var newValue = $(ui.selectedStation).text();
-			if (newValue && _this.oldValue !== newValue) {
-				_this.oldValue = newValue;
-				sendStationList();
+	function next() {
+		playAlbum(0);
+	}
+	function previous() {
+		history.back();
+	}
+	function rewind() {
+		if (ui.playerType == "flash") {
+			ui.player.seekTo(ui.player.getCurrentTime() - 5 > 0 ? ui.player.getCurrentTime() - 5 : 0, true);
+		} else if(ui.playerType == "html5") {
+			if(ui.player.currentTime - 5 > 0) {
+				ui.player.currentTime -= 5;
+			} else {
+				ui.player.currentTime = 0;
 			}
-		};
-		var delay = function() {
-			setTimeout(onChange, triggerDelay);
-		};
-		if (trigger) trigger.addEventListener('DOMSubtreeModified', delay, false);
+		}
 	}
-	function setupStateTrigger() {
-		$(ui.volume).on('drag click', syncState);
-		$(ui.playButton + ',' + ui.pauseButton).on('click', syncState);
+	function fastforward() {
+		if (ui.playerType == "flash") {
+			ui.player.seekTo(ui.player.getCurrentTime() + 5 < ui.player.getDuration() ? ui.player.getCurrentTime() + 5 : ui.player.getDuration(), true);
+		} else if(ui.playerType == "html5") {
+			if(ui.player.currentTime + 5 < ui.player.duration) {
+				ui.player.currentTime += 5;
+			} else {
+				ui.player.currentTime = ui.player.duration;
+			}
+		}
 	}
-	function getAbsPosition(element) {
-		if (element) {
-			var oLeft = 0;
-			var oTop = 0;
-			var o = element;
-			do {
-				oLeft += o.offsetLeft;
-				oTop += o.offsetTop;
-			} while (o = o.offsetParent);
-			return {
-				'left' : oLeft,
-				'top' : oTop
-			};
+	function setVolume(num) {
+		if (num>=0) localStorage.setItem('demoboVolume',num);
+		else num = localStorage.getItem('demoboVolume')||50;
+		num = Math.min(100,num);
+		jQuery('#demoboVolume').show().html('<span width>VOL '+num+' </span>'+Array(Math.floor(parseInt(num)/5)+1).join("|")).stop().css('opacity',1).fadeTo(3000,0,function(){jQuery('#demoboVolume').hide()});
+		num = num / 100;
+		if(ui.playerType == "flash") {
+			ui.player.setVolume(num*100);
+		} else if(ui.playerType == "html5") {
+			ui.player.volume = num;
+		}
+	}
+	function getVolume() {
+		if(ui.playerType == "flash") {
+			return ui.player.getVolume();
+		} else if(ui.playerType == "html5") {
+			return parseInt(ui.player.volume*100);
+		}
+	}
+	function onVolume(value) {
+		if (value=='up') setVolume(parseInt(localStorage.getItem('demoboVolume'))+5);
+		else if (value=='down') setVolume(parseInt(localStorage.getItem('demoboVolume'))-5);
+		else setVolume(value*100);
+	}
+	function sendNowPlaying() {
+		var nowplayingdata = getNowPlayingData();
+		demobo.callFunction('loadSongInfo', nowplayingdata);
+	}
+	function playAlbum(index) {
+		index = parseInt(index);
+		if (jQuery('.video-list-item .related-video')[index]) {
+			window.location = jQuery('.video-list-item .related-video')[index].href;
 		} else {
-			return {};
+			window.location = jQuery(jQuery('.context-data-item')[index]).find('a')[0].href;
 		}
+	}
+	function search(keyword) {
+		
+	}
+	function searchKeyword(keyword) {
+		keyword = keyword.trim();
+		if (!keyword) return;
+		jQuery(ui.searchInput).val(keyword);
+		setTimeout(function() {
+			if (jQuery(ui.searchInput).val()) jQuery('#masthead-search')[0].submit();
+		}, 200);
+	}
+	function reload() {
+		location.reload();
+	}
+	function vimeoButton() {
+		window.location = "http://vimeo.com/couchmode";
+	}
+	/* helpers */
+	function setupStateTrigger() {
+		if (!yt.config_.PLAYER_REFERENCE) return;
+		yt.config_.PLAYER_REFERENCE.addEventListener("onStateChange", function(e){
+			syncState();
+			sendNowPlaying();
+		});
+	}
+	function setupVolume() {
+		jQuery('body').append('<div id="demoboVolume" style="position: fixed;width: 100%;margin: auto;bottom: 10%;left: 5%; color: #00adef;font-weight: bolder; font-size: 50px;z-index: 9999;padding: 30px 100px;"></div>');
+		setVolume();
 	}
 	function getNowPlayingData() {
-		return last3PlayedSongs;
-	}
-	function getCurrentSong() {
-		var imgURL = $(ui.coverart).attr('src');
-		if (!imgURL) return;
-		if (imgURL.substr(0,4)!='http') imgURL = "http://www.pandora.com/img/no_album_art.jpg"; //document.location.origin + imgURL;
+		if (!yt.config_.PLAYER_REFERENCE) return {title:'',artist:'',image:false};
+		var data = yt.config_.PLAYER_REFERENCE.getVideoData();
+		var imgURL = "http://i1.ytimg.com/vi/"+data.video_id+"/mqdefault.jpg";
 		return {
-			'title' : $(ui.title).text(),
-			'artist' : $(ui.artist).text(),
-			'album' : $(ui.album).text(),
+			'title' : data.title,
+			'artist' : '',
 			'image' : imgURL
 		};
 	}
-	function getStationList() {
-		var toReturn = [];
-		$.each($(ui.stationCollection), function(index,elem) {
-			var s = {
-				'title' : $(elem).text().trim()
-			};
-			if ($(elem).parent().hasClass('selected')) s.selected = true;
-			toReturn.push(s);
-		});
+
+	function getVideoCollection() {
+		var relatedVideo = jQuery('.video-list-item .related-video');
+		if (relatedVideo.length) {
+			var toReturn = [];
+			jQuery.each(relatedVideo, function(index, elem) {
+				var img = jQuery(elem).find('img').attr('data-thumb')?jQuery(elem).find('img').attr('data-thumb'):jQuery(elem).find('img').attr('src');
+				var s = {
+					title : jQuery(elem).find('.title').text().trim(),
+					image: 	"http:"+img,
+				};
+				toReturn.push(s);
+			});
+		} else {
+			var toReturn = [];
+			jQuery.each(jQuery('.context-data-item'), function(index, elem) {
+				if (!jQuery(elem).attr('data-context-item-title')) return;
+				var img = jQuery(elem).find('img').attr('data-thumb')?jQuery(elem).find('img').attr('data-thumb'):jQuery(elem).find('img').attr('src');
+				var s = {
+					title : jQuery(elem).attr('data-context-item-title').trim(),
+					image: 	"http:"+img,
+				};
+				toReturn.push(s);
+			});
+		}
 		return toReturn;
 	}
-	function getCurrentStationIndex() {
-		var toReturn = 0;
-		$.each($(ui.stationCollection), function(index,elem) {
-			if ($(elem).parent().hasClass('selected')) toReturn = index;
-		});
-		return toReturn;
-	}
+
 	function sendStationList() {
-		demobo.callFunction('loadChannelList', getStationList());
-	}
-	function sendNowPlaying() {
-		var curSong = getCurrentSong();
-		if (!curSong) return;
-		if (!last3PlayedSongs.length || last3PlayedSongs[last3PlayedSongs.length-1].title != curSong.title) {
-			last3PlayedSongs.push(curSong);
-			while (last3PlayedSongs.length>3) {
-				last3PlayedSongs.shift();
-			}
-		} else if (last3PlayedSongs[last3PlayedSongs.length-1].title == curSong.title) {
-			last3PlayedSongs[last3PlayedSongs.length-1] = curSong;
-		}
-		demobo.callFunction('loadSongInfo', curSong);
-		syncState();
-	}
-	function sendLast3() {
-		if (last3PlayedSongs.length) var curSong = last3PlayedSongs;
-		else {
-			var curSong = getCurrentSong();
-			if (!curSong) return;
-			last3PlayedSongs.push(curSong);
-		}
-		demobo.callFunction('loadSongInfo', curSong);
-	}
-	function syncState(e) {
-		setTimeout(function() {
-			curState = {isPlaying: getIsPlaying(), volume: getVolume()};
-			demobo.callFunction('syncState', curState);
-		}, 30);
+		demobo.callFunction('loadVideoCollection', getVideoCollection());
 	}
 	
-	function getIsPlaying() {
-		return !$(ui.playButton+':visible').length;
+	function syncState() {
+		if (!yt.config_.PLAYER_REFERENCE) return;
+		var isPlaying = yt.config_.PLAYER_REFERENCE.getPlayerState()==1;
+		var state = {isPlaying: isPlaying, volume: getVolume()};
+		demobo.callFunction('syncState', state);
 	}
-	function getVolume() {
-		$(ui.volume).show();
-		var min = getAbsPosition($('.volumeBar')[0]).left + 22;
-		var max = (min - 22) + $('.volumeBar').width() - 22;
-		var target = getAbsPosition($('.volumeKnob')[0]).left + 22;
-		return Math.round(100*(target-min)/(max-min));
+	
+	function toggleScreen() {
+		if (!ui.isFullScreen) fullScreen();
+		else regularScreen();
 	}
+	
+	function fullScreen() {
+		if (!yt.config_.PLAYER_REFERENCE) return;
+		jQuery('#watch7-video,#player-api').css({position:'fixed',top:0,left:0,'z-index':9998,width:'100%',height:'100%'});
+		jQuery('#watch7-player').css({width:'100%',height:'100%'});
+		jQuery('body').css({overflow:'hidden'});
+		ui.isFullScreen = true;
+		demobo._sendToSimulator('setData', {key: 'autoConnect', value: true});
+		localStorage.setItem('couchMode','true');
+	}
+	function regularScreen() {
+		if (!yt.config_.PLAYER_REFERENCE) return;
+		jQuery('#watch7-video,#player-api').css({position:'',top:'',left:'','z-index':'',width:'',height:''});
+		jQuery('#watch7-player').css({width:'',height:''});
+		jQuery('body').css({overflow:''});
+		ui.isFullScreen = false;
+		demobo._sendToSimulator('setData', {key: 'autoConnect', value: false});
+		localStorage.setItem('couchMode','false');
+	}
+	document.addEventListener("keyup", function(event) {
+		if(event.which == 27) { // esc trigger toggleScreen
+			toggleScreen();
+		}
+	}, true);
+	ui.fullScreen = fullScreen;
+	ui.regularScreen = regularScreen;
+	ui.sendStationList = sendStationList;
+});
 })();

@@ -102,6 +102,7 @@
         var i = document.createElement('iframe');
         i.src='https://apprtc.appspot.com/?r=' + roomId;
         i.className='videoChatFrame';
+        i.id=roomId;
         i.style.width='200px';
         document.getElementById('chatContainer').appendChild(i);
       };
@@ -201,7 +202,6 @@
       window.outgoingCall = outgoingCall;
       window.acceptIncomingCall = acceptIncomingCall;
       window.call = call;
-      window.injectVideoChat2 = injectVideoChat2;      
     });
   });
 })();

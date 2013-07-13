@@ -78,19 +78,19 @@
         e && e.play(); 
       }
   		
-  		var injectVideoChat = function(roomId){
-        if (document.getElementById('videoChatFrame')) return;
-        var i = document.createElement('iframe');
-        i.src='https://apprtc.appspot.com/?r=' + roomId;
-        i.id='videoChatFrame';
-        i.style.position='fixed';
-        i.style.bottom='0px';
-        i.style.height='200px';
-        i.style.right='0px';
-        document.body.appendChild(i); 
-      };
+  		// var injectVideoChat = function(roomId){
+        // if (document.getElementById('videoChatFrame')) return;
+        // var i = document.createElement('iframe');
+        // i.src='https://apprtc.appspot.com/?r=' + roomId;
+        // i.id='videoChatFrame';
+        // i.style.position='fixed';
+        // i.style.bottom='0px';
+        // i.style.height='200px';
+        // i.style.right='0px';
+        // document.body.appendChild(i); 
+      // };
 
-  		var injectVideoChat2 = function(roomId){
+  		var injectVideoChat = function(roomId){
         if (!document.getElementById('chatContainer')){
           var e = document.createElement('div');
           e.id='chatContainer';

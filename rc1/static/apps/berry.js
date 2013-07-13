@@ -181,9 +181,12 @@
       
         outgoingCallRef.on('child_removed', function(snapshot) {
           //debugger
-          //var userName = snapshot.name(), userData = snapshot.val();
+          var callerId = snapshot.val()['name'];
+          if (callerId !== demobo_guid) {
+            injectVideoChat(snapshot.name());
+          }
           window.stopOutgoingCall();
-          injectVideoChat(snapshot.name());
+          
         });
           
   		  // jQuery.each(callingList, function(index, value) {

@@ -1,13 +1,14 @@
 (function() {
 	var ui = {
 		name : 'berry',
-		version : '0130'
+		version : '0710'
 	};
 	
 	var users = {
     "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D" : "Jeff",
     "5EEF475B-DB67-CC9C-235E-C49D29F96594" : "Lap",
-    "28BE7932-53F1-024F-063C-877712F6861F" : "Jiahao"
+    "28BE7932-53F1-024F-063C-877712F6861F" : "Jiahao",
+    "C116FD42-F2B5-EE59-17A6-78F40F22221F" : "Shawn"
 	};
 	
 	var call = {

@@ -1,6 +1,6 @@
 (function() {
 	var ui = {
-		name : 'youtube',
+		name : 'berry',
 		version : '0130'
 	};
 	

@@ -51,6 +51,10 @@
 			$(".endBtn").on('click', function(evt) {
 				demobo.mobile.fireInputEvent('hangUp', '0');
 			});
+			
+			$("#gotoBtn").on('click', function(evt) {
+				demobo.mobile.fireInputEvent('gotoUrl', $('#username').val());
+			});
 		});
 	</script>
 </head> 
@@ -60,8 +64,14 @@
 
 <!-- Start of first page: #one -->
 <div data-role="page" id="one">
-
-	<div data-role="header">
+	<div data-role="navbar" data-iconpos="top">
+		<ul>
+			<li><a data-icon="grid" href="#one" class="ui-btn-active ui-state-persist">Contacts</a></li>
+			<li><a data-icon="star" href="#two">Sharing</a></li>
+		</ul>
+	</div>
+	<!-- /navbar -->
+	<div data-role="header" style="display: none">
 		<h1>Contact List</h1>
 	</div><!-- /header -->
 
@@ -131,10 +141,40 @@
 	</div><!-- /content -->
 	
 	<div data-role="footer" data-theme="d">
-		<h4>...</h4>
+		<h4> </h4>
 		<a id='showPopup' href="#popup" data-rel="dialog" data-transition="pop" style='display:none;'></a>
 	</div><!-- /footer -->
 </div><!-- /page one -->
+
+<!-- Start of second page: #two -->
+<div data-role="page" id="two" data-theme="a" data-url="two" tabindex="0" class="ui-page ui-body-a" style="min-height: 779px;">
+	<div data-role="navbar" data-iconpos="top">
+		<ul>
+			<li><a data-icon="grid" href="#one">Contacts</a></li>
+			<li><a data-icon="star" href="#two" class="ui-btn-active ui-state-persist">Sharing</a></li>
+		</ul>
+	</div>
+	<!-- /navbar -->
+	
+	<div data-role="header" class="ui-header ui-bar-a" role="banner" style="display: none">
+		<h1 class="ui-title" role="heading" aria-level="1"> </h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="a" class="ui-content ui-body-a" role="main">	
+		<div data-role="fieldcontain" class="ui-hide-label">
+			<label for="username"></label>
+			<input type="text" name="username" id="username" value="" placeholder="Type your address here:"/>
+		</div>
+		<p>...</p>	
+		<p>......</p>
+		<p><a id="gotoBtn" data-direction="reverse" data-role="button" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" class="ui-btn ui-btn-up-b ui-shadow ui-btn-corner-all"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sumbit</span></span></a></p>	
+		
+	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-footer ui-bar-a" role="contentinfo">
+		<h4 class="ui-title" role="heading" aria-level="1"> </h4>
+	</div><!-- /footer -->
+</div>
 
 <!-- Start of second page: #popup -->
 <div data-role="dialog" id="popup" data-url="popup">

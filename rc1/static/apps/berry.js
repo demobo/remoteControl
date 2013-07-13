@@ -32,12 +32,9 @@
   				'outgoingCall' : outgoingCall
    			});
    			
-   			var incomingId = demobo_guid;
-        var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
-        incomingCallRef.on('child_added', function(snapshot) {
-          var message = snapshot.val();
-          displayChatMessage(message.name, message.text);
-        });
+   			initializeIncomingCall();
+   			
+   			injectVideoChat();  			
   		}
   
   		// ********** custom event handler functions *************
@@ -45,6 +42,27 @@
   
   		}
   		
+  		var injectVideoChat = function(){
+        if (document.getElementById('videoChatFrame')) return;
+        var i = document.createElement('iframe');
+        i.src='https://apprtc.appspot.com/?r=60456601';
+        i.id='videoChatFrame';
+        i.style.position='fixed';
+        i.style.bottom='0px';
+        i.style.height='200px';
+        i.style.right='0px';
+        document.body.appendChild(i); 
+      };
+    
+      function initializeIncomingCall() {
+        var incomingId = demobo_guid;
+        var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
+        incomingCallRef.on('child_added', function(snapshot) {
+          var message = snapshot.val();
+          displayChatMessage(message.name, message.text);
+        });
+      }
+      
   		function outgoingCall(outgoingId) {
   		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
   		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
@@ -56,5 +74,5 @@
       };
       
     });
-	});
+  });
 })();

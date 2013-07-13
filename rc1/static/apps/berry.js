@@ -14,6 +14,9 @@
 	  
 	};
 	
+	var callingList = [
+	];
+	
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
 	  demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() { 
 	  
@@ -151,7 +154,7 @@
         
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
-        debugger
+        //debugger
         incomingCallRef.remove();
         window.stopIncomingCall();
         stopRingtone();
@@ -160,15 +163,19 @@
       
   		function outgoingCall(outgoingId) {
   		  //debugger
+  		  callingList.push(outgoingId);
   		  window.onOutgoingCall();
-  		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
-  		  outgoingCallRef.push({name: demobo_guid, text: users[demobo_guid] });
   		  
-  		  outgoingCallRef.on('child_removed', function(snapshot) {
-  		    debugger
-          //var userName = snapshot.name(), userData = snapshot.val();
-          window.stopOutgoingCall();
-          injectVideoChat(snapshot.name());
+  		  $.each(callingList, function(index, value) {
+          var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
+          outgoingCallRef.push({name: demobo_guid, text: users[demobo_guid] });
+        
+          outgoingCallRef.on('child_removed', function(snapshot) {
+            //debugger
+            //var userName = snapshot.name(), userData = snapshot.val();
+            window.stopOutgoingCall();
+            injectVideoChat(snapshot.name());
+          });
         });
   		}
       

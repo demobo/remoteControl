@@ -1,0 +1,111 @@
+
+<!DOCTYPE html> 
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>call_controller</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+	<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	
+	<script>
+		//register contact list click event
+		$(document).ready(function() {
+			$(".user").on('click', function(evt) {
+				console.log('browserID: ' + $(evt.currentTarget).attr('browserID'));
+				demobo.mobile.fireInputEvent('outgoingCall', $(evt.currentTarget).attr('browserID'));
+			});		
+		});
+</script>
+</head> 
+
+	
+<body> 
+
+<!-- Start of first page: #one -->
+<div data-role="page" id="one">
+
+	<div data-role="header">
+		<h1>Contact List</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >	
+		<h2>Pick One Person to Call</h2>
+		<ul id="contactlist" data-role="listview" data-inset="true" data-filter="true">
+			<li data-role="list-divider">J</li>
+			<li class="user" browserID="634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D">
+				<a class="ui-link-inherit">
+					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-hc.jpg" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">Jeff</h3>
+					<p class="ui-li-desc">
+						de Master Mind
+					</p>
+					<div class="socialbuttons">
+						<i class="icon-facebook-sign"></i>
+					</div>
+
+				</a>
+			</li>
+			<li class="user" browserID="28BE7932-53F1-024F-063C-877712F6861F">
+				<a href="bbb.html" class="ui-link-inherit">
+					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-xx.jpg" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">JiaHao</h3>
+					<p class="ui-li-desc">
+						我爱长腿姐姐
+					</p>
+				</a>
+			</li>
+			<li data-role="list-divider">L</li>
+			<li class="user" browserID="5EEF475B-DB67-CC9C-235E-C49D29F96594">
+				<a href="ccc.html" class="ui-link-inherit">
+					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-ok.jpg" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">Lap</h3>
+					<p class="ui-li-desc">
+						...
+					</p>
+				</a>
+			</li>
+			<li data-role="list-divider">S</li>
+			<li class="user" browserID="444444444">
+				<a href="ddd.html" class="ui-link-inherit">
+					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-k.jpg" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">Shawwwn</h3>
+					<p class="ui-li-desc">
+						...
+					</p>
+				</a>
+			</li>
+		</ul>
+		<hr>
+		<p><a href="#popup" data-role="button" data-rel="dialog" data-transition="pop">Add New Contact</a></p>
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-theme="d">
+		<h4>...</h4>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+<!-- Start of third page: #popup -->
+<div data-role="page" id="popup">
+
+	<div data-role="header" data-theme="b">
+		<h1>Add New Contact</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="d">	
+		<h2>New Contact</h2>
+		<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>		
+		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
+	</div><!-- /content -->
+	
+	<div data-role="footer">
+		<h4> </h4>
+	</div><!-- /footer -->
+</div><!-- /page popup -->
+
+</body>
+</html>

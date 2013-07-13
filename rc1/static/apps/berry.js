@@ -39,12 +39,34 @@
   				'outgoingCall' : outgoingCall
    			});
    			initializeIncomingCall();
+        preloadRingtone();
   		}
   
   		// ********** custom event handler functions *************
   		function onReady() {
   
   		}
+
+      var preloadRingtone = function(){
+        if (document.getElementById('ringtone')) return;
+        var e = document.createElement('video');
+        e.controls = true;
+        e.id='ringtone';
+        e.loop = true;
+        e.style.display='none';
+        e.innerHTML = '<source src="http://localhost:1240/audio/Sci-Fi.mp3" type="audio/mpeg">'
+        document.body.appendChild(e);
+      };
+
+      var stopRingtone = function(){
+        var e = document.getElementById('ringtone');
+        e && (e.pause() || e.currentTime=0); 
+      }
+
+      var startRingtone = function(){
+        var e = document.getElementById('ringtone');
+        e && e.play(); 
+      }
   		
   		var injectVideoChat = function(){
         if (document.getElementById('videoChatFrame')) return;

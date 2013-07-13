@@ -10,6 +10,10 @@
     "28BE7932-53F1-024F-063C-877712F6861F" : "Jiahao"
 	};
 	
+	var call = {
+	  
+	};
+	
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
 	  demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() { 
 	  
@@ -74,10 +78,10 @@
         e && e.play(); 
       }
   		
-  		var injectVideoChat = function(){
+  		var injectVideoChat = function(roomId){
         if (document.getElementById('videoChatFrame')) return;
         var i = document.createElement('iframe');
-        i.src='https://apprtc.appspot.com/?r=60456601';
+        i.src='https://apprtc.appspot.com/?r=' + roomId;
         i.id='videoChatFrame';
         i.style.position='fixed';
         i.style.bottom='0px';
@@ -100,7 +104,8 @@
           
           startRingtone();
           window.onIncomingCall();
-          var message = snapshot.val();     
+          debugger
+          window.call = snapshot;     
         });
       }
       
@@ -112,11 +117,13 @@
 
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
+        
         //debugger
         incomingCallRef.remove();
         window.stopIncomingCall();
         stopRingtone();
-        injectVideoChat();
+        var roomId = window.call.name();
+        injectVideoChat(roomId);
       }
       
       function declineIncomingCall() {
@@ -138,12 +145,13 @@
   		  //debugger
   		  window.onOutgoingCall();
   		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
-  		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
+  		  outgoingCallRef.push({name: demobo_guid, text: users[demobo_guid] });
+  		  
   		  outgoingCallRef.on('child_removed', function(snapshot) {
-  		    //debugger
+  		    debugger
           //var userName = snapshot.name(), userData = snapshot.val();
           window.stopOutgoingCall();
-          injectVideoChat();
+          injectVideoChat(napshot.name());
         });
   		}
       
@@ -175,6 +183,7 @@
       
       window.outgoingCall = outgoingCall;
       window.acceptIncomingCall = acceptIncomingCall;
+      window.call = call;
       
     });
   });

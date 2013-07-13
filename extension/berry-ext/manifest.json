@@ -1,10 +1,11 @@
 {
-   "name": "de Mobo",
-   "description": "An interactive second screen for all your web sites. Use your iPhone as a remote keyboard;",
+   "name": "Berry",
+   "description": "Berry video call",
    "browser_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
-      "default_title": "de Mobo"
+      "default_title": "berry",
+	  "default_popup": "popup.html"
    },
    "background" : {
     "scripts": ["js/background.js"]
@@ -13,6 +14,7 @@
       {
          "all_frames": false,
          "js": ["js/main.js"],
+		 "css": ["css/main.css"],
 		 "matches": [ "*://*/*" ],
          "run_at": "document_end"
       }
@@ -28,6 +30,6 @@
    "permissions": [
      "*://*/*"
    ],
-   "version": "0.1.0",
+   "version": "3.2.1",
    "manifest_version": 2
 }

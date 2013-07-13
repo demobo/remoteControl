@@ -3,6 +3,7 @@
 	
   Rdio.prototype.initialize = function(){
     this.setInfo('priority', 2);
+    this.setInfo('iconClass', 'fui-play-circle');
 
 	  this.setInfo('ui', {
 		  playPauseButton: 	'#playButton:visible, #pauseButton:visible, .footer .play_pause',
@@ -23,7 +24,7 @@
 		  stationCollection:	'.App_MainNav_Rdio li a',
 		  albumCollection:	'.InfiniteScroll:visible .Album',
 		  playlistTrigger: 	''
-	  };
+	  });
     	
 		this.setController( {
 			url : 'http://rc1.demobo.com/rc/rdio?1023'
@@ -39,7 +40,7 @@
 			'volumeSlider' : 	  'setVolume',
 			'stationItem' : 	  'chooseStation',
 			'playAlbum' :	    	'playAlbum',
-			'demoboApp' : 		  'onReady
+			'demoboApp' : 		  'onReady'
 		});
 
 		this.setupSongTrigger();
@@ -49,7 +50,6 @@
 	// ********** custom event handler functions *************
 	Rdio.prototype.onReady = function () {
 		this.refreshController();
-		hideDemobo();
 	};
 
 	Rdio.prototype.playPause = function () {

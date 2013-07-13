@@ -29,7 +29,7 @@ if not window.demoboLoading
     // ---------------
     // Current version
     ###
-    version = '1.0.0'
+    version = '0.9.1'
 
     base = window.demoboBase+'/apps/'
     connectScript = window.demoboBase+'/core/connect.js'
@@ -46,6 +46,8 @@ if not window.demoboLoading
       'vimeo.com':           'vimeo.com-new.js'
       'youku.com':           'youku.com-new.js'
       'www.rdio.com':        'rdio.com-new.js'
+      'www.slideshare.net':  'slideshare.net-new.js'
+      'docs.google.com':     'docs.google.com-new.js'
       'grooveshark.com':     'grooveshark.com-new.js'
       'play.spotify.com':    'spotify.com-new.js'
       'sfbay.craigslist.org':'yelp.com.js'
@@ -636,8 +638,7 @@ if not window.demoboLoading
     //----------------
     // instantiate a `DemoboPortal` object and expose to global use
     ###
-    loadJS('http://localhost:1240/core/demobo.1.7.0.js',()->
-#    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
+    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
 
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal

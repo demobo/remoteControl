@@ -4,53 +4,91 @@
 		version : '0130'
 	};
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
-		jQuery.noConflict();
-		if (DEMOBO) {
-			DEMOBO.autoConnect = true;
-			DEMOBO.init = init;
-			demobo.start();
-		}
-		demoboLoading = undefined;
+		demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() {
 
-		ui.controllerUrl = "http://rc1.demobo.com/rc/" + ui.name + "?" + ui.version;
+			jQuery.noConflict();
+			if (DEMOBO) {
+				DEMOBO.autoConnect = true;
+				DEMOBO.init = init;
+				demobo.start();
+			}
+			demoboLoading = undefined;
 
-		// do all the iniations you need here
-		function init() {
-			demobo.connect = function() {};
-			demobo.disconnect = function() {};
-			demobo._sendToSimulator('setData', {
-				key : 'url',
-				value : location.href
-			});
-			demobo.setController({
-				url : ui.controllerUrl,
-				orientation : 'portrait'
-			});
-			// your custom demobo input event dispatcher
-			demobo.mapInputEvents({
-				'demoboApp' : onReady,
-			});
+			ui.controllerUrl = "http://rc1.demobo.com/rc/" + ui.name + "?" + ui.version;
 
-      injectVideoChat();
-		}
+			// do all the iniations you need here
+			function init() {
+				demobo.connect = function() {};
+				demobo.disconnect = function() {};
+				demobo._sendToSimulator('setData', {
+					key : 'url',
+					value : location.href
+				});
+				demobo.setController({
+					url : ui.controllerUrl,
+					orientation : 'portrait'
+				});
+				// your custom demobo input event dispatcher
+				demobo.mapInputEvents({
+					'demoboApp' : onReady,
+					'outgoingCall' : outgoingCall
+				});
 
-		// ********** custom event handler functions *************
-		function onReady() {
+				initializeIncomingCall();
 
-		}
+				injectVideoChat();
+			}
 
+			// ********** custom event handler functions *************
+			function onReady() {
+
+			}
+			var blinkInt;
+			window.onIncomingCall = function() {
+				var autoConnect = false;
+				blinkInt = setInterval(function(){
+					demobo._sendToSimulator('setData', {key: 'autoConnect', value: autoConnect});
+					autoConnect = !autoConnect;
+				},500);
+			}
+			window.stopIncomingCall = function() {
+				if (blinkInt) clearInterval(blinkInt);
+				demobo._sendToSimulator('setData', {key: 'autoConnect', value: 'false'});
+			}
+			
+			var injectVideoChat = function() {
+				if (document.getElementById('videoChatFrame'))
+					return;
+				var i = document.createElement('iframe');
+				i.src = 'https://apprtc.appspot.com/?r=60456601';
+				i.id = 'videoChatFrame';
+				i.style.position = 'fixed';
+				i.style.bottom = '0px';
+				i.style.height = '200px';
+				i.style.right = '0px';
+				document.body.appendChild(i);
+			};
+
+			function initializeIncomingCall() { debugger
+				var incomingId = demobo_guid;
+				var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
+				incomingCallRef.on('child_added', function(snapshot) { debugger
+					var message = snapshot.val();
+					//displayChatMessage(message.name, message.text);
+				});
+			}
+
+			function outgoingCall(outgoingId) { debugger
+				var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
+				outgoingCallRef.push({
+					name : demobo_guid,
+					text : "calling"
+				});
+			}
+
+
+			window.outgoingCall = outgoingCall;
+
+		});
 	});
-
-  var injectVideoChat = function(){
-    if (document.getElementById('videoChatFrame')) return;
-    var i = document.createElement('iframe');
-    i.src='https://apprtc.appspot.com/?r=60456601';
-    i.id='videoChatFrame';
-    i.style.position='fixed';
-    i.style.top='0px';
-    i.style.height='200px';
-    i.style.right='0px';
-    document.body.appendChild(i); 
-  };
-
-})();
+})(); 

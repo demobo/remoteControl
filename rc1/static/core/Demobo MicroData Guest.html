@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!-- saved from url=(0036)http://localhost:8000/microdata.html -->
+<html ng-app="" class="ng-scope"><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+		<title>Demobo MicroData Guest</title>
+		<link rel="stylesheet" href="http://localhost:8000/css/app.css">
+  		<link rel="stylesheet" href="http://localhost:8000/css/bootstrap.css">
+  		<script src="./Demobo MicroData Guest_files/angular.js"></script><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak{display:none;}ng\:form{display:block;}</style>
+  		<script src="./Demobo MicroData Guest_files/controllers.js"></script>
+		<script type="text/javascript">
+		
+			window.addEventListener('message', onMessage, false);
+			
+			var data = { "micro" : "data" };
+			
+			function onMessage(e) {
+				var microdata = e.data;	
+				e.source.postMessage('I have received an message', e.origin);
+			}
+
+			/*
+			function onMessage(messageEvent) {
+				if (messageEvent.data) {
+					var elem = document.createElement('div');
+					elem.innerText = messageEvent.data;
+					document.body.appendChild(elem);
+				}
+			}
+			var windowProxy;
+			window.onload=function(){ 
+				windowProxy = new Porthole.WindowProxy("http://localhost:8000/microdata.html"); 
+				windowProxy.addEventListener(onMessage);
+			}
+			*/
+		</script>
+	<script>window["_GOOG_TRANS_EXT_VER"] = "1";</script></head>
+	<body>
+		<div ng-controller="MicrodataListController" class="ng-scope">
+			{{microdata}}
+		</div>
+	
+<iframe id="rdbIndicator" width="100%" height="270" border="0" src="./Demobo MicroData Guest_files/indicator.html" style="display: none; border: 0; position: fixed; left: 0; top: 0; z-index: 2147483647"></iframe><div class="chext-container chext-container-vertical chext-hwt-ime notranslate" tabindex="-1" style="display: none; -webkit-user-select: none; left: 2px; top: 2px;"><canvas class="chext-hwt-canvas" width="425" height="194" style="-webkit-user-select: none;"></canvas><div class="chext-kd-img chext-hwt-close" style="-webkit-user-select: none;"></div><div class="chext-kd-img chext-hwt-grip" style="-webkit-user-select: none;"></div><div class="chext-hwt-candidates" style="-webkit-user-select: none;"><div class="chext-hwt-candidate chext-hwt-selected">,</div><div class="chext-hwt-candidate">.</div><div class="chext-hwt-candidate">?</div><div class="chext-hwt-candidate">!</div><div class="chext-hwt-candidate">:</div><div class="chext-hwt-candidate">'</div><div class="chext-hwt-candidate">"</div><div class="chext-hwt-candidate">;</div><div class="chext-hwt-candidate">@</div></div><div class="chext-hwt-buttons" style="-webkit-user-select: none;"><div class="chext-hwt-space chext-hwt-button chext-hwt-jfk chext-hwt-jfk-standard" style="-webkit-user-select: none;"></div><div class="chext-hwt-enter chext-hwt-button chext-hwt-jfk chext-hwt-jfk-standard" style="-webkit-user-select: none;"><div class="chext-hwt-enter-img chext-hwt-enter-img-dark chext-kd-img" style="-webkit-user-select: none;"></div></div><div class="chext-hwt-backspace chext-hwt-button chext-hwt-jfk chext-hwt-jfk-standard" style="-webkit-user-select: none;"><div class="chext-hwt-backspace-img chext-kd-img" style="-webkit-user-select: none;"></div></div></div></div><div id="GOOGLE_INPUT_CHEXT_FLAG" style="display: none;" input="" input_stat="{}"></div></body></html>

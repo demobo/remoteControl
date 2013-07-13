@@ -1,9 +1,24 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
 	<head>
 		<title>Demobo MicroData Guest</title>
-		<script type="text/javascript" src="libs/porthole.js"></script>
+		<link rel="stylesheet" href="css/app.css">
+  		<link rel="stylesheet" href="css/bootstrap.css">
+  		<script src="libs/angular.js"></script>
+  		<script src="js/controllers.js"></script>
 		<script type="text/javascript">
+		
+			window.addEventListener('message', onMessage, false);
+			
+			var data = { "micro" : "data" };
+			
+			function onMessage(e) {
+				var scope = $rootScope.$new();
+				var microdata = e.data;	
+				e.source.postMessage('I have received an message', e.origin);
+			}
+
+			/*
 			function onMessage(messageEvent) {
 				if (messageEvent.data) {
 					var elem = document.createElement('div');
@@ -16,8 +31,12 @@
 				windowProxy = new Porthole.WindowProxy("http://localhost:8000/microdata.html"); 
 				windowProxy.addEventListener(onMessage);
 			}
+			*/
 		</script>
 	</head>
 	<body>
+		<div ng-controller="MicrodataListController">
+			{{microdata}}
+		</div>
 	</body>
 </html>

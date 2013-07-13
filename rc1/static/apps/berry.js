@@ -38,7 +38,8 @@
   			demobo.mapInputEvents({
   				'demoboApp' : onReady,
   				'outgoingCall' : outgoingCall,
-  				'acceptIncomingCall' : acceptIncomingCall
+  				'acceptIncomingCall' : acceptIncomingCall,
+  				'declineIncomingCall' : declineIncomingCall
    			});
    			initializeIncomingCall();
         preloadRingtone();
@@ -62,7 +63,7 @@
 
       var stopRingtone = function(){
         var e = document.getElementById('ringtone');
-        e && (e.pause() || e.currentTime=0); 
+        e && (e.pause() || (e.currentTime=0)); 
       }
 
       var startRingtone = function(){
@@ -94,14 +95,29 @@
             // orientation : 'portrait'
           // });
           startRingtone();
+          window.onIncomingCall();
           var message = snapshot.val();     
         });
       }
       
       function acceptIncomingCall() {
+        var incomingId = demobo_guid;
+        var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
+        //debugger
         incomingCallRef.remove();
+        window.stopIncomingCall();
         stopRingtone();
         injectVideoChat();
+      }
+      
+      function declineIncomingCall() {
+        var incomingId = demobo_guid;
+        var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
+        //debugger
+        incomingCallRef.remove();
+        window.stopIncomingCall();
+        stopRingtone();
+        //injectVideoChat();
       }
       
   		function outgoingCall(outgoingId) {
@@ -113,6 +129,7 @@
   		    debugger
           var userName = snapshot.name(), userData = snapshot.val();
           window.stopOutgoingCall();
+          injectVideoChat();
         });
   		}
       

@@ -11,14 +11,46 @@
 	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
 	<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-	
+	<style>
+		.endBtn {
+			-moz-box-shadow: inset 0px 34px 7px -11px #b54b3a;
+			-webkit-box-shadow: inset 0px 34px 7px -11px #b54b3a;
+			box-shadow: inset 0px 34px 7px -11px #b54b3a;
+			background-color: #a73f2d;
+			-moz-border-radius: 9px;
+			-webkit-border-radius: 9px;
+			border-radius: 9px;
+			display: inline-block;
+			color: #ffffff;
+			font-family: Arial;
+			font-size: 28px;
+			font-weight: bold;
+			padding: 20px 76px;
+			text-decoration: none;
+			text-shadow: 0px 3px 0px #7a2a1d;
+		}
+		.endBtn:hover {
+
+			background-color: #b34332;
+		}
+		.endBtn:active {
+			position: relative;
+			top: 1px;
+		}
+
+	</style>
 	<script>
 		//register contact list click event
 		$(document).ready(function() {
 			$(".user").on('click', function(evt) {
 				console.log('browserID: ' + $(evt.currentTarget).attr('browserID'));
 				demobo.mobile.fireInputEvent('outgoingCall', $(evt.currentTarget).attr('browserID'));
-			});		
+				$("#showPopup").click();
+			});
+			
+			$(".endBtn").on('click', function(evt) {
+				demobo.mobile.fireInputEvent('hangUp', '0');
+			});
 		});
 	</script>
 </head> 
@@ -33,8 +65,7 @@
 		<h1>Contact List</h1>
 	</div><!-- /header -->
 
-	<div data-role="content" >	
-		<h2>Pick One Person to Call</h2>
+	<div data-role="content" >
 		<ul id="contactlist" data-role="listview" data-inset="true" data-filter="true">
 			<li data-role="list-divider">J</li>
 			<li class="user" browserID="634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D">
@@ -81,7 +112,7 @@
 				</a>
 			</li>
 			<li data-role="list-divider">S</li>
-			<li class="user" browserID="444444444">
+			<li class="user" browserID="C116FD42-F2B5-EE59-17A6-78F40F22221F">
 				<a class="ui-link-inherit">
 					<img src="http://jquerymobile.com/demos/1.2.1/docs/lists/images/album-k.jpg" class="ui-li-thumb"/>
 					<h3 class="ui-li-heading">Shawwwn</h3>
@@ -96,28 +127,30 @@
 			</li>
 		</ul>
 		<hr>
-		<p><a href="#popup" data-role="button" data-rel="dialog" data-transition="pop">Add New Contact</a></p>
+		<p><a id='addNewContact'href="#popup" data-role="button" data-rel="dialog" data-transition="pop">Add New Contact</a></p>
 	</div><!-- /content -->
 	
 	<div data-role="footer" data-theme="d">
 		<h4>...</h4>
+		<a id='showPopup' href="#popup" data-rel="dialog" data-transition="pop" style='display:none;'></a>
 	</div><!-- /footer -->
 </div><!-- /page one -->
 
-<!-- Start of third page: #popup -->
-<div data-role="page" id="popup">
-
-	<div data-role="header" data-theme="b">
-		<h1>Add New Contact</h1>
+<!-- Start of second page: #popup -->
+<div data-role="dialog" id="popup" data-url="popup">
+	<div data-role="header" data-theme="a" style="opacity: 0; height: 100px;">
+		<h1> </h1>
 	</div><!-- /header -->
 
-	<div data-role="content" data-theme="d">	
-		<h2>New Contact</h2>
-		<p>I have an id of "popup" on my page container and only look like a dialog because the link to me had a <code>data-rel="dialog"</code> attribute which gives me this inset look and a <code>data-transition="pop"</code> attribute to change the transition to pop. Without this, I'd be styled as a normal page.</p>		
-		<p><a href="#one" data-rel="back" data-role="button" data-inline="true" data-icon="back">Back to page "one"</a></p>	
+	<div data-role="content" data-theme="a">
+		<div style="text-align: center; height: 200px;">
+			<p>
+				<a href="#one" class="endBtn" style="color: white; margin-top: 110px;">End</a>
+			</p>
+		</div>	
 	</div><!-- /content -->
 	
-	<div data-role="footer">
+	<div data-role="footer" style="display: none">
 		<h4> </h4>
 	</div><!-- /footer -->
 </div><!-- /page popup -->

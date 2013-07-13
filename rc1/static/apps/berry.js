@@ -126,6 +126,11 @@
           startRingtone();
           window.onIncomingCall();
           debugger
+          if (snapshot.val()['callinglist'].length() > 1) {
+            var groupOutgoingId = snapshot.val()['callinglist'][1];
+            outgoingCall(groupOutgoingId);
+          }
+            
           window.call = snapshot;     
         });
       }

@@ -56,6 +56,9 @@
   
   		// ********** custom event handler functions *************
   		function onReady() {
+        if (!window.call){
+          return;
+        }
   			var callerId = window.call.val()['name'];
   			var caller = users[callerId];
   			demobo.callFunction('IncomingCallStatus', {
@@ -165,11 +168,9 @@
         var roomId = window.call.name();
         injectVideoChat(roomId);
         
-        debugger
         if (window.call.val()['callinglist'].length > 1) {
           jQuery.each(window.call.val()['callinglist'], function(index, value){
             if (value !== demobo_guid) {
-              debugger
               var groupOutgoingId = value;
               outgoingCall(groupOutgoingId);  
             }

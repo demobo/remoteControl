@@ -17,7 +17,8 @@ chrome.browserAction.onClicked.addListener(function(tab){
 chrome.extension.onMessage.addListener(onMessage);
 
 function setIcon() {
-	if (extensionData.autoConnect) {
+	console.log('setIcon', extensionData.autoConnect);
+	if (JSON.parse(extensionData.autoConnect)) {
 		chrome.browserAction.setIcon({
 			path: 'images/icon_blue_19.png'
 		});

@@ -1,6 +1,6 @@
 (function() {
 	var ui = {
-		name : 'youtube',
+		name : 'berry',
 		version : '0130'
 	};
 	
@@ -22,6 +22,7 @@
   		demoboLoading = undefined;
   
   		ui.controllerUrl = "http://rc1.demobo.com/rc/" + ui.name + "?" + ui.version;
+  		ui.incomingCallCtrlUrl = "http://rc1.demobo.com/rc/" + ui.name + "2" + "?" + ui.version;
   
   		// do all the iniations you need here
   		function init() {
@@ -36,15 +37,39 @@
   			// your custom demobo input event dispatcher
   			demobo.mapInputEvents({
   				'demoboApp' : onReady,
-  				'outgoingCall' : outgoingCall
+  				'outgoingCall' : outgoingCall,
+  				'acceptIncomingCall' : acceptIncomingCall,
+  				'declineIncomingCall' : declineIncomingCall
    			});
    			initializeIncomingCall();
+        preloadRingtone();
   		}
   
   		// ********** custom event handler functions *************
   		function onReady() {
   
   		}
+
+      var preloadRingtone = function(){
+        if (document.getElementById('ringtone')) return;
+        var e = document.createElement('video');
+        e.controls = true;
+        e.id='ringtone';
+        e.loop = true;
+        e.style.display='none';
+        e.innerHTML = '<source src="http://localhost:1240/audio/Sci-Fi.mp3" type="audio/mpeg">'
+        document.body.appendChild(e);
+      };
+
+      var stopRingtone = function(){
+        var e = document.getElementById('ringtone');
+        e && (e.pause() || (e.currentTime=0)); 
+      }
+
+      var startRingtone = function(){
+        var e = document.getElementById('ringtone');
+        e && e.play(); 
+      }
   		
   		var injectVideoChat = function(){
         if (document.getElementById('videoChatFrame')) return;
@@ -59,20 +84,53 @@
       };
     
       function initializeIncomingCall() {
-        debugger
+        //debugger
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         incomingCallRef.on('child_added', function(snapshot) {
-          debugger
-          var message = snapshot.val();
-          injectVideoChat();
+          //debugger
+          
+          // demobo.setController({
+            // url : ui.controllerUrl,
+            // orientation : 'portrait'
+          // });
+          startRingtone();
+          window.onIncomingCall();
+          var message = snapshot.val();     
         });
       }
       
+      function acceptIncomingCall() {
+        var incomingId = demobo_guid;
+        var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
+        //debugger
+        incomingCallRef.remove();
+        window.stopIncomingCall();
+        stopRingtone();
+        injectVideoChat();
+      }
+      
+      function declineIncomingCall() {
+        var incomingId = demobo_guid;
+        var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
+        //debugger
+        incomingCallRef.remove();
+        window.stopIncomingCall();
+        stopRingtone();
+        //injectVideoChat();
+      }
+      
   		function outgoingCall(outgoingId) {
-  		  debugger
+  		  //debugger
+  		  window.onOutgoingCall();
   		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
   		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
+  		  outgoingCallRef.on('child_removed', function(snapshot) {
+  		    debugger
+          var userName = snapshot.name(), userData = snapshot.val();
+          window.stopOutgoingCall();
+          injectVideoChat();
+        });
   		}
       
       var blinkInt;
@@ -88,7 +146,20 @@
         demobo._sendToSimulator('setData', {key: 'autoConnect', value: 'false'});
       }
       
+      window.onOutgoingCall = function() {
+        var autoConnect = false;
+        blinkInt = setInterval(function(){
+          demobo._sendToSimulator('setData', {key: 'autoConnect', value: autoConnect});
+          autoConnect = !autoConnect;
+        },1000);
+      }
+      window.stopOutgoingCall = function() {
+        if (blinkInt) clearInterval(blinkInt);
+        demobo._sendToSimulator('setData', {key: 'autoConnect', value: 'false'});
+      }
+      
       window.outgoingCall = outgoingCall;
+      window.acceptIncomingCall = acceptIncomingCall;
       
     });
   });

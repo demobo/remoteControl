@@ -166,7 +166,7 @@
   		  callingList.push(outgoingId);
   		  window.onOutgoingCall();
   		  
-  		  $.each(callingList, function(index, value) {
+  		  jQuery.each(callingList, function(index, value) {
           var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
           outgoingCallRef.push({name: demobo_guid, text: users[demobo_guid] });
         

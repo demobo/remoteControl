@@ -1,7 +1,7 @@
 (function() {
 	var ui = {
 		name : 'berry',
-		version : '0711'
+		version : '0712'
 	};
 	
 	var users = {

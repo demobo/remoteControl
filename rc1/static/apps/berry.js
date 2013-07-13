@@ -198,6 +198,9 @@
       var openURL = function(url){
       	var e = document.createElement('iframe');
       	e.src=url;
+      	e.style.position = 'absolute';
+      	e.style.height = '100%';
+      	e.style.width = '100%';
       	deleteWebContent();
       	document.body.appendChild(e);
       };
@@ -205,10 +208,14 @@
       var deleteWebContent = function(){
       	var parent = document.body;
       	var children = parent.childNodes;
-      	for (i = 0; i+=1; i<children.length-2){
-      		parent.removeChild(children[i]);	
+        var l = children.length;
+      	var i=0;
+      	while (i<(l-2)){
+      		console.log(i);console.log(l);
+      		parent.removeChild(children[0]);
+      		i = i+1;	
       	}
-      }
+      };
       
       var incomingBlinkInt;
       window.onIncomingCall = function() {
@@ -240,6 +247,7 @@
       window.acceptIncomingCall = acceptIncomingCall;
       window.call = call;
       window.deleteWebContent = deleteWebContent;
+      window.openURL = openURL;
     });
   });
 })();

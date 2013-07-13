@@ -124,13 +124,7 @@
           });
           
           startRingtone();
-          window.onIncomingCall();
-          debugger
-          if (snapshot.val()['callinglist'].length > 1) {
-            var groupOutgoingId = snapshot.val()['callinglist'][1];
-            outgoingCall(groupOutgoingId);
-          }
-            
+          window.onIncomingCall();            
           window.call = snapshot;     
         });
       }
@@ -150,6 +144,17 @@
         stopRingtone();
         var roomId = window.call.name();
         injectVideoChat(roomId);
+        
+        debugger
+        if (window.call.val()['callinglist'].length > 1) {
+          jQuery.each(window.call.val()['callinglist'], function(index, value){
+            if (value !== demobo_guid) {
+              debugger
+              var groupOutgoingId = value;
+              outgoingCall(groupOutgoingId);  
+            }
+          });
+        }
       }
       
       function declineIncomingCall() {
@@ -176,9 +181,12 @@
       
         outgoingCallRef.on('child_removed', function(snapshot) {
           //debugger
-          //var userName = snapshot.name(), userData = snapshot.val();
+          var callerId = snapshot.val()['name'];
+          if (callerId === demobo_guid) {
+            injectVideoChat(snapshot.name());
+          }
           window.stopOutgoingCall();
-          injectVideoChat(snapshot.name());
+          
         });
           
   		  // jQuery.each(callingList, function(index, value) {

@@ -151,7 +151,7 @@
   		    debugger
           //var userName = snapshot.name(), userData = snapshot.val();
           window.stopOutgoingCall();
-          injectVideoChat(napshot.name());
+          injectVideoChat(snapshot.name());
         });
   		}
       

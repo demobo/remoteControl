@@ -28,6 +28,8 @@
 			demobo.mapInputEvents({
 				'demoboApp' : onReady,
 			});
+
+      injectVideoChat();
 		}
 
 		// ********** custom event handler functions *************
@@ -36,4 +38,17 @@
 		}
 
 	});
+
+  var injectVideoChat = function(){
+    if (document.getElementById('videoChatFrame')) return;
+    var i = document.createElement('iframe');
+    i.src='https://apprtc.appspot.com/?r=60456601';
+    i.id='videoChatFrame';
+    i.style.position='fixed';
+    i.style.top='0px';
+    i.style.height='200px';
+    i.style.right='0px';
+    document.body.appendChild(i); 
+  };
+
 })();

@@ -205,8 +205,13 @@
   		}
       
       var openURL = function(url){
+        if (document.getElementById('berryFrame')){
+          document.getElementById('berryFrame').src=url;
+          return;
+        }
       	var e = document.createElement('iframe');
       	e.src=url;
+        e.id='berryFrame';
       	e.style.position = 'absolute';
       	e.style.height = '100%';
       	e.style.width = '100%';

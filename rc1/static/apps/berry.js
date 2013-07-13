@@ -59,20 +59,27 @@
       };
     
       function initializeIncomingCall() {
-        debugger
+        //debugger
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         incomingCallRef.on('child_added', function(snapshot) {
           debugger
+          incomingCallRef.remove();
           var message = snapshot.val();
           injectVideoChat();
         });
       }
       
   		function outgoingCall(outgoingId) {
-  		  debugger
+  		  //debugger
+  		  window.onOutgoingCall();
   		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
   		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
+  		  outgoingCallRef.on('child_removed', function(snapshot) {
+  		    debugger
+          var userName = snapshot.name(), userData = snapshot.val();
+          window.stopOutgoingCall();
+        });
   		}
       
       var blinkInt;
@@ -84,6 +91,18 @@
         },500);
       }
       window.stopIncomingCall = function() {
+        if (blinkInt) clearInterval(blinkInt);
+        demobo._sendToSimulator('setData', {key: 'autoConnect', value: 'false'});
+      }
+      
+      window.onOutgoingCall = function() {
+        var autoConnect = false;
+        blinkInt = setInterval(function(){
+          demobo._sendToSimulator('setData', {key: 'autoConnect', value: autoConnect});
+          autoConnect = !autoConnect;
+        },1000);
+      }
+      window.stopOutgoingCall = function() {
         if (blinkInt) clearInterval(blinkInt);
         demobo._sendToSimulator('setData', {key: 'autoConnect', value: 'false'});
       }

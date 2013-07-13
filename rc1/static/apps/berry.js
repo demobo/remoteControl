@@ -11,7 +11,7 @@
 	};
 	
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
-	  demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function(){ 
+	  demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() { 
 	  
   		jQuery.noConflict();
   		if (DEMOBO) {
@@ -22,7 +22,7 @@
   		demoboLoading = undefined;
   
   		ui.controllerUrl = "http://rc1.demobo.com/rc/" + ui.name + "?" + ui.version;
-  		ui.incomingCallCtrlUrl = "http://rc1.demobo.com/rc/" + ui.name + "2" + "?" + ui.version;
+  		ui.incomingCallCtrlUrl = "http://rc1.demobo.com/rc/" + ui.name + "incoming" + "?" + ui.version;
   
   		// do all the iniations you need here
   		function init() {
@@ -90,10 +90,11 @@
         incomingCallRef.on('child_added', function(snapshot) {
           //debugger
           
-          // demobo.setController({
-            // url : ui.controllerUrl,
-            // orientation : 'portrait'
-          // });
+          demobo.setController({
+            url : ui.incomingCallCtrlUrl,
+            orientation : 'portrait'
+          });
+          
           startRingtone();
           window.onIncomingCall();
           var message = snapshot.val();     
@@ -101,6 +102,11 @@
       }
       
       function acceptIncomingCall() {
+        demobo.setController({
+          url : ui.controllerUrl,
+          orientation : 'portrait'
+        });
+
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         //debugger
@@ -111,6 +117,11 @@
       }
       
       function declineIncomingCall() {
+        demobo.setController({
+          url : ui.controllerUrl,
+          orientation : 'portrait'
+        });
+        
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         //debugger
@@ -126,8 +137,8 @@
   		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
   		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
   		  outgoingCallRef.on('child_removed', function(snapshot) {
-  		    debugger
-          var userName = snapshot.name(), userData = snapshot.val();
+  		    //debugger
+          //var userName = snapshot.name(), userData = snapshot.val();
           window.stopOutgoingCall();
           injectVideoChat();
         });

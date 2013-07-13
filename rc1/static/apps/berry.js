@@ -71,7 +71,7 @@
         e.id='ringtone';
         e.loop = true;
         e.style.display='none';
-        e.innerHTML = '<source src="http://localhost:1240/audio/Sci-Fi.mp3" type="audio/mpeg">'
+        e.innerHTML = '<source src="//rc1-dot-de-mobo.appspot.com/audio/Sci-Fi.mp3" type="audio/mpeg">'
         document.body.appendChild(e);
       };
 

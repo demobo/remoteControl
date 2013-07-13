@@ -13,7 +13,7 @@ handlers:
   upload: static/.*
   secure: optional
    
-- url: /rc/(.*)  
+- url: /rc/(.*)
   static_files: static/rc/\1/control.html
   upload: static/.*
     

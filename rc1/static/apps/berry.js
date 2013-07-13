@@ -37,7 +37,7 @@
   			// your custom demobo input event dispatcher
   			demobo.mapInputEvents({
   				'demoboApp' : onReady,
-  				'outgoingCall' : outgoingCall
+  				'outgoingCall' : outgoingCall,
   				'acceptIncomingCall' : acceptIncomingCall
    			});
    			initializeIncomingCall();

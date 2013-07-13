@@ -124,18 +124,7 @@
           });
           
           startRingtone();
-          window.onIncomingCall();
-          debugger
-          if (snapshot.val()['callinglist'].length > 1) {
-            jQuery.each(snapshot.val()['callinglist'], function(index, value){
-              if (value !== demobo_guid) {
-                debugger
-                var groupOutgoingId = value;
-                outgoingCall(groupOutgoingId);  
-              }
-            });
-          }
-            
+          window.onIncomingCall();            
           window.call = snapshot;     
         });
       }
@@ -155,6 +144,17 @@
         stopRingtone();
         var roomId = window.call.name();
         injectVideoChat(roomId);
+        
+        debugger
+        if (window.call.val()['callinglist'].length > 1) {
+          jQuery.each(window.call.val()['callinglist'], function(index, value){
+            if (value !== demobo_guid) {
+              debugger
+              var groupOutgoingId = value;
+              outgoingCall(groupOutgoingId);  
+            }
+          });
+        }
       }
       
       function declineIncomingCall() {

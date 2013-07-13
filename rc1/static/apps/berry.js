@@ -55,15 +55,18 @@
       };
     
       function initializeIncomingCall() {
+        debugger
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         incomingCallRef.on('child_added', function(snapshot) {
+          debugger
           var message = snapshot.val();
           displayChatMessage(message.name, message.text);
         });
       }
       
   		function outgoingCall(outgoingId) {
+  		  debugger
   		  var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + outgoingId);
   		  outgoingCallRef.push({name: demobo_guid, text: "calling"});
   		}
@@ -72,6 +75,8 @@
         $('<div/>').text(text).prepend($('<em/>').text(name+': ')).appendTo($('#messagesDiv'));
         $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
       };
+      
+      window.outgoingCall = outgoingCall;
       
     });
   });

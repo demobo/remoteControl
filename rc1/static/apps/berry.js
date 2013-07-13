@@ -46,7 +46,8 @@
   				'demoboApp' : onReady,
   				'outgoingCall' : outgoingCall,
   				'acceptIncomingCall' : acceptIncomingCall,
-  				'declineIncomingCall' : declineIncomingCall
+  				'declineIncomingCall' : declineIncomingCall,
+  				'gotoUrl' : gotoUrl
    			});
    			initializeIncomingCall();
         preloadRingtone();
@@ -54,8 +55,10 @@
   
   		// ********** custom event handler functions *************
   		function onReady() {
+  			var callerId = window.call.val()['name'];
+  			var caller = users[callerId];
   			demobo.callFunction('IncomingCallStatus', {
-  				fromPerson: 'JAAA',
+  				fromPerson: caller,
   				fromSocial: "Facebook"
   			});
   		}
@@ -128,6 +131,17 @@
           window.onIncomingCall();            
           window.call = snapshot;     
         });
+        
+        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage');
+        shareWebPageRef.on('child_added', function(snapshot){
+          var url = snapshot.val()['url'];
+          openURL(url);
+        });
+      }
+      
+      function gotoUrl(url) {
+        var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage');
+        shareWebPageRef.push({name: demobo_guid, url: url });
       }
       
       function acceptIncomingCall() {

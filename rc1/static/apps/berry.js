@@ -152,15 +152,12 @@
       }
       
       function gotoUrl(url) {
-        debugger
-        if (callingList !== undefined) {
-          jQuery.each(callingList, function(index, value){
+        if (users !== undefined) {
+          jQuery.each(Object.keys(users), function(index, value) {
             var shareWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage/' + value);
             shareWebPageRef.push({name: demobo_guid, url: url });
           });
         }
-        var ownWebPageRef = new Firebase('https://de-berry.firebaseio-demo.com/webpage/' + demobo_guid);
-        ownWebPageRef.push({name: demobo_guid, url: url });
       }
       
       function acceptIncomingCall() {

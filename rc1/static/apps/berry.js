@@ -172,6 +172,10 @@
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         
+        if (callingList.indexOf(window.call.val()['name']) < 0) {
+          callingList.push(window.call.val()['name']); 
+        }
+        
         //debugger
         incomingCallRef.remove();
         window.stopIncomingCall();

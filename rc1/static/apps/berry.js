@@ -172,6 +172,10 @@
         var incomingId = demobo_guid;
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         
+        if (callingList.indexOf(incomingId) < 0) {
+              callingList.push(value); 
+        }
+        
         //debugger
         incomingCallRef.remove();
         window.stopIncomingCall();
@@ -181,9 +185,6 @@
         
         if (window.call.val()['callinglist'].length > 0) {
           jQuery.each(window.call.val()['callinglist'], function(index, value){
-            if (callingList.indexOf(value) < 0) {
-              callingList.push(value); 
-            }
             if (value !== demobo_guid) {
               var groupOutgoingId = value;
               outgoingCall(groupOutgoingId);  

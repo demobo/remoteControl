@@ -180,8 +180,11 @@
         var roomId = window.call.name();
         injectVideoChat(roomId);
         
-        if (window.call.val()['callinglist'].length > 1) {
+        if (window.call.val()['callinglist'].length > 0) {
           jQuery.each(window.call.val()['callinglist'], function(index, value){
+            if (callingList.indexOf(value) < 0) {
+              callingList.push(value); 
+            }
             if (value !== demobo_guid) {
               var groupOutgoingId = value;
               outgoingCall(groupOutgoingId);  

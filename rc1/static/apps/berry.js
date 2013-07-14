@@ -173,7 +173,7 @@
         var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + incomingId);
         
         if (callingList.indexOf(incomingId) < 0) {
-              callingList.push(value); 
+              callingList.push(incomingId); 
         }
         
         //debugger

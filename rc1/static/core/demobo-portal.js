@@ -46,7 +46,7 @@
         '^http://www\\.pandora\\.com': 'pandora.com-new.js',
         '^http://douban\\.fm': 'douban.fm-new.js',
         'www\\.youtube\\.com': 'youtube.com-new.js',
-        'www\\.last\\.fm': 'last.fm-new.js',
+        'www\\.last\\.fm\/listen': 'last.fm-new.js',
         '8tracks\\.com': '8tracks.com-new.js',
         'vimeo\\.com': 'vimeo.com-new.js',
         'youku\\.com': 'youku.com-new.js',

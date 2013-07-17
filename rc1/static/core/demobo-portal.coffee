@@ -1,5 +1,5 @@
 ###
-// demobo-portal.js 1.0.0
+// demobo-portal.js 0.9.1
 
 // (c) 2013 Jiahao Li, de Mobo LLC
 ###

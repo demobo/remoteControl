@@ -57,39 +57,39 @@
 
 	// ********** custom event handler functions *************
 	GrooveShark.prototype.playPause = function () {
-		GS.player.togglePlayPause();
+    if (this.getIsPlaying()){
+      this.pause();
+    }else{
+      this.play();
+    }
 	};
 	
 	GrooveShark.prototype.play = function () {
-		GS.player.togglePlayPause();
+    Grooveshark.play();
 	};
 
 	GrooveShark.prototype.pause = function () {
-		GS.player.togglePlayPause();
+    Grooveshark.pause();
 	};
 
 	GrooveShark.prototype.prev = function () {
-//		 jQuery(ui.previousButton).click();
-		GS.player.previousSong();
+    Grooveshark.previous();
 	};
 
 	GrooveShark.prototype.next = function () {
-		// jQuery(ui.nextButton).click();
-		GS.player.nextSong();
+    Grooveshark.next();
 	};
 
 	GrooveShark.prototype.love = function () {
-		jQuery(this.getInfo('ui').likeButton).click();
+    Grooveshark.favoriteCurrentSong();
 	};
 
 	GrooveShark.prototype.spam = function () {
-		jQuery(this.getInfo('ui').dislikeButton).click();
 	};
 
 	GrooveShark.prototype.setVolume = function (num) {
 		num = parseInt(num / 10) * 10;
-		GS.player.setVolume(num);
-		this.syncState();
+    Grooveshark.setVolume(num);
 	};
 
 	GrooveShark.prototype.onVolume = function (value) {
@@ -112,21 +112,17 @@
 	/* helpers */
 	GrooveShark.prototype.setupSongTrigger = function () {
 		var triggerDelay = 100;
-		var trigger = $(this.getInfo('ui').songTrigger)[0];
+		var trigger = $('#np-meta-container')[0];
     var gs = this;
 		var _this = {
 			target : trigger,
 			oldValue : ''
 		};
 		_this.onChange = function() {
-			var newValue = "";
-			if (GS.player.activeSong)
-				newValue += GS.player.activeSong.SongName;
-			if (GS.player.nextSongToPlay)
-				newValue += GS.player.nextSongToPlay.SongName;
-			if ((GS.player.nextSongToPlay || !GS.player.autoplayEnabled) && _this.oldValue !== newValue) {
+			var newValue = Grooveshark.getCurrentSongStatus().song.songName;
+			if (_this.oldValue !== newValue) {
 				_this.oldValue = newValue;
-				gs.sendNowPlaying.apply(this, []);
+				gs.sendNowPlaying.apply(gs, []);
 			}
 		};
 		_this.delay = function() {
@@ -136,46 +132,53 @@
 	};
 
 	GrooveShark.prototype.setupStateTrigger = function () {
-		$(this.getInfo('ui').volume).on('drag mouseup', syncState);
-		Grooveshark.setSongStatusCallback(syncState);
+		var triggerDelay = 1000;
+		var trigger = $('#volume-slider')[0];
+    var gs = this;
+		var _this = {
+			target : trigger,
+			oldValue : ''
+		};
+		_this.onChange = function() {
+			var newValue = $('#volume-slider .ui-slider-range').css('height');
+			if (_this.oldValue !== newValue) {
+				_this.oldValue = newValue;
+				gs.syncState.apply(gs, []);
+			}
+		};
+		_this.delay = function() {
+			setTimeout(_this.onChange, triggerDelay);
+		};
+		_this.target.addEventListener('DOMSubtreeModified', _this.delay, false);
+		Grooveshark.setSongStatusCallback(function(){gs.syncState.apply(gs, [])});
 	};
 
 	GrooveShark.prototype.getNowPlayingData = function () {
 		var toReturn = [];
-		if (GS.player.activeSong)
-			toReturn.push( {
-				'title' : GS.player.activeSong.SongName,
-				'artist' : GS.player.activeSong.ArtistName,
-				'album' : GS.player.activeSong.AlbumName,
-				'image' : getImageURL(GS.player.activeSong)
-			});
-		if (GS.player.nextSongToPlay)
-			toReturn.push( {
-				'title' : GS.player.nextSongToPlay.SongName,
-				'artist' : GS.player.nextSongToPlay.ArtistName,
-				'album' : GS.player.nextSongToPlay.AlbumName,
-				'image' : getImageURL(GS.player.nextSongToPlay)
-			});
+    var o = Grooveshark.getCurrentSongStatus().song;
+		toReturn.push( {
+			'title' : o.songName,
+			'artist' : o.artistName,
+			'album' : o.albumName,
+			'image' : o.artURL
+    });
 		return toReturn;
 	};
 
 	GrooveShark.prototype.getImageURL = function (song) {
-		var a = _.orEqual(a, 200);
-		var b = GS.Models.Song.artPath + a + "_album.png";
-		if (song.CoverArtFilename && song.CoverArtFilename.indexOf("default") == -1)
-			b = GS.Models.Song.artPath + a + "_" + song.CoverArtFilename;
-		return b
+		return Grooveshark.getCurrentSongStatus().song.artURL;
 	};
 
 	GrooveShark.prototype.getStationList = function () {
 		var toReturn = [];
-		jQuery.each(GS.Models.Station.getStationsStartMenu(),
+		jQuery.each(jQuery('.home-section .can-play .section-title span'),
 				function(index, elem) {
 					var s = {
-						'title' : elem.title
+						'title' : $(elem).text()
 					};
 					toReturn.push(s);
 				});
+    console.log(toReturn);
 		return toReturn;
 	};
 
@@ -193,12 +196,7 @@
 	GrooveShark.prototype.chooseStation = function (index) {
 		if (!$.isNumeric(index)) return;
 		index = parseInt(index);
-		var stationName = GS.Models.Station.getStationsStartMenu()[index].title.toLowerCase();
-		var stationID = GS.Models.Station.getStationByName(stationName).TagID;
-		GS.player.setAutoplay(true, stationID);
-		if (jQuery('.btn span[data-translate-text="POPUP_START_RADIO_TITLE"]').length)
-			jQuery('.btn span[data-translate-text="POPUP_START_RADIO_TITLE"]')
-					.click();
+    ($('.home-section .can-play .btn.btn-large')[index]).click();
 	};
 
 	GrooveShark.prototype.choosePinBoard = function (index) {
@@ -238,12 +236,11 @@
 	};
 
 	GrooveShark.prototype.getIsPlaying = function() {
-		var playbackStatus = GS.player.getPlaybackStatus();
-		return playbackStatus && playbackStatus.status == GS.player.PLAY_STATUS_PLAYING;
+		return Grooveshark.getCurrentSongStatus().status==='playing';
 	};
 
 	GrooveShark.prototype.getVolume = function() {
-		return GS.player.getVolume();
+		return Grooveshark.getVolume();
 	};
 
   window.demoboPortal.addBobo(GrooveShark);

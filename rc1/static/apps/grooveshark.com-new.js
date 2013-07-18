@@ -10,6 +10,7 @@
     //this.setInfo('curState',{isPlaying: false, volume: 50});
 	  this.setInfo('slideChangeTimeout', null);
 	  this.setInfo('priority', 2);
+    this.setInfo('iconClass', 'fui-play-circle');
 
 	  this.setInfo('ui', {
 	  	playPauseButton: 	'#player_play_pause',

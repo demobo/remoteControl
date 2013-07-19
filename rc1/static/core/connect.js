@@ -32,17 +32,24 @@ window._hideDemoboConnect = function(){
 
 var e = document.querySelector('#demoboConnect #dontShow');
 
-if (window.localStorage && window.localStorage.getItem('demoboNotShow')==="1"){ 
-  e.parentNode.removeChild(e);
-}else{
-  e.onclick = function(){
-    window.localStorage.setItem('demoboNotShow', 1);
-    window._hideDemoboConnect();
+var spt = document.createElement('script');
+spt.src = '//net.demobo.com/data.js?'+Math.random();
+document.body.appendChild(spt);
+spt.onload=function(){
+  if (window.demobo_a === '1'){ 
     e.parentNode.removeChild(e);
-  };
-  window._showDemoboConnect();
-}
+  }else{
+    e.onclick = function(){
+      var temp=document.createElement('script');
+      temp.src='//net.demobo.com/data.js?a=1&'+Math.random();
+      document.body.appendChild(temp);
 
+      window._hideDemoboConnect();
+      e.parentNode.removeChild(e);
+    };
+    window._showDemoboConnect();
+  }
+}
 document.querySelector('#demoboConnect #closeTutorial').onclick = window._hideDemoboConnect;
 
 })();

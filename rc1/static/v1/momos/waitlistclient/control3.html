@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <title>
+        </title>
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link href='http://fonts.googleapis.com/css?family=Nova+Square' rel='stylesheet' type='text/css'>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery.mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.1.min.js"></script>
+        <!-- User-generated css -->
+        <style>
+        	.ui-btn-up-c, .ui-btn-hover-c, .ui-btn-down-c {
+        		font-family: 'Nova Square', cursive;
+        	}
+        	.ui-bar-a, .ui-bar-a input, .ui-bar-a select, .ui-bar-a textarea, .ui-bar-a button {
+        		font-family: 'Nova Square', cursive;
+        	}
+        	.ui-body-c, .ui-body-c input, .ui-body-c select, .ui-body-c textarea, .ui-body-c button {
+        		font-family: 'Nova Square', cursive;
+        	}
+        	textarea.ui-input-text.partyNotes {
+        		height: 110px;
+        	}
+        
+        </style>
+        <!-- User-generated js -->
+        <script>
+			$(document).ready(function(){
+				$('#partySubmit').on("click", function(){
+					var partyInfo = {name: $('.partyName').val(), number: $('.partyNumber').val(), notes: $('.partyNotes').val()};
+					demobo.mobile.fireInputEvent(this.id, JSON.stringify(partyInfo));
+				});
+            });
+        </script>
+    </head>
+    <body>
+        <!-- Home -->
+        <div data-role="page" id="page1">
+            <div data-theme="a" data-role="header">
+                <h3>
+                    Wait List
+                </h3>
+            </div>
+            <div data-role="content">
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="partyName">
+                        </label>
+                        <input name="" class="partyName" placeholder="Name" value="" type="text" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="partyNumber">
+                        	Number of People
+                        </label>
+                        <input class="partyNumber" type="range" name="slider" value="4" min="0" max="20" data-highlight="true" />
+                    </fieldset>
+                </div>
+                <div data-role="fieldcontain">
+                    <fieldset data-role="controlgroup">
+                        <label for="partyNotes">
+                        </label>
+                        <textarea name="" class="partyNotes" placeholder="Notes"></textarea>
+                    </fieldset>
+                </div>
+                <div id="partySubmit" data-role="button" data-icon="plus" data-iconpos="left">
+                    Add Party
+                </div>
+				<a id="partyCancel" data-role="button" data-icon="delete" data-iconpos="left">
+                    Cancel
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

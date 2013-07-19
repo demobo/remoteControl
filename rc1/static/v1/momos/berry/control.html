@@ -1,0 +1,220 @@
+
+<!DOCTYPE html> 
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
+	<title>call_controller</title> 
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
+	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
+	<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
+	<style>
+		.endBtn {
+			-moz-box-shadow: inset 0px 34px 7px -11px #b54b3a;
+			-webkit-box-shadow: inset 0px 34px 7px -11px #b54b3a;
+			box-shadow: inset 0px 34px 7px -11px #b54b3a;
+			background-color: #a73f2d;
+			-moz-border-radius: 9px;
+			-webkit-border-radius: 9px;
+			border-radius: 9px;
+			display: inline-block;
+			color: #ffffff;
+			font-family: Arial;
+			font-size: 28px;
+			font-weight: bold;
+			padding: 20px 76px;
+			text-decoration: none;
+			text-shadow: 0px 3px 0px #7a2a1d;
+		}
+		.endBtn:hover {
+
+			background-color: #b34332;
+		}
+		.endBtn:active {
+			position: relative;
+			top: 1px;
+		}
+
+	</style>
+	<script>
+		//register contact list click event
+		$(document).ready(function() {
+			$(".user").on('click', function(evt) {
+				console.log('browserID: ' + $(evt.currentTarget).attr('browserID'));
+				demobo.mobile.fireInputEvent('outgoingCall', $(evt.currentTarget).attr('browserID'));
+				$("#showPopup").click();
+			});
+			
+			$(".endBtn").on('click', function(evt) {
+				demobo.mobile.fireInputEvent('hangUp', '0');
+			});
+			
+			$("#gotoBtn").on('click', function(evt) {
+				var url=$('#url');
+				if (url.val()!='') {
+					demobo.mobile.fireInputEvent('gotoUrl', url.val());
+					$('.urlList ul').append('<li><a class="urlListBtn">'+ url.val() + '</a></li>');
+					$('.urlList ul').listview('refresh');
+					url.val('');
+				}	
+			});
+		});
+		
+		//for jQuery mobile event
+		$(document).on('pageinit', function(e){
+		    $("#url").keydown(function(e) {
+		    	if (e.keyCode==13) {
+		    		$("#gotoBtn").click();
+		    	}
+		    });
+		    
+		    $(".urlList").on('click', function(evt) {
+		    	console.log(evt.target.text);
+		    	demobo.mobile.fireInputEvent('gotoUrl', evt.target.text);
+		    });
+		});
+	</script>
+</head> 
+
+	
+<body> 
+
+<!-- Start of first page: #one -->
+<div data-role="page" id="one">
+	<div data-role="navbar" data-iconpos="top">
+		<ul>
+			<li><a data-icon="grid" href="#one" class="ui-btn-active ui-state-persist">Contacts</a></li>
+			<li><a data-icon="star" href="#two">Sharing</a></li>
+		</ul>
+	</div>
+	<!-- /navbar -->
+	<div data-role="header" style="display: none">
+		<h1>Contact List</h1>
+	</div><!-- /header -->
+
+	<div data-role="content" >
+		<ul id="contactlist" data-role="listview" data-inset="true" data-filter="true">
+			<li data-role="list-divider">J</li>
+			<li class="user" browserID="634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D">
+				<a class="ui-link-inherit">
+					<img src="https://lh6.googleusercontent.com/-dKnpjzVWawY/AAAAAAAAAAI/AAAAAAAAACU/qs2oONXJ0FM/s120-c/photo.jpg" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">Jeff</h3>
+					<p class="ui-li-desc">
+						de Master Mind
+					</p>
+					<div class="socialbuttons">
+						<i class="icon-facebook-sign"></i>
+						<i class="icon-linkedin-sign"></i>
+						<i class="icon-twitter-sign"></i>
+					</div>
+				</a>
+			</li>
+			<li class="user" browserID="28BE7932-53F1-024F-063C-877712F6861F">
+				<a class="ui-link-inherit">
+					<img src="https://lh6.googleusercontent.com/-FotLzwba3m4/AAAAAAAAAAI/AAAAAAAAAFw/hyg82ukNi-Y/s120-c/photo.jpg" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">JiaHao</h3>
+					<p class="ui-li-desc">
+						I love cats and dogs. 
+					</p>
+					<div class="socialbuttons">
+						<i class="icon-facebook-sign"></i>
+						<i class="icon-tumblr-sign"></i>
+						<i class="icon-github-sign"></i>
+					</div>
+				</a>
+			</li>
+			<li data-role="list-divider">L</li>
+			<li class="user" browserID="5EEF475B-DB67-CC9C-235E-C49D29F96594">
+				<a class="ui-link-inherit">
+					<img src="https://si0.twimg.com/profile_images/1136819377/photo.JPG" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">Lap</h3>
+					<p class="ui-li-desc">
+						...
+					</p>
+					<div class="socialbuttons">
+						<i class="icon-facebook-sign"></i>
+						<i class="icon-tumblr-sign"></i>
+						<i class="icon-github-sign"></i>
+					</div>
+				</a>
+			</li>
+			<li data-role="list-divider">S</li>
+			<li class="user" browserID="C116FD42-F2B5-EE59-17A6-78F40F22221F">
+				<a class="ui-link-inherit">
+					<img src="https://profile-b.xx.fbcdn.net/hprofile-prn2/c30.30.380.380/s160x160/735057_267626553366448_1409700009_n.jpg" class="ui-li-thumb"/>
+					<h3 class="ui-li-heading">Shawwwn</h3>
+					<p class="ui-li-desc">
+						...
+					</p>
+					<div class="socialbuttons">
+						<i class="icon-google-plus-sign"></i>
+						<i class="icon-pinterest-sign"></i>
+					</div>
+				</a>
+			</li>
+		</ul>
+		<hr>
+		<p><a id='addNewContact'href="#popup" data-role="button" data-rel="dialog" data-transition="pop">Add New Contact</a></p>
+	</div><!-- /content -->
+	
+	<div data-role="footer" data-theme="d">
+		<h4> </h4>
+		<a id='showPopup' href="#popup" data-rel="dialog" data-transition="pop" style='display:none;'></a>
+	</div><!-- /footer -->
+</div><!-- /page one -->
+
+<!-- Start of second page: #two -->
+<div data-role="page" id="two" data-theme="a" data-url="two" tabindex="0" class="ui-page ui-body-a" style="min-height: 779px;">
+	<div data-role="navbar" data-iconpos="top">
+		<ul>
+			<li><a data-icon="grid" href="#one">Contacts</a></li>
+			<li><a data-icon="star" href="#two" class="ui-btn-active ui-state-persist">Sharing</a></li>
+		</ul>
+	</div>
+	<!-- /navbar -->
+	
+	<div data-role="header" class="ui-header ui-bar-a" role="banner" style="display: none">
+		<h1 class="ui-title" role="heading" aria-level="1"> </h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="a" class="ui-content ui-body-a" role="main">	
+		<div data-role="fieldcontain" class="ui-hide-label">
+			<input type="search" name="url" id="url" value="" data-mini="true" />
+		</div>
+		<a id="gotoBtn" data-direction="reverse" data-role="button" data-theme="b" data-corners="true" data-shadow="true" data-iconshadow="true" data-wrapperels="span" class="ui-btn ui-btn-up-b ui-shadow ui-btn-corner-all"><span class="ui-btn-inner ui-btn-corner-all"><span class="ui-btn-text">Sumbit</span></span></a>	
+		<div class="urlList" style="margin-top: 30px;">
+			<ul data-role="listview" data-inset=true>
+			</ul>
+		</div>
+		
+	</div><!-- /content -->
+	
+	<div data-role="footer" class="ui-footer ui-bar-a" role="contentinfo" style="display: none">
+		<h4 class="ui-title" role="heading" aria-level="1"> </h4>
+	</div><!-- /footer -->
+</div>
+
+<!-- Start of second page: #popup -->
+<div data-role="dialog" id="popup" data-url="popup">
+	<div data-role="header" data-theme="a" style="opacity: 0; height: 100px;">
+		<h1> </h1>
+	</div><!-- /header -->
+
+	<div data-role="content" data-theme="a">
+		<div style="text-align: center; height: 200px;">
+			<p>
+				<a href="#one" class="endBtn" style="color: white; margin-top: 110px;">End</a>
+			</p>
+		</div>	
+	</div><!-- /content -->
+	
+	<div data-role="footer" style="display: none">
+		<h4> </h4>
+	</div><!-- /footer -->
+</div><!-- /page popup -->
+
+</body>
+</html>

@@ -1,0 +1,94 @@
+html, body {
+	background: rgba(181,189,200,1);
+	color: white;
+	-webkit-user-select: none;
+	overflow: hidden;
+}
+.typing-area {
+	font-size: 20px;
+	width: 220px;
+	height: 51px;
+	margin: 5px 0px;
+	border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+	border: 1px solid #000;
+}
+.done-button {
+	position: absolute;
+	left: 250px;
+	height: 61px;
+	margin: 5px 0px;
+	font-size: 13px;
+	text-align: left;
+	border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+	background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+}
+.control-bar {
+	display: block;
+	top: 0px;
+	height: 100px;
+}
+.tab-bar {
+	overflow-x: scroll;
+	width: 100%;
+}
+.nav {
+	margin-bottom: 0px;
+}
+.nav > li > a:hover {
+	color: black;
+	background: rgba(181,189,200,1);
+	border-color: transparent;
+	border-bottom: 1px solid #000;
+}
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+	background: rgba(181,189,200,1);
+	border: 1px solid #000;
+	border-bottom-color: transparent;
+}
+.nav-tabs {
+	border-bottom: 1px solid #000;
+}
+.tab-pane {
+	color: #333;
+	background: rgba(0,0,0,0);
+}
+.tab-pane .entry {
+	display: block;
+	text-decoration: none;
+}
+.tab-pane span {
+	font-size: 15px;
+	line-height: 26px;
+	display: inline-block;
+	position: relative;
+	letter-spacing: -1px;
+	-webkit-transition: all 0.2s ease-out;
+	border: 1px #333 solid;
+	-webkit-border-radius: 20px;
+	margin: 4px;
+	padding: 0px 5px;
+	background: rgba(204,204,204,1);
+	/*background: -webkit-linear-gradient(top, rgba(238,238,238,1) 0%,rgba(204,204,204,1) 100%);
+	 */
+}
+.tab-pane .entry span {
+	font-weight: normal;
+	font-family: 'Impact', 'HelveticaNeue-Bold', 'League Gothic', sans-serif;
+	font-size: 30px;
+	line-height: 40px;
+}
+.tab-pane span.hover {
+	color: white;
+}
+/*.tab-pane span:nth-child(even) {-webkit-transform:rotate(1deg)}
+ .tab-pane span:nth-child(odd) {-webkit-transform:rotate(-2deg)}
+ */
+.ui-loader {
+	display: none;
+}
+.btn-group {
+	margin-top: 7px;
+	margin-bottom: -5px;
+}

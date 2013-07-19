@@ -1,0 +1,309 @@
+@font-face {
+	font-family: 'Flat-UI-Icons';
+	src:url('fonts/Flat-UI-Icons.eot');
+	src:url('fonts/Flat-UI-Icons.eot?#iefix') format('embedded-opentype'),
+		url('fonts/Flat-UI-Icons.woff') format('woff'),
+		url('fonts/Flat-UI-Icons.ttf') format('truetype'),
+		url('fonts/Flat-UI-Icons.svg#Flat-UI-Icons') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Use the following CSS code if you want to use data attributes for inserting your icons */
+[data-icon]:before {
+	font-family: 'Flat-UI-Icons';
+	content: attr(data-icon);
+	speak: none;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+
+/* Use the following CSS code if you want to have a class per icon */
+/*
+Instead of a list of all class selectors,
+you can use the generic selector below, but it's slower:
+[class*="fui-"] {
+*/
+.fui-double-angle-down, .fui-angle-down, .fui-chevron-down, .fui-arrow-down, .fui-caret-down, .fui-backward, .fui-forward, .fui-share-alt, .fui-fast-forward, .fui-step-forward, .fui-search, .fui-off, .fui-cog, .fui-trash, .fui-home, .fui-remove, .fui-ok, .fui-heart, .fui-repeat, .fui-refresh, .fui-qrcode, .fui-camera, .fui-play, .fui-pause, .fui-stop, .fui-eject, .fui-info-sign, .fui-question-sign, .fui-remove-circle, .fui-arrow-left, .fui-arrow-right, .fui-arrow-up, .fui-exclamation-sign, .fui-chevron-up, .fui-camera-retro, .fui-facebook-sign, .fui-pushpin, .fui-phone, .fui-phone-sign, .fui-google-plus-sign, .fui-group, .fui-mobile, .fui-laptop, .fui-desktop, .fui-tablet, .fui-quote-left, .fui-quote-right, .fui-spinner, .fui-reply, .fui-circle-blank, .fui-circle, .fui-connection, .fui-happy, .fui-smiley, .fui-tongue, .fui-sad, .fui-wink, .fui-grin, .fui-cool, .fui-angry, .fui-evil, .fui-shocked, .fui-confused, .fui-neutral, .fui-wondering, .fui-rss, .fui-movie, .fui-equalizer, .fui-magnifying-glass, .fui-layers-alt, .fui-calendar, .fui-equalizer2, .fui-safari, .fui-chrome, .fui-IE, .fui-firefox, .fui-list-bulleted, .fui-list-numbered, .fui-keyboard, .fui-keyboarddelete, .fui-envelope-alt, .fui-envelope, .fui-address-book, .fui-address, .fui-pencil, .fui-pencil-2, .fui-reorder, .fui-th-list, .fui-play-circle, .fui-controllersnes {
+	font-family: 'Flat-UI-Icons';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+.fui-double-angle-down:before {
+	content: "\f103";
+}
+.fui-angle-down:before {
+	content: "\f107";
+}
+.fui-chevron-down:before {
+	content: "\f078";
+}
+.fui-arrow-down:before {
+	content: "\f063";
+}
+.fui-caret-down:before {
+	content: "\f0d7";
+}
+.fui-backward:before {
+	content: "\f04a";
+}
+.fui-forward:before {
+	content: "\f04e";
+}
+.fui-share-alt:before {
+	content: "\f064";
+}
+.fui-fast-forward:before {
+	content: "\f050";
+}
+.fui-step-forward:before {
+	content: "\f051";
+}
+.fui-search:before {
+	content: "\f002";
+}
+.fui-off:before {
+	content: "\f011";
+}
+.fui-cog:before {
+	content: "\f013";
+}
+.fui-trash:before {
+	content: "\f014";
+}
+.fui-home:before {
+	content: "\f015";
+}
+.fui-remove:before {
+	content: "\f00d";
+}
+.fui-ok:before {
+	content: "\f00c";
+}
+.fui-heart:before {
+	content: "\f004";
+}
+.fui-repeat:before {
+	content: "\f01e";
+}
+.fui-refresh:before {
+	content: "\f021";
+}
+.fui-qrcode:before {
+	content: "\f029";
+}
+.fui-camera:before {
+	content: "\f030";
+}
+.fui-play:before {
+	content: "\f04b";
+}
+.fui-pause:before {
+	content: "\f04c";
+}
+.fui-stop:before {
+	content: "\f04d";
+}
+.fui-eject:before {
+	content: "\f052";
+}
+.fui-info-sign:before {
+	content: "\f05a";
+}
+.fui-question-sign:before {
+	content: "\f059";
+}
+.fui-remove-circle:before {
+	content: "\f05c";
+}
+.fui-arrow-left:before {
+	content: "\f060";
+}
+.fui-arrow-right:before {
+	content: "\f061";
+}
+.fui-arrow-up:before {
+	content: "\f062";
+}
+.fui-exclamation-sign:before {
+	content: "\f06a";
+}
+.fui-chevron-up:before {
+	content: "\f077";
+}
+.fui-camera-retro:before {
+	content: "\f083";
+}
+.fui-facebook-sign:before {
+	content: "\f082";
+}
+.fui-pushpin:before {
+	content: "\f08d";
+}
+.fui-phone:before {
+	content: "\f095";
+}
+.fui-phone-sign:before {
+	content: "\f098";
+}
+.fui-google-plus-sign:before {
+	content: "\f0d4";
+}
+.fui-group:before {
+	content: "\f0c0";
+}
+.fui-mobile:before {
+	content: "\f10b";
+}
+.fui-laptop:before {
+	content: "\f109";
+}
+.fui-desktop:before {
+	content: "\f108";
+}
+.fui-tablet:before {
+	content: "\f10a";
+}
+.fui-quote-left:before {
+	content: "\f10d";
+}
+.fui-quote-right:before {
+	content: "\f10e";
+}
+.fui-spinner:before {
+	content: "\f110";
+}
+.fui-reply:before {
+	content: "\f112";
+}
+.fui-circle-blank:before {
+	content: "\f10c";
+}
+.fui-circle:before {
+	content: "\f111";
+}
+.fui-connection:before {
+	content: "\e000";
+}
+.fui-happy:before {
+	content: "\e001";
+}
+.fui-smiley:before {
+	content: "\e002";
+}
+.fui-tongue:before {
+	content: "\e003";
+}
+.fui-sad:before {
+	content: "\e004";
+}
+.fui-wink:before {
+	content: "\e005";
+}
+.fui-grin:before {
+	content: "\e006";
+}
+.fui-cool:before {
+	content: "\e007";
+}
+.fui-angry:before {
+	content: "\e008";
+}
+.fui-evil:before {
+	content: "\e009";
+}
+.fui-shocked:before {
+	content: "\e00a";
+}
+.fui-confused:before {
+	content: "\e00b";
+}
+.fui-neutral:before {
+	content: "\e00c";
+}
+.fui-wondering:before {
+	content: "\e00d";
+}
+.fui-rss:before {
+	content: "\e00e";
+}
+.fui-movie:before {
+	content: "\e00f";
+}
+.fui-equalizer:before {
+	content: "\e010";
+}
+.fui-magnifying-glass:before {
+	content: "\e011";
+}
+.fui-layers-alt:before {
+	content: "\e012";
+}
+.fui-calendar:before {
+	content: "\f20f";
+}
+.fui-equalizer2:before {
+	content: "\f18f";
+}
+.fui-safari:before {
+	content: "\e013";
+}
+.fui-chrome:before {
+	content: "\e014";
+}
+.fui-IE:before {
+	content: "\e015";
+}
+.fui-firefox:before {
+	content: "\e016";
+}
+.fui-list-bulleted:before {
+	content: "\e017";
+}
+.fui-list-numbered:before {
+	content: "\e018";
+}
+.fui-keyboard:before {
+	content: "\e019";
+}
+.fui-keyboarddelete:before {
+	content: "\f3a6";
+}
+.fui-envelope-alt:before {
+	content: "\f0e0";
+}
+.fui-envelope:before {
+	content: "\f003";
+}
+.fui-address-book:before {
+	content: "\e01a";
+}
+.fui-address:before {
+	content: "\f08f";
+}
+.fui-pencil:before {
+	content: "\f040";
+}
+.fui-pencil-2:before {
+	content: "\e01b";
+}
+.fui-reorder:before {
+	content: "\f0c9";
+}
+.fui-th-list:before {
+	content: "\f00b";
+}
+.fui-play-circle:before {
+	content: "\f01d";
+}
+.fui-controllersnes:before {
+	content: "\f2d3";
+}

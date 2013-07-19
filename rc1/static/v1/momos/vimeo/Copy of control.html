@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+		<script src="http://api.demobo.com/jquery.kinectic.min.js"></script>
+        <script>
+        	$(document).ready(function(){
+				non480x320Adjust();
+				$('img.albumArt').bind('load', flipAlbumArt);
+				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
+				var notmoving;
+				$('#touchcarouselFrame').on('touchstart mousedown', '.carouselItem', function(e){
+					notmoving = true;
+					$(this).one('touchend mouseup', function(e){
+						if (notmoving) demobo.mobile.fireInputEvent('playAlbum', $(this).index());
+					});
+				});
+				$('#touchcarouselFrame').on('touchmove mousemove', '.carouselItem', function(e){
+					notmoving = false;
+				});
+				$('.search').blur(function(){
+					// give it some time to clear input
+					setTimeout(function() {
+						demobo.mobile.fireInputEvent('searchKeyword', $('.search').val());
+						$('.search').val('');
+					}, 100);
+				});
+				$('.search').keypress(function(e) {
+				    if(e.which == 13) {
+						$('.search').blur();
+				    }
+				});
+				$('#header').on('click', '.ui-input-clear', function(){
+					$(this).parent().find('input[type=text]').val('');
+				});
+//				if (!demobo.mobile.isAndroid()) {
+					$('#touchcarouselFrame').kinetic({
+						triggerHardware: true,
+	                    y: false
+	                });	
+//				}
+			});
+			function non480x320Adjust() {
+				var screenHeight = $(window).height();
+				// zoomAdjust for non iphones
+                $('#header, #touchcarouselFrame, #frame').css('zoom', screenHeight / 320);
+                // jquery mobile input range is not working with zoom
+                $('.volumeControl').css('zoom', 320 / screenHeight);
+			}
+            function loadSongInfo(songs){
+				if ($.isArray(songs)) {
+                    var song = songs[0];
+                    var nextSong = songs[1];
+                }
+                else 
+                    var song = songs;
+				$('#songName').text(song.title);
+                $('#artist').text(' - ' + song.artist);
+                $('img.newAlbumArt').attr('src', song.image);
+            }
+            //function handler of img onload event
+            function flipAlbumArt(){
+                $('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function(){
+                    $('img.albumArt').toggleClass('currentAlbumArt newAlbumArt')
+                    setTimeout(function(){
+                        $('img.currentAlbumArt').toggleClass('to90 to0');
+                    }, 0);
+                    $(this).unbind('webkitTransitionEnd');
+					if ($('#listTab').css('left') == '80px') {
+	                    $('#listTab').animate({
+	                        'left': '480px'
+	                    }, 'slow');
+	                }
+                });
+            }
+			function loadVideoCollection(items) {
+				$('#touchcarousel').empty();
+				for (var i = 0; i < items.length; i++) {
+					var item = $('<div class="carouselItem"><img src="'+items[i].image+'"><div class="title">'+items[i].title+'</div></div>');
+					$('#touchcarousel').append(item);
+				}
+			}
+			function syncState(state){
+				if (state.isPlaying) {
+					$('#playButton').addClass('hidden');
+					$('#pauseButton').removeClass('hidden');
+				} else {
+					$('#playButton').removeClass('hidden');
+					$('#pauseButton').addClass('hidden');
+				}
+				if (state.volume) {
+					$('#volumeSlider').val(state.volume);
+					$('#volumeSlider').slider('refresh');
+				}
+			}
+			
+        </script>
+    </head>
+    <body>
+    	<div id="main" data-role=page>
+        	<div id="header">
+        		<a id="staffPicks" onclick>Staff Picks</a>
+			    <!--<label for="search">Search:</label>-->
+			    <input type="search" name="search" class="search" value="" data-theme="a"/>  
+            </div>
+			<div id="touchcarouselFrame">
+				<div id="touchcarousel">
+				</div>
+			</div>	
+	        <div id='frame' class="page">
+	            <div id='content'>
+	            	<div class="albumArtFrame">
+		                <img class='albumArt currentAlbumArt to0'/>
+						<img class='albumArt newAlbumArt to90' />
+					</div>
+	                <div id='controlPanel'>
+	                    <div id='songName'>
+	                    </div>
+						<div id='artist'>
+	                    </div>
+						<div class="playbackControl">
+							<a id="previousButton" onclick="" class="previousButton button" value="previous"></a>
+							<a id="rewindButton" onclick="" class="rewindButton button" value="rewind"></a>
+	                        <a id="playButton" onclick="" class="playButton button" value="play"></a>
+							<a id="pauseButton" onclick="" class="pauseButton button hidden" value="pause"></a>
+							<a id="fastforwardButton" onclick="" class="fastforwardButton button" value="fastforward"></a>
+		                    <a id="nextButton" onclick="" class="nextButton button" value="next"></a>
+							<div class="volumeControl row">
+			                    <div class="volumeButton" id="volumeButton"></div>
+								<div class="volumeBackground"></div>
+			                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
+			                </div>
+							<a id="reloadButton" onclick class="reloadButton"></a>
+						</div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+		<style>        
+            body {
+				height: 340px;
+                width: 100%;
+                overflow: hidden;
+                font-family: Helvetica,Arial,sans-serif;
+				color: #F1F1F1;
+				-webkit-user-select: none;
+            }
+            #main {
+				overflow: hidden;
+				white-space: nowrap;
+				background-color: #222;
+			}
+			#header {
+				background-color: #222;
+			}
+			#header label {
+				margin: 5px -30px 5px 5px;
+			}
+            #frame {
+                background-color: #222;
+                position: absolute;
+				bottom: 0px;
+                width: 100%;
+                height: 40%;
+				margin: 0px auto;	
+            }
+		
+            .page {
+                display: inline-block;
+                vertical-align: top;
+                width: 100%;
+            }
+            .to90 {
+                -webkit-transform: rotate3d(0, 1, 0, 90deg);
+            }
+            
+            .to0 {
+                -webkit-transform: rotate3d(0, 1, 0, 0deg);
+            }
+            
+            img {
+                -webkit-transition: -webkit-transform 1s ease-in-out;
+            }
+            
+            .currentAlbumArt {
+                display: block;
+            }
+            
+            .newAlbumArt {
+                display: none;
+            }
+            #content {
+              position:relative;
+              background-color: #222;
+              -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.2);
+			  margin: auto;
+			  height: 100%;
+            }
+            
+            #controlPanel img {
+              margin-left:10px;
+            }
+            .albumArtFrame {
+            	width: 102px;
+				height: 77px;
+				padding: 4px 14px;
+            }
+            .albumArt {
+              	width: 100px;
+				height: 75px;
+				border: grey 1px solid;
+            }
+            
+            #controlPanel {
+              	width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0px;
+				padding-left: 140px;
+            }
+            
+            #artist {
+	            font-size: 20px;
+				display: inline-block;
+				height: 25px;
+				text-shadow: none;
+				color: #f1f1f1;
+				vertical-align: top;
+            }
+            
+            #songName {
+	            display: inline-block;
+				font-size: 20px;
+				height: 25px;
+				text-shadow: none;
+				color: #f1f1f1;
+				vertical-align: top;
+            }
+			
+			/* assets */       
+			.button.playButton {
+				background-position: 5px -352px;
+				background-size: 200px;
+			}
+				
+            .button.playButton:active {
+            	background-position: -62px -352px;
+				background-size: 200px;
+            }
+            
+            .button.playButton:hover {
+            	background-position: -128px -352px;
+				background-size: 200px;
+            }
+            
+            .button.pauseButton {
+				background-position: 4px -440px;
+				background-size: 200px;
+            }
+            
+            .button.pauseButton:active {
+            	background-position: -63px -440px;
+				background-size: 200px;
+            }
+            
+            .button.pauseButton:hover {
+            	background-position: -129px -440px;
+				background-size: 200px;
+            }
+            
+            .nextButton {
+				background-position: 0px -109px;
+            }
+            
+            .nextButton:active {
+				background-position: -84px -109px;
+            }
+            
+            .nextButton:hover {
+				background-position: -168px -109px;
+            }
+			
+			.previousButton {
+				background-position: 0px 0px;
+            }
+            
+            .previousButton:active {
+				background-position: -84px 0px;
+            }
+            
+            .previousButton:hover {
+				background-position: -168px 0px;
+            }
+			
+			.rewindButton {
+				background-position: 0px -218px;
+            }
+            
+            .rewindButton:active {
+				background-position: -84px -218px;
+            }
+            
+            .rewindButton:hover {
+				background-position: -168px -218px;
+            }
+			
+			.fastforwardButton {
+				background-position: 0px -327px;
+            }
+            
+            .fastforwardButton:active {
+				background-position: -84px -327px;
+            }
+            
+            .fastforwardButton:hover {
+				background-position: -168px -327px;
+            }
+			
+			.button {
+				width: 40px;
+				height: 24px;
+				margin: 10px 6px;
+				vertical-align: middle;
+				-webkit-border-radius: .3em;
+				background-size: 250px;
+				background-color: #333;
+				background-image: url(data:image/png;base64,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%3D);
+				background-repeat: no-repeat;
+				display: inline-block;
+				text-align: center;
+				padding-top: 0;
+				border: .3em solid #333;
+			}
+			.playbackControl {
+				bottom: -5px;
+				position: relative;
+			}
+			
+			.reloadButton {
+				width: 25px;
+				height: 25px;
+				-webkit-border-radius: .3em;
+				background-size: 24px;
+				background-color: #333;
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAsFJREFUeNrcWtFxozAQFYz/QwdxKkhSAaSC5CqI6YD79kecD3/HqeBMBWd3YHdgVxDSAa6A0848xbIiOSAkMLczO4wTkN7b1a5WC0FVVWzIEggC0+n05B9xHNcdg25MoHdcI8N9G64FriuuBxvA2+2Wzefzr98jLSIFPD2k/O2aa8Z1cgawKgmuE1yJxJLruo0HwjrgFeB/YMmsAXidPIHEB9dH20FGEnAClp4B/+IAtE7GILKBdz51y+ZHApJrU/khTuwKEySe45HG38FIeWMP6Ehw8LewTNRRUokQF5QMftdJKLogJhIb/tCuY/CyiKWaNvWAELJC2RN42ZCl7IlaWUhxZ99Cnni2JeBKaCnOkDYTZJ1A2vzI0gvcp5MF0rc2I408Al8C+KdpU5WuubTPTKBjJbAfuvLACpOnZ8CbhO5/5XoDEoWUYmPfBEpM+ssCuE5ypNOFkuK9ENjBSrljbx6QhZ6gtdOoDfiDx3haY45r1bujAYAXsvexhJYdgfe2Dyx+2mgunYDwwvOQCfRKwuU+sGxzsmp9IuM1RmB5qGdDj4HLIzAU69fqSjgWipGqjXJ8lZFAB5Zfm4qyIcVA7pJE2NO6d0YiNB3VOiKRDTmNXrnwQmgYuAvwG5y4nBNYeSbhDLyJQAH1EdUxxr5zNWBoKMoiWOmv3JNpafU35qFVqSOwxUQMB+kCRB4tgb+w4/sEf9WoIhk77ZSJrkAJcqLxWypnVfLWGEskMXUSuiBAoGZQWaJzLY5LK6dfEQ99Swm12shSKR76Ap9AS9ud+KEnTxQAvodqSdQtJVJfWcQgYqPbK3H5jUSTWugdg+48L5kMXj8YkkvSppijAe7ZaevbFfAZUvB7DQytq1EqhW/Y8WW1rYjXqmNkvcZtyrbN3TU7fiogvpkQ30skhhqrwBonbf0eIfhvvlYZqvwTYAACjcmzOuCTQgAAAABJRU5ErkJggg%3D%3D);
+				background-repeat: no-repeat;
+				display: inline-block;
+				text-align: center;
+				padding-top: 0;
+				border: .3em solid #333;
+				position: absolute;
+				bottom: 6px;
+				left: 270px;
+			}
+			
+			/* volume control */
+			.volumeButton {
+                width: 40px;
+                height: 40px;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAALRQTFRFh4+XiJKaiZSbh5aWiZSaipWciZKbh5ObiZObiZKbiZWZgJ+fh5OZiZKZiZWbiZSciZSbipWciJOaiZSbipWfhpKeiZObiZKciZSbipKbiZWciJSbipSciZKbipSbiZSbipScgJmZiZSbi5eXh5WaiZWbhpSaiZSbhY+Zh5KciZSbiZSbiZSbiZSajZWeiJOaipSaipSZiZSbiZSbiJmZipWbqqqqiZSbh5SaiZSbAAAAiZSbuqawkwAAADt0Uk5TIGXyEXeOUkJhHEEIcWwpy/ZIR/oYFYA26z2Ta2Q45OKYCvAWNVQm4Rkx5fP8eR1tTDKe1A+7A/5R9ADcxMwTAAAAk0lEQVQ4y+3SNxbCQAwE0CXnnKPJOTpgW3P/e2HxKJEoobCKUfObHa2h72Ni8xuz4xiONbPfRvFwMJJNEIKXW2tNJHP2EZlqkUzd+2TwHiI7WSDbb6smhzQl0FBNChnKIlBNBXkqY6CarlMiL5wL77qe2LgdamIm9nM7vvrp9a2l3PP9wD1PFyvtXheO9Sb+z/9pntsdDv1h/+VaAAAAAElFTkSuQmCC) no-repeat;
+                background-size: 50px 50px;
+                display: inline-block;
+                top: -4px;
+				left: 5px;
+				position: relative;
+            }
+            .volumeControl {
+				width: 200px;
+				height: 50px;
+				-webkit-border-radius: 28px;
+				vertical-align: middle;
+				margin: -10px -15px;
+				position: relative;
+			}
+			.volumeBackground {
+				width: 185px;
+				height: 15px;
+				background: #E9EDEE;
+				position: absolute;
+				top: 20px;
+				left: 54px;
+				-webkit-border-radius: 28px;
+			}
+			.volumeControl input.ui-slider-input {
+                display: none !important;
+            }
+			
+			.volumeControl div.ui-slider {
+				width: 180px;
+				height: 15px;
+				margin: 0px 0px 0px 10px;
+				padding: 15px 0px;
+				top: 5px;
+				left: 0px;
+				position: relative;
+				background: none;
+				border: none;
+			}
+			.volumeControl div.ui-slider-bg.ui-btn-active {
+		    	background: #00ADEF;
+		    }
+			
+			.volumeControl .ui-controlgroup a.ui-slider-handle, a.ui-slider-handle {
+				display: none;
+			}
+			.volumeControl .ui-shadow {
+				-moz-box-shadow: none;
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+			/* end of volume control */
+						
+			#touchcarouselFrame {
+				background-color: #222;
+                position: absolute;
+				top:46px;
+                width: 100%;
+                height: 146px;;
+				overflow-x: scroll;
+			}
+			#touchcarousel {
+                height: 100%;
+			}
+			#touchcarousel .carouselItem img {
+				width: 130px;
+				height: 98px;
+				margin: 10px 10px 0px 10px;
+				border: 4px #000 solid;
+			}
+			.carouselItem {	
+				display: inline-block;
+				vertical-align: top;
+			}
+			#touchcarousel .carouselItem div {
+				width: 140px;
+				text-overflow:ellipsis;
+				white-space:nowrap;
+				overflow: hidden;
+				margin: 0px 10px;
+				font-size: 12px;
+				color: #F1F1F1;
+				text-shadow: none;
+			}
+			#touchcarousel .carouselItem div.artist {
+				color: #89949B;
+			}
+			.draggable {
+				position: absolute;
+			}
+			#staffPicks {
+				border: 2px solid #F1F1F1;
+				background: black;
+				width: 100%;
+				padding: 5px;
+				border-radius: 5px;
+				margin: 0px 33px;
+				color: #F1F1F1;
+				text-shadow: none;
+			}
+			.ui-input-search {
+				border: 2px solid #F1F1F1;
+				width: 300px;
+				display: inline-block;
+			}
+			.ui-input-clear {
+				display: none;
+			}
+			.hidden {
+				display: none;
+			}
+        </style>
+    </body>
+</html>

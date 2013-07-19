@@ -47,7 +47,7 @@ if not window.demoboLoading
       'youku\\.com':           'youku.com-new.js'
       'www\\.rdio\\.com':        'rdio.com-new.js'
       'www\\.slideshare\\.net':  'slideshare.net-new.js'
-      'docs\\.google\\.com':     'docs.google.com-new.js'
+      'docs\\.google\\.com\/presentation':     'docs.google.com-new.js'
       'grooveshark\\.com':     'grooveshark.com-new.js'
       'play\\.spotify\\.com':    'spotify.com-new.js'
       'sfbay\\.craigslist\\.org':'yelp.com.js'

@@ -120,6 +120,7 @@
 			oldValue : ''
 		};
 		_this.onChange = function() {
+      if (!Grooveshark.getCurrentSongStatus().song) return;
 			var newValue = Grooveshark.getCurrentSongStatus().song.songName;
 			if (_this.oldValue !== newValue) {
 				_this.oldValue = newValue;
@@ -157,6 +158,9 @@
 	GrooveShark.prototype.getNowPlayingData = function () {
 		var toReturn = [];
     var o = Grooveshark.getCurrentSongStatus().song;
+    if (!o){
+      return;
+    }
 		toReturn.push( {
 			'title' : o.songName,
 			'artist' : o.artistName,
@@ -170,7 +174,11 @@
 		return Grooveshark.getCurrentSongStatus().song.artURL;
 	};
 
+  var oriLength=0;
+
 	GrooveShark.prototype.getStationList = function () {
+    console.log('getStationList called');
+ 
 		var toReturn = [];
 		jQuery.each(jQuery('.home-section .can-play .section-title span'),
 				function(index, elem) {
@@ -179,7 +187,6 @@
 					};
 					toReturn.push(s);
 				});
-    console.log(toReturn);
 		return toReturn;
 	};
 
@@ -243,6 +250,23 @@
 	GrooveShark.prototype.getVolume = function() {
 		return Grooveshark.getVolume();
 	};
+  
+  var tester = function(){
+    if (!window.Grooveshark){
+      console.log('ok');
+      setTimeout(tester, 500);
+    }else{
+      window.demoboPortal.addBobo(GrooveShark);
+      setTimeout(prepoccessing, 2000);
+      console.log('passed');
+    }
+  };
 
-  window.demoboPortal.addBobo(GrooveShark);
+  var prepoccessing = function(){
+    return;
+		$('#column1')[0].addEventListener('DOMNodeInserted', function(){$('#footer a').focus()}, false);
+    $('#footer a').focus();
+  };
+
+  tester();
 })();

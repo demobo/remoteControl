@@ -12,7 +12,7 @@
     this.setInfo('playingState', {isPlaying:false, volume: 0});
 
     this.setController({
-      url:'http://rc1.demobo.com/rc/douban/rotate.html?0301',
+      url:'http://rc1.demobo.com/rc/douban/control.html?0301',
       orientation: 'portrait'
     });
   

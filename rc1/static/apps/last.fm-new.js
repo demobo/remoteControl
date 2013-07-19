@@ -1,4 +1,5 @@
 (function(){
+  var DEBUG = false;
   var Lastfm = window.Bobo.extend();
   
   Lastfm.prototype.initialize = function(){
@@ -91,7 +92,7 @@
 		var nowplayingdata = this.getNowPlayingData();
 		if (!nowplayingdata)
 			return;
-		this.callFunction('loadSongInfo', this.nowplayingdata);
+		this.callFunction('loadSongInfo', nowplayingdata);
 		this.callFunction('setCurrentChannel', this.getCurrentStationIndex());
 	};
 

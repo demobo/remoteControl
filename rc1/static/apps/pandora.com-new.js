@@ -123,7 +123,7 @@
     console.log('refreshController called');
 		this.sendStationList();
     var _this = this
-		setTimeout(function(){_this.sendLast3()},100);
+//		setTimeout(function(){_this.sendLast3()},100);
 		this.syncState();
 	};
 

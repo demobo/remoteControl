@@ -24,7 +24,7 @@ if (DEMOBO) {
 			if (e.value) $('#eventValue').text(e.value).css(messageCss).show().fadeOut(1000);
 			console.log(e.source, e.value);
 		}, false);
-		$('button#set').click(
+		$('a#set').click(
 				function() {
 					localStorage.setItem("url", $('#url').val());
 					var link = $('#url').val();
@@ -45,32 +45,9 @@ if (DEMOBO) {
 					$('iframe').attr('src', url);
 					$('#controllerUrl').attr('href', url);
 				});
-		$('button#upload').click(function() {
-			localStorage.setItem("url", $('#url').val());
-			var link = $('#url').val();
-			if (link.indexOf("http")==0) {
-				$('button#set').click();
-				return;
-			}
-			$.get(link, function(data) {
-				$.ajax( {
-					type : 'POST',
-					url : "http://net.demobo.com/server/upload.php",
-					crossDomain : true,
-					data : {
-						data : data,
-						roomID : DEMOBO.roomID.substr(0,5)
-					},
-					dataType : 'json',
-					success : function() {
-						$('button#set').click();
-					}
-				});
-				localStorage.setItem("url", $('#url').val());
-			});
-		});
+
 		var testCounter=0;
-		$('button#test').click(function() {
+		$('a#test').click(function() {
 			testSuite = null;
 			var testfile = 'test.js';
 			if ($('#url').val().split("/").length == 3)
@@ -90,30 +67,9 @@ if (DEMOBO) {
 				}
 			});
 		});
-		$('button#rc1').click(function() {
-			var url = "http://rc1.demobo.com" + $('#url').val() + "?" + Math.random();
-			var c = {
-					page : "default",
-					url : url,
-					touchEnabled : true
-				};
-			if (!$('#orientation').is(':checked')) c.orientation = "portrait";
-			demobo.setController(c);
-			$('iframe').attr('src', url);
-			$('#controllerUrl').attr('href', url);
-		});
-		$('button#connect').click(toggleDemobo);
-		$('input[type=radio]').click(function() {
-			var wh = this.value.split("x");
-			if (!$('#orientation').is(':checked')) wh.reverse();
-			$('iframe').css( {
-				width : wh[0],
-				height : wh[1],
-				border : '1px solid'
-			});
-		});
+
 		$($('input[type=radio]')[0]).click();
-		$('button#set').click();
+		$('a#set').click();
 		// simulator eventListener
 		document.getElementById('demoboBody').addEventListener(
 				"FromFrontground",
@@ -229,3 +185,96 @@ window.toggleDemobo = function() {
 function setSimulator(url) {
 	$('#simulator iframe').attr('src', url);
 }
+
+$(document).ready(function(){
+    if (document.domain === 'localhost'){
+       //alert("Our sandbox doesn't work under domain 'localhost'. ");
+    }
+
+    var populateMomo = function(){
+        //load preferences and populate select box
+        var momos = JSON.parse(window.localStorage.getItem('momos'));
+        var lastSelected = JSON.parse(window.localStorage.getItem("momoSelected"));
+        var lastSelectedIndex = JSON.parse(window.localStorage.getItem(('momoSelectedIndex')));
+        if (!momos) return;
+        var parent = document.getElementById('recentMomos');
+        var i;
+        for (i = 0; i<momos.length; i+=1){
+            var e = document.createElement('option');
+            e.innerHTML = momos[i];
+            e.value = momos[i];
+            parent.appendChild(e);
+        }
+        selectMomo(lastSelectedIndex,lastSelected);
+    };
+
+    var onSelectChange = function(){
+        var index=$(this).parent().attr('rel');
+        var value=$('#selectDiv option')[index].value;
+        switch(value){
+            case 'add':
+                addMomo();
+                break;
+            case 'remove':
+                removeMomo();
+                return false;
+            default :
+                return;
+        }
+    };
+
+    var onPageLeave = function(){
+        deleteRemoved();
+        //save preferences
+        var opts = $.map($('#recentMomos option'), function(elem, index){return elem.value;});
+        var optSelected = $('#selectDiv .select button span.filter-option').text();
+        var optIndexSelected = parseInt($.map($('#recentMomos option'), function(elem, index){
+            if ($(elem).text() === optSelected) return index;
+        })[0]);
+        console.log(optIndexSelected);
+        window.localStorage.setItem('momos', JSON.stringify(opts));
+        window.localStorage.setItem('momoSelected', JSON.stringify(optSelected));
+        window.localStorage.setItem('momoSelectedIndex', JSON.stringify(optIndexSelected));
+
+    };
+
+    var selectMomo = function(index, text){
+        $('#selectDiv .select ul li.selected').toggleClass('selected');
+        $($('#selectDiv .select ul li')[index]).toggleClass('selected');
+        $('#selectDiv .select button span.filter-option').text(text);
+        console.log('jere');
+
+    }
+
+    var removeMomo = function(){
+        var removeIndex=$.map($('#selectDiv .select ul li'), function(elem, index){if ($(elem).hasClass('selected')) return(index)})[0];
+        $($('#selectDiv .select ul li')[removeIndex]).hide();
+        $($('#recentMomos option')[removeIndex]).addClass('deleted');
+
+        selectMomo(0, 'No Momo Selected');
+    }
+
+    var deleteRemoved  = function(){
+        $('#selectDiv .select ul li:hidden').remove();
+        $('#recentMomos option.deleted').remove();
+    }
+
+    var addMomo = function(){
+        deleteRemoved();
+        var name = prompt("Enter new momo's name:");
+        var e = document.createElement('option');
+        var parent = document.getElementById('recentMomos');
+        e.innerHTML = name;
+        parent.appendChild(e);
+        var selectedIndex = $('#recentMomos option').length-1;
+        selectMomo(selectedIndex, name);
+    }
+
+    $('#addMomo').on('click',addMomo);
+    setTimeout(function(){
+        $('#selectDiv .select ul').delegate('li a', 'click',onSelectChange);
+    }, 1000);
+    $(window).on('beforeunload',onPageLeave);
+
+    populateMomo();
+});

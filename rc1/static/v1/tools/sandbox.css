@@ -2,8 +2,26 @@ iframe {
     border:2px solid #16a085;
 }
 
+#orientationDiv {
+    padding-top: 22px;
+    
+}
+
+#dimensions {
+    margin-bottom: 0px;
+    margin-top: 6px;
+}
+
+#selectDiv {
+    margin-bottom: 0px;
+    
+}
+
+#runTestDiv {
+
+}
+
 #momoSelect {
-    width:500px;
 }
 
 a#controllerUrl {

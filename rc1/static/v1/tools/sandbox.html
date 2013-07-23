@@ -33,9 +33,9 @@
         </script>
         <!-- include jQuery and demobo library -->
     </head>
-    <body>
-        <div class='row'>
-            <div id='selectDiv'>
+    <body class='row span7'>
+        <div id='selectDiv' class='span7'>
+            <!--<div id='selectDiv'>-->
                 <select id='momoSelect' name="huge" class="select-block mbl" style='display:none'>
                     <optgroup id='recentMomos' label="Recent Momos">
                     </optgroup>
@@ -44,52 +44,75 @@
                         <option id='removeMomo' value='remove'>Remove Current Momo Folder</option>
                     </optgroup>
                 </select>
-            </div>
+            <!--</div>-->
         </div>
-        <div id='dimensions' class="row">
-            <label class="radio span1">
-                <input type="radio" name="optionsRadios" id="optionsRadios1" value="480x320" data-toggle="radio" checked="">
-                iPhone
-            </label>
-            <label class="radio span1">
-                <input type="radio" name="optionsRadios" id="optionsRadios2" value="800x480" data-toggle="radio">
-                    Nexus One 800x400
-            </label>
-            <label class="radio span1">
-                <input type="radio" name="optionsRadios" id="optionsRadios3" value="854x480" data-toggle="radio">
-                Droid 854x480
-            </label>
-            <label class="radio span1">
-                <input type="radio" name="optionsRadios" id="optionsRadios4" value="320x240" data-toggle="radio">
-                320x240
-            </label>
-            <label class="radio span1">
-                <input type="radio" name="optionsRadios" id="optionsRadios5" value="960x480" data-toggle="radio">
-                960x480
-            </label>
-        </div>
-        <div class='row'>
-            <div class='span4'>
-                <label class="checkbox">
-                    <input type="checkbox" value="" id="orientation" checked data-toggle="checkbox">
-                    Landscape
-                </label>
-            </div>
+        <!--<div id='dimensions' class="span8">-->
+            <!--<label class="radio span1">-->
+                <!--<input type="radio" name="optionsRadios" id="optionsRadios1" value="480x320" data-toggle="radio" checked="">-->
+                <!--iPhone-->
+            <!--</label>-->
+            <!--<label class="radio span1">-->
+                <!--<input type="radio" name="optionsRadios" id="optionsRadios2" value="800x480" data-toggle="radio">-->
+                    <!--Nexus One 800x400-->
+            <!--</label>-->
+            <!--<label class="radio span1">-->
+                <!--<input type="radio" name="optionsRadios" id="optionsRadios3" value="854x480" data-toggle="radio">-->
+                <!--Droid 854x480-->
+            <!--</label>-->
+            <!--<label class="radio span1">-->
+                <!--<input type="radio" name="optionsRadios" id="optionsRadios4" value="320x240" data-toggle="radio">-->
+                <!--320x240-->
+            <!--</label>-->
+            <!--<label class="radio span1">-->
+                <!--<input type="radio" name="optionsRadios" id="optionsRadios5" value="960x480" data-toggle="radio">-->
+                <!--960x480-->
+            <!--</label>-->
+        <!--</div>-->
+        <!--<div class='row'>-->
+            <!--<div class='span4'>-->
+                <!--<label class="checkbox">-->
+                    <!--<input type="checkbox" value="" id="orientation" checked data-toggle="checkbox">-->
+                    <!--Landscape-->
+                <!--</label>-->
+            <!--</div>-->
 
-        </div><!-- /.demo-col -->
-        <div class='row'>
-            <div class='span2'>
-                <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='set'>Show in Simulator</a>
-            </div>
-            <div class='span2'>
-                <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='test'>Run Tests</a>
-            </div>
+        <!--</div>&lt;!&ndash; /.demo-col &ndash;&gt;-->
+        <div id='dimensions' class="span4">
+            <select id='dimensionSelect' name="huge" class="select-block mbl" style='display:none'>
+                <option value='480x320'>
+                    iPhone
+                </option>
+                <option value='800x480'>
+                    Nexus One 800x400
+                </option>
+                <option value='854x480'>
+                    Droid 854x480
+                </option>
+                <option value='320x240'>
+                    320x240
+                </option>
+                <option value='960x480'>
+                    960x480
+                </option>
+            </select>
         </div>
-        <div id="simulator">
+        <div id='orientationDiv' class='span1'>
+            <label class="checkbox">
+                <input type="checkbox" value="" id="orientation" checked data-toggle="checkbox">
+                Landscape
+            </label>
+        </div>
+            <!--<div class='span2'>-->
+                <!--<a href="#fakelink" class="btn btn-large btn-block btn-primary" id='set'>Show in Simulator</a>-->
+            <!--</div>-->
+        <div id='runTestDiv' class='span7'>
+            <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='test'>Run Tests</a>
+        </div>
+        <div class='span7' id="simulator">
             <iframe>
             </iframe>
         </div>
-        <div>
+        <div class='span7'>
             <a id="controllerUrl" target="_blank">Open in new window</a>
         </div>
 		<div id="demoboBody"></div>

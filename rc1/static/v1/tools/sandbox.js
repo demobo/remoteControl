@@ -24,36 +24,12 @@ if (DEMOBO) {
 			if (e.value) $('#eventValue').text(e.value).css(messageCss).show().fadeOut(1000);
 			console.log(e.source, e.value);
 		}, false);
-		$('a#set').click(
-				function() {
-					localStorage.setItem("url", $('#url').val());
-					var base = document.location.origin;
-                    var link = base+'/v1/momos/'+$('#selectDiv .select button span.filter-option').text()+'/control.html';
-                    console.log(link);
-					if (link.indexOf("http")==0) {
-						var url = link +"?" + Math.random();
-					} else {
-						var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID.substr(0,5)
-								+ ".html?" + Math.random();
-					}
-					var c = {
-							page : "default",
-							url : url,
-							touchEnabled : true
-						};
-					if (!$('#orientation').is(':checked')) c.orientation = "portrait";
-					demobo.setController(c);
-//					$('iframe').attr('src', localStorage.getItem("url"));
-					$('iframe').attr('src', url);
-					$('#controllerUrl').attr('href', url);
-				});
-
 		var testCounter=0;
 		$('a#test').click(function() {
 			testSuite = null;
-			var testfile = 'test.js';
-			if ($('#url').val().split("/").length == 3)
-				testfile = $('#url').val() + "/" + testfile;
+			var testfilename = 'test.js';
+//			if ($('#url').val().split("/").length == 3)
+		    var testfile = document.location.origin + '/v1/momos/'+$('#selectDiv .select button span.filter-option').text() +'/'+ testfilename;
 			$.getScript(testfile, function(data, textStatus, jqxhr) {
 				if (testSuite) {
 					testCases = testSuite[testCounter%testSuite.length];
@@ -69,17 +45,6 @@ if (DEMOBO) {
 				}
 			});
 		});
-        $('#dimensions label').on('click', function(){
-            var input = $(this).find('input')[0];
-            var wh = input.value.split("x");
-            if (!$('label.checkbox').hasClass('checked')) wh.reverse();
-            $('iframe').css( {
-                width : wh[0],
-                height : wh[1]
-            });
-        });
-		$($('#dimensions label')[0]).click();
-		$('a#set').click();
 		// simulator eventListener
 		document.getElementById('demoboBody').addEventListener(
 				"FromFrontground",
@@ -201,6 +166,29 @@ $(document).ready(function(){
        //alert("Our sandbox doesn't work under domain 'localhost'. ");
     }
 
+    var refreshSimulator = function() {
+        localStorage.setItem("url", $('#url').val());
+        var base = document.location.origin;
+        var link = base+'/v1/momos/'+$('#selectDiv .select button span.filter-option').text()+'/control.html';
+        console.log(link);
+        if (link.indexOf("http")==0) {
+            var url = link +"?" + Math.random();
+        } else {
+            var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID.substr(0,5)
+                + ".html?" + Math.random();
+        }
+        var c = {
+            page : "default",
+            url : url,
+            touchEnabled : true
+        };
+        if (!$('#orientation').is(':checked')) c.orientation = "portrait";
+        demobo.setController(c);
+//					$('iframe').attr('src', localStorage.getItem("url"));
+        $('iframe').attr('src', url);
+        $('#controllerUrl').attr('href', url);
+    };
+
     var populateMomo = function(){
         //load preferences and populate select box
         var momos = JSON.parse(window.localStorage.getItem('momos'));
@@ -216,6 +204,22 @@ $(document).ready(function(){
             parent.appendChild(e);
         }
         selectMomo(lastSelectedIndex,lastSelected);
+    };
+
+    $('label.checkbox').on('click', function(){
+        setTimeout(dimensionSelect, 500);
+    });
+
+    $('#dimensions li a').on('click', function(){setTimeout(dimensionSelect, 500)});
+
+    var dimensionSelect = function(){
+        var wh = $('#dimensionSelect')[0].value.split("x");
+        if (!$('label.checkbox input').attr('checked')) wh.reverse();
+        $('iframe').css( {
+            width : wh[0],
+            height : wh[1]
+        });
+        refreshSimulator();
     };
 
     var onSelectChange = function(){
@@ -274,6 +278,8 @@ $(document).ready(function(){
         selectMomo(0, 'No Momo Selected');
     }
 
+    $('#selectDiv li a').live('click', function(){setTimeout(dimensionSelect,500)});
+
     var deleteRemoved  = function(){
         $('#selectDiv .select ul li:hidden').remove();
         $('#recentMomos option.deleted').remove();
@@ -291,6 +297,7 @@ $(document).ready(function(){
         parent.appendChild(e);
         var selectedIndex = $('#recentMomos option').length-1;
         selectMomo(selectedIndex, name);
+        setTimeout(dimensionSelect,500);
     }
 
     $('#addMomo').on('click',addMomo);
@@ -300,4 +307,6 @@ $(document).ready(function(){
     $(window).on('beforeunload',onPageLeave);
 
     populateMomo();
+//    $($('#dimensions label')[0]).click();
+    $('#dimensions li a')[0].click();
 });

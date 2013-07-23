@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta charset="utf-8">
-        <title>Flat UI</title>
+        <title>deMobo Momo Simulator</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
         <!-- Loading Bootstrap -->
@@ -11,8 +11,7 @@
 
         <!-- Loading Flat UI -->
         <link href="fui/css/flat-ui.css" rel="stylesheet">
-
-        <link rel="shortcut icon" href="fui/images/favicon.ico">
+        <link href="sandbox.css" rel="stylesheet">
 
         <!-- HTML5 shim, for IE6-8 support of HTML5 elements. All other JS at the end of file. -->
         <!--[if lt IE 9]>
@@ -37,7 +36,7 @@
     <body>
         <div class='row'>
             <div id='selectDiv'>
-                <select id='monoSelect' name="huge" class="select-block mbl" style='display:none'>
+                <select id='momoSelect' name="huge" class="select-block mbl" style='display:none'>
                     <optgroup id='recentMomos' label="Recent Momos">
                     </optgroup>
                     <optgroup id='setting' label='Setting'>
@@ -46,32 +45,45 @@
                     </optgroup>
                 </select>
             </div>
-            <div class='span4'>
-                <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='set'>Set</a>
-            </div>
-            <div class='span4'>
-                <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='test'>Test</a>
-            </div>
         </div>
-        <div>
-            <label>
-                <input type="radio" name="dimension" value="480x320" checked/>iphone
+        <div id='dimensions' class="row">
+            <label class="radio span1">
+                <input type="radio" name="optionsRadios" id="optionsRadios1" value="480x320" data-toggle="radio" checked="">
+                iPhone
             </label>
-            <label>
-                <input type="radio" name="dimension" value="800x480" />Nexus One 800x480
+            <label class="radio span1">
+                <input type="radio" name="optionsRadios" id="optionsRadios2" value="800x480" data-toggle="radio">
+                    Nexus One 800x400
             </label>
-            <label>
-                <input type="radio" name="dimension" value="854x480" />Droid 854x480
+            <label class="radio span1">
+                <input type="radio" name="optionsRadios" id="optionsRadios3" value="854x480" data-toggle="radio">
+                Droid 854x480
             </label>
-            <label>
-                <input type="radio" name="dimension" value="320x240" />320x240
+            <label class="radio span1">
+                <input type="radio" name="optionsRadios" id="optionsRadios4" value="320x240" data-toggle="radio">
+                320x240
             </label>
-            <label>
-                <input type="radio" name="dimension" value="960x480" />960x480
+            <label class="radio span1">
+                <input type="radio" name="optionsRadios" id="optionsRadios5" value="960x480" data-toggle="radio">
+                960x480
             </label>
-			<label>
-                <input type="checkbox" id="orientation" checked />Landscape
-            </label>
+        </div>
+        <div class='row'>
+            <div class='span4'>
+                <label class="checkbox">
+                    <input type="checkbox" value="" id="orientation" checked data-toggle="checkbox">
+                    Landscape
+                </label>
+            </div>
+
+        </div><!-- /.demo-col -->
+        <div class='row'>
+            <div class='span2'>
+                <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='set'>Show in Simulator</a>
+            </div>
+            <div class='span2'>
+                <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='test'>Run Tests</a>
+            </div>
         </div>
         <div id="simulator">
             <iframe>
@@ -99,5 +111,5 @@
         <script src="fui/js/application.js"></script>
         <script type="text/javascript" src="sandbox.js"></script>
 
-            </body>
+    </body>
 </html>

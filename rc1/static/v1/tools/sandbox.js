@@ -7,7 +7,7 @@ if (DEMOBO) {
 	var testSuite;
 	DEMOBO.init = function() {
 		if (localStorage.getItem("url"))
-			$('#url').val(localStorage.getItem("url"));
+			//$('#url').val(localStorage.getItem("url"));
 		demobo.setupShakeConnect();
 		demobo.addEventListener('input', function(e) {
 			var messageCss = {
@@ -27,7 +27,9 @@ if (DEMOBO) {
 		$('a#set').click(
 				function() {
 					localStorage.setItem("url", $('#url').val());
-					var link = $('#url').val();
+					var base = document.location.origin;
+                    var link = base+'/v1/momos/'+$('#selectDiv .select button span.filter-option').text()+'/control.html';
+                    console.log(link);
 					if (link.indexOf("http")==0) {
 						var url = link +"?" + Math.random();
 					} else {
@@ -67,8 +69,16 @@ if (DEMOBO) {
 				}
 			});
 		});
-
-		$($('input[type=radio]')[0]).click();
+        $('#dimensions label').on('click', function(){
+            var input = $(this).find('input')[0];
+            var wh = input.value.split("x");
+            if (!$('label.checkbox').hasClass('checked')) wh.reverse();
+            $('iframe').css( {
+                width : wh[0],
+                height : wh[1]
+            });
+        });
+		$($('#dimensions label')[0]).click();
 		$('a#set').click();
 		// simulator eventListener
 		document.getElementById('demoboBody').addEventListener(
@@ -247,7 +257,17 @@ $(document).ready(function(){
     }
 
     var removeMomo = function(){
+        var totalLength = $('#selectDiv .select ul li').length;
+        if ($('#selectDiv .select ul li:hidden').length === totalLength-2){
+            alert('No more Momo to delete');
+            return false;
+        }
         var removeIndex=$.map($('#selectDiv .select ul li'), function(elem, index){if ($(elem).hasClass('selected')) return(index)})[0];
+        if (removeIndex === totalLength-1 || removeIndex === totalLength-2){
+            alert('Select a Momo to delete');
+            return false;
+        }
+
         $($('#selectDiv .select ul li')[removeIndex]).hide();
         $($('#recentMomos option')[removeIndex]).addClass('deleted');
 
@@ -262,6 +282,9 @@ $(document).ready(function(){
     var addMomo = function(){
         deleteRemoved();
         var name = prompt("Enter new momo's name:");
+        if (!name){
+            return;
+        }
         var e = document.createElement('option');
         var parent = document.getElementById('recentMomos');
         e.innerHTML = name;

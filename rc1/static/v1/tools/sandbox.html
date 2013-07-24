@@ -18,23 +18,15 @@
         <script src="fui/js/html5shiv.js"></script>
         <![endif]-->
         <title>controller sandbox</title>
-        <style>
-            body {
-                padding: 20px;
-            }
-            
-            div {
-                margin: 20px;
-            }
-        </style>
         <!-- include jQuery and demobo library-->
         <link rel="stylesheet" type="text/css" href="http://api.demobo.com/app.css"/>
         <script type="text/javascript" src="http://api.demobo.com/demobo.1.7.0.min.js">
         </script>
         <!-- include jQuery and demobo library -->
     </head>
-    <body class='row span7'>
-        <div id='selectDiv' class='span7'>
+    <body>
+    <div class='row span12'>
+        <div id='selectDiv' class='span2'>
             <!--<div id='selectDiv'>-->
                 <select id='momoSelect' name="huge" class="select-block mbl" style='display:none'>
                     <optgroup id='recentMomos' label="Recent Momos">
@@ -46,38 +38,8 @@
                 </select>
             <!--</div>-->
         </div>
-        <!--<div id='dimensions' class="span8">-->
-            <!--<label class="radio span1">-->
-                <!--<input type="radio" name="optionsRadios" id="optionsRadios1" value="480x320" data-toggle="radio" checked="">-->
-                <!--iPhone-->
-            <!--</label>-->
-            <!--<label class="radio span1">-->
-                <!--<input type="radio" name="optionsRadios" id="optionsRadios2" value="800x480" data-toggle="radio">-->
-                    <!--Nexus One 800x400-->
-            <!--</label>-->
-            <!--<label class="radio span1">-->
-                <!--<input type="radio" name="optionsRadios" id="optionsRadios3" value="854x480" data-toggle="radio">-->
-                <!--Droid 854x480-->
-            <!--</label>-->
-            <!--<label class="radio span1">-->
-                <!--<input type="radio" name="optionsRadios" id="optionsRadios4" value="320x240" data-toggle="radio">-->
-                <!--320x240-->
-            <!--</label>-->
-            <!--<label class="radio span1">-->
-                <!--<input type="radio" name="optionsRadios" id="optionsRadios5" value="960x480" data-toggle="radio">-->
-                <!--960x480-->
-            <!--</label>-->
-        <!--</div>-->
-        <!--<div class='row'>-->
-            <!--<div class='span4'>-->
-                <!--<label class="checkbox">-->
-                    <!--<input type="checkbox" value="" id="orientation" checked data-toggle="checkbox">-->
-                    <!--Landscape-->
-                <!--</label>-->
-            <!--</div>-->
 
-        <!--</div>&lt;!&ndash; /.demo-col &ndash;&gt;-->
-        <div id='dimensions' class="span4">
+        <div id='dimensions' class="span2">
             <select id='dimensionSelect' name="huge" class="select-block mbl" style='display:none'>
                 <option value='480x320'>
                     iPhone
@@ -102,24 +64,26 @@
                 Landscape
             </label>
         </div>
-            <!--<div class='span2'>-->
-                <!--<a href="#fakelink" class="btn btn-large btn-block btn-primary" id='set'>Show in Simulator</a>-->
-            <!--</div>-->
-        <div id='runTestDiv' class='span7'>
+        <div class='span2'>
+            <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='set'>Reload</a>
+        </div>
+        <div id='runTestDiv' class='span2'>
             <a href="#fakelink" class="btn btn-large btn-block btn-primary" id='test'>Run Tests</a>
         </div>
-        <div class='span7' id="simulator">
+	</div>
+	<div class='row span12'>
+        <div class='span6' id="simulator">
             <iframe>
             </iframe>
         </div>
-        <div class='span7'>
-            <a id="controllerUrl" target="_blank">Open in new window</a>
+        <div class='span3'>
+            <div id="demoboBody"></div>
+	        <div id="eventSource">
+	        </div>
+			<div id="eventValue">
+	        </div>
         </div>
-		<div id="demoboBody"></div>
-        <div id="eventSource">
-        </div>
-		<div id="eventValue">
-        </div>
+    </div>
         <script src="fui/js/jquery-1.8.3.min.js"></script>
         <script src="fui/js/jquery-ui-1.10.3.custom.min.js"></script>
         <script src="fui/js/jquery.ui.touch-punch.min.js"></script>

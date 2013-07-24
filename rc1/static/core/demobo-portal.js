@@ -462,7 +462,8 @@
 
           toReturn = {
             'input': base + 'inputtool-new.js',
-            'dummy': base + 'dummy.js'
+            'dummy': base + 'dummy.js',
+            'browsertool': base + 'browsertool-new.js'
           };
           remote = this.getRemote();
           if (remote) {

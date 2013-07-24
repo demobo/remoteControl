@@ -14,6 +14,6 @@
 
 <script>
 var base = document.location.origin;
-document.getElementById('devLink').href='javascript:((function(c){var d=window.__dmtg;((!c.demoboPortal&&function(){var a=new Date,b=c.document.createElement("script"),e=(document.location.protocol==="https:")?"https://localhost:443":"'+base+'";window.demoboBase=e;b.src="//d32q09dnclw46p.cloudfront.net/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)})||d)()})(window))';
+document.getElementById('devLink').href='javascript:((function(c){var d=window.__dmtg;((!c.demoboPortal&&function(){var a=new Date,b=c.document.createElement("script"),e=(document.location.protocol==="https:")?"https://localhost:443":"'+base+'";window.demoboBase=e;b.src=e+"/core/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)})||d)()})(window))';
 
 </script>

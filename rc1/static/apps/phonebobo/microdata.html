@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html ng-app="boboService">
+	<head>
+		<title>Demobo MicroData Guest</title>
+		<link rel="stylesheet" href="css/app.css">
+  		<link rel="stylesheet" href="css/bootstrap.css">
+  		<script src="libs/angular.js"></script>
+  		<script src="js/services.js"></script>
+  		<script src="js/controllers.js"></script>
+		
+	</head>
+	<body>
+		<div id="controller" ng-controller="MicrodataListController">
+			<script type="text/javascript">
+		
+			window.addEventListener('message', onMessage, false);
+			
+			var data = { "micro" : "data" };
+			function onMessage(e) {
+				var scope = angular.element(document.getElementById('controller')).scope();
+				var microdatas = e.data;
+				
+				scope.$apply(function(){
+			        scope.microdatas = microdatas;
+			        scope.source = e.source;
+			        scope.origin = e.origin;
+			    })
+    
+				//e.source.postMessage('I have received an message', e.origin);
+			}
+			
+			function postMessage(data) {
+				var scope = angular.element(document.getElementById('controller')).scope();
+				var source = scope.source;
+				var origin = scope.origin;
+				source.postMessage(data, origin);
+			}
+
+			/*
+			function onMessage(messageEvent) {
+				if (messageEvent.data) {
+					var elem = document.createElement('div');
+					elem.innerText = messageEvent.data;
+					document.body.appendChild(elem);
+				}
+			}
+			var windowProxy;
+			window.onload=function(){ 
+				windowProxy = new Porthole.WindowProxy("http://localhost:8000/microdata.html"); 
+				windowProxy.addEventListener(onMessage);
+			}
+			*/
+			</script>
+			<ul>
+			    <li ng-repeat="md in microdatas">
+			      {{md.data}}
+			      <button onclick="postMessage('{{md.data}}')">Action</button>
+			    </li>
+			</ul>
+		</div>
+	</body>
+</html>

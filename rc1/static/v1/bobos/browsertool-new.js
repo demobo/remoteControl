@@ -1,36 +1,41 @@
-(function(){
-  // ******************* custom event handler functions ***************************
+(function() {
+	// ******************* custom event handler functions ***************************
 
-  var Browsertool = window.Bobo.extend();
+	var Browsertool = window.Bobo.extend();
 
-  Browsertool.prototype.onReady = function(){
-    console.log('onready is called')
-    console.log(arguments);
-    console.log(this);
-  }
-  
-  Browsertool.prototype.navigateTo = function(text){
-    console.log(text);
-  }
+	Browsertool.prototype.onReady = function() {
+		console.log('onready is called')
+		console.log(arguments);
+		console.log(this);
+	}
 
-  // override the initialize function of Bobo
-  Browsertool.prototype.initialize = function(){
-    this.setInfo('iconClass', 'fui-earth')
+	Browsertool.prototype.navigateTo = function(text) {
+		console.log(text);
+		goto(text);
+		function goto(url) {
+			window.location = '//'+url;
+		}
 
-    this.setController({
-     url: 'http://rc1.demobo.com/v1/momos/browsertool?0614',
-     url: 'http://10.0.0.21:1240/v1/momos/browsertool?0614',
-     orientation: 'portrait'
-    });
+	}
+	// override the initialize function of Bobo
+	Browsertool.prototype.initialize = function() {
+		this.setInfo('iconClass', 'fui-earth')
+		this.setInfo('priority', 3);
 
-    this.setInputEventHandlers({
-     'demoboApp':   'onReady',
-     'navigateTo': 'navigateTo'
-    });
+		this.setController({
+			url : 'http://rc1.demobo.com/v1/momos/browsertool/control.html?0614',
+			url : 'http://10.0.0.21:1240/v1/momos/browsertool/control.html?0614',
+			orientation : 'portrait'
+		});
 
-  };
+		this.setInputEventHandlers({
+			'demoboApp' : 'onReady',
+			'navigateTo' : 'navigateTo'
+		});
 
-  // add this app to demoboPortal
-  window.demoboPortal.addBobo(Browsertool);
-  
+	};
+
+	// add this app to demoboPortal
+	window.demoboPortal.addBobo(Browsertool);
+
 })();

@@ -1,0 +1,171 @@
+html, body {
+	color: white;
+	-webkit-user-select: none;
+	overflow: hidden;
+	height: 100%;
+	padding: 0px;
+	background-color: #eee;
+	overflow: hidden;
+}
+a {
+	text-decoration: none;
+}
+#header {
+	background-color: #56B6E2;
+	padding: 0px;
+	height: 120px;
+}
+.container {
+	width: auto;
+	max-width: 680px;
+}
+
+.textbar {
+	padding: 10px;
+}
+.control-group > .input-icon.done-button {
+	top: 12px;
+	right: 5px;
+}
+.navbar-inner {
+	overflow-x: scroll;
+	overflow-y: hidden;
+	height: 28px;
+	min-height: 28px;
+	margin: 10px 0px 0px 0px;
+	background: transparent;
+}
+.navbar {
+	height: 50px;
+	min-height: 50px;
+}
+.nav {
+	margin-bottom: 0px;
+}
+.nav > li > a:hover {
+
+}
+.nav-tabs > .active > a, .nav-tabs > .active > a:hover {
+
+}
+.nav-tabs {
+	border-bottom: 1px solid #000;
+}
+.tab-pane {
+	color: #fff;
+	background: rgba(0,0,0,0);
+}
+.tab-pane .entry {
+	display: block;
+	text-decoration: none;
+}
+.tab-pane span {
+	font-size: 15px;
+	line-height: 26px;
+	display: inline-block;
+	position: relative;
+	letter-spacing: -1px;
+	-webkit-transition: all 0.2s ease-out;
+	-webkit-border-radius: 20px;
+	margin: 4px;
+	padding: 0px 5px;
+	background-color: #7f8c8d;
+}
+.tab-pane .entry span {
+	font-size: 20px;
+	line-height: 30px;
+}
+.tab-pane span.hover {
+	color: #666;
+}
+.btn-group button {
+	margin-right: 1px;
+}
+.tab-content {
+	border: none;
+	border-radius: 0px;
+	margin-bottom: 0px;
+	padding: 20px 20px 10px;
+	position: initial;
+	z-index: 1;
+}
+.iconbar.iconbar-horizontal {
+	background-color: transparent;
+	border-radius: 0px;
+	float: left;
+	/* padding: 10px; */
+	overflow-y: hidden;
+	position: absolute;
+	top: 63px;
+	margin: 0px;
+	height: 50px;
+}
+.iconbar.iconbar-horizontal > ul > li.active > a, .iconbar.iconbar-horizontal > ul > li > a {
+	width: 0px;
+	height: 0px;
+	padding: 0px;
+	margin: 0px 30px 0px 26px;
+}
+.iconbar-info > ul > li > a:hover, .iconbar-info > ul > li > a:focus {
+	color: #fff;
+}
+.iconbar-info > ul > li.active > a:hover, .iconbar-info > ul > li.active > a:focus {
+	color: #226491;
+}
+.control-group.info > .input-icon, .control-group.info input + .input-icon {
+	color: #226491;
+}
+#appendedInputButton-01 {
+	width: 230px;
+}
+.iconbar-horizontal > ul > li:first-child > a {
+	/* padding: 25px; */
+}
+.demo-social-buttons .btn {
+	clear: left;
+	float: inherit;
+	margin-bottom: 17px;
+}
+.btn img {
+	width: 13px;
+	height: 13px;
+	opacity: 0.8;
+	margin: 0px 3px 3px 3px;
+}
+
+.btn-social-pandora {
+	background-color: #1C518F;
+}
+.btn-social-lastfm {
+	background-color: #EA2A18;
+}
+.btn-social-rdio {
+	background-color: #4593CB;
+}
+.btn-social-douban {
+	background-color: #9dd6c5;
+}
+.btn-social-grooveshark {
+	background-color: #F79005;
+}
+.btn-social-npr {
+	background-color: #999999;
+}
+.btn-social-8tracks {
+	background-color: #122c4b;
+}
+.btn-social-youtube {
+	background-color: #EB4B4D;
+}
+.btn-social-vimeo {
+	background-color: #3395CA;
+}
+.btn-social-googledocs {
+	background-color: #999999;
+}
+.btn-social-slideshare {
+	background-color: #312f2d;
+}
+.btn:hover, .btn:focus {
+	background-color: #575757;
+}

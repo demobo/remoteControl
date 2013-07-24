@@ -4,6 +4,7 @@
   var Npr = Bobo.extend();
 
   Npr.prototype.initialize = function(){
+  		this.setInfo('priority',10);
   	//overwrites the 'setInputEventHandlers'
   		this.setInputEventHandlers = function(inputEventHandlers) {
 		var eventName, handlerName, hs, wrapper, _thisBobo;

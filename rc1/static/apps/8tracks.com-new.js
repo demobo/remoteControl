@@ -1,8 +1,9 @@
 (function() {
-  EightTrack = window.Bobo.extend(); 
+  var EightTrack = window.Bobo.extend(); 
 
   EightTrack.prototype.initialize = function(){
-    this.getInfo('config')['iconUrl'] = 'test2.png';
+    this.setInfo('priority', 2);
+    this.setInfo('iconClass', 'fui-play-circle');
 
 		this.setController( {
 			url : "http://rc1.demobo.com/rc/8tracks?0926"
@@ -20,6 +21,9 @@
 		});
 
 		this.setupSongUpdateListener();
+    if (jQuery('#player_box').css('display')==='none'){
+      jQuery('#play_overlay').click();     
+    }
 	}
 
 	// ********** custom event handler functions *************
@@ -32,10 +36,16 @@
 	};
 
 	EightTrack.prototype.next = function() {
-		jQuery('#player_skip_button').click();
+		if (jQuery('#player_skip_button').css('display') === 'none'){
+      jQuery('#next_mix_button').click();
+    }else{
+      jQuery('#player_skip_button').click(); 
+    }
+    this.sendNowPlaying();
 	};
 
 	EightTrack.prototype.love = function() {
+    jQuery('#mix_player_details .mix_like').click();
 	};
 
 	EightTrack.prototype.spam = function() {
@@ -66,11 +76,11 @@
 		// data updates
 		var _this = {
 			target : document.body,
-			oldValue : jQuery('.cover').attr('src')
+			oldValue : jQuery('.title_artist .t').text()
 		};
     var obj = this;
 		_this.onChange = function() {
-			var newValue = jQuery('.cover').attr('src');
+			var newValue = jQuery('.title_artist .t').text();
 			if (newValue && _this.oldValue !== newValue) {
 				_this.oldValue = newValue;
 				obj.refreshController.apply(obj, []);
@@ -88,8 +98,8 @@
 			return null;
 		var imgURL = jQuery('.cover').attr('src');
 		return {
-			'title' : jQuery('.title_artist .t').text(),
-			'artist' : jQuery('.title_artist .a').text(),
+			'title' : jQuery('#now_playing .title_artist .t').text(),
+			'artist' : jQuery('#now_playing .title_artist .a').text(),
 			'album' : '',
 			'image' : imgURL
 		};
@@ -97,20 +107,21 @@
 
 	EightTrack.prototype.getStationList = function() {
 		var toReturn = [];
-//		jQuery.each(jQuery('#recentStationsList li'), function(index, elem) {
-//			var s = {
-//				'title' : jQuery(elem).text().trim()
-//			};
-//			if (index == 0)
-//				s.selected = true;
-//			toReturn.push(s);
-//		});
+		jQuery.each(jQuery('#sidebar .mix a img'), function(index, elem) {
+			var s = {
+				'title' : jQuery(elem).attr('alt')
+			};
+			if (index == 0)
+				s.selected = true;
+			toReturn.push(s);
+		});
 		return toReturn;
 	};
 
 	EightTrack.prototype.chooseStation = function(index) {
 		index = parseInt(index);
-//		jQuery(jQuery('#recentStationsList li a span')[index]).click();
+		jQuery(jQuery('#sidebar .mix a img')[index]).click();
+    setTimeout(function(){jQuery('#play_overlay').click();}, 1000);
 	};
 
 	EightTrack.prototype.getCurrentStationIndex = function() {

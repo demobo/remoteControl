@@ -1,27 +1,31 @@
 (function() {
-  Rdio = window.Bobo.extend();
+  var DEBUG = true;
+  var Rdio = window.Bobo.extend();
 	
   Rdio.prototype.initialize = function(){
+    this.setInfo('priority', 2);
+    this.setInfo('iconClass', 'fui-play-circle');
+
 	  this.setInfo('ui', {
 		  playPauseButton: 	'#playButton:visible, #pauseButton:visible, .footer .play_pause',
 		  playButton: 		'#playButton, .footer .play_pause.playing',
 		  pauseButton: 		'#pauseButton, .footer .play_pause:not(.playing)',
-		  nextButton: 		'#nextButton, .footer .next',
-		  previousButton: 	'#previousButton, .footer .prev',
+		  nextButton: 		'.next',
+		  previousButton: 	'.prev',
 		  likeButton: 		'',
 		  dislikeButton:		'',
 		  volume:				'.Slider.volume',
-		  title: 				'#playerNowPlayingTitle, .footer .song_title',
-		  artist: 			'#playerNowPlayingArtist, .footer .artist_title',
+		  title: 				'.bottom .song_title',
+		  artist: 			'.bottom .artist_title',
 		  album: 				'#playerNowPlayingAlbum, .footer .album_title',
-		  coverart: 			'#playerNowPlayingImage, .footer .album_icon',
-		  songTrigger: 		'#player_container, .footer',
+		  coverart: 			'.bottom .queue_art',
+		  songTrigger: 		'.bottom',
 		  stationTrigger: 	'.App_MainNav_Rdio',
 		  selectedStation:	'.App_MainNav_Rdio li.selected',
 		  stationCollection:	'.App_MainNav_Rdio li a',
 		  albumCollection:	'.InfiniteScroll:visible .Album',
 		  playlistTrigger: 	''
-	  };
+	  });
     	
 		this.setController( {
 			url : 'http://rc1.demobo.com/rc/rdio?1023'
@@ -37,7 +41,7 @@
 			'volumeSlider' : 	  'setVolume',
 			'stationItem' : 	  'chooseStation',
 			'playAlbum' :	    	'playAlbum',
-			'demoboApp' : 		  'onReady
+			'demoboApp' : 		  'onReady'
 		});
 
 		this.setupSongTrigger();
@@ -47,7 +51,6 @@
 	// ********** custom event handler functions *************
 	Rdio.prototype.onReady = function () {
 		this.refreshController();
-		hideDemobo();
 	};
 
 	Rdio.prototype.playPause = function () {
@@ -91,8 +94,8 @@
 
 	Rdio.prototype.playAlbum = function (index) {
 		index = parseInt(index);
-		$($(this.getInfo('ui').albumCollection)[index]).mouseenter().mouseover();
-		$($(this.getInfo('ui').albumCollection + ' .PlayButton')[index]).click();
+		$($(this.getInfo('ui').albumCollection+' .album_image')[index]).mouseenter();
+		$($(this.getInfo('ui').albumCollection)[index]).find('.PlayButton').click();
 	};
 
 	/* helpers */
@@ -104,10 +107,10 @@
 			oldValue : $(this.getInfo('ui').coverart).attr('src')+$(this.getInfo('ui').title).text()+$(this.getInfo('ui').artist).text()
 		};
 		var onChange = function() {
-			var newValue = $(this.getInfo('ui').coverart).attr('src')+$(this.getInfo('ui').title).text()+$(this.getInfo('ui').artist).text();
+			var newValue = $(rdio.getInfo('ui').coverart).attr('src')+$(rdio.getInfo('ui').title).text()+$(rdio.getInfo('ui').artist).text();
 			if (newValue && _this.oldValue !== newValue) {
 				_this.oldValue = newValue;
-				rdio.refreshController();
+				rdio.refreshController.apply(rdio, []);
 			}
 		};
 		var delay = function() {
@@ -128,7 +131,7 @@
 			var newValue = $(ui.selectedStation).text();
 			if (newValue && _this.oldValue !== newValue) {
 				_this.oldValue = newValue;
-				rdio.sendStationList();
+				rdio.sendStationList.apply(rdio, []);
 			}
 		};
 		var delay = function() {
@@ -138,9 +141,11 @@
 	};
 
 	Rdio.prototype.getNowPlayingData = function () {
+    DEBUG && console.log('getnowplayingdata called');
     var ui = this.getInfo('ui');
 		if (!$(ui.title).text()) return null;
 		var imgURL = $(ui.coverart).attr('src');
+    DEBUG && console.log(imgURL);
 		return {
 			'title' : $(ui.title).text(),
 			'artist' : $(ui.artist).text(),

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" />
+		<script src="http://api.demobo.com/jquery.kinectic.min.js"></script>
+        <script>
+        	$(document).ready(function(){
+				non480x320Adjust();
+				$('img.albumArt').bind('load', flipAlbumArt);
+				$('#volumeButton').click(function(){$('#volumeSlider').val(0);$('#volumeSlider').slider('refresh');});
+				var notmoving;
+				$('#touchcarouselFrame').on('touchstart mousedown', '.carouselItem', function(e){
+					notmoving = true;
+					$(this).one('touchend mouseup', function(e){
+						if (notmoving) demobo.mobile.fireInputEvent('playAlbum', $(this).index());
+					});
+				});
+				$('#touchcarouselFrame').on('touchmove mousemove', '.carouselItem', function(e){
+					notmoving = false;
+				});
+				if (!demobo.mobile.isAndroid()) {
+					$('#touchcarouselFrame').kinetic({
+						triggerHardware: true,
+	                    y: false
+	                });	
+				}
+			});
+			function non480x320Adjust() {
+				var screenHeight = $(window).height();
+				// zoomAdjust for non iphones
+                $('#header, #touchcarouselFrame, #frame').css('zoom', screenHeight / 320);
+                // jquery mobile input range is not working with zoom
+                $('.volumeControl').css('zoom', 320 / screenHeight);
+			}
+            function loadSongInfo(songs){
+				if ($.isArray(songs)) {
+                    var song = songs[0];
+                    var nextSong = songs[1];
+                }
+                else 
+                    var song = songs;
+				$('#songName').text(song.title);
+                $('#artist').text(' - ' + song.artist);
+                $('img.newAlbumArt').attr('src', song.image);
+            }
+            //function handler of img onload event
+            function flipAlbumArt(){
+                $('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function(){
+                    $('img.albumArt').toggleClass('currentAlbumArt newAlbumArt')
+                    setTimeout(function(){
+                        $('img.currentAlbumArt').toggleClass('to90 to0');
+                    }, 0);
+                    $(this).unbind('webkitTransitionEnd');
+					if ($('#listTab').css('left') == '80px') {
+	                    $('#listTab').animate({
+	                        'left': '480px'
+	                    }, 'slow');
+	                }
+                });
+            }
+            function loadChannelList(items){
+                $('#stationItem').html('');
+                for (var i = 0; i < items.length; i++) {
+					var option = $('<option value="' + i + '">' + items[i].title + '</option>');
+                    $('#stationItem').append(option);
+					if (items[i].selected) setCurrentChannel(i);
+                }
+            }
+			function setCurrentChannel(index) {
+				$('#stationItem').val(index);
+				$('#stationsTab .ui-btn-text').html($('#stationItem option')[index].text + " &#9660;");
+			}
+			function loadAlbumCollection(items) {
+				$('#touchcarousel').empty();
+				for (var i = 0; i < items.length; i++) {
+					var item = $('<div class="carouselItem"><img src="'+items[i].image+'"><div class="album">'+items[i].album+'</div><div class="artist">'+items[i].artist+'</div></div>');
+					$('#touchcarousel').append(item);
+				}
+			}
+			
+        </script>
+    </head>
+    <body>
+    	<div id="main" data-role=page>
+    		<div id="header" data-role="header" data-position=fixed>
+                <div data-role=navbar>
+                    <ul>
+                        <li>
+                            <a href=# id="stationsTab" value="stations">Stations &#9660;</a>
+                            <div id="stationSelect">
+                                <select id="stationItem">
+                                </select>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+			<div id="touchcarouselFrame">
+				<div id="touchcarousel">
+				</div>
+			</div>	
+	        <div id='frame' class="page">
+	            <div id='content'>
+	            	<div class="albumArtFrame">
+		                <img class='albumArt currentAlbumArt to0'/>
+						<img class='albumArt newAlbumArt to90' />
+					</div>
+	                <div id='controlPanel'>
+	                    <div id='songName'>
+	                    </div>
+						<div id='artist'>
+	                    </div>
+						<div class="playbackControl">
+							<a id="previousButton" onclick="" class="previousButton button" value="previous"></a>
+	                        <a id="playButton" onclick="" class="playButton button" value="play"></a>
+		                    <a id="nextButton" onclick="" class="nextButton button" value="next"></a>
+							<div class="volumeControl row">
+			                    <div class="volumeButton" id="volumeButton"></div>
+								<div class="volumeBackground"></div>
+			                    <input name="slider" id="volumeSlider" value="50" min="0" max="100" data-highlight="true" type="range" />
+			                </div>
+						</div>
+	                </div>
+	            </div>
+	        </div>
+		</div>
+		<style>        
+            body {
+				height: 340px;
+                width: 100%;
+                overflow: hidden;
+                font-family: "lucida grande",tahoma,verdana,arial,sans-serif;
+                background: white;
+				-webkit-user-select: none;
+            }
+			#stationsTab {
+				border: none;
+				color: #4B5C66;
+				background: white;
+			}
+            #stationSelect {
+                position: absolute;
+                width: 100%;
+				top: 0px;
+                opacity: 0;
+                z-index: 1111;
+            }
+			.ui-select .ui-btn select {
+                font-size: 20px;
+            }
+            #main {
+				overflow: hidden;
+				white-space: nowrap;
+			}
+            #frame {
+                background-color: white;
+                position: absolute;
+				bottom: 0px;
+                width: 100%;
+                height: 30%;
+				margin: 0px auto;	
+				border-top: 1px grey solid;		
+            }
+		
+            .page {
+                display: inline-block;
+                vertical-align: top;
+                width: 100%;
+            }
+            .to90 {
+                -webkit-transform: rotate3d(0, 1, 0, 90deg);
+            }
+            
+            .to0 {
+                -webkit-transform: rotate3d(0, 1, 0, 0deg);
+            }
+            
+            img {
+                -webkit-transition: -webkit-transform 1s ease-in-out;
+            }
+            
+            .currentAlbumArt {
+                display: block;
+            }
+            
+            .newAlbumArt {
+                display: none;
+            }
+            #content {
+              position:relative;
+              background-color:white;
+              -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.2);
+			  margin: auto;
+            }
+            
+            #controlPanel img {
+              margin-left:10px;
+            }
+            .albumArtFrame {
+            	height: 72px;
+				width: 72px;
+				padding: 14px;
+            }
+            .albumArt {
+              	height: 70px;
+				width: 70px;
+				border: grey 1px solid;
+            }
+            
+            #controlPanel {
+              	width: 100%;
+				height: 100%;
+				position: absolute;
+				top: 0px;
+				padding-left: 100px;
+            }
+            
+            #artist {
+	            font-size: 21px;
+				padding-top: 15px;
+				color: #89949B;
+				display: inline-block;
+				height: 25px;
+            }
+            
+            #songName {
+	            display: inline-block;
+				color: #4B5C66;
+				font-size: 21px;
+				height: 25px;
+            }
+			
+			/* assets */       
+			.playButton {
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAHJQTFRFiZSbiZKbhpSdiZSbiZObiZSciJKYiZSbipSaiJOZhJeXgICAiZCdipGYiZObh5Sbh5OZqqqqh5KaiZSbiZSbiZObiZSbiZSbiZSci5eXiZSbiJObh5GciZObjo6cipWciJObiZSbmZmZgJKSAAAAiZSbJc5K0wAAACV0Uk5T/m452MmiL7pMLRsCJyXtZnEDRPrnYdGPsRaz10j5Eono8AUOAEu6sEYAAABoSURBVDjL7dNHEoNQDETBTzDRJmdMZu5/RY7w2LBD6y6VpCmZk8u85rY5bpg1zdFITcFG6r5sVLYzGimxdjSSE7CR/JCNNo+M+UTUx7VpnqqOYa9pOeg+w4/uPP4pry3bMff+/a/HzAVUC6n8/MhvBQAAAABJRU5ErkJggg==);
+			}
+				
+            .playButton:hover {
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAHJQTFRFaHV8gICAaHV+aHF7aHR9aHV+aHV+Znd9aHR+Z3J9aHV+Z3R9aHV+Z3Z/Z3R+aHV/aHV+aHV+aHSAaHV+aHV+aHV+Z3Z9aHV/Z3V8Z3V8aXR8aHV+Y3GAaXZ8aHV/aHV+VVVVaHV+ZmZmbW2AAAAAaHV+9wwXNwAAACV0Uk5TTAL+G27J2C2iL7o5cY9hiej6Fuf50WaxJUhE1xIns+0D8AUOABxF2u8AAABoSURBVDjL7dNHEoNQDETBTzDRJmdMZu5/RY7w2LBD6y6VpCmZk8u85rY5bpisWdFI9cBGaic2yn9/NNLi7mgkz7CRIp+NtpCMHTjU5xPTPGViwV5VetB95o7uPPaU1/bdMffi/a/HzAWBOan8KAlxawAAAABJRU5ErkJggg==);
+            }
+            
+            .playButton:active {
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAHJQTFRFNkdRN0ZPOEZPNkhRN0ZPOEZPN0dPN0ZQNkZNOURPAICAOUJMNkZPN0dPN0ZOOEdQOUdON0ZPOkZRN0dPN0dPVVVVN0ZPN0dPN0ZON0VMOEZQOEZPOUdVNEhON0dPOEdPN0ZPN0ZPMzNmN0lJAAAAN0ZPMYxAoQAAACV0Uk5TL/5uOdjJorpMLQIbcWGPiUj6Fuf5A+2xZiWz1xIn0UTo8AUOAGO0aUAAAABoSURBVDjL7dNHEoNQDETBTzDRJmdMZu5/RY7w2LBD6y6VpCmZk8u85rY5bpi1q9FI88JGaic2ypM/GqmxdzSSG7CR/JCNNkPG8mLq83FonvIXwV5VetB9hp7uPGaU1/bdMffi/a/HzAWZrqn8RDsiLAAAAABJRU5ErkJggg==);
+            }
+            
+            .pauseButton {
+				background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjAQMAAAAkFyEaAAAABGdBTUEAALGPC/xhBQAAAAZQTFRFAAAAiZSbOXOcEgAAAAF0Uk5TAEDm2GYAAAATSURBVAjXY2CgBMjzN9CIJB8AACnhCjO1CGzvAAAAAElFTkSuQmCC);
+            }
+            
+            .pauseButton:hover {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjAQMAAAAkFyEaAAAABGdBTUEAALGPC/xhBQAAAAZQTFRFAAAAaHV+Blby3wAAAAF0Uk5TAEDm2GYAAAATSURBVAjXY2CgBMjzN9CIJB8AACnhCjO1CGzvAAAAAElFTkSuQmCC);
+            }
+            
+            .pauseButton:active {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAGZQTFRFaHV+aHV+ZnV+Z3R9aHV+aneAaXV9aHV+aHR9aXV/aHV+aHF7aXR+aHV+aHV+aHZ+aHZ/Z3R9aHSAaHV/ZHp6aXV/ZnOAgICAaHV+aHR8aHZ+VVVVZmZmaHV+ZnB6aHV+AAAAaHV+hp82BQAAACF0Uk5T39NrcvE6P/Buo/IbdePu0Kc5Fp0XoTwEpELOAwXVGf4AepS3AgAAAIpJREFUOMvtkskOgzAMRENLN2gLtGULSzz//5OUxFxIrB7LgTk9aZ4cS46i31G78yen82BxAIZCM5y04LzexsGnNAg63eEJC/X1AgSdQgO2qjKGtTM/YzPeGHxHgfNYwHfmLd2cRpzzXSPi6jyIDtXH2FX9PZEcorFhSHPRIWqHNQTu1Xuw/+ftOBNWw5blHaVb+wAAAABJRU5ErkJggg==);
+            }
+            
+            .nextButton {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAGNQTFRFiZSciZWbiJSbiZSbiJSaipSciJWZhJeXiZSbiZSbiZScipSciZSciZSbiZSbiZSbi5eXipScipKbipWbhZCbi5SdgICAiZSbiZWbqqqqhY+Zh5ObipScmZmZiZSbAAAAiZSbfTUFSwAAACB0Uk5T39Nr7nLxPBvwdael0G7j8hadPaEXOQSkzgMZQtUF/gBnKbIJAAAAeUlEQVQ4y+3SuQ6AIBBFUdx3Bdz39/9faYxjoWRiZyykOsUNAwSxPi/xN+82vQGz6fwTNQG4N1jKiqAk1wBh1hxw7J5rgFQT9oFMg6UdCEpyDZCfEM/7lBXTTCPB0sx5img+4LkNc684ICQD8z77mCvMZjbw/+cPNhvJVZI1Auy4ggAAAABJRU5ErkJggg==);
+            }
+            
+            .nextButton:hover {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAGNQTFRFaHV+aHV+ZnV+Z3R9aHV+aHV+aHR9aHV+aHZ+aHF7aHV/aHV+ZnOAaHV+aXR+aHZ/aHSAaXV9aHV/aXV/Z3R9ZHp6gICAaHV+aHZ+VVVVZmZmaHV+ZnB6aHR8aHV+AAAAaHV+EPpadwAAACB0Uk5T39Nrcu7xbuPQG6XwPPJ1pxY9naE5FwSkzgMF1RlC/gCjdCSdAAAAeUlEQVQ4y+3SuQ6AIBBFUdx3Bdz39/9faYxjoWRiZyykOsUNAwSxPi/xN+82vQGz6dITFQG4N1jKmqAl1wCJ3xxw7Z5rgFAR9oFMg6WdCFpyDRCcEM/7lDXTjDPBUsx5snw44DkNc68iIsQT8z77mCvMZjDw/+cPNhvKvZI1FB9GbgAAAABJRU5ErkJggg==);
+            }
+            
+            .nextButton:active {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAGNQTFRFN0ZPOEZPN0VPN0dPOEVON0ZPOUJMN0ZPNkZON0ZPN0RROEZPN0ZON0dPOEZPN0ZPOkZRN0ZQN0NONkdPNkhRN0ZPQEBAOEZPOEdPVVVVNkZNM0dSN0dPMzNmN0ZPAAAAN0ZPXczwuwAAACB0Uk5T39Nr7nLxG6d14zxu0PKl8BadFz05oQSkzgNCGdUF/gA9PsLtAAAAeUlEQVQ4y+3SuQ6AIBBFUdx3Bdz39/9faYxjoWRiZyykOsUNAwSxPi/xN+82vQGz6eITFQG4N1hqTVCSa4AiaQ44ds81QFoS9oFMg6UdCUpyDRCdEM/71JpppoFglcx5snA+4LkNc6/AJ+Qj8z77mCvMZjbw/+cPNhvQP5I1FL9sowAAAABJRU5ErkJggg==);
+            }
+			
+			.previousButton {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAGZQTFRFiZSciZWbiJSbiJSaiZSciJWaipScipWbiZSbiZSbiZSbhJeXiZSbiZSbiZSbiZScipKaipSci5eXipWbhZCbi5SdiJWZgICAiZSbh5ObiZWbqqqqhY+ZmZmZipSciZSbAAAAiZSbqF90ZgAAACF0Uk5T39Nrcqc68aNu8PIbdePu0D+dFqEXOTwEpELOAxkF1f4A4IsTOQAAAIpJREFUOMvtkskOgzAMRMNSSukCLVBo2Dz//5OUxFxIrB7LgTk9aZ4cS46i31GH8yenc2B1AIZaM5y04Lyek4WqnOB1uvABA016AbxOrQFTvXOGrbM8Y9KfGVxHgXNfwXWWLe2cVpzzXSPgqhhFh5oosdVwyySHqG8ZrrHoEH3GLXjuNThw/Of9ODNZkZblozQfcQAAAABJRU5ErkJggg==);
+            }
+            
+            .previousButton:hover {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAGZQTFRFaHV+aHV+ZnV+Z3R9aHV+aneAaXV9aHV+aHR9aXV/aHV+aHF7aXR+aHV+aHV+aHZ+aHZ/Z3R9aHSAaHV/ZHp6aXV/ZnOAgICAaHV+aHR8aHZ+VVVVZmZmaHV+ZnB6aHV+AAAAaHV+hp82BQAAACF0Uk5T39NrcvE6P/Buo/IbdePu0Kc5Fp0XoTwEpELOAwXVGf4AepS3AgAAAIpJREFUOMvtkskOgzAMRENLN2gLtGULSzz//5OUxFxIrB7LgTk9aZ4cS46i31G78yen82BxAIZCM5y04LzexsGnNAg63eEJC/X1AgSdQgO2qjKGtTM/YzPeGHxHgfNYwHfmLd2cRpzzXSPi6jyIDtXH2FX9PZEcorFhSHPRIWqHNQTu1Xuw/+ftOBNWw5blHaVb+wAAAABJRU5ErkJggg==);
+            }
+            
+            .previousButton:active {
+                background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAAGZQTFRFN0ZPOEZPN0VPOEVONUZPN0dPN0ZPN0ZPOEZPN0ZQN0ZPOUJMNkZON0ZPN0dPN0ZOOUVNNkhROkZRN0ZQN0NON0ZPN0RRQEBAOEZPNkZNOEdPVVVVN0dPMzNmM0dSN0ZPAAAAN0ZP9fxGewAAACF0Uk5T39Nrcjryp/Buo/EbdePu0D85Fp0XoTwEpELOA9UFGf4AwPS03wAAAIpJREFUOMvtkskOgzAMRENLN2gLtGULSzz//5OUxFxIrB7LgTk9aZ4cS46i31G78yen82BxAIZCM8RacF5v4+BTGgSd7vCEhfp6AYJOoQFbVRnD2pmfsRlvDL6jwHks4Dvzlm5OI875rhFxlfeiQ/UxcdVwP0kO0dgwpGfRIWr7NQTuNXiw/+ftOBNYZ5bl2qLNPwAAAABJRU5ErkJggg==);
+            }
+			
+			.button {
+                display: inline-block;
+				width: 50px;
+				height: 50px;
+				background-repeat: no-repeat;
+				background-size: 50px 50px;
+				margin: 0px 0px 0px 0px;
+				vertical-align: middle;
+            }
+			.playbackControl {
+				bottom: 5px;
+				position: relative;
+			}
+			
+			/* volume control */
+			.volumeButton {
+                width: 40px;
+                height: 40px;
+				background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACMAAAAjCAMAAAApB0NrAAAABGdBTUEAALGPC/xhBQAAALRQTFRFh4+XiJKaiZSbh5aWiZSaipWciZKbh5ObiZObiZKbiZWZgJ+fh5OZiZKZiZWbiZSciZSbipWciJOaiZSbipWfhpKeiZObiZKciZSbipKbiZWciJSbipSciZKbipSbiZSbipScgJmZiZSbi5eXh5WaiZWbhpSaiZSbhY+Zh5KciZSbiZSbiZSbiZSajZWeiJOaipSaipSZiZSbiZSbiJmZipWbqqqqiZSbh5SaiZSbAAAAiZSbuqawkwAAADt0Uk5TIGXyEXeOUkJhHEEIcWwpy/ZIR/oYFYA26z2Ta2Q45OKYCvAWNVQm4Rkx5fP8eR1tTDKe1A+7A/5R9ADcxMwTAAAAk0lEQVQ4y+3SNxbCQAwE0CXnnKPJOTpgW3P/e2HxKJEoobCKUfObHa2h72Ni8xuz4xiONbPfRvFwMJJNEIKXW2tNJHP2EZlqkUzd+2TwHiI7WSDbb6smhzQl0FBNChnKIlBNBXkqY6CarlMiL5wL77qe2LgdamIm9nM7vvrp9a2l3PP9wD1PFyvtXheO9Sb+z/9pntsdDv1h/+VaAAAAAElFTkSuQmCC) no-repeat;
+                background-size: 50px 50px;
+                display: inline-block;
+                top: -4px;
+				left: 5px;
+				position: relative;
+            }
+            .volumeControl {
+				width: 200px;
+				height: 50px;
+				-webkit-border-radius: 28px;
+				display: inline-block;
+				vertical-align: middle;
+				margin: 0px 10px;
+				position: relative;
+			}
+			.volumeBackground {
+				width: 145px;
+				height: 15px;
+				background: #E9EDEE;
+				position: absolute;
+				top: 20px;
+				left: 54px;
+				-webkit-border-radius: 28px;
+			}
+			.volumeControl input.ui-slider-input {
+                display: none !important;
+            }
+			
+			.volumeControl div.ui-slider {
+				width: 140px;
+				height: 15px;
+				margin: 0px 0px 0px 10px;
+				padding: 15px 0px;
+				top: 5px;
+				left: 0px;
+				position: relative;
+				background: none;
+				border: none;
+			}
+			.volumeControl div.ui-slider-bg.ui-btn-active {
+		    	background: #C7D1D6;
+		    }
+			
+			.volumeControl .ui-controlgroup a.ui-slider-handle, a.ui-slider-handle {
+				display: none;
+			}
+			.volumeControl .ui-shadow {
+				-moz-box-shadow: none;
+				-webkit-box-shadow: none;
+				box-shadow: none;
+			}
+			/* end of volume control */
+						
+			#touchcarouselFrame {
+				background-color: white;
+                position: absolute;
+				top:37px;
+                width: 100%;
+                height: 185px;;
+				overflow-x: scroll;
+			}
+			#touchcarousel {
+                height: 100%;
+			}
+			#touchcarousel .carouselItem img {
+				width: 130px;
+				height: 130px;
+				margin: 10px 10px 0px 10px;
+				border: 1px grey solid;
+			}
+			.carouselItem {	
+				display: inline-block;
+			}
+			#touchcarousel .carouselItem div {
+				width: 140px;
+				text-overflow:ellipsis;
+				white-space:nowrap;
+				overflow: hidden;
+				margin: 0px 10px;
+				font-size: 12px;
+				color: #4B5C66;
+			}
+			#touchcarousel .carouselItem div.artist {
+				color: #89949B;
+			}
+			.draggable {
+				position: absolute;
+			}
+        </style>
+    </body>
+</html>

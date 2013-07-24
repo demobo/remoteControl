@@ -1,8 +1,10 @@
 (function(){
-  Lastfm = window.Bobo.extend();
+  var DEBUG = false;
+  var Lastfm = window.Bobo.extend();
   
   Lastfm.prototype.initialize = function(){
-    this.getInfo('config')['iconUrl'] = 'test2.png';
+	  this.setInfo('priority', 2);
+    this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
       url: 'http://rc1.demobo.com/rc/lastfm?0201'      
@@ -44,7 +46,6 @@
 		  playlistTrigger: 	''
 
     });
-
 
     this.setupSongTrigger();
     this.setupStateTrigger();
@@ -91,7 +92,7 @@
 		var nowplayingdata = this.getNowPlayingData();
 		if (!nowplayingdata)
 			return;
-		this.callFunction('loadSongInfo', this.nowplayingdata);
+		this.callFunction('loadSongInfo', nowplayingdata);
 		this.callFunction('setCurrentChannel', this.getCurrentStationIndex());
 	};
 
@@ -132,8 +133,14 @@
 	Lastfm.prototype.setupStateTrigger = function() {
     var ui = this.getInfo('ui');
     var lastfm = this;
-		jQuery(ui.volume).on('drag mouseup', function(){lastfm.syncState.apply(lastfm, [])});
-		jQuery(document).on('click', ui.playPauseButton, function(){lastfm.syncState.apply(lastfm, [])});
+		jQuery(ui.volume).on('drag mouseup', 
+			function(){
+				lastfm.syncState.apply(lastfm, []);
+			});
+		jQuery(document).on('click', ui.playPauseButton, 
+			function(){
+				lastfm.syncState.apply(lastfm, []);
+			});
 	};
 
 	Lastfm.prototype.getNowPlayingData = function() {
@@ -175,7 +182,7 @@
 	};
 
 	Lastfm.prototype.sendStationList = function() {
-		this..callFunction('loadChannelList', this.getStationList());
+		this.callFunction('loadChannelList', this.getStationList());
 	};
 
 	Lastfm.prototype.getLFMControls = function() {
@@ -187,7 +194,7 @@
 	};
 	
 	Lastfm.prototype.syncState = function(e) {
-    var lasfm = this;
+    var lastfm = this;
 		setTimeout(function() {
 			curState = {isPlaying: lastfm.getIsPlaying(), volume: lastfm.getVolume()};
 			lastfm.callFunction('syncState', curState);
@@ -203,5 +210,5 @@
 		return parseInt(this.getLFMControls().volume);
 	};
 
-  window.demoboPorta.addBobo(Lastfm);
+  window.demoboPortal.addBobo(Lastfm);
 })();

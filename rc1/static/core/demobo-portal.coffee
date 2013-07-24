@@ -1,5 +1,5 @@
 ###
-// demobo-portal.js 1.0.0
+// demobo-portal.js 0.9.2
 
 // (c) 2013 Jiahao Li, de Mobo LLC
 ###
@@ -29,7 +29,7 @@ if not window.demoboLoading
     // ---------------
     // Current version
     ###
-    version = '1.0.0'
+    version = '0.9.2'
 
     base = window.demoboBase+'/apps/'
     connectScript = window.demoboBase+'/core/connect.js'
@@ -38,21 +38,23 @@ if not window.demoboLoading
     // This sets the routing of controllers for websites (currently hardcoded)
     ###
     remotes = 
-      'www.pandora.com':     'pandora.com-new.js'
-      'douban.fm':           'douban.fm-new.js'
-      'www.youtube.com':     'youtube.com-new.js'
-      'www.last.fm':         'last.fm-new.js'
-      '8tracks.com':         '8tracks.com-new.js'
-      'vimeo.com':           'vimeo.com-new.js'
-      'youku.com':           'youku.com-new.js'
-      'www.rdio.com':        'rdio.com-new.js'
-      'grooveshark.com':     'grooveshark.com-new.js'
-      'play.spotify.com':    'spotify.com-new.js'
-      'sfbay.craigslist.org':'yelp.com.js'
-      'www.yellowpages.com': 'yelp.com.js'
-      'www.foodspotting.com':'yelp.com.js'
-      'www.urbanspoon.com' : 'yelp.com.js'
-      'foursquare.com':      'yelp.com.js'
+      '^http://www\\.pandora\\.com':     'pandora.com-new.js'
+      '^http://douban\\.fm':           'douban.fm-new.js'
+      'www\\.youtube\\.com':     'youtube.com-new.js'
+      'www\\.last\\.fm\/listen':         'last.fm-new.js'
+      '8tracks\\.com':         '8tracks.com-new.js'
+      'vimeo\\.com':           'vimeo.com-new.js'
+      'youku\\.com':           'youku.com-new.js'
+      'www\\.rdio\\.com':        'rdio.com-new.js'
+      'www\\.slideshare\\.net':  'slideshare.net-new.js'
+      'docs\\.google\\.com\/presentation':     'docs.google.com-new.js'
+      'grooveshark\\.com':     'grooveshark.com-new.js'
+      'play\\.spotify\\.com':    'spotify.com-new.js'
+      'sfbay\\.craigslist\\.org':'yelp.com.js'
+      'www\\.yellowpages\\.com': 'yelp.com.js'
+      'www\\.foodspotting\\.com':'yelp.com.js'
+      'www\\.urbanspoon\\.com' : 'yelp.com.js'
+      'foursquare\\.com':      'yelp.com.js'
 
     ###
     // definitions of utilities 
@@ -165,7 +167,8 @@ if not window.demoboLoading
     
         defaultConfig = 
           'developer': 'developer@demobo.com'
-        
+
+        @boboInfos['priority'] = 1   
         @boboInfos['config'] = defaultConfig
         @boboInfos['boboID'] = null
         @boboInfos['connectedDevices'] = {}
@@ -351,9 +354,10 @@ if not window.demoboLoading
       // Get current website's remote control url
       ###
       getRemote: ()->
-        domain = document.domain
+        url = document.URL
         for key, val of remotes
-          if key is domain
+          pat = new RegExp(key)
+          if pat.test(url)
             return val
         return null
 
@@ -364,6 +368,7 @@ if not window.demoboLoading
         toReturn = 
           'input': base+'inputtool-new.js'
           'dummy': base+'dummy.js'
+          'browsertool': base+'browsertool-new.js'
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote
@@ -398,6 +403,12 @@ if not window.demoboLoading
         window.DEMOBO.init = ()->
         window.demobo.start()
 
+        window.addEventListener('focus', ()->
+          setTimeout(()->
+            window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
+          , 1000)
+        )
+
         for name, route of boboRoutes
           loadJS(route)
         
@@ -408,8 +419,9 @@ if not window.demoboLoading
       ###
       addExistentDevice: (data)->
         deviceID = data.deviceID
-        this.setDeviceController(this.get('curBobo'), deviceID)
-        this.addDevice(deviceID)
+        if deviceID not in Object.keys(this.get('deviceBoboMap'))
+          this.setDeviceController(this.get('curBobo'), deviceID)
+          this.addDevice(deviceID)
 
       ###
       // Make an rpc on the device. if `deviceID` is not specified, make the rpc on all devices connected to the specified bobo 
@@ -429,7 +441,6 @@ if not window.demoboLoading
       addEventListener: (eventName, handler, boboID)->
         handlers = this.get('eventHandlers')
         dispatcher = handlers[eventName]
-        console.log(dispatcher?)
         if dispatcher?
           handlers[eventName].addHandler(boboID, handler)
         else
@@ -466,7 +477,6 @@ if not window.demoboLoading
           boboInfos.push(info)
         
         toSend['bobos'] = boboInfos
-        console.log(toSend)
         return @demobo.setController(toSend, deviceID)
       
       ###
@@ -540,7 +550,9 @@ if not window.demoboLoading
 
         newBobo = this.get('bobos')[boboID]
         this.set('curBobo', newBobo)
-        this.setDeviceController(newBobo)
+
+        for deviceID in devices
+          this.setDeviceController(newBobo, deviceID)
 
         newBobo.resume()
         return true
@@ -575,6 +587,8 @@ if not window.demoboLoading
             setTimeout(()->
               window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
             , 1000)
+          else if boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority')
+            this.switchBobo(boboObj.getInfo('boboID'))
            
           #this.setController(boboObj.getInfo('controller'))
           this.trigger('add:bobos', boboID, boboObj)
@@ -627,6 +641,7 @@ if not window.demoboLoading
     // instantiate a `DemoboPortal` object and expose to global use
     ###
     loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
+
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
     

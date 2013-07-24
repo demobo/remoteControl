@@ -12,8 +12,12 @@ function PhoneListCtrl($scope, $http) {
 
 //PhoneListCtrl.$inject = ['$scope', '$http'];
 
-function MicrodataListController($scope) {
-  $scope.microdata = data;
+function MicrodataListController($scope, phoneService) {
+  $scope.source = {};
+  $scope.origin = {};
+  $scope.microdatas = [];
 }
+
+MicrodataListController.$inject = ['$scope','phoneService'];
 
 

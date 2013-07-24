@@ -1,21 +1,39 @@
 <!DOCTYPE html>
-<html ng-app>
+<html ng-app="boboService">
 	<head>
 		<title>Demobo MicroData Guest</title>
 		<link rel="stylesheet" href="css/app.css">
   		<link rel="stylesheet" href="css/bootstrap.css">
   		<script src="libs/angular.js"></script>
+  		<script src="js/services.js"></script>
   		<script src="js/controllers.js"></script>
-		<script type="text/javascript">
+		
+	</head>
+	<body>
+		<div id="controller" ng-controller="MicrodataListController">
+			<script type="text/javascript">
 		
 			window.addEventListener('message', onMessage, false);
 			
 			var data = { "micro" : "data" };
-			
 			function onMessage(e) {
-				var scope = $rootScope.$new();
-				var microdata = e.data;	
-				e.source.postMessage('I have received an message', e.origin);
+				var scope = angular.element(document.getElementById('controller')).scope();
+				var microdatas = e.data;
+				
+				scope.$apply(function(){
+			        scope.microdatas = microdatas;
+			        scope.source = e.source;
+			        scope.origin = e.origin;
+			    })
+    
+				//e.source.postMessage('I have received an message', e.origin);
+			}
+			
+			function postMessage(data) {
+				var scope = angular.element(document.getElementById('controller')).scope();
+				var source = scope.source;
+				var origin = scope.origin;
+				source.postMessage(data, origin);
 			}
 
 			/*
@@ -32,11 +50,13 @@
 				windowProxy.addEventListener(onMessage);
 			}
 			*/
-		</script>
-	</head>
-	<body>
-		<div ng-controller="MicrodataListController">
-			{{microdata}}
+			</script>
+			<ul>
+			    <li ng-repeat="md in microdatas">
+			      {{md.data}}
+			      <button onclick="postMessage('{{md.data}}')">Action</button>
+			    </li>
+			</ul>
 		</div>
 	</body>
 </html>

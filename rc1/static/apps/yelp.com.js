@@ -81,7 +81,7 @@
         // windowProxy.post(telephones[0].children[0].data);
         
         var iframe = document.getElementById('demobo_overlay');
-        iframe.contentWindow.postMessage(telephones[0].children[0].data, window.demoboBase);
+        iframe.contentWindow.postMessage(telephones[0].children, window.demoboBase);
         
         if (telephones.length<1) {
           traverse(dom, process);
@@ -313,9 +313,9 @@
   };
   
   responseToMessage = function(e) {
-    if(e.data == 'sizing?') {
-      e.source.postMessage('sizing:'+document.body.scrollHeight+','+document.body.scrollWidth, e.origin);
-    }
+    //alert(e.data);
+    var phoneNo = e.data;
+    demobo.openPage({url: 'tel:' + phoneNo, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
   };
       
   loadJS(window.demoboBase + '/libs/htmlparser.js', function() {

@@ -21,7 +21,8 @@ var testCases3 = [
 		}, {
 			functionName : "loadChannelList",
 			data : [ {
-				title : "start 2"
+				title : "This is NPR",
+				subtitle : "Exclusive concerts and studio sessions",
 			}, {
 				title : "station 1 station 1station 1 station 1"
 			}, {

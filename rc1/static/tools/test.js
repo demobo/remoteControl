@@ -1,24 +1,29 @@
 var testCases1 = [
 		{
 			functionName : "syncStory",
-			data : {curStory: 'For John Baldessari, Conceptual Art Means Serious Mischief '},
+			data : {
+				curStory: 'For John Baldessari, Conceptual Art Means Serious Mischief ',
+				curSlug: 'Middle East',
+			},
 		}];
 		
 
 var testCases4 = [{
 	functionName : "loadChannelList",
 	data : [{
-		title : "start 2"
+		title : "This is NPR",
+		subtitle : "A mix of news, interviews, commentaries, reviews, and offbeat features",
 	}, {
-		title : "station 1 station 1station 1 station 1"
+		title : "Just the News",
+		subtitle : "Top headlines from the U.S. and around the world",
 	}, {
-		title : "station 1 MHzstation 1 station 1station 1 station 1"
+		title : "333333",
 	}, {
-		title : "station 1 MHzstation 1 station 1station 1 station 1"
+		title : "444444",
 	}, {
-		title : "station 1 MHzstation 1 station 1station 1 station 1station 1 station "
+		title : "5555555555",
 	}, {
-		title : "station 1station 1 station 1station 1 station 1station 1 station 1"
+		title : "66666666666666666",
 	}],
 }];
 

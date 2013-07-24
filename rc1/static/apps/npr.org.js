@@ -31,7 +31,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://192.168.1.11:1242/rc/npr/control.html?12435678'
+      url: 'http://192.168.1.11:1242/rc/npr/control.html?1234'
     });
 
     this.setInputEventHandlers({
@@ -314,8 +314,10 @@
     console.log('getStationList called');
 		var toReturn = [];
 		$.each($(this.getInfo('ui').stationCollection), function(index,elem) {
+			var elemObj=$(elem);
 			var s = {
-				'title' : $(elem).text().trim()
+				'title' : $('h3', elemObj).text().trim(),
+				'subtitle' : $('p', elemObj).text().trim(),
 			};
 			if ($(elem).parent().hasClass('selected')) s.selected = true;
 			toReturn.push(s);
@@ -376,7 +378,10 @@
 	Npr.prototype.syncStory = function(evt) {
     var npr = this;
 		setTimeout(function() {
-			npr.setInfo('curStory', {curStory: $('.story-content .title').text()});
+			npr.setInfo('curStory', {
+				curStory: $('.story-content .title').text(),
+				curSlug: $('.slug').text(),
+			});
 			npr.callFunction('syncStory', npr.getInfo('curStory'));
 		}, 30);
 	};

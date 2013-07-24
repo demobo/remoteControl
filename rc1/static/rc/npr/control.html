@@ -32,11 +32,14 @@
 				}).on('slidestop',function(){
 					syncEnable = true;
 					$(this).off('change',onSlideChange);
-				})
+				});
 				var onSlideChange = function(){
 					updateVolume();
 					demobo.mobile.fireInputEvent('volumeSlider', $('#volumeSlider').val());
-				}
+				};
+				$('body').on('click', '.list-item p', function() {
+					$('#stationItem').click();
+				});
 			});
 			
 			function updateVolume() {
@@ -101,7 +104,7 @@
 					if (value.selected)
 						var option = $('<div class="list-item selected"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
 					else
-						var option = $('<div class="list-item"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
+						var option = $('<div class="list-item"><a id="stationItem" value="' + index + '">' + value.title + '</a><p>' + value.subtitle + '</p></div>');
 					$('#list-items').append(option);
 					if (value.selected)
 						setCurrentChannel(index);
@@ -130,6 +133,7 @@
 				if (!syncEnable)
 					return;
 				if (story.curStory) {
+					$('.story-slug').text(story.curSlug);
 					$('.story-title').text(story.curStory);
 				}
 			}
@@ -140,12 +144,14 @@
 			<div id='frame'>
 				<div id='content'>
 					<div class="story">
+						<h5 class="story-slug"></h5>
 						<h1 class="story-title"></h1>
 					</div>
 					<div id='controlPanel'>
 						<div class="volumeControl">
 							<div class="volumeButton" id="volumeButton"></div>
 							<input type="range" name="slider-mini" id="volumeSlider" value="25" min="0" max="100" data-highlight="true" data-mini="true" />
+							<div class="volume-overlay"></div>
 						</div>
 						<div class="buttons">
 							<ul class="jp-controls unstyled">
@@ -178,11 +184,27 @@
 		</div>
 
 		<style>
+			.ui-btn-down-c {
+				background: #FFF;
+				background-image: none;
+			}
+			.volume-overlay {
+				position: absolute;
+				background-image: url('volOverlay.png');
+				top: 12px;
+				height: 14px;
+				width: 156px;
+				margin-left: 30px;
+				background-repeat: no-repeat;
+				background-size: 152px 14px;
+				pointer-events: none;
+			}
+			
 			.ui-slider-handle.ui-btn.ui-shadow.ui-btn-corner-all.ui-btn-up-c {
 				display: none;
 			}
 			.ui-btn-active {
-				background: #000;
+				background: #C8C8C8;
 			}
 			.ui-slider-track.ui-btn-down-c.ui-btn-corner-all.ui-mini {
 				width: 150px;
@@ -196,13 +218,6 @@
 				margin-top: 6.5em;
 				position: absolute;
 				zoom: 1;
-			}
-		    .volume-bar-overlay {
-				position: absolute;
-				background-image: url('volOverlay.png');
-				top: 0;
-				height: 10px;
-				width: 138px;
 			}
 			#volumeSlider {
 				background-color: #C8C8C8;
@@ -248,8 +263,8 @@
 			height: 16px;
 			width: 16px;
 			background-position: -46px -430px;
-			margin-top: 7px;
-			margin-left: 5px;
+			margin-top: 11px;
+			margin-left: 7px;
 			float: left;
 			}
 			.border {
@@ -418,26 +433,43 @@
 			}
 
 			.list-item a {
-				cursor: pointer;
 				width: 100%;
 				height: 100%;
 				display: inline-block;
+				color: #000;
+				line-height: 14px;
+				font-size: 24px;
+				font-weight: 400;
+				margin: 0;
+				margin-top: 15px;
+			}
+			
+			.list-item p {
+				height: 35px;
+				white-space: normal;
+				width: 100%;
+				font-size: 13px;
+				color: #999;
+				line-height: 13px;
 			}
 
 			#list-items {
+				height: 86px;
 				position: absolute;
 				width: 340px;
 				height: 220px;
 				left: 30px;
 				top: 30px;
 				overflow-y: scroll;
+				overflow-x: hidden;
 			}
 
 			.list-item {
+				border: 1px solid #ccc;
 				margin-top: 5px;
-				padding-top: 10px;
+				padding-top: 20px;
 				padding-left: 30px;
-				padding-bottom: 10px;
+				padding-bottom: 20px;
 				font-size: 20px;
 				color: #666;
 				background-image: -webkit-linear-gradient(bottom, rgba(218, 218, 218, 0.8) 20%, rgba(256, 256, 256, 0.8) 69%);
@@ -495,12 +527,24 @@
 			.story {
 				width: 100%;
 				height: 50%;
-			}	
+			}
+			
+			.story-slug {
+				-webkit-margin-before: 0px;
+				-webkit-margin-after: 0px;
+				-webkit-margin-start: 0px;
+				-webkit-margin-end: 0px;
+				font-size: 14px;
+				color: #999;
+				margin-bottom: 0px;
+				font-weight: 400;
+				margin-left: 20px;
+			}
 			
 			.story-title {
 				display: inline-block;
-				margin-left: 0.67em;
-				margin-top: 0.2em;
+				margin-left: 20px;
+				margin-top: 0px;
 				font-family: Georgia,serif;
 				line-height: 46px;
 				white-space: normal;

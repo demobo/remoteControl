@@ -8,7 +8,6 @@ $(document).ready(function() {
 		demobo.mobile.fireInputEvent('navigateTo', str);
 		var entry = $('<div class="entry">' + str + '</div>').lettering(isWords(str) ? 'words' : null);
 		$('#history').prepend(entry);
-		// $('.typing-area').val('');
 	});
 	$('.typing-area').on('swipeleft', function() {
 		$('.typing-area').val('');
@@ -19,7 +18,7 @@ $(document).ready(function() {
 	});
 	$('body').on("vclick", ".tab-pane span, .tab-pane a", function(e) {
 		console.log(this);
-		var str = $(this).text() || $(this).attr('link');
+		var str = $(this).attr('link') || $(this).text();
 		if (!str)
 			return;
 		demobo.mobile.fireInputEvent('navigateTo', str);

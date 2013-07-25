@@ -19,7 +19,7 @@
 	}
 	// override the initialize function of Bobo
 	Browsertool.prototype.initialize = function() {
-		this.setInfo('iconClass', 'fui-earth')
+		this.setInfo('iconClass', 'fui-earth');
 		this.setInfo('priority', 3);
 
 		this.setController({

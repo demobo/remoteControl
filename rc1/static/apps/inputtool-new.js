@@ -42,7 +42,8 @@
     this.setInfo('iconClass', 'fui-keyboard')
 
     this.setController({
-     url: 'http://rc1.demobo.com/rc/inputtool?0614',
+     url: 'http://rc1.demobo.com/rc/inputtool/control.html?0614',
+     url : 'http://10.0.0.21:1240/v1/momos/inputtool/control.html?0614',
      orientation: 'portrait'
     });
 

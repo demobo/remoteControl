@@ -504,7 +504,7 @@
           window.demobo.start();
           window.addEventListener('focus', function() {
             return setTimeout(function() {
-              return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
+              return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
             }, 1000);
           });
           for (name in boboRoutes) {
@@ -755,7 +755,7 @@
               */
 
               setTimeout(function() {
-                return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
+                return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
               }, 1000);
             } else if (boboObj.getInfo('priority') > this.get('curBobo').getInfo('priority')) {
               this.switchBobo(boboObj.getInfo('boboID'));
@@ -836,6 +836,8 @@
       */
 
       loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js', function() {
+      // loadJS('http://localhost:1240/core/demobo.1.7.0.js', function() {
+
         var demoboPortal;
 
         demoboPortal = new DemoboPortal();

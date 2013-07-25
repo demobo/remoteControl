@@ -9,7 +9,7 @@
 		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
 		<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
 		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
-		
+		<link rel="stylesheet" href="control.css" />
 		<script>
 			var syncEnable = true;
 			$(document).ready(function() {
@@ -73,7 +73,7 @@
 			function tabAnimation() {
 				if ($('#listTab').css('left') == '80px') {
 					$('#listTab').animate({
-						'left' : '100%'
+						'left' : '480px'
 					}, 'slow');
 				} else {
 					$('#listTab').animate({
@@ -142,15 +142,6 @@
 	<body>
 		<div id="main">
 			<div id='frame'>
-				<div id='listTab'>
-					<div id='smallButton'></div>
-					<div id='listWrap'>
-						<div id='list'>
-							<div id='list-items'></div>
-						</div>
-					</div>
-				</div>
-				
 				<div id='content'>
 					<div class="story">
 						<h5 class="story-slug"></h5>
@@ -181,6 +172,14 @@
 					 
 				</div>
 				
+				<div id='listTab'>
+					<div id='smallButton'></div>
+					<div id='listWrap'>
+						<div id='list'>
+							<div id='list-items'></div>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 
@@ -388,12 +387,11 @@
 			#main {
 				overflow: hidden;
 				white-space: nowrap;
-				background-color: white;
 			}
 			#frame {
 				background-color: white;
 				position: relative;
-				width: 100%;
+				width: 480px;
 				height: 320px;
 				margin: 0px auto;
 			}
@@ -422,7 +420,7 @@
 				width: 100%;
 				height: 320px;
 				position: absolute;
-				left: 100%;
+				left: 480px;
 			}
 
 			.redbutton {
@@ -440,29 +438,28 @@
 				display: inline-block;
 				color: #000;
 				line-height: 14px;
-				font-size: 18px;
+				font-size: 24px;
 				font-weight: 400;
 				margin: 0;
 				margin-top: 15px;
 			}
 			
 			.list-item p {
-				height: 20px;
+				height: 35px;
 				white-space: normal;
 				width: 100%;
 				font-size: 13px;
 				color: #999;
 				line-height: 13px;
-				margin-top: 0.5em;
 			}
 
 			#list-items {
 				height: 86px;
 				position: absolute;
-				width: 70%;
-				height: 250px;
+				width: 340px;
+				height: 220px;
 				left: 30px;
-				top: 15px;
+				top: 30px;
 				overflow-y: scroll;
 				overflow-x: hidden;
 			}
@@ -470,9 +467,9 @@
 			.list-item {
 				border: 1px solid #ccc;
 				margin-top: 5px;
-				padding-top: 10px;
+				padding-top: 20px;
 				padding-left: 30px;
-				padding-bottom: 10px;
+				padding-bottom: 20px;
 				font-size: 20px;
 				color: #666;
 				background-image: -webkit-linear-gradient(bottom, rgba(218, 218, 218, 0.8) 20%, rgba(256, 256, 256, 0.8) 69%);
@@ -510,10 +507,9 @@
 			}
 
 			#content {
-				margin: 0px auto;
 				width: 460px;
 				height: 300px;
-				position: relative;
+				position: absolute;
 				background-color: white;
 				top: 10px;
 				left: 10px;

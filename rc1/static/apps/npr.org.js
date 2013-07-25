@@ -32,7 +32,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://192.168.1.11:1242/rc/npr/control.html?1234'
+      url: 'http://10.0.0.38:1242/rc/npr/control.html?1'
     });
 
     this.setInputEventHandlers({

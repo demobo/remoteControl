@@ -1,4 +1,4 @@
-var dev = true;//change these two lines for loading local files
+var dev = false;//change these two lines for loading local files
 var appEnginePort = 1240;
 if (!document.getElementById('toggle')){
   var toggle = document.createElement('div');

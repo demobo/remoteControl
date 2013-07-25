@@ -461,6 +461,9 @@
         DemoboPortal.prototype.getBoboRoutes = function() {
           var remote, toReturn;
 
+          if (window.demoboDevBobos) {
+            return window.demoboDevBobos;
+          }
           toReturn = {
             'input': base + 'inputtool-new.js',
             'dummy': base + 'dummy.js',

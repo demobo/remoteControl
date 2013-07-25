@@ -60,7 +60,7 @@
         'www\\.foodspotting\\.com': 'yelp.com.js',
         'www\\.urbanspoon\\.com': 'yelp.com.js',
         'foursquare\\.com': 'yelp.com.js',
-        'www\\.npr\\.org': 'npr.org.js',
+        'www\\.npr\\.org': 'npr.org.js'
       };
       /*
       // definitions of utilities 
@@ -464,13 +464,12 @@
           toReturn = {
             'input': base + 'inputtool-new.js',
             'dummy': base + 'dummy.js',
-            'browsertool': base + 'browsertool-new.js',
-            'fuckthis': base+'npr.org.js'
+            'browsertool': base + 'browsertool-new.js'
           };
-          // remote = this.getRemote();
-          // if (remote) {
-            // toReturn['remote'] = base + remote;
-          // }
+          remote = this.getRemote();
+          if (remote) {
+            toReturn['remote'] = base + remote;
+          }
           return toReturn;
         };
 
@@ -836,8 +835,6 @@
       */
 
       loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js', function() {
-      // loadJS('http://localhost:1240/core/demobo.1.7.0.js', function() {
-
         var demoboPortal;
 
         demoboPortal = new DemoboPortal();

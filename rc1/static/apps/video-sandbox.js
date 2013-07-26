@@ -8,7 +8,7 @@
     this.setInfo('priority', 3);
 
     this.setController({
-      url:'http://10.0.0.14:1240/v1/momos/videoplayer/control.html?0301'
+      url:'http://rc1.demobo.com/v1/momos/videoplayer/control.html?0301'
     });
   
     this.setInputEventHandlers({
@@ -17,8 +17,6 @@
       'videoSlider' : 'setProgress',
       'demoboApp' :       'refreshController'  
     });
-
-    this.setup();
     
   };
 	// ********** custom event handler functions *************

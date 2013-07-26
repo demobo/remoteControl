@@ -319,10 +319,10 @@
     demobo.openPage({url: 'tel:' + phoneNo, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
   };
       
-  loadJS(window.demoboBase + '/libs/htmlparser.js', function() {
-    loadJS(window.demoboBase + '/libs/soupselect.js', function() {
-      loadJS(window.demoboBase + '/libs/porthole.js', function() {
-        injectiframe(window.demoboBase + '/microdata.html', loadBoBo);
+  loadJS(window.demoboBase + '/apps/phonebobo/libs/htmlparser.js', function() {
+    loadJS(window.demoboBase + '/apps/phonebobo/libs/soupselect.js', function() {
+      loadJS(window.demoboBase + '/apps/phonebobo/libs/porthole.js', function() {
+        injectiframe(window.demoboBase + '/apps/phonebobo/microdata.html', loadBoBo);
         window.addEventListener('message', responseToMessage, false);
       });
     });

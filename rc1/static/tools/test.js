@@ -4,6 +4,7 @@ var testCases1 = [
 			data : {
 				curStory: 'For John Baldessari, Conceptual Art Means Serious Mischief ',
 				curSlug: 'Middle East',
+				curSubtitle: 'Morning Edition | July 26, 2013 | from NPR',
 			},
 		}];
 		

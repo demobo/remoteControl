@@ -366,6 +366,9 @@ if not window.demoboLoading
       // Return an object that contains all available bobos for the current website.
       ###
       getBoboRoutes: ()->
+        if (window.demoboDevBobos)
+          return window.demoboDevBobos
+        
         toReturn = 
           'input': base+'inputtool-new.js'
           'dummy': base+'dummy.js'

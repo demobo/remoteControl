@@ -6,7 +6,7 @@ $(document).ready(function() {
 		if (!str)
 			return;
 		demobo.mobile.fireInputEvent('navigateTo', str);
-		var entry = $('<div class="entry">' + str + '</div>').lettering(isWords(str) ? 'words' : null);
+		var entry = $('<div class="entry">' + str + '</div>').lettering('words');
 		$('#history').prepend(entry);
 	});
 	$('.typing-area').on('swipeleft', function() {
@@ -28,19 +28,4 @@ function non480x320Adjust() {
 	var screenWidth = $(window).width();
 	// zoomAdjust for non iphones
 	$('body').css('zoom', screenWidth / 320);
-}
-
-function insertTextAtCursor(text) {
-	var element = $('.typing-area')[0];
-	element.focus();
-	if (isWords(text) && $('.typing-area').val().length)
-		text = ' ' + text;
-	var e = document.createEvent('TextEvent');
-	e.initTextEvent('textInput', true, true, null, text, 'zh-CN');
-	element.dispatchEvent(e);
-	// element.blur();
-}
-
-function isWords(str) {
-	return /\ /.test(str) || /[\000-\177]/.test(str);
 }

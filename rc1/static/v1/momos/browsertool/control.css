@@ -11,7 +11,7 @@ a {
 	text-decoration: none;
 }
 #header {
-	background-color: #56B6E2;
+	background-color: #115d8e;
 	padding: 0px;
 	height: 120px;
 }
@@ -23,6 +23,7 @@ a {
 .textbar {
 	padding: 10px;
 }
+
 .control-group > .input-icon.done-button {
 	top: 12px;
 	right: 5px;
@@ -107,13 +108,16 @@ a {
 	margin: 0px 30px 0px 26px;
 }
 .iconbar-info > ul > li > a:hover, .iconbar-info > ul > li > a:focus {
-	color: #fff;
+	color: #1abc9c;
 }
 .iconbar-info > ul > li.active > a:hover, .iconbar-info > ul > li.active > a:focus {
-	color: #226491;
+	color: #1abc9c;
 }
 .control-group.info > .input-icon, .control-group.info input + .input-icon {
-	color: #226491;
+	color: #1abc9c;
+}
+.iconbar-info > ul > li.active > a {
+	color: #1abc9c;
 }
 #appendedInputButton-01 {
 	width: 230px;
@@ -121,7 +125,7 @@ a {
 .iconbar-horizontal > ul > li:first-child > a {
 	/* padding: 25px; */
 }
-.demo-social-buttons .btn {
+.tab-content .btn {
 	clear: left;
 	float: inherit;
 	margin-bottom: 17px;
@@ -160,11 +164,11 @@ a {
 .btn-social-vimeo {
 	background-color: #3395CA;
 }
-.btn-social-googledocs {
-	background-color: #999999;
-}
 .btn-social-slideshare {
 	background-color: #312f2d;
+}
+.btn-social-other {
+	background-color: #999999;
 }
 .btn:hover, .btn:focus {
 	background-color: #575757;

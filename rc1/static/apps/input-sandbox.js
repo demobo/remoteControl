@@ -24,13 +24,19 @@
     e.initTextEvent('textInput', true, true, null, "\n", 'zh-CN');
     element.dispatchEvent(e);
     element.focus();
-  }
+  };
   
   InputSandbox.prototype.onSelect = function(){
     var element = document.activeElement;
     element.focus();
     element.select();
-  }
+  };
+
+  InputSandbox.prototype.resume = function(){
+    //change to inputsandbox
+    $('.flex-control-nav li a')[3].click();
+    $('.demo-col textarea').focus();
+  };
 
   // override the initialize function of Bobo
   InputSandbox.prototype.initialize = function(){

@@ -38,13 +38,23 @@
     $('.demo-col textarea').focus();
   };
 
+  InputSandbox.prototype.next = function(){
+    if (document.activeElement.tagName === 'INPUT'){
+      console.log('textarea should go');
+      $('.slide-showcase textarea').focus();
+    }else{
+      console.log('input should go');
+      $('.slide-showcase input').focus();
+    }
+  };
+
   // override the initialize function of Bobo
   InputSandbox.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
     this.setInfo('iconClass', 'fui-keyboard')
 
     this.setController({
-     url: 'http://rc1.demobo.com/rc/inputtool/control.html?0614',
+     url: 'http://rc1.demobo.com/v1/momos/inputtool/control.html?0614',
      orientation: 'portrait'
     });
 
@@ -52,7 +62,8 @@
      'demoboApp':   'onReady',
      'typing-area': 'insertTextAtCursor',
      'enter-button' : 'onEnter',
-	 'select-button' : 'onSelect'
+	   'select-button' : 'onSelect',
+     'next-button': 'next'
     });
 
   };

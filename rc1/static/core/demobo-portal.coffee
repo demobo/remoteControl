@@ -55,6 +55,7 @@ if not window.demoboLoading
       'www\\.foodspotting\\.com':'yelp.com.js'
       'www\\.urbanspoon\\.com' : 'yelp.com.js'
       'foursquare\\.com':      'yelp.com.js'
+      'www\\.npr\\.org':       'npr.org.js'
 
     ###
     // definitions of utilities 
@@ -365,6 +366,9 @@ if not window.demoboLoading
       // Return an object that contains all available bobos for the current website.
       ###
       getBoboRoutes: ()->
+        if (window.demoboDevBobos)
+          return window.demoboDevBobos
+        
         toReturn = 
           'input': base+'inputtool-new.js'
           'dummy': base+'dummy.js'
@@ -405,7 +409,7 @@ if not window.demoboLoading
 
         window.addEventListener('focus', ()->
           setTimeout(()->
-            window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
+            window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
           , 1000)
         )
 
@@ -585,7 +589,7 @@ if not window.demoboLoading
             this.set('curBobo', boboObj)
             ### shame to have to code this like this... ###
             setTimeout(()->
-              window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
+              window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
             , 1000)
           else if boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority')
             this.switchBobo(boboObj.getInfo('boboID'))

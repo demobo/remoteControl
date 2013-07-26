@@ -32,7 +32,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://10.0.0.38:1242/rc/npr/control.html?1'
+      url: 'http://rc1.demobo.com/rc/npr/control.html?1'
     });
 
     this.setInputEventHandlers({

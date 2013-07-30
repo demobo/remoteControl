@@ -2,8 +2,17 @@
 <html ng-app="boboService">
 	<head>
 		<title>Demobo MicroData Guest</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	    <!-- Loading Bootstrap -->
+	    <link href="fui/bootstrap/css/bootstrap.css" rel="stylesheet">
+	    <link href="fui/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	
+	    <!-- Loading Flat UI -->
+	    <link href="fui/css/flat-ui.css" rel="stylesheet">
+    
 		<link rel="stylesheet" href="css/app.css">
-  		<link rel="stylesheet" href="css/bootstrap.css">
+		
   		<script src="libs/angular.js"></script>
   		<script src="js/services.js"></script>
   		<script src="js/controllers.js"></script>
@@ -37,12 +46,58 @@
 			}
 
 			</script>
-			<ul>
+			<ul class="nav nav-list">
+				<li class="nav-header">BoBo</li>
+				<li class="divider"></li>
 			    <li>
+			    	<a href="#fakelink">650-302-8668
+                	<span class="nav-counter">19</span>
+              		</a>
 			      650-302-8668
 			      <button onclick="postMessage('6503028668')">Action</button>
 			    </li>
 			</ul>
+			<ul class="nav nav-list nav-list-vivid">
+            <li class="nav-header">Europe</li>
+            <li>
+              <a href="#fakelink">
+                London, United Kingdom
+                <span class="nav-counter">19</span>
+              </a>
+            </li>
+            <li class="active">
+              <a href="#fakelink">
+                Berlin, Germany
+                <span class="nav-counter">130</span>
+              </a>
+            </li>
+            <li>
+              <a href="#fakelink">
+                Madrid, Spain
+                <span class="nav-counter">9</span>
+              </a>
+            </li>
+            <li class="divider"></li>
+            <li class="nav-header">Asia</li>
+            <li>
+              <a href="#fakelink">
+                Shanghai, China
+                <span class="nav-counter">69</span>
+              </a>
+            </li>
+            <li>
+              <a href="#fakelink">
+                Bombay, India
+                <span class="nav-counter">21</span>
+              </a>
+            </li>
+            <li>
+              <a href="#fakelink">
+                Karachi, Pakistan
+                <span class="nav-counter">40</span>
+              </a>
+            </li>
+          </ul>
 		</div>
 	</body>
 </html>

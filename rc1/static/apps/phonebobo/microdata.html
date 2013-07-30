@@ -2,6 +2,14 @@
 <html ng-app="boboService">
 	<head>
 		<title>Demobo MicroData Guest</title>
+		
+		<!-- Loading Bootstrap -->
+	    <link href="fui/bootstrap/css/bootstrap.css" rel="stylesheet">
+	    <link href="fui/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	
+	    <!-- Loading Flat UI -->
+	    <link href="fui/css/flat-ui.css" rel="stylesheet">
+	    
 		<link rel="stylesheet" href="css/app.css">
   		<link rel="stylesheet" href="css/bootstrap.css">
   		<script src="libs/angular.js"></script>
@@ -36,25 +44,33 @@
 				source.postMessage(data, origin);
 			}
 
-			/*
-			function onMessage(messageEvent) {
-				if (messageEvent.data) {
-					var elem = document.createElement('div');
-					elem.innerText = messageEvent.data;
-					document.body.appendChild(elem);
-				}
-			}
-			var windowProxy;
-			window.onload=function(){ 
-				windowProxy = new Porthole.WindowProxy("http://localhost:8000/microdata.html"); 
-				windowProxy.addEventListener(onMessage);
-			}
-			*/
 			</script>
-			<ul>
+			<ul class="nav nav-list">
+				<li class="nav-header">BoBo</li>
 			    <li ng-repeat="md in microdatas">
-			      {{md.data}}
-			      <button onclick="postMessage('{{md.data}}')">Action</button>
+			   		<a href="" class="fui-chat">
+			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('{{md.data}}')">call</span>
+			      	</a>
+			    </li>
+			    <li ng-repeat="md in microdatas">
+			   		<a href="" class="fui-chat">
+			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('{{md.data}}')">call</span>
+			      	</a>
+			    </li>
+			    <li ng-repeat="md in microdatas">
+			   		<a href="" class="fui-chat">
+			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('{{md.data}}')">call</span>
+			      	</a>
+			    </li>
+			    <li ng-repeat="md in microdatas">
+			   		<a href="" class="fui-chat">
+			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('{{md.data}}')">call</span>
+			      	</a>
+			    </li>
+			    <li ng-repeat="md in microdatas">
+			   		<a href="" class="fui-chat">
+			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('{{md.data}}')">call</span>
+			      	</a>
 			    </li>
 			</ul>
 		</div>

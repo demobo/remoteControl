@@ -66,6 +66,7 @@
 	};
 
   VideoSandbox.prototype.resume = function(){
+    console.log('videosandbox\'s resume is clicked');
     $('.flex-control-nav li a')[1].click();
   };
 

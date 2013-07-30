@@ -400,7 +400,7 @@
             console.log('mbcommand');
             switch (data.value.command) {
               case 'switchBobo':
-                return portal.switchBobo(data.value.boboID);
+                return portal.switchBobo(data.value.boboID, true);
               default:
                 return false;
             }
@@ -699,7 +699,7 @@
         */
 
 
-        DemoboPortal.prototype.switchBobo = function(boboID) {
+        DemoboPortal.prototype.switchBobo = function(boboID, callResume) {
           var boboDeviceMap, deviceBoboMap, deviceID, devices, newBobo, oldBoboID, _i, _j, _len, _len1;
 
           oldBoboID = this.get('curBobo').getInfo('boboID');
@@ -718,7 +718,9 @@
             deviceID = devices[_j];
             this.setDeviceController(newBobo, deviceID);
           }
-          newBobo.resume();
+          if (callResume) {
+            newBobo.resume();
+          }
           return true;
         };
 

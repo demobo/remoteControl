@@ -323,7 +323,7 @@ if not window.demoboLoading
         return (data)->
           console.log('mbcommand')
           switch data.value.command
-            when 'switchBobo' then portal.switchBobo(data.value.boboID) 
+            when 'switchBobo' then portal.switchBobo(data.value.boboID, true) 
             else false
               
 
@@ -540,7 +540,7 @@ if not window.demoboLoading
       ###
       // Switch to another bobo 
       ###
-      switchBobo: (boboID)->
+      switchBobo: (boboID, callResume)->
         oldBoboID = this.get('curBobo').getInfo('boboID')
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
@@ -558,7 +558,8 @@ if not window.demoboLoading
         for deviceID in devices
           this.setDeviceController(newBobo, deviceID)
 
-        newBobo.resume()
+        if (callResume)
+          newBobo.resume()
         return true
      
       ###

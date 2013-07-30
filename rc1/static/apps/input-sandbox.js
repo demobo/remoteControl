@@ -33,6 +33,7 @@
   };
 
   InputSandbox.prototype.resume = function(){
+    console.log('inputsandbox\'s resume is clicked');
     //change to inputsandbox
     $('.flex-control-nav li a')[3].click();
     $('.demo-col textarea').focus();

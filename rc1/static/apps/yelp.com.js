@@ -4,6 +4,14 @@
   var Yelp = window.Bobo.extend();
 
   var uniqueId = 0;
+
+  Yelp.prototype.pause = function(){
+    $('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
+  };
+
+  Yelp.prototype.resume = function(){
+     $('#demobo_overlay').css('bottom', 0);
+  }
   
   Yelp.prototype.onReady = function(){
     console.log('onready is called')
@@ -304,7 +312,7 @@
     iframe.setAttribute('id', 'demobo_overlay');
     iframe.setAttribute('src', src);
     iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;');
+    iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
     iframe.addEventListener('load', onloadHandler);
     document.body.appendChild(iframe);
   };

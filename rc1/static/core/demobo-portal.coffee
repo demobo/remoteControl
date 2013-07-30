@@ -259,6 +259,11 @@ if not window.demoboLoading
       ###
       // reservered for future use 
       ###
+      pause: ->
+
+      ###
+      // reservered for future use 
+      ###
       finish: ->
      
     ###
@@ -541,7 +546,9 @@ if not window.demoboLoading
       // Switch to another bobo 
       ###
       switchBobo: (boboID, callResume)->
-        oldBoboID = this.get('curBobo').getInfo('boboID')
+        oldBobo = this.get('curBobo')
+        oldBoboID = oldBobo.getInfo('boboID')
+        oldBobo.pause()
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
         

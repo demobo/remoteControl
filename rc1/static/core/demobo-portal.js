@@ -313,6 +313,13 @@
         */
 
 
+        Bobo.prototype.pause = function() {};
+
+        /*
+        // reservered for future use
+        */
+
+
         Bobo.prototype.finish = function() {};
 
         return Bobo;
@@ -700,9 +707,11 @@
 
 
         DemoboPortal.prototype.switchBobo = function(boboID, callResume) {
-          var boboDeviceMap, deviceBoboMap, deviceID, devices, newBobo, oldBoboID, _i, _j, _len, _len1;
+          var boboDeviceMap, deviceBoboMap, deviceID, devices, newBobo, oldBobo, oldBoboID, _i, _j, _len, _len1;
 
-          oldBoboID = this.get('curBobo').getInfo('boboID');
+          oldBobo = this.get('curBobo');
+          oldBoboID = oldBobo.getInfo('boboID');
+          oldBobo.pause();
           boboDeviceMap = this.get('boboDeviceMap');
           deviceBoboMap = this.get('deviceBoboMap');
           devices = boboDeviceMap[oldBoboID];

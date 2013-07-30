@@ -90,11 +90,13 @@
         // windowProxy.post(telephones[0].children[0].data);
         
         var iframe = document.getElementById('demobo_overlay');
-        iframe.contentWindow.postMessage(telephones[0].children, window.demoboBase);
+        
         
         if (telephones.length<1) {
           traverse(dom, process);
-        } 
+        } else {
+		  iframe.contentWindow.postMessage(telephones[0].children, window.demoboBase);
+		}
       }
     //}, { verbose: false, ignoreWhitespace: true });
     }, { ignoreWhitespace: true });
@@ -273,10 +275,7 @@
           if (match != null) {
             console.log('phone number matched ' + object.data.trim());
             var win = document.getElementById("demobo_overlay").contentWindow;
-            win.postMessage(
-                    object.data.trim(),
-                    "http://jsbin.com"
-            );
+			win.postMessage(object.data.trim(), window.demoboBase);
           }
         }
       }

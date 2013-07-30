@@ -51,6 +51,7 @@ if not window.demoboLoading
       'grooveshark\\.com':     'grooveshark.com-new.js'
       'play\\.spotify\\.com':    'spotify.com-new.js'
       'sfbay\\.craigslist\\.org':'yelp.com.js'
+      'www\\.yelp\\.com':'yelp.com.js'
       'www\\.yellowpages\\.com': 'yelp.com.js'
       'www\\.foodspotting\\.com':'yelp.com.js'
       'www\\.urbanspoon\\.com' : 'yelp.com.js'

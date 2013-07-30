@@ -382,6 +382,7 @@
 			npr.setInfo('curStory', {
 				curStory: $('.story-content .title').text(),
 				curSlug: $('.slug').text(),
+				curSubtitle: $('.story-content span').text(),
 			});
 			npr.callFunction('syncStory', npr.getInfo('curStory'));
 		}, 30);

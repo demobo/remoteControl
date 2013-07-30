@@ -135,6 +135,7 @@
 				if (story.curStory) {
 					$('.story-slug').text(story.curSlug);
 					$('.story-title').text(story.curStory);
+					$('.story-subtitle').text(story.curSubtitle);
 				}
 			}
 		</script>
@@ -155,6 +156,7 @@
 					<div class="story">
 						<h5 class="story-slug"></h5>
 						<h1 class="story-title"></h1>
+						<div class="story-subtitle"></div>
 					</div>
 					<div id='controlPanel'>
 						<div class="volumeControl">
@@ -185,6 +187,15 @@
 		</div>
 
 		<style>
+			.story-subtitle{
+				position: relative;
+				display: block;
+				color: #adadad;
+				font-size: 10px;
+				line-height: 18px;
+				margin-left: 20px;
+				font-weight: 100;
+			} 
 			.ui-btn-down-c {
 				background: #FFF;
 				background-image: none;
@@ -549,6 +560,7 @@
 				display: inline-block;
 				margin-left: 20px;
 				margin-top: 0px;
+				margin-bottom: 0px;
 				font-family: Georgia,serif;
 				line-height: 46px;
 				white-space: normal;

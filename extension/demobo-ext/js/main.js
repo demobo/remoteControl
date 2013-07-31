@@ -18,5 +18,5 @@ if (!document.getElementById('toggle')){
   };
   
   chrome.extension.onMessage.addListener(onMessage);
-  toggle.click();
+//  toggle.click();
 }

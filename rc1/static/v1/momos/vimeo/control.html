@@ -69,21 +69,10 @@
 				$('#touchcarouselFrame').kinetic({
 					triggerHardware: true,
                     y: false
-                });	
-				$( "#popupPanel" ).on({
-				    popupbeforeposition: function() {
-				        var h = $( window ).width();
-				        $( "#popupPanel" ).css( "width", h );
-				    },
-                    popupafteropen: function(event, ui){
-                        demobo.mobile.fireInputEvent('menu', 'on');
-                    },
-					popupafterclose: function(event, ui){
-                        demobo.mobile.fireInputEvent('menu', 'off');
-                    }
-				});
+                });
 				$( "#popupPanel button" ).on( "vclick", function() {	
-					$( "#popupPanel" ).popup('close');
+					$("#popupPanel").hide('fast');
+					demobo.mobile.fireInputEvent('menu', 'off');
 				});
 			});
 			function non480x320Adjust() {
@@ -179,12 +168,10 @@
 						$('#volumeSlider').slider('refresh');
 					}
 				});
+				$("#popupPanel").hide();
 				$('.menuButton').on('vclick', function(){
-                    $("#popupPanel").popup('open', {
-                        transition: 'fade',
-                        x: 0,
-                        y: 0
-                    });
+                    $("#popupPanel").show('fast');
+                    demobo.mobile.fireInputEvent('menu', 'on');
 				});
 			}
 			function volUp() {
@@ -250,7 +237,7 @@
                 </div>
 	        </div>
 			</div>
-			<div id="popupPanel" data-role="popup" data-corners="false" data-theme="none" data-shadow="false" data-tolerance="0,0">
+			<div id="popupPanel">
 			    <button data-theme="a" data-icon="back" data-mini="true" data-inline="true">Back</button>
 				<div data-role="controlgroup" data-type="horizontal" class="panelButtons top">
 					<a id="upButton" onclick="" data-role="button" data-icon="arrow-u" data-iconpos="notext" data-theme="a" data-inline="true"></a>
@@ -667,10 +654,14 @@
 			}
 			#popupPanel {
 			    height: 300px;
-			    border: 1px solid #000;
-			    border-right: none;
-			    background: rgba(0,0,0,.9);
-			    margin: -1px 0;
+				border: 1px solid #000;
+				border-right: none;
+				background: rgba(0,0,0,.9);
+				margin: -1px 0;
+				position: absolute;
+				bottom: 0px;
+				width: 100%;
+				z-index: 9;
 			}
 			.panelButtons {
 				text-align: center;

@@ -28,7 +28,7 @@
 	  });
     	
 		this.setController( {
-			url : 'http://rc1.demobo.com/v1/momos/rdio?1023'
+			url : 'http://rc1.demobo.com/v1/momos/rdio/control.html?1023'
 		});
 		// your custom demobo input event dispatcher
 		this.setInputEventHandlers( {

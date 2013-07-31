@@ -6,7 +6,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
 		this.setController( {
-			url : "http://rc1.demobo.com/v1/momos/8tracks?0926"
+			url : "http://rc1.demobo.com/v1/momos/8tracks/control.html?0926"
 		});
 		// your custom demobo input event dispatcher
 		this.setInputEventHandlers( {

@@ -34,7 +34,7 @@
 	  });
 	
 		this.setController( {
-			url : 'http://rc1.demobo.com/v1/momos/grooveshark?0203'
+			url : 'http://rc1.demobo.com/v1/momos/grooveshark/control.html?0203'
 		});
 		// your custom demobo input event dispatcher
 		this.setInputEventHandlers( {

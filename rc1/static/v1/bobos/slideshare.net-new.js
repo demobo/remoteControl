@@ -23,7 +23,7 @@
 //		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 
     this.setController({
-      url:'http://rc1.demobo.com/v1/momos/slideshare?0201',
+      url:'http://rc1.demobo.com/v1/momos/slideshare/control.html?0201',
       orientation: 'portrait'
     });
   

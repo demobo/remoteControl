@@ -36,11 +36,15 @@
 				//e.source.postMessage('I have received an message', e.origin);
 			}
 			
-			function postMessage(data) {
+			function postMessage(action, data) {
 				var scope = angular.element(document.getElementById('controller')).scope();
 				var source = scope.source;
 				var origin = scope.origin;
-				source.postMessage(data, origin);
+				var edata = {
+					action : action,
+					data   : data
+				}
+				source.postMessage(edata, origin);
 			}
 
 			</script>
@@ -48,7 +52,8 @@
 				<li class="nav-header">BoBo</li>
 			    <li ng-repeat="md in microdatas">
 			   		<a href="">
-			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('{{md.data}}')">call</span>
+			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('phonecall', '{{md.data}}')">call</span>
+			      	<span class="btn btn-mini btn-primary mhm" onclick="postMessage('sms', '{{md.data}}')">sms</span>
 			      	</a>
 			    </li>
 			</ul>

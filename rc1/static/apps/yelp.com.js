@@ -273,15 +273,25 @@
           if (match != null) {
             //console.log('phone number matched ' + object.data.trim());
             //telephones.push(object.data.trim());
-            var tokens = object.data.trim().split(" ");
-            each(tokens, function(index, token) {
-              var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
-              var match1 = pattern.exec(token);
-              if (match1 != null) {
-                console.log('phone number matched ' + token);
-                func("telephone", token);
-              }
-            });
+            var phase = object.data.trim();
+            var bizTelephoneValue = phase.replace(/[^0-9]/g, '').replace(' ', '');
+            pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+            match = pattern.exec(bizTelephoneValue);
+            if (match != null) {
+              console.log('phone number matched ' + phase);
+              func("telephone", phase);
+            }
+            // else {
+              // var tokens = phase.split(" ");
+              // each(tokens, function(index, token) {
+                // //var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+                // var match1 = pattern.exec(token);
+                // if (match1 != null) {
+                  // console.log('phone number matched ' + token);
+                  // func("telephone", token);
+                // }
+              // });  
+            // }
           }
         }
       }
@@ -330,9 +340,16 @@
   
   responseToMessage = function(e) {
     //alert(e.data);
-    var phoneNo = e.data;
-    var bizTelephoneValue = phoneNo.trim().replace(/[^0-9]/g, '').replace(' ', '');
-    demobo.openPage({url: 'tel:' + bizTelephoneValue, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
+    var action = e.data.action;
+    var data = e.data.data; 
+    if (action === 'phonecall') {
+      var bizTelephoneValue = data.trim().replace(/[^0-9]/g, '').replace(' ', '');
+      demobo.openPage({url: 'tel:' + bizTelephoneValue, title: 'Phone Call', message: 'Make a phone call to ' + bizTelephoneValue});
+    } else if (action === 'sms') {
+      var smsValue = data.trim().replace(/[^0-9]/g, '').replace(' ', '');
+      demobo.openPage({url: 'sms:' + smsValue, title: 'Send SMS', message: 'Send a sms to ' + smsValue});
+    }
+    
   };
       
   loadJS(window.demoboBase + '/apps/phonebobo/libs/htmlparser.js', function() {

@@ -23,7 +23,6 @@
 		
 			window.addEventListener('message', onMessage, false);
 			
-			var data = { "micro" : "data" };
 			function onMessage(e) {
 				var scope = angular.element(document.getElementById('controller')).scope();
 				var microdatas = e.data;

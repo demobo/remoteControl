@@ -500,6 +500,7 @@
           this.set('boboDeviceMap', {});
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
+          this.set('lastBoboID', this.loadLastBoboID());
           /*
           // Register event handlers for connected, disconnected,
           */
@@ -703,6 +704,24 @@
         };
 
         /*
+        // Set most recently used bobo in localstorage
+        */
+
+
+        DemoboPortal.prototype.saveLastBoboID = function() {
+          return window.localStorage.setItem('demoboLastBobo', this.get('curBobo').getInfo('boboID'));
+        };
+
+        /*
+        // get most recently used bobo in localstorage
+        */
+
+
+        DemoboPortal.prototype.loadLastBoboID = function() {
+          return window.localStorage.getItem('demoboLastBobo');
+        };
+
+        /*
         // Switch to another bobo
         */
 
@@ -731,6 +750,7 @@
           if (callResume) {
             newBobo.resume();
           }
+          this.saveLastBoboID();
           return true;
         };
 
@@ -771,6 +791,9 @@
               setTimeout(function() {
                 return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
               }, 1000);
+            } else if (boboID === this.get('lastBoboID')) {
+              boboObj.setInfo('priority', 10);
+              this.switchBobo(boboObj.getInfo('boboID'));
             } else if (boboObj.getInfo('priority') > this.get('curBobo').getInfo('priority')) {
               this.switchBobo(boboObj.getInfo('boboID'));
             }

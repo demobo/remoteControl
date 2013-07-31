@@ -7,7 +7,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://rc1.demobo.com/v1/momos/lastfm?0201'      
+      url: 'http://rc1.demobo.com/v1/momos/lastfm/control.html?0201'      
     });
 
     this.setInputEventHandlers({

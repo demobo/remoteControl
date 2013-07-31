@@ -5,6 +5,8 @@
 
   var uniqueId = 0;
 
+  Yelp.telephones = [];
+  
   Yelp.prototype.pause = function(){
     $('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
   };
@@ -78,25 +80,17 @@
       if (error) {
         
       } else {
+        Yelp.telephones = [];
         // soupselect happening here...
-        var telephones = select(dom, '[itemprop=telephone]');
-        //injectiframe('https://www.wunderlist.com/#/extension/add/Apple%20-%20iOS%207/%20%0Ahttp%3A%2F%2Fwww.apple.com%2Fios%2Fios7%2F%23videos');
-        
-        // Create a proxy window to send to and receive 
-        // messages from the iFrame
-        // var windowProxy = new Porthole.WindowProxy(
-            // 'http://localhost:8000/microdata.html', 'demobo_overlay');
-//         
-        // windowProxy.post(telephones[0].children[0].data);
-        
+        Yelp.telephones = select(dom, '[itemprop=telephone]');
         var iframe = document.getElementById('demobo_overlay');
         
-        
-        if (telephones.length<1) {
+        if (Yelp.telephones.length<1) {
           traverse(dom, process);
+          iframe.contentWindow.postMessage(Yelp.telephones, window.demoboBase);
         } else {
-		  iframe.contentWindow.postMessage(telephones[0].children, window.demoboBase);
-		}
+          iframe.contentWindow.postMessage(Yelp.telephones[0].children, window.demoboBase);
+        }
       }
     //}, { verbose: false, ignoreWhitespace: true });
     }, { ignoreWhitespace: true });
@@ -261,21 +255,21 @@
 
   //called with every property and it's value
   process = function(key,value) {
-    console.log(key + " : "+value);
+    Yelp.telephones.push(value);
   }
   
   traverse = function(objects, func) {
+        
     each(objects , function(index, object) {
-      
-      console.log(JSON.stringify(object, null, " "));
+      //console.log(JSON.stringify(object, null, " "));
       if (typeof(object.type)=="string") {
         if ((object.type) == "text") {
           var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
           var match = pattern.exec(object.data.trim());
           if (match != null) {
             console.log('phone number matched ' + object.data.trim());
-            var win = document.getElementById("demobo_overlay").contentWindow;
-			win.postMessage(object.data.trim(), window.demoboBase);
+            //telephones.push(object.data.trim());
+            func("telephone", object);
           }
         }
       }
@@ -283,7 +277,9 @@
       if (typeof(object.children)=="object") {
         traverse(object.children,func);
       }
+      
     });
+    
   };
   
   each = function(objects, f) {

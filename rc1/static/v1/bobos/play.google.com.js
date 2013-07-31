@@ -1,6 +1,6 @@
 function setDemoboController() {
 	demobo.setController( {
-		url : "http://rc1.demobo.com/rc/lastfm"
+		url : "http://rc1.demobo.com/v1/momos/lastfm"
 	});
 }
 

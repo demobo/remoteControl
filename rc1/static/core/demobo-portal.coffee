@@ -51,6 +51,7 @@ if not window.demoboLoading
       'grooveshark\\.com':     'grooveshark.com-new.js'
       'play\\.spotify\\.com':    'spotify.com-new.js'
       'sfbay\\.craigslist\\.org':'yelp.com.js'
+      'www\\.yelp\\.com':'yelp.com.js'
       'www\\.yellowpages\\.com': 'yelp.com.js'
       'www\\.foodspotting\\.com':'yelp.com.js'
       'www\\.urbanspoon\\.com' : 'yelp.com.js'
@@ -169,7 +170,7 @@ if not window.demoboLoading
         defaultConfig = 
           'developer': 'developer@demobo.com'
 
-        @boboInfos['priority'] = 1   
+        @boboInfos['priority'] = 0   
         @boboInfos['config'] = defaultConfig
         @boboInfos['boboID'] = null
         @boboInfos['connectedDevices'] = {}
@@ -259,6 +260,11 @@ if not window.demoboLoading
       ###
       // reservered for future use 
       ###
+      pause: ->
+
+      ###
+      // reservered for future use 
+      ###
       finish: ->
      
     ###
@@ -323,7 +329,7 @@ if not window.demoboLoading
         return (data)->
           console.log('mbcommand')
           switch data.value.command
-            when 'switchBobo' then portal.switchBobo(data.value.boboID) 
+            when 'switchBobo' then portal.switchBobo(data.value.boboID, true) 
             else false
               
 
@@ -392,6 +398,7 @@ if not window.demoboLoading
         this.set('boboDeviceMap', {})
         this.set('curBobo', null)
         this.set('boboRoutes', boboRoutes)
+        this.set('lastBoboID', this.loadLastBoboID())
 
         ###
         // Register event handlers for connected, disconnected,  
@@ -538,10 +545,24 @@ if not window.demoboLoading
         @demobo.setController(controller)
 
       ###
+      // Set most recently used bobo in localstorage
+      ###
+      saveLastBoboID: ()->
+        window.localStorage.setItem('demoboLastBobo', this.get('curBobo').getInfo('boboID'))
+
+      ###
+      // get most recently used bobo in localstorage
+      ###
+      loadLastBoboID: ()->
+        return window.localStorage.getItem('demoboLastBobo')
+
+      ###
       // Switch to another bobo 
       ###
-      switchBobo: (boboID)->
-        oldBoboID = this.get('curBobo').getInfo('boboID')
+      switchBobo: (boboID, callResume)->
+        oldBobo = this.get('curBobo')
+        oldBoboID = oldBobo.getInfo('boboID')
+        oldBobo.pause()
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
         
@@ -558,7 +579,9 @@ if not window.demoboLoading
         for deviceID in devices
           this.setDeviceController(newBobo, deviceID)
 
-        newBobo.resume()
+        if (callResume)
+          newBobo.resume()
+        this.saveLastBoboID()
         return true
      
       ###
@@ -591,7 +614,10 @@ if not window.demoboLoading
             setTimeout(()->
               window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
             , 1000)
-          else if boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority')
+          else if (boboID is this.get('lastBoboID'))
+            boboObj.setInfo('priority', 10)
+            this.switchBobo(boboObj.getInfo('boboID')) 
+          else if(boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority')) 
             this.switchBobo(boboObj.getInfo('boboID'))
            
           #this.setController(boboObj.getInfo('controller'))

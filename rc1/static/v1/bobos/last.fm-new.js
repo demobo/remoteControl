@@ -1,4 +1,5 @@
 (function(){
+  var DEBUG = false;
   var Lastfm = window.Bobo.extend();
   
   Lastfm.prototype.initialize = function(){
@@ -6,7 +7,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://rc1.demobo.com/rc/lastfm?0201'      
+      url: 'http://rc1.demobo.com/v1/momos/lastfm?0201'      
     });
 
     this.setInputEventHandlers({
@@ -91,7 +92,7 @@
 		var nowplayingdata = this.getNowPlayingData();
 		if (!nowplayingdata)
 			return;
-		this.callFunction('loadSongInfo', this.nowplayingdata);
+		this.callFunction('loadSongInfo', nowplayingdata);
 		this.callFunction('setCurrentChannel', this.getCurrentStationIndex());
 	};
 

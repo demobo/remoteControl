@@ -4,6 +4,16 @@
   var Yelp = window.Bobo.extend();
 
   var uniqueId = 0;
+
+  Yelp.telephones = [];
+  
+  Yelp.prototype.pause = function(){
+    $('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
+  };
+
+  Yelp.prototype.resume = function(){
+     $('#demobo_overlay').css('bottom', 0);
+  }
   
   Yelp.prototype.onReady = function(){
     console.log('onready is called')
@@ -41,7 +51,7 @@
   // override the initialize function of Bobo
   Yelp.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
-    this.setInfo('priority', 6);
+    this.setInfo('priority', 2);
 
     // if (typeof(this.parsePage) == "function") {
       // this.parsePage();  
@@ -70,23 +80,17 @@
       if (error) {
         
       } else {
+        Yelp.telephones = [];
         // soupselect happening here...
-        var telephones = select(dom, '[itemprop=telephone]');
-        //injectiframe('https://www.wunderlist.com/#/extension/add/Apple%20-%20iOS%207/%20%0Ahttp%3A%2F%2Fwww.apple.com%2Fios%2Fios7%2F%23videos');
-        
-        // Create a proxy window to send to and receive 
-        // messages from the iFrame
-        // var windowProxy = new Porthole.WindowProxy(
-            // 'http://localhost:8000/microdata.html', 'demobo_overlay');
-//         
-        // windowProxy.post(telephones[0].children[0].data);
-        
+        Yelp.telephones = select(dom, '[itemprop=telephone]');
         var iframe = document.getElementById('demobo_overlay');
-        iframe.contentWindow.postMessage(telephones[0].children, window.demoboBase);
         
-        if (telephones.length<1) {
+        if (Yelp.telephones.length<1) {
           traverse(dom, process);
-        } 
+          iframe.contentWindow.postMessage(Yelp.telephones, window.demoboBase);
+        } else {
+          iframe.contentWindow.postMessage(Yelp.telephones[0].children, window.demoboBase);
+        }
       }
     //}, { verbose: false, ignoreWhitespace: true });
     }, { ignoreWhitespace: true });
@@ -251,24 +255,33 @@
 
   //called with every property and it's value
   process = function(key,value) {
-    console.log(key + " : "+value);
+    var telephone = { 
+                data : value,
+                type : key
+              };
+    Yelp.telephones.push(telephone);
   }
   
   traverse = function(objects, func) {
+        
     each(objects , function(index, object) {
-      
-      console.log(JSON.stringify(object, null, " "));
+      //console.log(JSON.stringify(object, null, " "));
       if (typeof(object.type)=="string") {
         if ((object.type) == "text") {
           var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
           var match = pattern.exec(object.data.trim());
           if (match != null) {
-            console.log('phone number matched ' + object.data.trim());
-            var win = document.getElementById("demobo_overlay").contentWindow;
-            win.postMessage(
-                    object.data.trim(),
-                    "http://jsbin.com"
-            );
+            //console.log('phone number matched ' + object.data.trim());
+            //telephones.push(object.data.trim());
+            var tokens = object.data.trim().split(" ");
+            each(tokens, function(index, token) {
+              var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+              var match1 = pattern.exec(token);
+              if (match1 != null) {
+                console.log('phone number matched ' + token);
+                func("telephone", token);
+              }
+            });
           }
         }
       }
@@ -276,7 +289,9 @@
       if (typeof(object.children)=="object") {
         traverse(object.children,func);
       }
+      
     });
+    
   };
   
   each = function(objects, f) {
@@ -304,7 +319,7 @@
     iframe.setAttribute('id', 'demobo_overlay');
     iframe.setAttribute('src', src);
     iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;');
+    iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
     iframe.addEventListener('load', onloadHandler);
     document.body.appendChild(iframe);
   };
@@ -316,13 +331,14 @@
   responseToMessage = function(e) {
     //alert(e.data);
     var phoneNo = e.data;
-    demobo.openPage({url: 'tel:' + phoneNo, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
+    var bizTelephoneValue = phoneNo.trim().replace(/[^0-9]/g, '').replace(' ', '');
+    demobo.openPage({url: 'tel:' + bizTelephoneValue, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
   };
       
-  loadJS(window.demoboBase + '/libs/htmlparser.js', function() {
-    loadJS(window.demoboBase + '/libs/soupselect.js', function() {
-      loadJS(window.demoboBase + '/libs/porthole.js', function() {
-        injectiframe(window.demoboBase + '/microdata.html', loadBoBo);
+  loadJS(window.demoboBase + '/apps/phonebobo/libs/htmlparser.js', function() {
+    loadJS(window.demoboBase + '/apps/phonebobo/libs/soupselect.js', function() {
+      loadJS(window.demoboBase + '/apps/phonebobo/libs/porthole.js', function() {
+        injectiframe(window.demoboBase + '/apps/phonebobo/microdata.html', loadBoBo);
         window.addEventListener('message', responseToMessage, false);
       });
     });

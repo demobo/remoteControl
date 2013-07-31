@@ -9,7 +9,7 @@
     this.setInfo('priority', 2);
 
     this.setController({
-      url: 'http://rc1.demobo.com/rc/pandora?0201'
+      url: 'http://rc1.demobo.com/v1/momos/pandora?0201'
     });
 
     this.setInputEventHandlers({
@@ -123,7 +123,7 @@
     console.log('refreshController called');
 		this.sendStationList();
     var _this = this
-		setTimeout(function(){_this.sendLast3()},100);
+//		setTimeout(function(){_this.sendLast3()},100);
 		this.syncState();
 	};
 

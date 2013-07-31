@@ -4,7 +4,7 @@
   var Npr = Bobo.extend();
 
   Npr.prototype.initialize = function(){
-  		this.setInfo('priority',10);
+  		this.setInfo('priority',2);
   	//overwrites the 'setInputEventHandlers'
   		this.setInputEventHandlers = function(inputEventHandlers) {
 		var eventName, handlerName, hs, wrapper, _thisBobo;
@@ -32,7 +32,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://rc1.demobo.com/rc/npr/control.html?1'
+      url: 'http://rc1.demobo.com/v1/momos/npr/control.html?1'
     });
 
     this.setInputEventHandlers({
@@ -382,6 +382,7 @@
 			npr.setInfo('curStory', {
 				curStory: $('.story-content .title').text(),
 				curSlug: $('.slug').text(),
+				curSubtitle: $('.story-content span').text(),
 			});
 			npr.callFunction('syncStory', npr.getInfo('curStory'));
 		}, 30);

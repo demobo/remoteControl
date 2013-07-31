@@ -20,11 +20,11 @@
 	// override the initialize function of Bobo
 	Browsertool.prototype.initialize = function() {
 		this.setInfo('iconClass', 'fui-earth');
-		this.setInfo('priority', 3);
+		this.setInfo('priority', 1);
 
 		this.setController({
 			url : 'http://rc1.demobo.com/v1/momos/browsertool/control.html?0614',
-			url : 'http://10.0.0.21:1240/v1/momos/browsertool/control.html?0614',
+//			url : 'http://10.0.0.21:1240/v1/momos/browsertool/control.html?0614',
 			orientation : 'portrait'
 		});
 

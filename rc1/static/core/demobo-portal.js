@@ -56,6 +56,7 @@
         'grooveshark\\.com': 'grooveshark.com-new.js',
         'play\\.spotify\\.com': 'spotify.com-new.js',
         'sfbay\\.craigslist\\.org': 'yelp.com.js',
+        'www\\.yelp\\.com': 'yelp.com.js',
         'www\\.yellowpages\\.com': 'yelp.com.js',
         'www\\.foodspotting\\.com': 'yelp.com.js',
         'www\\.urbanspoon\\.com': 'yelp.com.js',
@@ -183,7 +184,7 @@
           defaultConfig = {
             'developer': 'developer@demobo.com'
           };
-          this.boboInfos['priority'] = 1;
+          this.boboInfos['priority'] = 0;
           this.boboInfos['config'] = defaultConfig;
           this.boboInfos['boboID'] = null;
           this.boboInfos['connectedDevices'] = {};
@@ -313,6 +314,13 @@
         */
 
 
+        Bobo.prototype.pause = function() {};
+
+        /*
+        // reservered for future use
+        */
+
+
         Bobo.prototype.finish = function() {};
 
         return Bobo;
@@ -400,7 +408,7 @@
             console.log('mbcommand');
             switch (data.value.command) {
               case 'switchBobo':
-                return portal.switchBobo(data.value.boboID);
+                return portal.switchBobo(data.value.boboID, true);
               default:
                 return false;
             }
@@ -492,6 +500,7 @@
           this.set('boboDeviceMap', {});
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
+          this.set('lastBoboID', this.loadLastBoboID());
           /*
           // Register event handlers for connected, disconnected,
           */
@@ -695,14 +704,34 @@
         };
 
         /*
+        // Set most recently used bobo in localstorage
+        */
+
+
+        DemoboPortal.prototype.saveLastBoboID = function() {
+          return window.localStorage.setItem('demoboLastBobo', this.get('curBobo').getInfo('boboID'));
+        };
+
+        /*
+        // get most recently used bobo in localstorage
+        */
+
+
+        DemoboPortal.prototype.loadLastBoboID = function() {
+          return window.localStorage.getItem('demoboLastBobo');
+        };
+
+        /*
         // Switch to another bobo
         */
 
 
-        DemoboPortal.prototype.switchBobo = function(boboID) {
-          var boboDeviceMap, deviceBoboMap, deviceID, devices, newBobo, oldBoboID, _i, _j, _len, _len1;
+        DemoboPortal.prototype.switchBobo = function(boboID, callResume) {
+          var boboDeviceMap, deviceBoboMap, deviceID, devices, newBobo, oldBobo, oldBoboID, _i, _j, _len, _len1;
 
-          oldBoboID = this.get('curBobo').getInfo('boboID');
+          oldBobo = this.get('curBobo');
+          oldBoboID = oldBobo.getInfo('boboID');
+          oldBobo.pause();
           boboDeviceMap = this.get('boboDeviceMap');
           deviceBoboMap = this.get('deviceBoboMap');
           devices = boboDeviceMap[oldBoboID];
@@ -718,7 +747,10 @@
             deviceID = devices[_j];
             this.setDeviceController(newBobo, deviceID);
           }
-          newBobo.resume();
+          if (callResume) {
+            newBobo.resume();
+          }
+          this.saveLastBoboID();
           return true;
         };
 
@@ -759,6 +791,9 @@
               setTimeout(function() {
                 return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
               }, 1000);
+            } else if (boboID === this.get('lastBoboID')) {
+              boboObj.setInfo('priority', 10);
+              this.switchBobo(boboObj.getInfo('boboID'));
             } else if (boboObj.getInfo('priority') > this.get('curBobo').getInfo('priority')) {
               this.switchBobo(boboObj.getInfo('boboID'));
             }

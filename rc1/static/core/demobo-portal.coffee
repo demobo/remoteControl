@@ -170,7 +170,7 @@ if not window.demoboLoading
         defaultConfig = 
           'developer': 'developer@demobo.com'
 
-        @boboInfos['priority'] = 1   
+        @boboInfos['priority'] = 0   
         @boboInfos['config'] = defaultConfig
         @boboInfos['boboID'] = null
         @boboInfos['connectedDevices'] = {}

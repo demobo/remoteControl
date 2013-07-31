@@ -184,7 +184,7 @@
           defaultConfig = {
             'developer': 'developer@demobo.com'
           };
-          this.boboInfos['priority'] = 1;
+          this.boboInfos['priority'] = 0;
           this.boboInfos['config'] = defaultConfig;
           this.boboInfos['boboID'] = null;
           this.boboInfos['connectedDevices'] = {};

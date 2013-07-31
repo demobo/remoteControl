@@ -51,7 +51,7 @@
   // override the initialize function of Bobo
   Yelp.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
-    this.setInfo('priority', 6);
+    this.setInfo('priority', 2);
 
     // if (typeof(this.parsePage) == "function") {
       // this.parsePage();  

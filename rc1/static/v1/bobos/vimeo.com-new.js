@@ -46,7 +46,7 @@
 //		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 //		if (!/couchmode/.test(location.pathname)) return;
 		this.setController( {
-			url : 'http://rc1.demobo.com/rc/vimeo?0130',
+			url : 'http://rc1.demobo.com/v1/momos/vimeo?0130',
 			orientation: 'portrait'
 		});
 		// your custom demobo input event dispatcher

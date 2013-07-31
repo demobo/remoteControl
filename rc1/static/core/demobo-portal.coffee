@@ -581,8 +581,18 @@ if not window.demoboLoading
 
         if (callResume)
           newBobo.resume()
-        this.saveLastBoboID()
+        if this.shouldSaveBoboID(boboID)
+          this.saveLastBoboID()
         return true
+
+      ###
+      // return false if the bobo is a "platform" bobo such as catalog, phone ...
+      ###
+      shouldSaveBoboID: (boboID)->
+        platformBobos = [
+          'http://rc1.demobo.com/v1/momos/browsertool/control.html?0614'
+        ]
+        return not (boboID in platformBobos)
      
       ###
       // Take an argument of a extended `Bobo` class and create a new `Bobo` instance. 
@@ -617,7 +627,7 @@ if not window.demoboLoading
           else if (boboID is this.get('lastBoboID'))
             boboObj.setInfo('priority', 10)
             this.switchBobo(boboObj.getInfo('boboID')) 
-          else if(boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority')) 
+          else if (not (this.get('curBobo').getInfo('boboID') is this.get('lastBoboID'))) and ((boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority'))) 
             this.switchBobo(boboObj.getInfo('boboID'))
            
           #this.setController(boboObj.getInfo('controller'))

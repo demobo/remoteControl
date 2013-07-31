@@ -750,8 +750,22 @@
           if (callResume) {
             newBobo.resume();
           }
-          this.saveLastBoboID();
+          if (this.shouldSaveBoboID(boboID)) {
+            this.saveLastBoboID();
+          }
           return true;
+        };
+
+        /*
+        // return false if the bobo is a "platform" bobo such as catalog, phone ...
+        */
+
+
+        DemoboPortal.prototype.shouldSaveBoboID = function(boboID) {
+          var platformBobos;
+
+          platformBobos = ['http://rc1.demobo.com/v1/momos/browsertool/control.html?0614'];
+          return !(__indexOf.call(platformBobos, boboID) >= 0);
         };
 
         /*
@@ -794,7 +808,7 @@
             } else if (boboID === this.get('lastBoboID')) {
               boboObj.setInfo('priority', 10);
               this.switchBobo(boboObj.getInfo('boboID'));
-            } else if (boboObj.getInfo('priority') > this.get('curBobo').getInfo('priority')) {
+            } else if ((!(this.get('curBobo').getInfo('boboID') === this.get('lastBoboID'))) && (boboObj.getInfo('priority') > this.get('curBobo').getInfo('priority'))) {
               this.switchBobo(boboObj.getInfo('boboID'));
             }
             this.trigger('add:bobos', boboID, boboObj);

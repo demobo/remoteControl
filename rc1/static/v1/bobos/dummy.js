@@ -5,7 +5,7 @@
     this.setInfo('iconClass', 'fui-sad');
 
     this.setController({
-      url: 'http://rc1.demobo.com/rc/inputtool?0615',
+      url: 'http://rc1.demobo.com/v1/momos/inputtool?0615',
       orientation: 'portrait'
     });
 

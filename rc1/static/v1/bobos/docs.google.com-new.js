@@ -28,7 +28,7 @@
 
   GoogleDocs.prototype.initialize = function (){
     this.setController({
-      url:'http://rc1.demobo.com/v1/momos/docsgoogle?0201',
+      url:'http://rc1.demobo.com/v1/momos/docsgoogle/control.html?0201',
       orientation: 'portrait'
     });
 

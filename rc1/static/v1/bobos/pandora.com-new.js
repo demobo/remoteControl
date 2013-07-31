@@ -9,7 +9,7 @@
     this.setInfo('priority', 2);
 
     this.setController({
-      url: 'http://rc1.demobo.com/v1/momos/pandora?0201'
+      url: 'http://rc1.demobo.com/v1/momos/pandora/control.html?0201'
     });
 
     this.setInputEventHandlers({

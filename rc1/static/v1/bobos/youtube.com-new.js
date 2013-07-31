@@ -9,7 +9,7 @@
       this.setInfo('priority', 2);
       
       this.setController({
-        url: 'http://rc1.demobo.com/v1/momos/youtube?0130',
+        url: 'http://rc1.demobo.com/v1/momos/youtube/control.html?0130',
 			  orientation: 'portrait'
       });
 

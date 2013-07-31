@@ -500,6 +500,7 @@
           this.set('boboDeviceMap', {});
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
+          this.set('lastBoboID', this.loadLastBoboID());
           /*
           // Register event handlers for connected, disconnected,
           */
@@ -703,6 +704,24 @@
         };
 
         /*
+        // Set most recently used bobo in localstorage
+        */
+
+
+        DemoboPortal.prototype.saveLastBoboID = function() {
+          return window.localStorage.setItem('demoboLastBobo', this.get('curBobo').getInfo('boboID'));
+        };
+
+        /*
+        // get most recently used bobo in localstorage
+        */
+
+
+        DemoboPortal.prototype.loadLastBoboID = function() {
+          return window.localStorage.getItem('demoboLastBobo');
+        };
+
+        /*
         // Switch to another bobo
         */
 
@@ -731,7 +750,22 @@
           if (callResume) {
             newBobo.resume();
           }
+          if (this.shouldSaveBoboID(boboID)) {
+            this.saveLastBoboID();
+          }
           return true;
+        };
+
+        /*
+        // return false if the bobo is a "platform" bobo such as catalog, phone ...
+        */
+
+
+        DemoboPortal.prototype.shouldSaveBoboID = function(boboID) {
+          var platformBobos;
+
+          platformBobos = ['http://rc1.demobo.com/v1/momos/browsertool/control.html?0614'];
+          return !(__indexOf.call(platformBobos, boboID) >= 0);
         };
 
         /*
@@ -771,7 +805,10 @@
               setTimeout(function() {
                 return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
               }, 1000);
-            } else if (boboObj.getInfo('priority') > this.get('curBobo').getInfo('priority')) {
+            } else if (boboID === this.get('lastBoboID')) {
+              boboObj.setInfo('priority', 10);
+              this.switchBobo(boboObj.getInfo('boboID'));
+            } else if ((!(this.get('curBobo').getInfo('boboID') === this.get('lastBoboID'))) && (boboObj.getInfo('priority') > this.get('curBobo').getInfo('priority'))) {
               this.switchBobo(boboObj.getInfo('boboID'));
             }
             this.trigger('add:bobos', boboID, boboObj);

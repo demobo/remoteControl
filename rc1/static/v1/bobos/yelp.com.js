@@ -62,7 +62,7 @@
     this.demoboParser();
     
     this.setController({
-     url: 'http://rc1.demobo.com/rc/inputtool?9999',
+     url: 'http://rc1.demobo.com/v1/momos/inputtool?9999',
      orientation: 'portrait'
     });
 
@@ -255,7 +255,11 @@
 
   //called with every property and it's value
   process = function(key,value) {
-    Yelp.telephones.push(value);
+    var telephone = { 
+                data : value,
+                type : key
+              };
+    Yelp.telephones.push(telephone);
   }
   
   traverse = function(objects, func) {
@@ -267,9 +271,17 @@
           var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
           var match = pattern.exec(object.data.trim());
           if (match != null) {
-            console.log('phone number matched ' + object.data.trim());
+            //console.log('phone number matched ' + object.data.trim());
             //telephones.push(object.data.trim());
-            func("telephone", object);
+            var tokens = object.data.trim().split(" ");
+            each(tokens, function(index, token) {
+              var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+              var match1 = pattern.exec(token);
+              if (match1 != null) {
+                console.log('phone number matched ' + token);
+                func("telephone", token);
+              }
+            });
           }
         }
       }
@@ -319,13 +331,14 @@
   responseToMessage = function(e) {
     //alert(e.data);
     var phoneNo = e.data;
-    demobo.openPage({url: 'tel:' + phoneNo, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
+    var bizTelephoneValue = phoneNo.trim().replace(/[^0-9]/g, '').replace(' ', '');
+    demobo.openPage({url: 'tel:' + bizTelephoneValue, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
   };
       
-  loadJS(window.demoboBase + '/apps/phonebobo/libs/htmlparser.js', function() {
-    loadJS(window.demoboBase + '/apps/phonebobo/libs/soupselect.js', function() {
-      loadJS(window.demoboBase + '/apps/phonebobo/libs/porthole.js', function() {
-        injectiframe(window.demoboBase + '/apps/phonebobo/microdata.html', loadBoBo);
+  loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/htmlparser.js', function() {
+    loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/soupselect.js', function() {
+      loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/porthole.js', function() {
+        injectiframe(window.demoboBase + '/v1/bobos/phonebobo/microdata.html', loadBoBo);
         window.addEventListener('message', responseToMessage, false);
       });
     });

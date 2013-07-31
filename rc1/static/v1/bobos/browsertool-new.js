@@ -13,7 +13,7 @@
 		console.log(text);
 		goto(text);
 		function goto(url) {
-			window.location = '//'+url;
+			window.location = 'http://'+url;
 		}
 
 	}

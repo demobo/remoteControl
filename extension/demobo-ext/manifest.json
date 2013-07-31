@@ -26,8 +26,8 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "*://*/*"
+     "*://*/*", "tabs"
    ],
-   "version": "0.1.1",
+   "version": "0.1.2",
    "manifest_version": 2
 }

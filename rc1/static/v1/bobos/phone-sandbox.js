@@ -10,6 +10,7 @@
   // override the initialize function of Bobo
   PhoneSandbox.prototype.initialize = function(){
 		this.setInfo('iconClass', 'fui-earth');
+    this.setInfo('boboID', 'phonesandbox');
 
     this.setController({
 //    set proper Momo     

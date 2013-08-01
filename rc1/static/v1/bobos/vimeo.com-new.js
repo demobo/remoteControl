@@ -4,6 +4,7 @@
   Vimeo.prototype.initialize = function(){
     this.setInfo('priority', 2);
     this.setInfo('iconClass', 'fui-play-circle');
+    this.setInfo('boboID', 'vimeo');
 
 	  this.setInfo('ui', {
 	  	playPauseButton: 	'.interactive_element.play_pause_button',

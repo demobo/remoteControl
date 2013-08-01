@@ -39,6 +39,7 @@
 
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 2);
+    this.setInfo('boboID', 'googledocs');
     
     this.setInfo('slideChangeTimeout', null);
 

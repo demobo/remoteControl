@@ -5,6 +5,7 @@
   Rdio.prototype.initialize = function(){
     this.setInfo('priority', 2);
     this.setInfo('iconClass', 'fui-play-circle');
+    this.setInfo('boboID', 'rdio');
 
 	  this.setInfo('ui', {
 		  playPauseButton: 	'#playButton:visible, #pauseButton:visible, .footer .play_pause',

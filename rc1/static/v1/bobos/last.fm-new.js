@@ -5,6 +5,7 @@
   Lastfm.prototype.initialize = function(){
 	  this.setInfo('priority', 2);
     this.setInfo('iconClass', 'fui-play-circle');
+    this.setInfo('boboID', 'lastfm');
 
     this.setController({
       url: 'http://rc1.demobo.com/v1/momos/lastfm/control.html?0201'      

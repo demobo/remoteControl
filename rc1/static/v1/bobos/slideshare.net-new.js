@@ -5,6 +5,7 @@
   Slideshare.prototype.initialize = function(){
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 2);
+    this.setInfo('boboID', 'slideshare');
 
     this.setInfo('ui', {
   		nextButton: 		'.btnNext',

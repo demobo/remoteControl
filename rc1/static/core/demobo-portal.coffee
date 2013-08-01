@@ -33,6 +33,7 @@ if not window.demoboLoading
 
     base = window.demoboBase+'/apps/'
     connectScript = window.demoboBase+'/core/connect.js'
+    faviconScript = window.demoboBase+'/core/favicon.js'
     
     ###
     // This sets the routing of controllers for websites (currently hardcoded)
@@ -692,6 +693,11 @@ if not window.demoboLoading
         window.__dmtg = ()->
           visible = document.getElementById('demoboConnect').style.top isnt ''
           if visible then window._hideDemoboConnect() else window._showDemoboConnect()
+      )
+
+      loadJS(faviconScript, ()->
+        favicon = new DeMoboFavicon()
+        favicon.toggle()
       )
     )
 

@@ -12,7 +12,7 @@
 
 
 (function() {
-  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, loadJS, nativeForEach, remotes, version, _,
+  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, faviconScript, loadJS, nativeForEach, remotes, version, _,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   if (!window.demoboLoading) {
@@ -38,6 +38,7 @@
       version = '0.9.2';
       base = window.demoboBase + '/apps/';
       connectScript = window.demoboBase + '/core/connect.js';
+      faviconScript = window.demoboBase + '/core/favicon.js';
       /*
       // This sets the routing of controllers for websites (currently hardcoded)
       */
@@ -895,7 +896,7 @@
         // Load script of connection dialog and show the dialog if necessary
         */
 
-        return loadJS(connectScript, function() {
+        loadJS(connectScript, function() {
           return window.__dmtg = function() {
             var visible;
 
@@ -906,6 +907,12 @@
               return window._showDemoboConnect();
             }
           };
+        });
+        return loadJS(faviconScript, function() {
+          var favicon;
+
+          favicon = new DeMoboFavicon();
+          return favicon.toggle();
         });
       });
     }

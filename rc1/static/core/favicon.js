@@ -16,23 +16,28 @@ var DeMoboFavicon = function() {
 		} : null);
 	}
 
-  this.isOff = function(){
-    return this.getFavicon() === this.originalFavicon; 
-  }
 
-  this.turnOn = function(){
-    this.change(this.newFavicon);
-  }
+	this.isOff = function() {
+		return this.getFavicon() !== this.onFavicon;
+	}
 
-  this.turnOff = function(){
-	  this.change(this.originalFavicon);
-  }
+	this.turnOn = function() {
+		this.change(this.onFavicon);
+	}
+
+	this.turnOff = function() {
+		this.change(this.offFavicon);
+	}
+
+	this.reset = function() {
+		this.change(this.originalFavicon);
+	}
 
 	this.toggle = function() {
 		if (this.isOff())
-      this.turnOn();
+			this.turnOn();
 		else
-      this.turnOff();
+			this.turnOff();
 	}
 	this.getFavicon = function() {
 		var favicon = "/favicon.ico";
@@ -47,7 +52,22 @@ var DeMoboFavicon = function() {
 		}
 		return favicon;
 	}
-	this.effect = function(ctx, canvas) {
+	this.grayscale = function(ctx) {
+		var imageData = ctx.getImageData(13, 13, 18, 18);
+		var data = imageData.data;
+		for (var i = 0; i < data.length; i += 4) {
+			var brightness = 0.34 * data[i] + 0.5 * data[i + 1] + 0.16 * data[i + 2];
+			// red
+			data[i] = brightness;
+			// green
+			data[i + 1] = brightness;
+			// blue
+			data[i + 2] = brightness;
+		}
+		// overwrite original image
+		ctx.putImageData(imageData, 13, 13);
+	}
+	this.colorize = function(ctx, canvas, rgb) {
 		// get all canvas pixel data
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
 		for (var y = 0; y < canvas.height; y++) {
@@ -58,9 +78,9 @@ var DeMoboFavicon = function() {
 				g = imageData.data[inpos++];
 				b = imageData.data[inpos++];
 				a = imageData.data[inpos++];
-				r = Math.min(255, r);
-				g = Math.min(204, g);
-				b = Math.min(155, b);
+				r = Math.min(rgb.r, r);
+				g = Math.min(rgb.g, g);
+				b = Math.min(rgb.b, b);
 				imageData.data[outpos++] = r;
 				imageData.data[outpos++] = g;
 				imageData.data[outpos++] = b;
@@ -74,41 +94,61 @@ var DeMoboFavicon = function() {
 		var img = new Image();
 		var demoboLogo = new Image();
 		var self = this;
-		img.onload = function() {
-			var canvas = document.createElement("canvas");
-			canvas.width = 32;
-			canvas.height = 32;
-			var ctx = canvas.getContext("2d");
-			console.log(this.src);
-			ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-			self.effect(ctx, canvas);
-			ctx.drawImage(demoboLogo, 13, 13, 18, 18);
-			self.newFavicon = canvas.toDataURL("image/png");
-			self.toggle();
-		};
 		demoboLogo.onload = function() {
 			var uri = parseURI(URL);
-			if (!uri.host || window.location.host == uri.host)
+			if (uri.host) {
+				if (window.location.host == uri.host)
+					img.src = URL;
+				else
+					img.src = '/favicon.ico';
+			} else
 				img.src = URL;
-			else
-				draw();
+			missingIcon();
+			self.turnOn();
 		};
-		var draw = function() {
+		// img.crossOrigin = 'anonymous';
+		img.onload = demoboIcon;
+		img.onerror = missingIcon;
+
+		function demoboIcon() {
 			var canvas = document.createElement("canvas");
 			canvas.width = 32;
 			canvas.height = 32;
 			var ctx = canvas.getContext("2d");
-			ctx.fillStyle = '#ffffff';
-			ctx.fillRect(0, 0, canvas.width, canvas.height);
-			self.effect(ctx, canvas);
+			ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 			ctx.drawImage(demoboLogo, 13, 13, 18, 18);
-			self.newFavicon = canvas.toDataURL("image/png");
-			self.toggle();
+			self.onFavicon = canvas.toDataURL("image/png");
+
+			self.grayscale(ctx);
+			self.offFavicon = canvas.toDataURL("image/png");
+			self.turnOn();
+		};
+		function missingIcon() {
+			var canvas = document.createElement("canvas");
+			canvas.width = 32;
+			canvas.height = 32;
+			var ctx = canvas.getContext("2d");
+			ctx.beginPath();
+			ctx.arc(canvas.width / 2, canvas.height / 2, canvas.width / 3, 0, 2 * Math.PI, false);
+			ctx.fillStyle = '#ffffff';
+			ctx.fill();
+			ctx.lineWidth = 2;
+			ctx.strokeStyle = '#000000';
+			ctx.stroke();
+
+			ctx.drawImage(demoboLogo, 13, 13, 18, 18);
+			self.onFavicon = canvas.toDataURL("image/png");
+			
+			self.grayscale(ctx);
+			self.offFavicon = canvas.toDataURL("image/png");
+			self.turnOn();
 		}
+
+
 		demoboLogo.src = this.demoboIcon;
 	}
 	this.change = function(iconURL) {
-		this.addLink(iconURL, "icon")
+		this.removeIcon()
 		this.addLink(iconURL, "shortcut icon")
 	}
 	this.addLink = function(iconURL, relValue) {
@@ -116,20 +156,21 @@ var DeMoboFavicon = function() {
 		link.type = "image/x-icon"
 		link.rel = relValue
 		link.href = iconURL
-		this.removeLinkIfExists(relValue)
 		this.docHead.appendChild(link)
 	}
-	this.removeLinkIfExists = function(relValue) {
+	this.removeIcon = function() {
 		var links = this.docHead.getElementsByTagName("link");
-		for (var i = 0; i < links.length; i++) {
+		// remove from the end
+		for (var i = links.length - 1; i >= 0; i--) {
 			var link = links[i]
-			if (link.rel == relValue) {
+			if (/icon/.test(link.rel)) {
 				this.docHead.removeChild(link)
-				return
 			}
 		}
 	}
 	this.originalFavicon = this.getFavicon()
-	this.newFavicon = this.demoboIcon
+	this.offFavicon = '//www.google.com/s2/favicons?domain=' + window.location.host
+	this.onFavicon = this.demoboIcon
 	this.renderIcon(this.originalFavicon)
 }
+fav = new DeMoboFavicon()

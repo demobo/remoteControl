@@ -13,10 +13,6 @@ chrome.browserAction.onClicked.addListener(function(tab){
 	chrome.tabs.sendMessage(tab.id,{action:'toggleDemobo'});
   setIcon();
   var tabID = tab.id;
-  if (activeTab){
-    //send message to tab to turn off favicon
-    chrome.tabs.sendMessage(activeTab, {action:'off'});
-  }
   activeTab = tabID;
 });
 chrome.extension.onMessage.addListener(onMessage);
@@ -32,7 +28,6 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
     setIcon();
   }
 });
- 
 
 function setIcon() {
 		chrome.browserAction.setIcon({

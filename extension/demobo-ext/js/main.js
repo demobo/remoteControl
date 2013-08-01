@@ -10,22 +10,13 @@ if (!document.getElementById('toggle')){
   toggle.setAttribute('id', 'toggle');
   document.body.appendChild(toggle);
 
-  //faviconoff
-  var faviconOff = document.createElement('div');
-  faviconOff.setAttribute('onclick', 'javascript:if(window.demoboPortal){window.demoboPortal.turnOffFavicon()}');
-  faviconOff.setAttribute('id', 'faviconOff');
-  document.body.appendChild(faviconOff);
-  
   function onMessage(message, sender, sendResponse) {
    if (message.action === 'toggleDemobo'){
   //    document.getElementById('toggleDemobo').click();
       document.getElementById('toggle').click();
 
    //favicon off message
-   }else if(message.action === 'off'){
-     document.getElementById('faviconOff').click();
    }
-
   };
   
   chrome.extension.onMessage.addListener(onMessage);

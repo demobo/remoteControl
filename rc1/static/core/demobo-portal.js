@@ -84,7 +84,7 @@
       // Try to preload demobo API and other scripts as early as possible
       */
 
-      cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js');
+      cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js');
       cacheJS(connectScript);
       /*
       // A function that loads a script and executes the call back after the script is executed
@@ -401,6 +401,26 @@
           };
         },
         /*
+        // Handler that runs when demobo is enabled
+        */
+
+        enabledHandler: function(portal) {
+          return function(data) {
+            console.log('enabled');
+            return portal.turnOnFavicon();
+          };
+        },
+        /*
+        // Handler that runs when demobo is disabled
+        */
+
+        disabledHandler: function(portal) {
+          return function(data) {
+            console.log('disabled');
+            return portal.turnOffFavicon();
+          };
+        },
+        /*
         // Handler that runs when a new device is disconnected
         */
 
@@ -507,6 +527,8 @@
           */
 
           this.demobo.addEventListener('connected', demoboHandlers.connectedHandler(this));
+          this.demobo.addEventListener('enabled', demoboHandlers.enabledHandler(this));
+          this.demobo.addEventListener('disabled', demoboHandlers.disabledHandler(this));
           this.demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this));
           this.demobo.addEventListener('mb', demoboHandlers.mbHandler(this));
           this.on('change:bobos', demoboHandlers.handlerBobosChange);
@@ -915,7 +937,7 @@
       // instantiate a `DemoboPortal` object and expose to global use
       */
 
-      loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js', function() {
+      loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js', function() {
         var demoboPortal;
 
         demoboPortal = new DemoboPortal();

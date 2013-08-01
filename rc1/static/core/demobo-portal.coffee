@@ -401,6 +401,11 @@ if not window.demoboLoading
           toReturn['remote'] = base + remote
         return toReturn
 
+      ###
+      // Return true if this is extension
+      ###
+      isExtension: ()->
+        return (this.get('isExtension') is 1)
 
       ###
       //Called immediately upon the object's instantiation (guaranteed) 
@@ -416,6 +421,9 @@ if not window.demoboLoading
         this.set('curBobo', null)
         this.set('boboRoutes', boboRoutes)
         this.set('lastBoboID', this.loadLastBoboID())
+
+        this.set('isExtension', window._extension)
+        delete window._extension
 
         ###
         // Register event handlers for connected, disconnected,  

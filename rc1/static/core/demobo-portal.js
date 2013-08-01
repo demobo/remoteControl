@@ -506,6 +506,15 @@
         };
 
         /*
+        // Return true if this is extension
+        */
+
+
+        DemoboPortal.prototype.isExtension = function() {
+          return this.get('isExtension') === 1;
+        };
+
+        /*
         //Called immediately upon the object's instantiation (guaranteed)
         */
 
@@ -522,6 +531,8 @@
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
           this.set('lastBoboID', this.loadLastBoboID());
+          this.set('isExtension', window._extension);
+          delete window._extension;
           /*
           // Register event handlers for connected, disconnected,
           */

@@ -1,5 +1,6 @@
 var DeMoboFavicon = function() {
 	this.docHead = document.getElementsByTagName("head")[0]
+	this.demoboIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAB3RJTUUH3QgBAzotiIi1oAAAAXBJREFUOMu1lEFLQkEUhb8Zh4LMFmIQlFKIRkJU1KqCoP8Q9PwN0baltGkRtGrfpjD3bcR+QFEtokWUIi6LSAhflvL0TQtfqaTwxDowi+HOPfecO3dGAOgkm8AuEAEE7qCBHJAQcVLCITmlPxhCJ3kEon0SZZVjpwHldRS7gYBa+XsTUYBADcOG2bMMDXyc+PCqdyEBkApsC7TdXN2UtZ6pW5zdKt7KoDqrFhQLFxSujtvqj4zNEF3bBt0sMuCB9F0Xoqr5QuZghfWtDEP+EAC2VSG9v0Bgahl/cPGXx45Edt1CeiSB8CoeNeiolPhGp9F1q6MJ2e1CGpW068ZL/gj/QSTaB8TVTDZzGs22Snxe75Ar+pACalUTjeb+fA8h1U9StfxK/vKIp4cMALWKiVUpNcI6iQ0IBNzkIfsMUvQ+5NL5CkDDUhhi4+6dtSAngURrb+YnYS7UM1FCijgpwACygEZDbAJmg67ebBYwjENSX7CqerTMYqamAAAAAElFTkSuQmCC";
 	function parseURI(url) {
 		var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
 		return ( m ? {
@@ -31,13 +32,6 @@ var DeMoboFavicon = function() {
 				favicon = link.getAttribute("href");
 			}
 		}
-		if (!/data:image/.test(favicon)) {
-			var uri = parseURI(favicon);
-			if (!uri.host || window.location.host == uri.host)
-				favicon = uri.pathname;
-			else
-				favicon = "/favicon.ico";
-		}
 		return favicon;
 	}
 	this.effect = function(ctx, canvas) {
@@ -63,25 +57,42 @@ var DeMoboFavicon = function() {
 		// put pixel data on canvas
 		ctx.putImageData(imageData, 0, 0);
 	}
-	this.getBase64FromImageUrl = function(URL) {
+	this.renderIcon = function(URL) {
 		var img = new Image();
 		var demoboLogo = new Image();
 		var self = this;
-		img.onload = draw;
-		img.onerror = function() {}
-		img.src = URL;
-		demoboLogo.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAB3RJTUUH3QgBAzotiIi1oAAAAXBJREFUOMu1lEFLQkEUhb8Zh4LMFmIQlFKIRkJU1KqCoP8Q9PwN0baltGkRtGrfpjD3bcR+QFEtokWUIi6LSAhflvL0TQtfqaTwxDowi+HOPfecO3dGAOgkm8AuEAEE7qCBHJAQcVLCITmlPxhCJ3kEon0SZZVjpwHldRS7gYBa+XsTUYBADcOG2bMMDXyc+PCqdyEBkApsC7TdXN2UtZ6pW5zdKt7KoDqrFhQLFxSujtvqj4zNEF3bBt0sMuCB9F0Xoqr5QuZghfWtDEP+EAC2VSG9v0Bgahl/cPGXx45Edt1CeiSB8CoeNeiolPhGp9F1q6MJ2e1CGpW068ZL/gj/QSTaB8TVTDZzGs22Snxe75Ar+pACalUTjeb+fA8h1U9StfxK/vKIp4cMALWKiVUpNcI6iQ0IBNzkIfsMUvQ+5NL5CkDDUhhi4+6dtSAngURrb+YnYS7UM1FCijgpwACygEZDbAJmg67ebBYwjENSX7CqerTMYqamAAAAAElFTkSuQmCC";
-		function draw() {
+		img.onload = function() {
 			var canvas = document.createElement("canvas");
 			canvas.width = 32;
 			canvas.height = 32;
 			var ctx = canvas.getContext("2d");
+			console.log(this.src);
 			ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
 			self.effect(ctx, canvas);
 			ctx.drawImage(demoboLogo, 13, 13, 18, 18);
 			self.newFavicon = canvas.toDataURL("image/png");
+			self.toggle();
+		};
+		demoboLogo.onload = function() {
+			var uri = parseURI(URL);
+			if (!uri.host || window.location.host == uri.host)
+				img.src = URL;
+			else
+				draw();
+		};
+		var draw = function() {
+			var canvas = document.createElement("canvas");
+			canvas.width = 32;
+			canvas.height = 32;
+			var ctx = canvas.getContext("2d");
+			ctx.fillStyle = '#ffffff';
+			ctx.fillRect(0, 0, canvas.width, canvas.height);
+			self.effect(ctx, canvas);
+			ctx.drawImage(demoboLogo, 13, 13, 18, 18);
+			self.newFavicon = canvas.toDataURL("image/png");
+			self.toggle();
 		}
-
+		demoboLogo.src = this.demoboIcon;
 	}
 	this.change = function(iconURL) {
 		this.addLink(iconURL, "icon")
@@ -106,6 +117,6 @@ var DeMoboFavicon = function() {
 		}
 	}
 	this.originalFavicon = this.getFavicon()
-	this.newFavicon = ""
-	this.getBase64FromImageUrl(this.originalFavicon)
+	this.newFavicon = this.demoboIcon
+	this.renderIcon(this.originalFavicon)
 }

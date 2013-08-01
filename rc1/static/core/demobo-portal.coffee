@@ -697,7 +697,6 @@ if not window.demoboLoading
 
       loadJS(faviconScript, ()->
         favicon = new DeMoboFavicon()
-        favicon.toggle()
       )
     )
 

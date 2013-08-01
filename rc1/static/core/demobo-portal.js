@@ -911,8 +911,7 @@
         return loadJS(faviconScript, function() {
           var favicon;
 
-          favicon = new DeMoboFavicon();
-          return favicon.toggle();
+          return favicon = new DeMoboFavicon();
         });
       });
     }

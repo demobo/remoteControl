@@ -870,6 +870,34 @@
         };
 
         /*
+        // turnoff favicon
+        */
+
+
+        DemoboPortal.prototype.turnOffFavicon = function() {
+          var favicon;
+
+          favicon = this.get('favicon');
+          if (favicon) {
+            return favicon.turnOff();
+          }
+        };
+
+        /*
+        // turn on favicon
+        */
+
+
+        DemoboPortal.prototype.turnOnFavicon = function() {
+          var favicon;
+
+          favicon = this.get('favicon');
+          if (favicon) {
+            return favicon.turnOn();
+          }
+        };
+
+        /*
         // Create the view of a bobo, which would be showed up in portal
         */
 
@@ -911,7 +939,8 @@
         return loadJS(faviconScript, function() {
           var favicon;
 
-          return favicon = new DeMoboFavicon();
+          favicon = new DeMoboFavicon();
+          return demoboPortal.set('favicon', favicon);
         });
       });
     }

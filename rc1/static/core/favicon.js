@@ -15,11 +15,24 @@ var DeMoboFavicon = function() {
 			hash : m[8] || ''
 		} : null);
 	}
+
+  this.isOff = function(){
+    return this.getFavicon() === this.originalFavicon; 
+  }
+
+  this.turnOn = function(){
+    this.change(this.newFavicon);
+  }
+
+  this.turnOff = function(){
+	  this.change(this.originalFavicon);
+  }
+
 	this.toggle = function() {
-		if (this.getFavicon() == this.originalFavicon)
-			this.change(this.newFavicon);
+		if (this.isOff())
+      this.turnOn();
 		else
-			this.change(this.originalFavicon);
+      this.turnOff();
 	}
 	this.getFavicon = function() {
 		var favicon = "/favicon.ico";

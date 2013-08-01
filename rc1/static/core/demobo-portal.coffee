@@ -671,6 +671,22 @@ if not window.demoboLoading
         return oldVal
 
       ###
+      // turnoff favicon
+      ###
+      turnOffFavicon: ()->
+        favicon = this.get('favicon')
+        if favicon
+          favicon.turnOff()
+
+      ###
+      // turn on favicon
+      ###
+      turnOnFavicon: ()->
+        favicon = this.get('favicon')
+        if favicon
+          favicon.turnOn()
+
+      ###
       // Create the view of a bobo, which would be showed up in portal 
       ###
       createBoboView: (boboID, boboInfo)->
@@ -697,6 +713,7 @@ if not window.demoboLoading
 
       loadJS(faviconScript, ()->
         favicon = new DeMoboFavicon()
+        demoboPortal.set('favicon', favicon)
       )
     )
 

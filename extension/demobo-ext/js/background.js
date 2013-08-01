@@ -1,5 +1,5 @@
 
-var activeTabs = []; // ids of tabs which demobo is running
+var activeTab; // ids of tabs which demobo is running
 
 setBWIcon();
 
@@ -13,9 +13,11 @@ chrome.browserAction.onClicked.addListener(function(tab){
 	chrome.tabs.sendMessage(tab.id,{action:'toggleDemobo'});
   setIcon();
   var tabID = tab.id;
-  if (activeTabs.indexOf(tabID)===-1){
-    activeTabs.push(tabID);
+  if (activeTab){
+    //send message to tab to turn off favicon
+    chrome.tabs.sendMessage(activeTab, {action:'off'});
   }
+  activeTab = tabID;
 });
 chrome.extension.onMessage.addListener(onMessage);
 
@@ -23,7 +25,8 @@ chrome.extension.onMessage.addListener(onMessage);
   when switching tab, update the brwoseraction icon
 */
 chrome.tabs.onActivated.addListener(function(activeInfo){ 
-  if (activeTabs.indexOf(activeInfo.tabId)===-1){
+  currentTabId = activeInfo.tabId
+  if (activeTab != currentTabId){
     setBWIcon();
   }else{
     setIcon();

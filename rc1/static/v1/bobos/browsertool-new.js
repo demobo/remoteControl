@@ -22,6 +22,10 @@
 		this.setInfo('iconClass', 'fui-earth')
 		this.setInfo('priority', 1);
     this.setInfo('boboID', 'catalog');
+    this.setInfo('name', 'Bobolog');
+    this.setInfo('description', 'This is a catalog of all feature websites that deMobo supports');
+    this.setInfo('type', 'catalog');
+
 
 		this.setController({
 			url : 'http://rc1.demobo.com/v1/momos/browsertool/control.html?0614',

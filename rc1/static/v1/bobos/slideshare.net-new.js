@@ -6,6 +6,10 @@
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 2);
     this.setInfo('boboID', 'slideshare');
+    this.setInfo('name', 'Remote Control for Slideshare');
+    this.setInfo('description', 'This is a remote control for presentations on Slideshare')
+    this.setInfo('type', 'specific');
+
 
     this.setInfo('ui', {
   		nextButton: 		'.btnNext',

@@ -7,6 +7,10 @@
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 2);
     this.setInfo('boboID', 'douban');
+    this.setInfo('name', 'Remote Control for douban');
+    this.setInfo('description', 'This is a remote control for douban');
+    this.setInfo('type', 'specific');
+
     
     this.setInfo('currentSongInfo', {});
     this.setInfo('playingState', {isPlaying:false, volume: 0});

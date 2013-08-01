@@ -39,6 +39,11 @@
 
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 2);
+    this.setInfo('boboID', 'googledocs');
+    this.setInfo('name', 'Remote Control for GoogleDocs');
+    this.setInfo('description', 'This is a remote control for presentations on GoogleDocs');
+    this.setInfo('type', 'specific');
+
     
     this.setInfo('slideChangeTimeout', null);
 

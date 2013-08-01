@@ -52,7 +52,11 @@
 	// override the initialize function of Bobo
 	Inputtool.prototype.initialize = function() {
 		this.getInfo('config')['iconUrl'] = 'test1.png'
-		this.setInfo('iconClass', 'fui-keyboard')
+		this.setInfo('iconClass', 'fui-keyboard');
+    this.setInfo('boboID', 'inputtool');
+    this.setInfo('name', 'Input Tool');
+    this.setInfo('description', 'An amazing tool to replacing your keyboard with your phone.');
+    this.setInfo('type', 'generic');
 
 		this.setController({
 			url : 'http://rc1.demobo.com/v1/momos/inputtool/control.html?0614',

@@ -75,7 +75,7 @@ if not window.demoboLoading
     ###
     // Try to preload demobo API and other scripts as early as possible
     ###
-    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js')
+    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js')
     cacheJS(connectScript)
 
     ###
@@ -324,6 +324,22 @@ if not window.demoboLoading
           portal.addDevice(data.deviceID)
 
       ###
+      // Handler that runs when demobo is enabled
+      ###
+      enabledHandler: (portal)->
+        return (data)->
+          console.log('enabled')
+          portal.turnOnFavicon()          
+
+      ###
+      // Handler that runs when demobo is disabled
+      ###
+      disabledHandler: (portal)->
+        return (data)->
+          console.log('disabled')
+          portal.turnOffFavicon()
+
+      ###
       // Handler that runs when a new device is disconnected
       ###
       mbHandler: (portal)->
@@ -385,6 +401,11 @@ if not window.demoboLoading
           toReturn['remote'] = base + remote
         return toReturn
 
+      ###
+      // Return true if this is extension
+      ###
+      isExtension: ()->
+        return (this.get('isExtension') is 1)
 
       ###
       //Called immediately upon the object's instantiation (guaranteed) 
@@ -401,10 +422,15 @@ if not window.demoboLoading
         this.set('boboRoutes', boboRoutes)
         this.set('lastBoboID', this.loadLastBoboID())
 
+        this.set('isExtension', window._extension)
+        delete window._extension
+
         ###
         // Register event handlers for connected, disconnected,  
         ###
         @demobo.addEventListener('connected', demoboHandlers.connectedHandler(this))
+        @demobo.addEventListener('enabled', demoboHandlers.enabledHandler(this))
+        @demobo.addEventListener('disabled', demoboHandlers.disabledHandler(this))
         @demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this))
         @demobo.addEventListener('mb', demoboHandlers.mbHandler(this))
 
@@ -697,7 +723,7 @@ if not window.demoboLoading
     //----------------
     // instantiate a `DemoboPortal` object and expose to global use
     ###
-    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
+    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js',()->
 
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal

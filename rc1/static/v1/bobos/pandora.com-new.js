@@ -7,6 +7,11 @@
     this.getInfo('config')['iconUrl'] = 'test2.png';
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 2);
+    this.setInfo('boboID', 'pandora');
+    this.setInfo('name', 'Remote Control for pandora');
+    this.setInfo('description', 'This is a remote control for pandora');
+    this.setInfo('type', 'specific');
+
 
     this.setController({
       url: 'http://rc1.demobo.com/v1/momos/pandora/control.html?0201'

@@ -5,6 +5,11 @@
   Rdio.prototype.initialize = function(){
     this.setInfo('priority', 2);
     this.setInfo('iconClass', 'fui-play-circle');
+    this.setInfo('boboID', 'rdio');
+    this.setInfo('name', 'Remote Control for rdio');
+    this.setInfo('description', 'This is a remote control for rdio');
+    this.setInfo('type', 'specific');
+
 
 	  this.setInfo('ui', {
 		  playPauseButton: 	'#playButton:visible, #pauseButton:visible, .footer .play_pause',

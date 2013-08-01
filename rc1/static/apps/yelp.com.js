@@ -8,11 +8,13 @@
   Yelp.telephones = [];
   
   Yelp.prototype.pause = function(){
-    $('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
+    //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
+    $('#boboModal').modal('hide');
   };
 
   Yelp.prototype.resume = function(){
-     $('#demobo_overlay').css('bottom', 0);
+    //$('#demobo_overlay').css('bottom', 0);
+    $('#boboModal').modal();
   }
   
   Yelp.prototype.onReady = function(){
@@ -324,14 +326,35 @@
     return script.onload = f;
   };
   
+  loadCSS = function(src) {
+
+    var link;
+    
+    link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('href', src);
+
+    document.head.appendChild(link);
+  };
+  
+  
   injectiframe = function(src, onloadHandler) {
+    
+    var div = document.createElement('div');
+    div.setAttribute('id', 'boboModal');
+    div.setAttribute('class', 'modal hide fade');
+    div.setAttribute('tabindex', '-1');
+    div.setAttribute('role', 'dialog');
+    
     iframe = document.createElement('iframe');
     iframe.setAttribute('id', 'demobo_overlay');
     iframe.setAttribute('src', src);
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
+    iframe.setAttribute('scrolling', 'yes');
+    //iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
     iframe.addEventListener('load', onloadHandler);
-    document.body.appendChild(iframe);
+    
+    div.appendChild(iframe);
+    document.body.appendChild(div);
   };
   
   loadBoBo = function() {
@@ -355,8 +378,11 @@
   loadJS(window.demoboBase + '/apps/phonebobo/libs/htmlparser.js', function() {
     loadJS(window.demoboBase + '/apps/phonebobo/libs/soupselect.js', function() {
       loadJS(window.demoboBase + '/apps/phonebobo/libs/porthole.js', function() {
-        injectiframe(window.demoboBase + '/apps/phonebobo/microdata.html', loadBoBo);
-        window.addEventListener('message', responseToMessage, false);
+        loadJS(window.demoboBase + '/apps/phonebobo/libs/bootstrap.min.js', function() {
+          loadCSS(window.demoboBase + '/apps/phonebobo/css/bootstrap.min.css');
+          injectiframe(window.demoboBase + '/apps/phonebobo/microdata.html', loadBoBo);
+          window.addEventListener('message', responseToMessage, false);
+        });
       });
     });
   });

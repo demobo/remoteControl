@@ -35,6 +35,13 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 
 });
 
+chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
+  var index = demoboEnabledTabs.indexOf(tabId);
+  if (index!=-1){
+    demoboEnabledTabs.splice(index, 1);
+  }
+});
+
 //catch refresh event
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
   if (changeInfo.status && changeInfo.status==='complete'){

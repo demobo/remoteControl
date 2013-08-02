@@ -396,6 +396,7 @@ if not window.demoboLoading
           'input': base+'inputtool-new.js'
           'dummy': base+'dummy.js'
           'browsertool': base+'browsertool-new.js'
+          'help': base+'help.js'
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote

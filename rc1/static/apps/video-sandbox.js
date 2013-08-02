@@ -70,7 +70,7 @@
     this.resume();
 	};
 
-  VideoSandbox.prototype.resume = function(){
+  VideoSandbox.prototype.resumeBobo = function(){
     console.log('videosandbox\'s resume is clicked');
     $('.flex-control-nav li a')[1].click();
   };

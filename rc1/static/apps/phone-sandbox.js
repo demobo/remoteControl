@@ -28,7 +28,7 @@
 
   };
 
-  PhoneSandbox.prototype.resume = function(){
+  PhoneSandbox.prototype.resumeBobo = function(){
     console.log('PhoneSandbox\'s resume is called');
     $('.flex-control-nav li a')[2].click();
   };

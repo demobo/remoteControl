@@ -32,7 +32,7 @@
     element.select();
   };
 
-  InputSandbox.prototype.resume = function(){
+  InputSandbox.prototype.resumeBobo = function(){
     console.log('inputsandbox\'s resume is clicked');
     //change to inputsandbox
     $('.flex-control-nav li a')[3].click();

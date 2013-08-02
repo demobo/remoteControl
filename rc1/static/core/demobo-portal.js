@@ -842,7 +842,7 @@
         DemoboPortal.prototype.shouldSaveBoboID = function(boboID) {
           var platformBobos;
 
-          platformBobos = ['http://rc1.demobo.com/v1/momos/browsertool/control.html?0614'];
+          platformBobos = ['catalog', 'help'];
           return !(__indexOf.call(platformBobos, boboID) >= 0);
         };
 

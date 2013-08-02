@@ -16,7 +16,11 @@ if (!document.getElementById('toggle')){
       document.getElementById('toggle').click();
 
    //favicon off message
+   }else if(message.action === 'load'){
+     console.log('hello');
+     document.getElementById('toggle').click();
    }
+
   };
   
   chrome.extension.onMessage.addListener(onMessage);

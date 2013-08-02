@@ -1,4 +1,5 @@
-
+console.log('fuck');
+var demoboEnabledTabs = [];
 var activeTab; // ids of tabs which demobo is running
 
 setBWIcon();
@@ -14,6 +15,9 @@ chrome.browserAction.onClicked.addListener(function(tab){
   setIcon();
   var tabID = tab.id;
   activeTab = tabID;
+  if (demoboEnabledTabs.indexOf(tabID)===-1){
+    demoboEnabledTabs.push(tabID);
+  }
 });
 chrome.extension.onMessage.addListener(onMessage);
 
@@ -21,12 +25,23 @@ chrome.extension.onMessage.addListener(onMessage);
   when switching tab, update the brwoseraction icon
 */
 chrome.tabs.onActivated.addListener(function(activeInfo){ 
-  currentTabId = activeInfo.tabId
-  if (activeTab != currentTabId){
+  var currentTabId = activeInfo.tabId
+  if (demoboEnabledTabs.indexOf(currentTabId)===-1){
     setBWIcon();
   }else{
+    activeTab = currentTabId;
     setIcon();
   }
+
+});
+
+//catch refresh event
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+  if (changeInfo.status && changeInfo.status==='complete'){
+    if (demoboEnabledTabs.indexOf(tabId)!=-1){
+      chrome.tabs.sendMessage(tabId, {action:'load'});
+    }
+  } 
 });
 
 function setIcon() {

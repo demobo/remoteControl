@@ -4,9 +4,13 @@
   EightTrack.prototype.initialize = function(){
     this.setInfo('priority', 2);
     this.setInfo('iconClass', 'fui-play-circle');
+    this.setInfo('boboID', 'eighttrack');
+    this.setInfo('name', 'Remote Control for 8tracks');
+    this.setInfo('description', 'This is a remote control for 8tracks');
+    this.setInfo('type', 'specific');
 
 		this.setController( {
-			url : "http://rc1.demobo.com/rc/8tracks?0926"
+			url : "http://rc1.demobo.com/v1/momos/8tracks/control.html?0926"
 		});
 		// your custom demobo input event dispatcher
 		this.setInputEventHandlers( {

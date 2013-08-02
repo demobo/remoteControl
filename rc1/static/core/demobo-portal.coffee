@@ -514,8 +514,41 @@ if not window.demoboLoading
             info['active'] = 1
           boboInfos.push(info)
         
-        toSend['bobos'] = boboInfos
+#        toSend['bobos'] = boboInfos
+        toSend['bobos'] = this.getBobosInfo()
         return @demobo.setController(toSend, deviceID)
+
+      ###
+      // get information of bobos
+      ###
+      getBobosInfo: ()->
+        boboInfos = []
+        curBoboID = this.get('curBobo').getInfo('boboID')
+        for boboID, bobo of this.get('bobos')
+          info = {}
+          info['id'] = boboID
+          info['icon'] = bobo.getInfo('iconClass')
+          info['description'] = bobo.getInfo('description')
+          info['name'] = bobo.getInfo('name')
+          info['type'] = bobo.getInfo('type')
+          info['priority'] = bobo.getInfo('priority')
+          info['iconName'] = bobo.getInfo('iconClass')
+          if boboID is curBoboID
+            info['active'] = 1
+          boboInfos.push(info)
+        boboInfos.sort((a, b)->
+          if (a.priority>b.priority)
+            return -1
+          else if (a.priority<b.priority)
+            return 1
+          else
+            if (a.id<b.id)
+              return -1
+            else if (a.id is b.id)
+              return 0
+            else
+              return 1
+        )
       
       ###
       //Return true if `deviceID` is already in the mapping; false otherwise.

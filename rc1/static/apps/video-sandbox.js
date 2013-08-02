@@ -6,6 +6,11 @@
   VideoSandbox.prototype.initialize = function(){
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 3);
+    this.setInfo('boboID', 'videosnadbox');
+    this.setInfo('name', 'Sandbox Video Bobo');
+    this.setInfo('description', 'A sandbox bobo that is only supposed to work on demobo.com');
+    this.setInfo('type', 'specific');
+
 
     this.setController({
       url:'http://rc1.demobo.com/v1/momos/videoplayer/control.html?0301'

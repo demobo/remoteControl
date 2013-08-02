@@ -5,6 +5,11 @@
 
   Npr.prototype.initialize = function(){
   		this.setInfo('priority',2);
+      this.setInfo('boboID', 'npr');
+    this.setInfo('name', 'Remote Control for npr');
+    this.setInfo('description', 'This is a remote control for npr');
+    this.setInfo('type', 'specific');
+
   	//overwrites the 'setInputEventHandlers'
   		this.setInputEventHandlers = function(inputEventHandlers) {
 		var eventName, handlerName, hs, wrapper, _thisBobo;
@@ -32,7 +37,7 @@
     this.setInfo('iconClass', 'fui-play-circle');
 
     this.setController({
-      url: 'http://rc1.demobo.com/rc/npr/control.html?1'
+      url: 'http://rc1.demobo.com/v1/momos/npr/control.html?1'
     });
 
     this.setInputEventHandlers({

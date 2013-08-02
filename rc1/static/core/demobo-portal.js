@@ -654,8 +654,51 @@
             }
             boboInfos.push(info);
           }
-          toSend['bobos'] = boboInfos;
+          toSend['bobos'] = this.getBobosInfo();
           return this.demobo.setController(toSend, deviceID);
+        };
+
+        /*
+        // get information of bobos
+        */
+
+
+        DemoboPortal.prototype.getBobosInfo = function() {
+          var bobo, boboID, boboInfos, curBoboID, info, _ref;
+
+          boboInfos = [];
+          curBoboID = this.get('curBobo').getInfo('boboID');
+          _ref = this.get('bobos');
+          for (boboID in _ref) {
+            bobo = _ref[boboID];
+            info = {};
+            info['id'] = boboID;
+            info['icon'] = bobo.getInfo('iconClass');
+            info['description'] = bobo.getInfo('description');
+            info['name'] = bobo.getInfo('name');
+            info['type'] = bobo.getInfo('type');
+            info['priority'] = bobo.getInfo('priority');
+            info['iconName'] = bobo.getInfo('iconClass');
+            if (boboID === curBoboID) {
+              info['active'] = 1;
+            }
+            boboInfos.push(info);
+          }
+          return boboInfos.sort(function(a, b) {
+            if (a.priority > b.priority) {
+              return -1;
+            } else if (a.priority < b.priority) {
+              return 1;
+            } else {
+              if (a.id < b.id) {
+                return -1;
+              } else if (a.id === b.id) {
+                return 0;
+              } else {
+                return 1;
+              }
+            }
+          });
         };
 
         /*

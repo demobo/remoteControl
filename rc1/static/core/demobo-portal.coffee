@@ -651,7 +651,8 @@ if not window.demoboLoading
       ###
       shouldSaveBoboID: (boboID)->
         platformBobos = [
-          'http://rc1.demobo.com/v1/momos/browsertool/control.html?0614'
+          'catalog'
+          'help'
         ]
         return not (boboID in platformBobos)
      

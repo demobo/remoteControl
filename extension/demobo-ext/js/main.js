@@ -10,6 +10,11 @@ if (!document.getElementById('toggle')){
   toggle.setAttribute('id', 'toggle');
   document.body.appendChild(toggle);
 
+  var load = document.createElement('div');
+  load.setAttribute('id', 'load');
+  load.setAttribute('onclick', 'javascript:(function(){if (window.demobo)return;document.getElementById("toggle").click()})()');
+  document.body.appendChild(load);
+
   function onMessage(message, sender, sendResponse) {
    if (message.action === 'toggleDemobo'){
   //    document.getElementById('toggleDemobo').click();
@@ -18,7 +23,7 @@ if (!document.getElementById('toggle')){
    //favicon off message
    }else if(message.action === 'load'){
      console.log('hello');
-     document.getElementById('toggle').click();
+     document.getElementById('load').click();
    }
 
   };

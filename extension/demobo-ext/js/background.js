@@ -44,6 +44,7 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo){
 
 //catch refresh event
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab){
+  console.log(changeInfo);
   if (changeInfo.status && changeInfo.status==='complete'){
     if (demoboEnabledTabs.indexOf(tabId)!=-1){
       chrome.tabs.sendMessage(tabId, {action:'load'});

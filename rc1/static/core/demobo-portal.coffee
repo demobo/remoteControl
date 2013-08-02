@@ -33,6 +33,7 @@ if not window.demoboLoading
 
     base = window.demoboBase+'/apps/'
     connectScript = window.demoboBase+'/core/connect.js'
+    faviconScript = window.demoboBase+'/core/favicon.js'
     
     ###
     // This sets the routing of controllers for websites (currently hardcoded)
@@ -74,7 +75,7 @@ if not window.demoboLoading
     ###
     // Try to preload demobo API and other scripts as early as possible
     ###
-    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js')
+    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js')
     cacheJS(connectScript)
 
     ###
@@ -194,6 +195,18 @@ if not window.demoboLoading
         else
           return false
 
+      ###
+      // return true if it is extension
+      ###
+      isExtension: ()->
+        return @portal.isExtension()
+
+      ###
+      // alert
+      ###
+      alert: (info)->
+        @portal.alert(info)
+
       ### 
       //Call the function on device. if `devicedID` is not specified, call the function on all devices connected to this bobo 
       ###
@@ -255,12 +268,12 @@ if not window.demoboLoading
       ###
       // reservered for future use 
       ###
-      resume: ->
+      resumeBobo: ->
 
       ###
       // reservered for future use 
       ###
-      pause: ->
+      pauseBobo: ->
 
       ###
       // reservered for future use 
@@ -323,6 +336,22 @@ if not window.demoboLoading
           portal.addDevice(data.deviceID)
 
       ###
+      // Handler that runs when demobo is enabled
+      ###
+      enabledHandler: (portal)->
+        return (data)->
+          console.log('enabled')
+          portal.turnOnFavicon()          
+
+      ###
+      // Handler that runs when demobo is disabled
+      ###
+      disabledHandler: (portal)->
+        return (data)->
+          console.log('disabled')
+          portal.turnOffFavicon()
+
+      ###
       // Handler that runs when a new device is disconnected
       ###
       mbHandler: (portal)->
@@ -379,11 +408,17 @@ if not window.demoboLoading
           'input': base+'inputtool-new.js'
           'dummy': base+'dummy.js'
           'browsertool': base+'browsertool-new.js'
+          'help': base+'help.js'
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote
         return toReturn
 
+      ###
+      // Return true if this is extension
+      ###
+      isExtension: ()->
+        return (this.get('isExtension') is 1)
 
       ###
       //Called immediately upon the object's instantiation (guaranteed) 
@@ -400,10 +435,15 @@ if not window.demoboLoading
         this.set('boboRoutes', boboRoutes)
         this.set('lastBoboID', this.loadLastBoboID())
 
+        this.set('isExtension', window._extension)
+        delete window._extension
+
         ###
         // Register event handlers for connected, disconnected,  
         ###
         @demobo.addEventListener('connected', demoboHandlers.connectedHandler(this))
+        @demobo.addEventListener('enabled', demoboHandlers.enabledHandler(this))
+        @demobo.addEventListener('disabled', demoboHandlers.disabledHandler(this))
         @demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this))
         @demobo.addEventListener('mb', demoboHandlers.mbHandler(this))
 
@@ -487,8 +527,41 @@ if not window.demoboLoading
             info['active'] = 1
           boboInfos.push(info)
         
-        toSend['bobos'] = boboInfos
+#        toSend['bobos'] = boboInfos
+        toSend['bobos'] = this.getBobosInfo()
         return @demobo.setController(toSend, deviceID)
+
+      ###
+      // get information of bobos
+      ###
+      getBobosInfo: ()->
+        boboInfos = []
+        curBoboID = this.get('curBobo').getInfo('boboID')
+        for boboID, bobo of this.get('bobos')
+          info = {}
+          info['id'] = boboID
+          info['icon'] = bobo.getInfo('iconClass')
+          info['description'] = bobo.getInfo('description')
+          info['name'] = bobo.getInfo('name')
+          info['type'] = bobo.getInfo('type')
+          info['priority'] = bobo.getInfo('priority')
+          info['iconName'] = bobo.getInfo('iconClass')
+          if boboID is curBoboID
+            info['active'] = 1
+          boboInfos.push(info)
+        boboInfos.sort((a, b)->
+          if (a.priority>b.priority)
+            return -1
+          else if (a.priority<b.priority)
+            return 1
+          else
+            if (a.id<b.id)
+              return -1
+            else if (a.id is b.id)
+              return 0
+            else
+              return 1
+        )
       
       ###
       //Return true if `deviceID` is already in the mapping; false otherwise.
@@ -562,7 +635,7 @@ if not window.demoboLoading
       switchBobo: (boboID, callResume)->
         oldBobo = this.get('curBobo')
         oldBoboID = oldBobo.getInfo('boboID')
-        oldBobo.pause()
+        oldBobo.pauseBobo()
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
         
@@ -580,7 +653,7 @@ if not window.demoboLoading
           this.setDeviceController(newBobo, deviceID)
 
         if (callResume)
-          newBobo.resume()
+          newBobo.resumeBobo()
         if this.shouldSaveBoboID(boboID)
           this.saveLastBoboID()
         return true
@@ -590,7 +663,8 @@ if not window.demoboLoading
       ###
       shouldSaveBoboID: (boboID)->
         platformBobos = [
-          'http://rc1.demobo.com/v1/momos/browsertool/control.html?0614'
+          'catalog'
+          'help'
         ]
         return not (boboID in platformBobos)
      
@@ -670,6 +744,28 @@ if not window.demoboLoading
         return oldVal
 
       ###
+      // alert
+      ###
+      alert: (info)->
+        window.alert(info)
+
+      ###
+      // turnoff favicon
+      ###
+      turnOffFavicon: ()->
+        favicon = this.get('favicon')
+        if favicon
+          favicon.turnOff()
+
+      ###
+      // turn on favicon
+      ###
+      turnOnFavicon: ()->
+        favicon = this.get('favicon')
+        if favicon
+          favicon.turnOn()
+
+      ###
       // Create the view of a bobo, which would be showed up in portal 
       ###
       createBoboView: (boboID, boboInfo)->
@@ -680,7 +776,7 @@ if not window.demoboLoading
     //----------------
     // instantiate a `DemoboPortal` object and expose to global use
     ###
-    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
+    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js',()->
 
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
@@ -692,6 +788,11 @@ if not window.demoboLoading
         window.__dmtg = ()->
           visible = document.getElementById('demoboConnect').style.top isnt ''
           if visible then window._hideDemoboConnect() else window._showDemoboConnect()
+      )
+
+      loadJS(faviconScript, ()->
+        favicon = new DeMoboFavicon()
+        demoboPortal.set('favicon', favicon)
       )
     )
 

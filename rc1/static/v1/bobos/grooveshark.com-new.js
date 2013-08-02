@@ -10,6 +10,11 @@
     //this.setInfo('curState',{isPlaying: false, volume: 50});
 	  this.setInfo('slideChangeTimeout', null);
 	  this.setInfo('priority', 2);
+    this.setInfo('boboID', 'grooveshark');
+    this.setInfo('name', 'Remote Control for grooveshark');
+    this.setInfo('description', 'This is a remote control for grooveshark');
+    this.setInfo('type', 'specific');
+
     this.setInfo('iconClass', 'fui-play-circle');
 
 	  this.setInfo('ui', {

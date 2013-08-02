@@ -12,7 +12,7 @@
 
 
 (function() {
-  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, loadJS, nativeForEach, remotes, version, _,
+  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, faviconScript, loadJS, nativeForEach, remotes, version, _,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   if (!window.demoboLoading) {
@@ -38,6 +38,7 @@
       version = '0.9.2';
       base = window.demoboBase + '/apps/';
       connectScript = window.demoboBase + '/core/connect.js';
+      faviconScript = window.demoboBase + '/core/favicon.js';
       /*
       // This sets the routing of controllers for websites (currently hardcoded)
       */
@@ -83,7 +84,7 @@
       // Try to preload demobo API and other scripts as early as possible
       */
 
-      cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js');
+      cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js');
       cacheJS(connectScript);
       /*
       // A function that loads a script and executes the call back after the script is executed
@@ -218,6 +219,24 @@
           }
         };
 
+        /*
+        // return true if it is extension
+        */
+
+
+        Bobo.prototype.isExtension = function() {
+          return this.portal.isExtension();
+        };
+
+        /*
+        // alert
+        */
+
+
+        Bobo.prototype.alert = function(info) {
+          return this.portal.alert(info);
+        };
+
         /* 
         //Call the function on device. if `devicedID` is not specified, call the function on all devices connected to this bobo
         */
@@ -307,14 +326,14 @@
         */
 
 
-        Bobo.prototype.resume = function() {};
+        Bobo.prototype.resumeBobo = function() {};
 
         /*
         // reservered for future use
         */
 
 
-        Bobo.prototype.pause = function() {};
+        Bobo.prototype.pauseBobo = function() {};
 
         /*
         // reservered for future use
@@ -400,6 +419,26 @@
           };
         },
         /*
+        // Handler that runs when demobo is enabled
+        */
+
+        enabledHandler: function(portal) {
+          return function(data) {
+            console.log('enabled');
+            return portal.turnOnFavicon();
+          };
+        },
+        /*
+        // Handler that runs when demobo is disabled
+        */
+
+        disabledHandler: function(portal) {
+          return function(data) {
+            console.log('disabled');
+            return portal.turnOffFavicon();
+          };
+        },
+        /*
         // Handler that runs when a new device is disconnected
         */
 
@@ -475,13 +514,23 @@
           toReturn = {
             'input': base + 'inputtool-new.js',
             'dummy': base + 'dummy.js',
-            'browsertool': base + 'browsertool-new.js'
+            'browsertool': base + 'browsertool-new.js',
+            'help': base + 'help.js'
           };
           remote = this.getRemote();
           if (remote) {
             toReturn['remote'] = base + remote;
           }
           return toReturn;
+        };
+
+        /*
+        // Return true if this is extension
+        */
+
+
+        DemoboPortal.prototype.isExtension = function() {
+          return this.get('isExtension') === 1;
         };
 
         /*
@@ -501,11 +550,15 @@
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
           this.set('lastBoboID', this.loadLastBoboID());
+          this.set('isExtension', window._extension);
+          delete window._extension;
           /*
           // Register event handlers for connected, disconnected,
           */
 
           this.demobo.addEventListener('connected', demoboHandlers.connectedHandler(this));
+          this.demobo.addEventListener('enabled', demoboHandlers.enabledHandler(this));
+          this.demobo.addEventListener('disabled', demoboHandlers.disabledHandler(this));
           this.demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this));
           this.demobo.addEventListener('mb', demoboHandlers.mbHandler(this));
           this.on('change:bobos', demoboHandlers.handlerBobosChange);
@@ -620,8 +673,51 @@
             }
             boboInfos.push(info);
           }
-          toSend['bobos'] = boboInfos;
+          toSend['bobos'] = this.getBobosInfo();
           return this.demobo.setController(toSend, deviceID);
+        };
+
+        /*
+        // get information of bobos
+        */
+
+
+        DemoboPortal.prototype.getBobosInfo = function() {
+          var bobo, boboID, boboInfos, curBoboID, info, _ref;
+
+          boboInfos = [];
+          curBoboID = this.get('curBobo').getInfo('boboID');
+          _ref = this.get('bobos');
+          for (boboID in _ref) {
+            bobo = _ref[boboID];
+            info = {};
+            info['id'] = boboID;
+            info['icon'] = bobo.getInfo('iconClass');
+            info['description'] = bobo.getInfo('description');
+            info['name'] = bobo.getInfo('name');
+            info['type'] = bobo.getInfo('type');
+            info['priority'] = bobo.getInfo('priority');
+            info['iconName'] = bobo.getInfo('iconClass');
+            if (boboID === curBoboID) {
+              info['active'] = 1;
+            }
+            boboInfos.push(info);
+          }
+          return boboInfos.sort(function(a, b) {
+            if (a.priority > b.priority) {
+              return -1;
+            } else if (a.priority < b.priority) {
+              return 1;
+            } else {
+              if (a.id < b.id) {
+                return -1;
+              } else if (a.id === b.id) {
+                return 0;
+              } else {
+                return 1;
+              }
+            }
+          });
         };
 
         /*
@@ -731,7 +827,7 @@
 
           oldBobo = this.get('curBobo');
           oldBoboID = oldBobo.getInfo('boboID');
-          oldBobo.pause();
+          oldBobo.pauseBobo();
           boboDeviceMap = this.get('boboDeviceMap');
           deviceBoboMap = this.get('deviceBoboMap');
           devices = boboDeviceMap[oldBoboID];
@@ -748,7 +844,7 @@
             this.setDeviceController(newBobo, deviceID);
           }
           if (callResume) {
-            newBobo.resume();
+            newBobo.resumeBobo();
           }
           if (this.shouldSaveBoboID(boboID)) {
             this.saveLastBoboID();
@@ -764,7 +860,7 @@
         DemoboPortal.prototype.shouldSaveBoboID = function(boboID) {
           var platformBobos;
 
-          platformBobos = ['http://rc1.demobo.com/v1/momos/browsertool/control.html?0614'];
+          platformBobos = ['catalog', 'help'];
           return !(__indexOf.call(platformBobos, boboID) >= 0);
         };
 
@@ -869,6 +965,43 @@
         };
 
         /*
+        // alert
+        */
+
+
+        DemoboPortal.prototype.alert = function(info) {
+          return window.alert(info);
+        };
+
+        /*
+        // turnoff favicon
+        */
+
+
+        DemoboPortal.prototype.turnOffFavicon = function() {
+          var favicon;
+
+          favicon = this.get('favicon');
+          if (favicon) {
+            return favicon.turnOff();
+          }
+        };
+
+        /*
+        // turn on favicon
+        */
+
+
+        DemoboPortal.prototype.turnOnFavicon = function() {
+          var favicon;
+
+          favicon = this.get('favicon');
+          if (favicon) {
+            return favicon.turnOn();
+          }
+        };
+
+        /*
         // Create the view of a bobo, which would be showed up in portal
         */
 
@@ -886,7 +1019,7 @@
       // instantiate a `DemoboPortal` object and expose to global use
       */
 
-      loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js', function() {
+      loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js', function() {
         var demoboPortal;
 
         demoboPortal = new DemoboPortal();
@@ -895,7 +1028,7 @@
         // Load script of connection dialog and show the dialog if necessary
         */
 
-        return loadJS(connectScript, function() {
+        loadJS(connectScript, function() {
           return window.__dmtg = function() {
             var visible;
 
@@ -906,6 +1039,12 @@
               return window._showDemoboConnect();
             }
           };
+        });
+        return loadJS(faviconScript, function() {
+          var favicon;
+
+          favicon = new DeMoboFavicon();
+          return demoboPortal.set('favicon', favicon);
         });
       });
     }

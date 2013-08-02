@@ -7,12 +7,14 @@
 
   Yelp.telephones = [];
   
-  Yelp.prototype.pause = function(){
-    $('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
+  Yelp.prototype.pauseBobo = function(){
+    //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
+    $('#boboModal').modal('hide');
   };
 
-  Yelp.prototype.resume = function(){
-     $('#demobo_overlay').css('bottom', 0);
+  Yelp.prototype.resumeBobo = function(){
+    //$('#demobo_overlay').css('bottom', 0);
+    $('#boboModal').modal();
   }
   
   Yelp.prototype.onReady = function(){
@@ -52,6 +54,10 @@
   Yelp.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
     this.setInfo('priority', 2);
+    this.setInfo('boboID', 'phone');
+    this.setInfo('name', 'Contact Helper');
+    this.setInfo('description', 'An amazing tool to sync phones, emails and addresses to your phone. It lets your make calls and send messages right away!');
+    this.setInfo('type', 'generic');
 
     // if (typeof(this.parsePage) == "function") {
       // this.parsePage();  
@@ -62,7 +68,7 @@
     this.demoboParser();
     
     this.setController({
-     url: 'http://rc1.demobo.com/v1/momos/inputtool?9999',
+     url: 'http://rc1.demobo.com/rc/inputtool?9999',
      orientation: 'portrait'
     });
 
@@ -273,15 +279,25 @@
           if (match != null) {
             //console.log('phone number matched ' + object.data.trim());
             //telephones.push(object.data.trim());
-            var tokens = object.data.trim().split(" ");
-            each(tokens, function(index, token) {
-              var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
-              var match1 = pattern.exec(token);
-              if (match1 != null) {
-                console.log('phone number matched ' + token);
-                func("telephone", token);
-              }
-            });
+            var phase = object.data.trim();
+            var bizTelephoneValue = phase.replace(/[^0-9]/g, '').replace(' ', '');
+            pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+            match = pattern.exec(bizTelephoneValue);
+            if (match != null) {
+              console.log('phone number matched ' + phase);
+              func("telephone", phase);
+            }
+            // else {
+              // var tokens = phase.split(" ");
+              // each(tokens, function(index, token) {
+                // //var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+                // var match1 = pattern.exec(token);
+                // if (match1 != null) {
+                  // console.log('phone number matched ' + token);
+                  // func("telephone", token);
+                // }
+              // });  
+            // }
           }
         }
       }
@@ -314,14 +330,35 @@
     return script.onload = f;
   };
   
+  loadCSS = function(src) {
+
+    var link;
+    
+    link = document.createElement('link');
+    link.setAttribute('rel', 'stylesheet');
+    link.setAttribute('href', src);
+
+    document.head.appendChild(link);
+  };
+  
+  
   injectiframe = function(src, onloadHandler) {
+    
+    var div = document.createElement('div');
+    div.setAttribute('id', 'boboModal');
+    div.setAttribute('class', 'modal hide fade');
+    div.setAttribute('tabindex', '-1');
+    div.setAttribute('role', 'dialog');
+    
     iframe = document.createElement('iframe');
     iframe.setAttribute('id', 'demobo_overlay');
     iframe.setAttribute('src', src);
-    iframe.setAttribute('scrolling', 'no');
-    iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
+    iframe.setAttribute('scrolling', 'yes');
+    //iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
     iframe.addEventListener('load', onloadHandler);
-    document.body.appendChild(iframe);
+    
+    div.appendChild(iframe);
+    document.body.appendChild(div);
   };
   
   loadBoBo = function() {
@@ -330,16 +367,26 @@
   
   responseToMessage = function(e) {
     //alert(e.data);
-    var phoneNo = e.data;
-    var bizTelephoneValue = phoneNo.trim().replace(/[^0-9]/g, '').replace(' ', '');
-    demobo.openPage({url: 'tel:' + bizTelephoneValue, title: 'Phone Call', message: 'Make a phone call to ' + phoneNo});
+    var action = e.data.action;
+    var data = e.data.data; 
+    if (action === 'phonecall') {
+      var bizTelephoneValue = data.trim().replace(/[^0-9]/g, '').replace(' ', '');
+      demobo.openPage({url: 'tel:' + bizTelephoneValue, title: 'Phone Call', message: 'Make a phone call to ' + bizTelephoneValue});
+    } else if (action === 'sms') {
+      var smsValue = data.trim().replace(/[^0-9]/g, '').replace(' ', '');
+      demobo.openPage({url: 'sms:' + smsValue, title: 'Send SMS', message: 'Send a sms to ' + smsValue});
+    }
+    
   };
       
-  loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/htmlparser.js', function() {
-    loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/soupselect.js', function() {
-      loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/porthole.js', function() {
-        injectiframe(window.demoboBase + '/v1/bobos/phonebobo/microdata.html', loadBoBo);
-        window.addEventListener('message', responseToMessage, false);
+  loadJS(window.demoboBase + '/apps/phonebobo/libs/htmlparser.js', function() {
+    loadJS(window.demoboBase + '/apps/phonebobo/libs/soupselect.js', function() {
+      loadJS(window.demoboBase + '/apps/phonebobo/libs/porthole.js', function() {
+        loadJS(window.demoboBase + '/apps/phonebobo/libs/bootstrap.min.js', function() {
+          loadCSS(window.demoboBase + '/apps/phonebobo/css/bootstrap.min.css');
+          injectiframe(window.demoboBase + '/apps/phonebobo/microdata.html', loadBoBo);
+          window.addEventListener('message', responseToMessage, false);
+        });
       });
     });
   });

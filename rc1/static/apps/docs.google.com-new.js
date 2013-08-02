@@ -28,7 +28,7 @@
 
   GoogleDocs.prototype.initialize = function (){
     this.setController({
-      url:'http://rc1.demobo.com/rc/docsgoogle?0201',
+      url:'http://rc1.demobo.com/v1/momos/docsgoogle/control.html?0201',
       orientation: 'portrait'
     });
 
@@ -39,6 +39,11 @@
 
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 2);
+    this.setInfo('boboID', 'googledocs');
+    this.setInfo('name', 'Remote Control for GoogleDocs');
+    this.setInfo('description', 'This is a remote control for presentations on GoogleDocs');
+    this.setInfo('type', 'specific');
+
     
     this.setInfo('slideChangeTimeout', null);
 

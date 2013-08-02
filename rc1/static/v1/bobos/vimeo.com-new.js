@@ -4,6 +4,11 @@
   Vimeo.prototype.initialize = function(){
     this.setInfo('priority', 2);
     this.setInfo('iconClass', 'fui-play-circle');
+    this.setInfo('boboID', 'vimeo');
+    this.setInfo('name', 'Remote Control for vimeo');
+    this.setInfo('description', 'This is a remote control for vimeo');
+    this.setInfo('type', 'specific');
+
 
 	  this.setInfo('ui', {
 	  	playPauseButton: 	'.interactive_element.play_pause_button',

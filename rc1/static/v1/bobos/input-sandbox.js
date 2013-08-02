@@ -32,7 +32,7 @@
     element.select();
   };
 
-  InputSandbox.prototype.resume = function(){
+  InputSandbox.prototype.resumeBobo = function(){
     console.log('inputsandbox\'s resume is clicked');
     //change to inputsandbox
     $('.flex-control-nav li a')[3].click();
@@ -53,6 +53,10 @@
   InputSandbox.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
     this.setInfo('iconClass', 'fui-keyboard')
+    this.setInfo('boboID', 'inputsandbox');
+    this.setInfo('name', 'Sandbox Input Bobo');
+    this.setInfo('description', 'A sandbox bobo that is only supposed to work on demobo.com');
+    this.setInfo('type', 'specific');
 
     this.setController({
      url: 'http://rc1.demobo.com/v1/momos/inputtool/control.html?0614',

@@ -7,12 +7,12 @@
 
   Yelp.telephones = [];
   
-  Yelp.prototype.pause = function(){
+  Yelp.prototype.pauseBobo = function(){
     //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
     $('#boboModal').modal('hide');
   };
 
-  Yelp.prototype.resume = function(){
+  Yelp.prototype.resumeBobo = function(){
     //$('#demobo_overlay').css('bottom', 0);
     $('#boboModal').modal();
   }
@@ -58,7 +58,6 @@
     this.setInfo('name', 'Contact Helper');
     this.setInfo('description', 'An amazing tool to sync phones, emails and addresses to your phone. It lets your make calls and send messages right away!');
     this.setInfo('type', 'generic');
-
 
     // if (typeof(this.parsePage) == "function") {
       // this.parsePage();  

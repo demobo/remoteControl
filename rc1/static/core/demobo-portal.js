@@ -308,14 +308,14 @@
         */
 
 
-        Bobo.prototype.resume = function() {};
+        Bobo.prototype.resumeBobo = function() {};
 
         /*
         // reservered for future use
         */
 
 
-        Bobo.prototype.pause = function() {};
+        Bobo.prototype.pauseBobo = function() {};
 
         /*
         // reservered for future use
@@ -808,7 +808,7 @@
 
           oldBobo = this.get('curBobo');
           oldBoboID = oldBobo.getInfo('boboID');
-          oldBobo.pause();
+          oldBobo.pauseBobo();
           boboDeviceMap = this.get('boboDeviceMap');
           deviceBoboMap = this.get('deviceBoboMap');
           devices = boboDeviceMap[oldBoboID];
@@ -825,7 +825,7 @@
             this.setDeviceController(newBobo, deviceID);
           }
           if (callResume) {
-            newBobo.resume();
+            newBobo.resumeBobo();
           }
           if (this.shouldSaveBoboID(boboID)) {
             this.saveLastBoboID();

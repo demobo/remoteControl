@@ -256,12 +256,12 @@ if not window.demoboLoading
       ###
       // reservered for future use 
       ###
-      resume: ->
+      resumeBobo: ->
 
       ###
       // reservered for future use 
       ###
-      pause: ->
+      pauseBobo: ->
 
       ###
       // reservered for future use 
@@ -622,7 +622,7 @@ if not window.demoboLoading
       switchBobo: (boboID, callResume)->
         oldBobo = this.get('curBobo')
         oldBoboID = oldBobo.getInfo('boboID')
-        oldBobo.pause()
+        oldBobo.pauseBobo()
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
         
@@ -640,7 +640,7 @@ if not window.demoboLoading
           this.setDeviceController(newBobo, deviceID)
 
         if (callResume)
-          newBobo.resume()
+          newBobo.resumeBobo()
         if this.shouldSaveBoboID(boboID)
           this.saveLastBoboID()
         return true

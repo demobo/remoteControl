@@ -1,5 +1,5 @@
 (function(g){
-  if (document.domain === 'www.sofa.fm' || document.domain === 'www.presentationdocs.com') return;
+  if (document.domain === 'www.sofa.fm' || document.domain === 'www.presentationdocs.com' || window.demobo) return;
   var e=g.document.createElement('script');
   e.src=g.demoboBase+'/core/demobo-portal.js';
   e.className='demoboJS';

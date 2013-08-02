@@ -7,9 +7,14 @@
       
       this.setInfo('iconClass', 'fui-play-circle');
       this.setInfo('priority', 2);
+      this.setInfo('boboID', 'youtube');
+      this.setInfo('name', 'Remote Control for youtube');
+      this.setInfo('description', 'This is a remote control for youtube');
+      this.setInfo('type', 'specific');
+
       
       this.setController({
-        url: 'http://rc1.demobo.com/rc/youtube?0130',
+        url: 'http://rc1.demobo.com/v1/momos/youtube/control.html?0130',
 			  orientation: 'portrait'
       });
 

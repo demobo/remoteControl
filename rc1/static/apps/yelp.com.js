@@ -7,12 +7,12 @@
 
   Yelp.telephones = [];
   
-  Yelp.prototype.pause = function(){
+  Yelp.prototype.pauseBobo = function(){
     //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
     $('#boboModal').modal('hide');
   };
 
-  Yelp.prototype.resume = function(){
+  Yelp.prototype.resumeBobo = function(){
     //$('#demobo_overlay').css('bottom', 0);
     $('#boboModal').modal();
   }

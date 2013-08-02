@@ -49,10 +49,40 @@
 
 		element.focus();
 	}
+
+  Inputtool.prototype.onNext = function(){
+    console.log('next');
+    if (document.domain==='mail.google.com'){
+      return;
+    }
+    var temp = document.querySelectorAll('input[type="text"],textarea');
+    var eles = []
+    for (var i = 0; i<temp.length; i++){
+      if (temp[i].style.display!='none'){
+        eles.push(temp[i]);
+      }
+    }
+    var num = eles.length;
+    var lastActiveIndex = this.getInfo('index');
+    var e = document.activeElement;
+    if (e.tagName!='INPUT' && e.tagName!='TEXTAREA'){
+      eles[lastActiveIndex].focus();
+    }else{
+      lastActiveIndex = (lastActiveIndex+1)%num;
+      eles[lastActiveIndex].focus();
+      this.setInfo('index', lastActiveIndex);
+    }
+  };
+
 	// override the initialize function of Bobo
 	Inputtool.prototype.initialize = function() {
 		this.getInfo('config')['iconUrl'] = 'test1.png'
-		this.setInfo('iconClass', 'fui-keyboard')
+		this.setInfo('iconClass', 'fui-keyboard');
+    this.setInfo('boboID', 'inputtool');
+    this.setInfo('name', 'Input Tool');
+    this.setInfo('description', 'An amazing tool to replacing your keyboard with your phone.');
+    this.setInfo('type', 'generic');
+    this.setInfo('index', 0);
 
 		this.setController({
 			url : 'http://rc1.demobo.com/v1/momos/inputtool/control.html?0614',

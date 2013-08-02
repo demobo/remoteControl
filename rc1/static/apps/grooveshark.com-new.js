@@ -10,6 +10,11 @@
     //this.setInfo('curState',{isPlaying: false, volume: 50});
 	  this.setInfo('slideChangeTimeout', null);
 	  this.setInfo('priority', 2);
+    this.setInfo('boboID', 'grooveshark');
+    this.setInfo('name', 'Remote Control for grooveshark');
+    this.setInfo('description', 'This is a remote control for grooveshark');
+    this.setInfo('type', 'specific');
+
     this.setInfo('iconClass', 'fui-play-circle');
 
 	  this.setInfo('ui', {
@@ -34,7 +39,7 @@
 	  });
 	
 		this.setController( {
-			url : 'http://rc1.demobo.com/rc/grooveshark?0203'
+			url : 'http://rc1.demobo.com/v1/momos/grooveshark/control.html?0203'
 		});
 		// your custom demobo input event dispatcher
 		this.setInputEventHandlers( {

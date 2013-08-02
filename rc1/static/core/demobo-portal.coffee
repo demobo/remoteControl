@@ -195,6 +195,12 @@ if not window.demoboLoading
         else
           return false
 
+      ###
+      // alert
+      ###
+      alert: (info)->
+        @portal.alert(info)
+
       ### 
       //Call the function on device. if `devicedID` is not specified, call the function on all devices connected to this bobo 
       ###
@@ -730,6 +736,12 @@ if not window.demoboLoading
           this.trigger 'change:'+key, oldVal, val
         
         return oldVal
+
+      ###
+      // alert
+      ###
+      alert: (info)->
+        window.alert(info)
 
       ###
       // turnoff favicon

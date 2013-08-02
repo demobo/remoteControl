@@ -219,6 +219,15 @@
           }
         };
 
+        /*
+        // alert
+        */
+
+
+        Bobo.prototype.alert = function(info) {
+          return this.portal.alert(info);
+        };
+
         /* 
         //Call the function on device. if `devicedID` is not specified, call the function on all devices connected to this bobo
         */
@@ -944,6 +953,15 @@
             this.trigger('change:' + key, oldVal, val);
           }
           return oldVal;
+        };
+
+        /*
+        // alert
+        */
+
+
+        DemoboPortal.prototype.alert = function(info) {
+          return window.alert(info);
         };
 
         /*

@@ -196,6 +196,12 @@ if not window.demoboLoading
           return false
 
       ###
+      // return true if it is extension
+      ###
+      isExtension: ()->
+        return @portal.isExtension()
+
+      ###
       // alert
       ###
       alert: (info)->

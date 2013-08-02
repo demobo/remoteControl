@@ -220,6 +220,15 @@
         };
 
         /*
+        // return true if it is extension
+        */
+
+
+        Bobo.prototype.isExtension = function() {
+          return this.portal.isExtension();
+        };
+
+        /*
         // alert
         */
 

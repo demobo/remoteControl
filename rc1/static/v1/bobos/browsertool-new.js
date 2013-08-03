@@ -10,8 +10,10 @@
 	}
 
 	Browsertool.prototype.navigateTo = function(text) {
-		console.log(text);
-		goto(text);
+		if (this.isExtension()) 
+			goto(text);
+		else
+			this.alert("Please install deMobo extension for this feature.");
 		function goto(url) {
 			window.location = 'http://'+url;
 		}

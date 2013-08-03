@@ -53,8 +53,9 @@
   // override the initialize function of Bobo
   Yelp.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
-    this.setInfo('priority', 2);
+    // this.setInfo('priority', 2);
     this.setInfo('boboID', 'phone');
+    this.setInfo('iconClass', 'fui-phone');
     this.setInfo('name', 'Contact Helper');
     this.setInfo('description', 'An amazing tool to sync phones, emails and addresses to your phone. It lets your make calls and send messages right away!');
     this.setInfo('type', 'generic');

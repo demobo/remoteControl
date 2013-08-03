@@ -5,10 +5,10 @@
 		
 		<!-- Loading Bootstrap -->
 	    <link href="fui/bootstrap/css/bootstrap.css" rel="stylesheet">
-	    <link href="fui/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+	    <!--<link href="fui/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">-->
 	
 	    <!-- Loading Flat UI -->
-	    <link href="fui/css/flat-ui.css" rel="stylesheet">
+	    <!--<link href="fui/css/flat-ui.css" rel="stylesheet">-->
 	    
 		<link rel="stylesheet" href="css/app.css">
   		<link rel="stylesheet" href="css/bootstrap.css">
@@ -18,7 +18,8 @@
 		
 	</head>
 	<body>
-		<div id="controller" ng-controller="MicrodataListController">
+		<div class="demobo-widget-open" style="width: 330px; height: 188px;">
+		<div id="controller" ng-controller="MicrodataListController" style="width: 330px;">
 			<script type="text/javascript">
 		
 			window.addEventListener('message', onMessage, false);
@@ -48,15 +49,30 @@
 			}
 
 			</script>
+			<!--
 			<ul class="nav nav-list">
-				<li class="nav-header">BoBo</li>
-			    <li ng-repeat="md in microdatas">
+				<li class="nav-header">demobo widget</li>
+			    <li ng-repeat="md in microdatas" style="height: 46px;">
 			   		<a href="">
-			      	{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('phonecall', '{{md.data}}')">call</span>
-			      	<span class="btn btn-mini btn-primary mhm" onclick="postMessage('sms', '{{md.data}}')">sms</span>
+			   		<h4><small>{{md.data}}<span class="btn btn-mini btn-primary mhm" onclick="postMessage('phonecall', '{{md.data}}')">call</span>
+			      	<span class="btn btn-mini btn-primary mhm" onclick="postMessage('sms', '{{md.data}}')">sms</span></h4></small>
 			      	</a>
 			    </li>
 			</ul>
+			-->
+			<div class="nav-header">demobo widget</div>
+			<table class="table table-hover">
+				<tbody>
+					<tr ng-repeat="md in microdatas">
+						<td style="padding-left: 10px; width: 70%; height: 46px;">{{md.data}}</td>
+						<td>
+							<span class="btn btn-mini btn-primary" onclick="postMessage('phonecall', '{{md.data}}')">call</span>
+			      			<span class="btn btn-mini btn-primary" onclick="postMessage('sms', '{{md.data}}')">sms</span>
+			      		</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		</div>
 	</body>
 </html>

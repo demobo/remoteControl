@@ -69,7 +69,7 @@
     this.demoboParser();
     
     this.setController({
-     url: 'http://rc1.demobo.com/rc/inputtool?9999',
+     url: 'http://rc1.demobo.com/rc/inputtool/index.html?9999',
      orientation: 'portrait'
     });
 
@@ -380,11 +380,11 @@
     
   };
       
-  loadJS(window.demoboBase + '/apps/phonebobo/libs/htmlparser.js', function() {
-    loadJS(window.demoboBase + '/apps/phonebobo/libs/soupselect.js', function() {
-      loadJS(window.demoboBase + '/apps/phonebobo/libs/porthole.js', function() {
-        loadCSS(window.demoboBase + '/apps/phonebobo/css/bobo.css');
-        injectiframe(window.demoboBase + '/apps/phonebobo/microdata.html', loadBoBo);
+  loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/htmlparser.js', function() {
+    loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/soupselect.js', function() {
+      loadJS(window.demoboBase + '/v1/bobos/phonebobo/libs/porthole.js', function() {
+        loadCSS(window.demoboBase + '/v1/bobos/phonebobo/css/bobo.css');
+        injectiframe(window.demoboBase + '/v1/bobos/phonebobo/microdata.html', loadBoBo);
         window.addEventListener('message', responseToMessage, false);
       });
     });

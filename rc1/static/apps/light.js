@@ -26,6 +26,7 @@
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
 		demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() {
       		demoboBody.injectScript('http://localhost:1240/dev/LightConsole.js', function(){
+            $(document).keydown(function(e){if (e.which==13){window.sendNowPlaying()}})
 			  jQuery.noConflict();
 			  if (DEMOBO) {
 			  	DEMOBO.autoConnect = true;
@@ -162,6 +163,7 @@ function sendNowPlaying() {
 }
 
 function getCurrentSong() {
+  console.log('getCurrentSong called');
 	var imgURL = $(ui.coverart).attr('src');
 	if (!imgURL)
 		return;
@@ -510,3 +512,4 @@ function updatePitch( time ) {
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
 }
+

@@ -13,15 +13,15 @@ var testCases2 = [
 		{
 			functionName : "changeBackgroundColor",
 			data : {
-				rbg: '#000',
+				rgb: '#000',
 			},
 		}];
 		
 var testCases3 = [
  		{
- 			functionName : "changeBackgroundColor",
+ 			functionName : "changeForegroundColor",
 			data : {
-				rbg: '#666',
+				rgb: '#333',
 			},
  		}];
  		

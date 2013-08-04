@@ -1,3 +1,13 @@
+var testCases0 = [
+		{
+			functionName : "syncState",
+			data : {
+				isPlaying:true,
+				curPower:Math.random(),
+				oldPower:Math.random()*5,
+			}
+		}];
+
 var testCases1 = [
 		{
 			functionName : "loadSongInfo",
@@ -13,16 +23,17 @@ var testCases2 = [
 		{
 			functionName : "changeBackgroundColor",
 			data : {
-				rbg: '#000',
+				rgb: '#000',
 			},
 		}];
 		
 var testCases3 = [
  		{
- 			functionName : "changeBackgroundColor",
+ 			functionName : "changeForegroundColor",
 			data : {
-				rbg: '#666',
+				rgb: '#333',
 			},
  		}];
- 		
-var testSuite = [testCases1,testCases2,testCases3];
+
+var testSuite = [testCases0];
+// var testSuite = [testCases0,testCases1,testCases2,testCases3];

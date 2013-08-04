@@ -151,6 +151,40 @@
 				createjs.Ticker.setFPS(10);
 
 			}
+			
+			function refleshSphere() {
+				//remove all graphics
+				glow.graphics.clear();
+				frontSphere.graphics.clear();
+				backSphere.graphics.clear();
+				light.graphics.clear();
+				
+				//draw new graphics
+				var w = canvas.width;
+				var h = canvas.height;
+				var r = 40;
+				backSphere = new createjs.Shape();
+				backSphere.graphics.beginFill(createjs.Graphics.getRGB(gR, gG, gB, 0.6)).drawCircle(0, 0, r);
+				
+				frontSphere = new createjs.Shape();
+				frontSphere.graphics.beginRadialGradientFill(["rgba(0,0,0,0)", createjs.Graphics.getRGB(gR, gG, gB, 0.3)], [0, 1], -r * 0.2, -r * 0.2, 0, -r * 0.1, -r * 0.1, r);
+				frontSphere.graphics.drawCircle(0, 0, r);
+				
+				glow = new createjs.Shape();
+				glow.graphics.beginRadialGradientFill([createjs.Graphics.getRGB(gR-10, gG-20, gB-50, 1), "rgba(0,0,0,0)"], [0, 1], 0, 0, 0, 0, 0, w / 2).drawCircle(0, 0, w / 2);
+				glow.graphics.beginFill("rgba(0,0,0,0.1)").drawCircle(0, 0, r * 3);
+				glow.graphics.beginFill("rgba(0,0,0,0.1)").drawCircle(0, 0, r * 2);
+				glow.compositeOperation = "lighter";
+
+				light = new createjs.Shape();
+				light.graphics.beginFill(createjs.Graphics.getRGB(gR, gG, gB, 0.6)).drawCircle(0, 0, r);
+				light.x = backSphere.x = glow.x = frontSphere.x = w / 2;
+				light.y = backSphere.y = glow.y = frontSphere.y = h / 2;
+				light.compositeOperation = "lighter";
+				
+				stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, scanLines, fpsFld);
+			}
+			
 
 			function addCircle() {
 				var circle = new createjs.Shape();
@@ -301,6 +335,7 @@
 				gR=color.r;
 				gG=color.g;
                 gB=color.b;
+                refleshSphere();
             }
 			
             function loadSongInfo(songs){

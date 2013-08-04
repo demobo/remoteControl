@@ -7,7 +7,7 @@
 
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
 		demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() {
-      demoboBody.injectScript('http://localhost:1240/dev/LightConsole.js', function(){
+      		demoboBody.injectScript('http://localhost:1240/dev/LightConsole.js', function(){
 			  jQuery.noConflict();
 			  if (DEMOBO) {
 			  	DEMOBO.autoConnect = true;
@@ -65,14 +65,35 @@
 			  		// })
 			  	// }, 1000);
           window.dlc = new window.LightConsole();
+          initializeLiveMusicChanges();
 			  }
 
+        function initializeLiveMusicChanges() {
+          //debugger
+          var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
+          onStageRef.on('value', function(snapshot) {
+            var onstage = snapshot.val();
+            
+            if (onstage) {
+              console.log(onstage.artist);
+              
+              demobo.callFunction("loadSongInfo",{
+                  image : onstage.image,
+                  title : onstage.title,
+                  artist : onstage.artist,
+                  album : onstage.album
+              });
+            }
+                
+          });
+        }
+        
 			  // ********** custom event handler functions *************
 			  function onReady() {
 			  	demobo.callFunction('IncomingCallStatus', {
 			  	});
 			  }
-      });
+      		});
 		});
 	});
 })();
@@ -412,5 +433,3 @@ function updatePitch( time ) {
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
 }
-
-

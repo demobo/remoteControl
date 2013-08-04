@@ -1,4 +1,5 @@
 (function() {
+    buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	var ui = {
 		name : 'light2',
 		version : '0723'
@@ -35,6 +36,23 @@
 			  	});
 			  	demobo.addEventListener("update", function(e) {
 			  		console.log(e.x, e.y, e.z)
+                    e.y = -e.y;
+                    buff.splice(0, 1)
+                    if (Math.abs(e.x)+Math.abs(e.y)>3)
+                        buff.push([e.x, e.y, e.z]);
+                    else
+                        buff.push([buff[3][0], buff[3][1], e.z]);
+                    var x=0, y=0, z=0;
+                    for (var i = 0; i<5; i++){
+                        x = x+buff[i][0]/5.0;
+                        y = y+buff[i][1]/5.0;
+                        z = z+buff[i][2]/5.0;
+                    }
+
+                    var angles = dlc.getAngles(x,y,z);
+                    dlc.setPan(angles[1]);
+                    dlc.setTilt(angles[0]);
+                    dlc.setDMX();
 			  	});
 			  	
 			  	// var items = ["red", "blue", "white", "green", "pink", "yellow", "magenta"];
@@ -46,7 +64,7 @@
 			  			// rgb : items[Math.floor(Math.random()*items.length)]
 			  		// })
 			  	// }, 1000);
-          window.lc = new window.LightConsole();
+          window.dlc = new window.LightConsole();
 			  }
 
 			  // ********** custom event handler functions *************
@@ -294,7 +312,7 @@ function findNextPositiveZeroCrossing( start ) {
 }
 
 var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-var colors =  ["red", "green", "blue", "pink", "yellow", "magenta", "red", "green", "blue", "pink", "yellow", "magenta"];
+var colorNames =  ["red", "green", "blue", "pink", "yellow", "magenta", "red", "green", "blue", "pink", "yellow", "magenta"];
 var colors = [
 				{r:255 ,g: 0,b: 0}, 
 				{r:0 ,g: 255,b: 0}, 
@@ -386,6 +404,8 @@ function updatePitch( time ) {
 			oldPower:confidence/100*5,
 		});
 		demobo.callFunction("changeColor", colors[note%12]);
+        dlc.setColor(colorNames[note%12].toUpperCase());
+        dlc.setDMX();
 	}
 
 	if (!window.requestAnimationFrame)

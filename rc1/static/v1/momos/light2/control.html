@@ -276,15 +276,15 @@
 
 				var l = circles.length;
 
-				var c = 0.3;
+				var c = 0.4;
 				while (l < maxCircles && volDelta.right + volDelta.left > c) {
 					addCircle();
-					c += 0.02;
+					c += 0.4;
 					l++;
 				}
 
 				var max = (avgVol.right + avgVol.left) / 2 * maxCircles;
-				var focalDistance = 350;
+				var focalDistance = 700;
 				for (var i = l - 1; i >= 0; i--) {
 					var circle = circles[i];
 					circle.velX += circle.x * -0.005;

@@ -1,6 +1,6 @@
 (function() {
 	var ui = {
-		name : 'light2',
+		name : 'lightcontrol',
 		version : '0712'
 	};
 
@@ -21,7 +21,6 @@
 			function init() {
 				demobo.setController({
 					url : ui.controllerUrl,
-					orientation : 'portrait'
 				});
 				demobo.setController({
 					'page' : 'wheel'
@@ -33,6 +32,15 @@
 				demobo.addEventListener("update", function(e) {
 					console.log(e.x, e.y, e.z)
 				});
+				var items = ["red", "blue", "white", "green", "pink", "yellow", "magenta"];
+				setInterval(function() {
+					demobo.callFunction("changeBackgroundColor", {
+						rgb : items[Math.floor(Math.random()*items.length)]
+					});
+					demobo.callFunction("changeForegroundColor", {
+						rgb : items[Math.floor(Math.random()*items.length)]
+					})
+				}, 1000);
 			}
 
 			// ********** custom event handler functions *************

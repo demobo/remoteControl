@@ -1,7 +1,7 @@
 (function() {
 	var ui = {
 		name : 'light2',
-		version : '0712'
+		version : '0723'
 	};
 
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
@@ -22,10 +22,12 @@
 				toggleLiveInput();
 				demobo.setController({
 					url : ui.controllerUrl,
+					orientation: "portrait"
 				});
 				demobo.setController({
 					'page' : 'wheel'
 				}, "1FC0071B-44A9-4091-B3E7-32083D4DB5B6");
+				
 				// your custom demobo input event dispatcher
 				demobo.mapInputEvents({
 					'demoboApp' : onReady,
@@ -290,7 +292,21 @@ function findNextPositiveZeroCrossing( start ) {
 }
 
 var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-var colors =  ["red", "green", "blue", "pink", "yellow", "magenta", "red", "green", "blue", "pink", "yellow", "magenta"]
+var colors =  ["red", "green", "blue", "pink", "yellow", "magenta", "red", "green", "blue", "pink", "yellow", "magenta"];
+var colors = [
+				{r:255 ,g: 0,b: 0}, 
+				{r:0 ,g: 255,b: 0}, 
+				{r:0 ,g: 0,b: 255}, 
+				{r:255 ,g: 192,b: 203}, 
+				{r:255 ,g: 255,b: 0}, 
+				{r:255 ,g: 0,b: 255},
+				{r:255 ,g: 0,b: 0}, 
+				{r:0 ,g: 255,b: 0}, 
+				{r:0 ,g: 0,b: 255}, 
+				{r:255 ,g: 192,b: 203}, 
+				{r:255 ,g: 255,b: 0}, 
+				{r:255 ,g: 0,b: 255}
+			];
 
 function noteFromPitch( frequency ) {
 	var noteNum = 12 * (Math.log( frequency / 440 )/Math.log(2) );
@@ -367,27 +383,7 @@ function updatePitch( time ) {
 			curPower:(note%12)/12,
 			oldPower:confidence/100*5,
 		});
-		demobo.callFunction("changeBackgroundColor", {
-			rgb : colors[note%12]
-		});
-		demobo.callFunction("changeForegroundColor", {
-			rgb : colors[note%12]
-		});
-	 	// pitchElem.innerText = Math.floor( pitch );
-	 	// var note =  noteFromPitch( pitch );
-		// noteElem.innerText = noteStrings[note%12];
-		// noteElem.style["cssText"]="color:"+colors[note%12];
-		// var detune = centsOffFromPitch( pitch, note );
-		// if (detune == 0 ) {
-			// detuneElem.className = "";
-			// detuneAmount.innerText = "--";
-		// } else {
-			// if (detune < 0)
-				// detuneElem.className = "flat";
-			// else
-				// detuneElem.className = "sharp";
-			// detuneAmount.innerText = Math.abs( detune );
-		// }
+		demobo.callFunction("changeColor", colors[note%12]);
 	}
 
 	if (!window.requestAnimationFrame)

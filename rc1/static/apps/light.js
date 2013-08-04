@@ -1,7 +1,26 @@
-(function() {
-	var ui = {
+// (function() {
+    buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
+	ui = {
 		name : 'light2',
-		version : '0723'
+		version : '0723',
+		playPauseButton: 	'.playButton:visible, .pauseButton:visible',
+		playButton: 		'.playButton',
+		pauseButton: 		'.pauseButton',
+		nextButton: 		'.skipButton',
+		previousButton: 	'',
+		likeButton: 		'.thumbUpButton',
+		dislikeButton:		'.thumbDownButton',
+		volume:				'.volumeBackground',
+		title: 				'.playerBarSong',
+		artist: 			'.playerBarArtist',
+		album: 				'.playerBarAlbum',
+		coverart:			'.stationSlides:visible .art[src], .playerBarArt',
+		songTrigger: 		'#playerBar .nowplaying',
+		stationTrigger: 	'.middlecolumn',
+		selectedStation:	'.stationChangeSelector .textWithArrow, .stationChangeSelectorNoMenu p',
+		stationCollection:	'.stationListItem .stationName',
+		albumCollection:	'',
+		playlistTrigger: 	''
 	};
 
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
@@ -35,40 +54,54 @@
 			  	});
 			  	demobo.addEventListener("update", function(e) {
 			  		console.log(e.x, e.y, e.z)
+                    e.y = -e.y;
+                    buff.splice(0, 1)
+                    if (Math.abs(e.x)+Math.abs(e.y)>3)
+                        buff.push([e.x, e.y, e.z]);
+                    else
+                        buff.push([buff[3][0], buff[3][1], e.z]);
+                    var x=0, y=0, z=0;
+                    for (var i = 0; i<5; i++){
+                        x = x+buff[i][0]/5.0;
+                        y = y+buff[i][1]/5.0;
+                        z = z+buff[i][2]/5.0;
+                    }
+
+                    var angles = dlc.getAngles(x,y,z);
+                    dlc.setPan(angles[1]);
+                    dlc.setTilt(angles[0]);
+                    dlc.setDMX();
 			  	});
 			  	
-			  	// var items = ["red", "blue", "white", "green", "pink", "yellow", "magenta"];
-			  	// setInterval(function() {
-			  		// demobo.callFunction("changeBackgroundColor", {
-			  			// rgb : items[Math.floor(Math.random()*items.length)]
-			  		// });
-			  		// demobo.callFunction("changeForegroundColor", {
-			  			// rgb : items[Math.floor(Math.random()*items.length)]
-			  		// })
-			  	// }, 1000);
-          window.lc = new window.LightConsole();
+
+		  	setupSongTrigger();
+
+          window.dlc = new window.LightConsole();
           initializeLiveMusicChanges();
 			  }
 
-        function initializeLiveMusicChanges() {
-          //debugger
-          var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
-          onStageRef.on('value', function(snapshot) {
-            var onstage = snapshot.val();
-            
-            if (onstage) {
-              console.log(onstage.artist);
-              
-              demobo.callFunction("loadSongInfo",{
-                  image : onstage.image,
-                  title : onstage.title,
-                  artist : onstage.artist,
-                  album : onstage.album
-              });
-            }
-                
-          });
-        }
+
+			  function initializeLiveMusicChanges() {
+			  		if (window.Pandora) return;
+					//debugger
+					var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
+					onStageRef.on('value', function(snapshot) {
+						var onstage = snapshot.val();
+
+						if (onstage) {
+							console.log(onstage.artist);
+
+							demobo.callFunction("loadSongInfo", {
+								image : onstage.image,
+								title : onstage.title,
+								artist : onstage.artist,
+								album : onstage.album
+							});
+						}
+
+					});
+				}
+
         
 			  // ********** custom event handler functions *************
 			  function onReady() {
@@ -78,8 +111,70 @@
       		});
 		});
 	});
-})();
+// })();
 
+
+
+function setupSongTrigger() {
+	if (!window.Pandora) return;
+	var triggerDelay = 50;
+	var longDelay = 500;
+	var trigger = $(ui.songTrigger)[0];
+	var _this = {
+		oldCoverart : $(ui.coverart).attr('src'),
+		oldTitle : $(ui.title).text()
+	};
+	var maxChecks = 10;
+	var checkTitle = function() {
+		var newTitle = $(ui.title).text();
+		if (newTitle && _this.oldTitle !== newTitle) {
+			_this.oldTitle = newTitle;
+			checkCoverart(maxChecks);
+		}
+	};
+	var checkCoverart = function(checksLeft) {
+		var newCoverart = $(ui.coverart).attr('src');
+		if (newCoverart && _this.oldCoverart !== newCoverart) {
+			_this.oldCoverart = newCoverart;
+			sendNowPlaying();
+		} else if (checksLeft) {
+			setTimeout(function() {
+				checkCoverart(checksLeft - 1);
+			}, longDelay);
+		} else {
+			var newCoverart = $(ui.coverart).attr('src');
+			_this.oldCoverart = newCoverart;
+			sendNowPlaying();
+		}
+	}
+	var delay = function() {
+		setTimeout(checkTitle, triggerDelay);
+	};
+	if (trigger)
+		trigger.addEventListener('DOMSubtreeModified', delay, false);
+}
+
+function sendNowPlaying() {
+	var curSong = getCurrentSong();
+	if (!curSong)
+		return;
+	demobo.callFunction('loadSongInfo', curSong);
+}
+
+function getCurrentSong() {
+	var imgURL = $(ui.coverart).attr('src');
+	if (!imgURL)
+		return;
+	if (imgURL.substr(0, 4) != 'http')
+		imgURL = "http://www.pandora.com/img/no_album_art.jpg";
+	//document.location.origin + imgURL;
+	return {
+		'title' : $(ui.title).text(),
+		'artist' : $(ui.artist).text(),
+		'album' : $(ui.album).text(),
+		'image' : imgURL
+	};
+}
 
 
 
@@ -315,7 +410,7 @@ function findNextPositiveZeroCrossing( start ) {
 }
 
 var noteStrings = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-var colors =  ["red", "green", "blue", "pink", "yellow", "magenta", "red", "green", "blue", "pink", "yellow", "magenta"];
+var colorNames =  ["red", "green", "blue", "pink", "yellow", "magenta", "red", "green", "blue", "pink", "yellow", "magenta"];
 var colors = [
 				{r:255 ,g: 0,b: 0}, 
 				{r:0 ,g: 255,b: 0}, 
@@ -393,13 +488,13 @@ function updatePitch( time ) {
 		// detuneElem.className = "";
 		// detuneAmount.innerText = "--";
  	} else {
- 		console.log( 
-		"Cycles: " + num_cycles + 
-		" - average length: " + sum + 
-		" - pitch: " + pitch + "Hz " +
-		" - note: " + noteFromPitch( pitch ) +
-		" - confidence: " + confidence + "% "
-		);
+ 		// console.log( 
+		// "Cycles: " + num_cycles + 
+		// " - average length: " + sum + 
+		// " - pitch: " + pitch + "Hz " +
+		// " - note: " + noteFromPitch( pitch ) +
+		// " - confidence: " + confidence + "% "
+		// );
 		var note =  noteFromPitch( pitch );
 		demobo.callFunction("syncState", {
 			isPlaying:true,
@@ -407,6 +502,8 @@ function updatePitch( time ) {
 			oldPower:confidence/100*5,
 		});
 		demobo.callFunction("changeColor", colors[note%12]);
+        dlc.setColor(colorNames[note%12].toUpperCase());
+        dlc.setDMX();
 	}
 
 	if (!window.requestAnimationFrame)

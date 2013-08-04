@@ -2,7 +2,7 @@
     buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	ui = {
 		name : 'light2',
-		version : '0723',
+		version : Math.random(),
 		playPauseButton: 	'.playButton:visible, .pauseButton:visible',
 		playButton: 		'.playButton',
 		pauseButton: 		'.pauseButton',
@@ -371,7 +371,7 @@ var rafID = null;
 var tracks = null;
 var buflen = 1024;
 var buf = new Uint8Array( buflen );
-var MINVAL = 170; //134;  // 128 == zero.  MINVAL is the "minimum detected signal" level.
+var MINVAL = 250; //134;  // 128 == zero.  MINVAL is the "minimum detected signal" level.
 
 function findNextPositiveZeroCrossing( start ) {
 	var i = Math.ceil( start );
@@ -498,8 +498,8 @@ function updatePitch( time ) {
 		var note =  noteFromPitch( pitch );
 		demobo.callFunction("syncState", {
 			isPlaying:true,
-			curPower:(note%12)/12,
-			oldPower:confidence/100*5,
+			curPower:1.2*	(note%12)/12,
+			oldPower:confidence/100,
 		});
 		demobo.callFunction("changeColor", colors[note%12]);
         dlc.setColor(colorNames[note%12].toUpperCase());

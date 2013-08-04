@@ -7,7 +7,7 @@ var testCases1 = [
 			functionName : "syncState",
 			data : {
 				isPlaying:true,
-				curPower:Math.random(),
+				curPower:Math.random()*1.2,
 				oldPower:Math.random(),
 			}
 		}];

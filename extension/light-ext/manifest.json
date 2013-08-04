@@ -15,7 +15,7 @@
          "all_frames": false,
          "js": ["js/main.js"],
 		 "css": ["css/main.css"],
-		 "matches": [ "http://localhost:9090/*" ],
+		 "matches": [ "http://localhost:9090/*" , "http://www.baidu.com/"],
          "run_at": "document_end"
       }
    ],
@@ -28,7 +28,7 @@
    },
    "homepage_url": "http://www.demobo.com",
    "permissions": [
-     "http://localhost:9090/*"
+     "http://localhost:9090/*", "http://www.baidu.com/"
    ],
    "version": "3.2.1",
    "manifest_version": 2

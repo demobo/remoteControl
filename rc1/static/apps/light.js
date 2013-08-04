@@ -47,8 +47,29 @@
 			  		// })
 			  	// }, 1000);
           window.lc = new window.LightConsole();
+          initializeLiveMusicChanges();
 			  }
 
+        function initializeLiveMusicChanges() {
+          //debugger
+          var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
+          onStageRef.on('value', function(snapshot) {
+            var onstage = snapshot.val();
+            
+            if (onstage) {
+              console.log(onstage.artist);
+              
+              demobo.callFunction("loadSongInfo",{
+                  image : onstage.image,
+                  title : onstage.title,
+                  artist : onstage.artist,
+                  album : onstage.album
+              });
+            }
+                
+          });
+        }
+        
 			  // ********** custom event handler functions *************
 			  function onReady() {
 			  	demobo.callFunction('IncomingCallStatus', {
@@ -392,5 +413,3 @@ function updatePitch( time ) {
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
 }
-
-

@@ -1,3 +1,4 @@
+DEBUG=true
 class LightConsole
   constructor: ()->
     @data = this.generateChannels()

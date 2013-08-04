@@ -40,6 +40,14 @@
       temp = temp.concat(temp);
       temp = temp.concat(temp);
       temp = temp.concat(temp);
+      temp[10] = 255;
+      temp[11] = 255;
+      temp[26] = 255;
+      temp[27] = 255;
+      temp[42] = 255;
+      temp[43] = 255;
+      temp[58] = 255;
+      temp[59] = 255;
       return temp;
     };
 
@@ -81,10 +89,10 @@
     };
 
     LightConsole.prototype.setPan = function(val, index) {
-      DEBUG && console.log('setpan called');
       if ((index != null)) {
         return this.setData(index * 16 + 0, val);
       } else {
+        DEBUG && console.log('setpan called' + val);
         this.setPan(val, 0);
         this.setPan(val, 1);
         this.setPan(val, 2);
@@ -93,10 +101,10 @@
     };
 
     LightConsole.prototype.setTilt = function(val, index) {
-      DEBUG && console.log('settilt called');
       if ((index != null)) {
         return this.setData(index * 16 + 2, val);
       } else {
+        DEBUG && console.log('settilt called' + val);
         this.setTilt(val, 0);
         this.setTilt(val, 1);
         this.setTilt(val, 2);
@@ -122,14 +130,19 @@
     LightConsole.prototype.getAngles = function(x, y, z) {
       var hor, ver;
 
-      ver = 127 - Math.acos(z / 10.0) / Math.PI * 127;
-      hor = Math.atan(y * 1.0 / x) / Math.PI * 127;
+      if (z > 10) {
+        ver = 127;
+      } else {
+        ver = 127 - Math.acos(z / 10.0) / Math.PI * 127;
+      }
+      hor = Math.atan(y * 1.0 / x) / Math.PI * 72;
       if (x < 0) {
-        hor = hor + 127;
+        hor = hor + 72;
       }
       if (hor < 0) {
-        hor = hor + 255;
+        hor = hor + 144;
       }
+      console.log('val: ' + hor);
       return [ver, hor];
     };
 

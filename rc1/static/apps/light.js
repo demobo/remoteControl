@@ -1,4 +1,4 @@
-(function() {
+// (function() {
     buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	ui = {
 		name : 'light2',
@@ -82,7 +82,7 @@
 
 
 			  function initializeLiveMusicChanges() {
-			  		if (Pandora) return;
+			  		if (window.Pandora) return;
 					//debugger
 					var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
 					onStageRef.on('value', function(snapshot) {
@@ -116,7 +116,7 @@
 
 
 function setupSongTrigger() {
-	if (!Pandora) return;
+	if (!window.Pandora) return;
 	var triggerDelay = 50;
 	var longDelay = 500;
 	var trigger = $(ui.songTrigger)[0];

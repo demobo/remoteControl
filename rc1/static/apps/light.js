@@ -6,7 +6,7 @@
 
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
 		demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() {
-      demoboBody.injectScript('http://localhost:1240/dev/LightConsole.js', function(){
+      		demoboBody.injectScript('http://localhost:1240/dev/LightConsole.js', function(){
 			  jQuery.noConflict();
 			  if (DEMOBO) {
 			  	DEMOBO.autoConnect = true;
@@ -54,7 +54,7 @@
 			  	demobo.callFunction('IncomingCallStatus', {
 			  	});
 			  }
-      });
+      		});
 		});
 	});
 })();

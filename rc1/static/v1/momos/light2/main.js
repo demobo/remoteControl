@@ -1,5 +1,4 @@
 /* setting */
-
 var registeredplayers = Array();
 var players = Array(1,2);
 var deviceID;

@@ -32,6 +32,7 @@
 				demobo.addEventListener("update", function(e) {
 					console.log(e.x, e.y, e.z)
 				});
+				
 				var items = ["red", "blue", "white", "green", "pink", "yellow", "magenta"];
 				setInterval(function() {
 					demobo.callFunction("changeBackgroundColor", {

@@ -33,6 +33,8 @@
 					console.log(e.x, e.y, e.z)
 				});
 				
+				
+				
 				var items = ["red", "blue", "white", "green", "pink", "yellow", "magenta"];
 				setInterval(function() {
 					demobo.callFunction("changeBackgroundColor", {
@@ -42,8 +44,29 @@
 						rgb : items[Math.floor(Math.random()*items.length)]
 					})
 				}, 1000);
+				
+				initializeLiveMusicChanges();
 			}
 
+      function initializeLiveMusicChanges() {
+        //debugger
+        var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
+        onStageRef.on('value', function(snapshot) {
+          var onstage = snapshot.val();
+          
+          if (onstage) {
+            console.log(onstage.artist);
+            
+            demobo.callFunction("loadSongInfo",{
+                image : onstage.image,
+                title : onstage.title,
+                artist : onstage.artist,
+                album : onstage.album
+            });
+          }
+              
+        });
+      }
 			// ********** custom event handler functions *************
 			function onReady() {
 				demobo.callFunction('IncomingCallStatus', {

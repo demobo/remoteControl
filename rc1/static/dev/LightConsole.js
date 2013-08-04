@@ -117,6 +117,20 @@
       }
     };
 
+    LightConsole.prototype.getAngles = function(x, y, z) {
+      var hor, ver;
+
+      ver = 127 - Math.acos(z / 10.0) / Math.PI * 127;
+      hor = Math.atan(y * 1.0 / x) / Math.PI * 127;
+      if (x < 0) {
+        hor = hor + 127;
+      }
+      if (hor < 0) {
+        hor = hor + 255;
+      }
+      return [ver, hor];
+    };
+
     LightConsole.prototype.updateData = function() {
       return true;
     };

@@ -87,6 +87,15 @@ class LightConsole
       this.setGobo(goboIndex, 2)
       this.setGobo(goboIndex, 3)
 
+  getAngles: (x, y, z)->
+    ver = 127-Math.acos(z/10.0)/Math.PI*127
+    hor = Math.atan(y*1.0/x)/Math.PI*127
+    if x<0
+      hor = hor+127
+    if hor<0
+      hor = hor+255
+    return [ver, hor]
+
   updateData: ()->
     #do something
     true

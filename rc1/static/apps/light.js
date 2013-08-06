@@ -78,7 +78,7 @@
 			  	});
 			  	
 
-		  	setupSongTrigger();
+		  	if (document.domain === 'grooveshark.com') setupSongTrigger();
 
           window.dlc = new window.LightConsole();
           initializeLiveMusicChanges();

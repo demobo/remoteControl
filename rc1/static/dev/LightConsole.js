@@ -52,18 +52,25 @@
     };
 
     LightConsole.prototype.setDMX = function() {
-      var d;
+      var d, e;
 
       d = JSON.stringify(this.data);
       if (jQuery) {
-        return jQuery.ajax({
-          type: 'POST',
-          url: 'http://localhost:9090/set_dmx',
-          data: {
-            'u': 1,
-            'd': d
-          }
-        });
+        try {
+          return jQuery.ajax({
+            type: 'POST',
+            url: 'http://localhost:9090/set_dmx',
+            data: {
+              'u': 1,
+              'd': d
+            }
+          }).fail(function() {
+            return console.log('setDMX failed');
+          });
+        } catch (_error) {
+          e = _error;
+          return console.log('silence...');
+        }
       }
     };
 
@@ -74,7 +81,7 @@
     LightConsole.prototype.setColor = function(color, index) {
       var val;
 
-      // DEBUG && console.log('setcolor called');
+      DEBUG && console.log('setcolor called');
       if ((index != null)) {
         val = this.colorMap[color];
         if (val != null) {
@@ -115,7 +122,7 @@
     LightConsole.prototype.setGobo = function(goboIndex, index) {
       var val;
 
-      // DEBUG && console.log('setgobo called');
+      DEBUG && console.log('setgobo called');
       if ((index != null)) {
         val = goboIndex * 14 + 6;
         return this.setData(index, val);
@@ -142,7 +149,7 @@
       if (hor < 0) {
         hor = hor + 144;
       }
-      // console.log('val: ' + hor);
+      console.log('val: ' + hor);
       return [ver, hor];
     };
 

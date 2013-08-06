@@ -42,14 +42,19 @@ class LightConsole
   setDMX:()->
     d = JSON.stringify(@data)
     if (jQuery)
-      jQuery.ajax({
-        type:'POST',
-        url:'http://localhost:9090/set_dmx',
-        data:{
-          'u':1,
-          'd':d
-        },
-      })
+      try
+        jQuery.ajax({
+          type:'POST',
+          url:'http://localhost:9090/set_dmx',
+          data:{
+            'u':1,
+            'd':d
+          },
+        }).fail(()->
+          console.log('setDMX failed')
+        )
+      catch e
+        console.log('silence...')
 
   setData: (index, val)->
     @data[index]=val

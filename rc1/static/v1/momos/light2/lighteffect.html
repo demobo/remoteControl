@@ -311,9 +311,6 @@
 
 		<script>
 			var syncEnable = true;
-        	$(document).ready(function(){
-				non480x320Adjust();
-			});
 			
 			function non480x320Adjust() {
 				var screenHeight = $(window).height();
@@ -366,7 +363,7 @@
 <body onload="init();">
 	<div id="main">
 			<div id='frame'>
-				<canvas id="visualizer" width="320" height="480"></canvas>
+				<canvas id="visualizer" width="480" height="320"></canvas>
 				<div id='content'>
 					<img id='albumArt' class='currentAlbumArt to0'/>
 					<div id='controlPanel'>
@@ -545,7 +542,7 @@
 				height: 50px;
 				position: absolute;
 				background-color: #515151;
-				bottom: 10px;
+				top: 10px;
 				left: 5px;
 				-webkit-box-shadow: 0 0 20px rgba(0,0,0,0.2);
 			}

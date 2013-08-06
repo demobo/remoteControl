@@ -127,6 +127,7 @@
 			demobo.callFunction("syncState", curState);
 			if (window.syncState) syncState(curState);
 			dlc.setColor(curColor);
+      dlc.setGobo(0); //setGobo takes one param of value 0-13, which corresponds to 14 gobo shapes in goboShapes.bmp in Dropbox folder. Index 0-6 are rotating gobos and index 7-13 are static gobos. 
        		dlc.setDMX();
        		stateEnable = false;
        		setTimeout(function(){

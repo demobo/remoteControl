@@ -2,7 +2,7 @@
 (function() {
   var DEBUG, LightConsole;
 
-  DEBUG = true;
+  DEBUG = false;
 
   LightConsole = (function() {
     function LightConsole() {
@@ -245,7 +245,7 @@
       if (hor < 0) {
         hor = hor + 144;
       }
-      console.log('val: ' + hor);
+      DEBUG && console.log('val: ' + hor);
       return [ver, hor];
     };
 

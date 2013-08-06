@@ -1,4 +1,4 @@
-DEBUG=true
+DEBUG=false
 class LightConsole
   constructor: ()->
     @data = this.generateChannels()
@@ -183,7 +183,7 @@ class LightConsole
       hor = hor+72
     if hor<0
       hor = hor+144
-    console.log('val: '+hor);
+    DEBUG and console.log('val: '+hor);
     return [ver, hor]
 
   updateData: ()->

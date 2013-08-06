@@ -100,19 +100,26 @@ class LightConsole
       this.setTilt(val, 3)
 
   ###
-  there are totally 14 gobos. index 0-6 are rotation gobos; 7-13 are fixed gobos
+  there are totally 15 gobos. index 0 is default circle; index 1-7 are rotation gobos; 8-14 are fixed gobos
   ###
   setGobo: (goboIndex, index)->
     DEBUG && console.log('setgobo called')
     if (index?)
-      if goboIndex<7 #rotation is at channel 6
+      if goboIndex is 0
+        channel1 = index*16+5
+        channel2 = index*16+7
+        this.setData(channel1, 0)
+        this.setData(channel2, 0)
+      else if goboIndex<8 #rotation is at channel 6
         channel = index*16+5
-        val = goboIndex*10+15
+        val = goboIndex*10+5
+        this.setData(channel, val)
+        this.setData(index*16+7, 0)
       else
         channel = index*16+7
         val = goboIndex*14+20
-
-      this.setData(channel, val)
+        this.setData(index*16+5, 0)
+        this.setData(channel, val)
     else
       this.setGobo(goboIndex, 0)
       this.setGobo(goboIndex, 1)

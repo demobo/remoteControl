@@ -3,24 +3,24 @@
 	ui = {
 		name : 'light2',
 		version : Math.random(),
-		playPauseButton: 	'.playButton:visible, .pauseButton:visible',
-		playButton: 		'.playButton',
-		pauseButton: 		'.pauseButton',
-		nextButton: 		'.skipButton',
-		previousButton: 	'',
-		likeButton: 		'.thumbUpButton',
-		dislikeButton:		'.thumbDownButton',
-		volume:				'.volumeBackground',
-		title: 				'.playerBarSong',
-		artist: 			'.playerBarArtist',
-		album: 				'.playerBarAlbum',
-		coverart:			'.stationSlides:visible .art[src], .playerBarArt',
-		songTrigger: 		'#playerBar .nowplaying',
-		stationTrigger: 	'.middlecolumn',
-		selectedStation:	'.stationChangeSelector .textWithArrow, .stationChangeSelectorNoMenu p',
-		stationCollection:	'.stationListItem .stationName',
-		albumCollection:	'',
-		playlistTrigger: 	''
+  	playPauseButton: 	'#player_play_pause',
+  	playButton: 		'#player_play_pause.play',
+  	pauseButton: 		'#player_play_pause.pause',
+  	nextButton: 		'#player_next',
+  	previousButton: 	'#player_previous',
+  	likeButton: 		'.queue-item.queue-item-active .smile:not(.active)',
+  	dislikeButton:		'.queue-item.queue-item-active .frown',
+  	volume:				'#volumeControl',
+  	title: 				'',
+  	artist: 			'',
+  	album: 				'',
+  	coverart:			'',
+  	songTrigger: 		'#queue_list',
+  	stationTrigger: 	'',
+  	selectedStation:	'',
+  	stationCollection:	'',
+  	albumCollection:	'',
+  	playlistTrigger: 	''
 	};
 
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
@@ -40,21 +40,24 @@
 
 			  // do all the iniations you need here
 			  function init() {
-			  	toggleLiveInput();
-			  	demobo.setController({
-			  		url : ui.controllerUrl,
-			  		orientation: "portrait"
-			  	});
-			  	demobo.setController({
-			  		'page' : 'wheel'
-			  	}, "78435E83-AE4B-4D49-B258-964B7707E69B");
-			  	
-			  	// your custom demobo input event dispatcher
-			  	demobo.mapInputEvents({
-			  		'demoboApp' : onReady,
-			  	});
-			  	demobo.addEventListener("update", function(e) {
-			  		// console.log(e.x, e.y, e.z)
+				  	toggleLiveInput();
+				  	demobo.setController({
+				  		url : ui.controllerUrl,
+				  		orientation: "portrait"
+				  	});
+				  	demobo.setController({
+				  		'page' : 'wheel'
+				  	}, "78435E83-AE4B-4D49-B258-964B7707E69B");
+				  	
+				  	// your custom demobo input event dispatcher
+				  	demobo.mapInputEvents({
+				  		'demoboApp' : onReady,
+				  	});
+				  	demobo.addEventListener("update", function(e) {
+		            //transformation
+		            var temp=e.z;
+		            e.z = e.y;
+		            e.y = temp;
                     e.y = -e.y;
                     buff.splice(0, 1)
                     if (Math.abs(e.x)+Math.abs(e.y)>3)
@@ -81,6 +84,46 @@
           initializeLiveMusicChanges();
 			  }
 
+        function setupSongTrigger() {
+        		var triggerDelay = 100;
+        		var trigger = jQuery('#np-meta-container')[0];
+        		var _this = {
+        			target : trigger,
+        			oldValue : ''
+        		};
+        		_this.onChange = function() {
+              if (!Grooveshark.getCurrentSongStatus().song) return;
+        			var newValue = Grooveshark.getCurrentSongStatus().song.songName;
+        			if (_this.oldValue !== newValue) {
+        				_this.oldValue = newValue;
+                sendNowPlaying();
+        			}
+        		};
+        		_this.delay = function() {
+        			setTimeout(_this.onChange, triggerDelay);
+        		};
+        		_this.target.addEventListener('DOMSubtreeModified', _this.delay, false);
+        
+        }
+        
+        sendNowPlaying = function () {
+        	demobo.callFunction('loadSongInfo', getNowPlayingData());
+        };
+        
+        getNowPlayingData = function () {
+        	var toReturn = [];
+          var o = Grooveshark.getCurrentSongStatus().song;
+          if (!o){
+            return;
+          }
+        	toReturn.push( {
+        		'title' : o.songName,
+        		'artist' : o.artistName,
+        		'album' : o.albumName,
+        		'image' : o.artURL
+          });
+        	return toReturn;
+        };
 
 			  function initializeLiveMusicChanges() {
 			  		if (window.Pandora) return;
@@ -113,73 +156,6 @@
 		});
 	});
 // })();
-
-
-
-function setupSongTrigger() {
-	if (!window.Pandora) return;
-	var triggerDelay = 50;
-	var longDelay = 500;
-	var trigger = $(ui.songTrigger)[0];
-	var _this = {
-		oldCoverart : $(ui.coverart).attr('src'),
-		oldTitle : $(ui.title).text()
-	};
-	var maxChecks = 10;
-	var checkTitle = function() {
-		var newTitle = $(ui.title).text();
-		if (newTitle && _this.oldTitle !== newTitle) {
-			_this.oldTitle = newTitle;
-			checkCoverart(maxChecks);
-		}
-	};
-	var checkCoverart = function(checksLeft) {
-		var newCoverart = $(ui.coverart).attr('src');
-		if (newCoverart && _this.oldCoverart !== newCoverart) {
-			_this.oldCoverart = newCoverart;
-			sendNowPlaying();
-		} else if (checksLeft) {
-			setTimeout(function() {
-				checkCoverart(checksLeft - 1);
-			}, longDelay);
-		} else {
-			var newCoverart = $(ui.coverart).attr('src');
-			_this.oldCoverart = newCoverart;
-			sendNowPlaying();
-		}
-	}
-	var delay = function() {
-		setTimeout(checkTitle, triggerDelay);
-	};
-	if (trigger)
-		trigger.addEventListener('DOMSubtreeModified', delay, false);
-}
-
-function sendNowPlaying() {
-	var curSong = getCurrentSong();
-	if (!curSong)
-		return;
-	demobo.callFunction('loadSongInfo', curSong);
-}
-
-function getCurrentSong() {
-  // console.log('getCurrentSong called');
-	var imgURL = $(ui.coverart).attr('src');
-	if (!imgURL)
-		return;
-	if (imgURL.substr(0, 4) != 'http')
-		imgURL = "http://www.pandora.com/img/no_album_art.jpg";
-	//document.location.origin + imgURL;
-	return {
-		'title' : $(ui.title).text(),
-		'artist' : $(ui.artist).text(),
-		'album' : $(ui.album).text(),
-		'image' : imgURL
-	};
-}
-
-
-
 
 
 (function (global, exports, perf) {

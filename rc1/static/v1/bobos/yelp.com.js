@@ -9,12 +9,14 @@
   
   Yelp.prototype.pauseBobo = function(){
     //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
-    $('#boboModal').modal('hide');
+    //$('#boboModal').modal('hide');
+    $('#demobo_overlay').hide();
   };
 
   Yelp.prototype.resumeBobo = function(){
     //$('#demobo_overlay').css('bottom', 0);
-    $('#boboModal').modal();
+    //$('#boboModal').modal();
+    $('#demobo_overlay').show();
   }
   
   Yelp.prototype.onReady = function(){
@@ -348,7 +350,7 @@
     var div = document.createElement('div');
     div.setAttribute('id', 'demobo-widget');
     div.setAttribute('class', 'demobobarright');
-    div.setAttribute('style', 'height: 188px; width: 332px; display: inline-block;');
+    div.setAttribute('style', 'height: 188px; width: 332px; display: none;');
     
     iframe = document.createElement('iframe');
     iframe.setAttribute('id', 'demobo_overlay');

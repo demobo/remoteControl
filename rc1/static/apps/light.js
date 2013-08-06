@@ -47,14 +47,14 @@
 			  	});
 			  	demobo.setController({
 			  		'page' : 'wheel'
-			  	}, "1FC0071B-44A9-4091-B3E7-32083D4DB5B6");
+			  	}, "78435E83-AE4B-4D49-B258-964B7707E69B");
 			  	
 			  	// your custom demobo input event dispatcher
 			  	demobo.mapInputEvents({
 			  		'demoboApp' : onReady,
 			  	});
 			  	demobo.addEventListener("update", function(e) {
-			  		console.log(e.x, e.y, e.z)
+			  		// console.log(e.x, e.y, e.z)
                     e.y = -e.y;
                     buff.splice(0, 1)
                     if (Math.abs(e.x)+Math.abs(e.y)>3)
@@ -90,7 +90,7 @@
 						var onstage = snapshot.val();
 
 						if (onstage) {
-							console.log(onstage.artist);
+							// console.log(onstage.artist);
 
 							demobo.callFunction("loadSongInfo", {
 								image : onstage.image,
@@ -163,7 +163,7 @@ function sendNowPlaying() {
 }
 
 function getCurrentSong() {
-  console.log('getCurrentSong called');
+  // console.log('getCurrentSong called');
 	var imgURL = $(ui.coverart).attr('src');
 	if (!imgURL)
 		return;

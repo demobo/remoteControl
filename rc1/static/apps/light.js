@@ -108,6 +108,7 @@
         
         sendNowPlaying = function () {
         	demobo.callFunction('loadSongInfo', getNowPlayingData());
+        	if (window.loadSongInfo) loadSongInfo(getNowPlayingData());
         };
         
         getNowPlayingData = function () {
@@ -141,6 +142,12 @@
 								artist : onstage.artist,
 								album : onstage.album
 							});
+							if (window.loadSongInfo) loadSongInfo({
+								image : onstage.image,
+								title : onstage.title,
+								artist : onstage.artist,
+								album : onstage.album
+							});
 						}
 
 					});
@@ -148,10 +155,7 @@
 
         
 			  // ********** custom event handler functions *************
-			  function onReady() {
-			  	demobo.callFunction('IncomingCallStatus', {
-			  	});
-			  }
+			  function onReady() {}
       		});
 		});
 	});
@@ -479,7 +483,13 @@ function updatePitch( time ) {
 			curPower:1.2*	(note%12)/12,
 			oldPower:confidence/100,
 		});
+		if (window.syncState) syncState({
+			isPlaying:true,
+			curPower:1.2*	(note%12)/12,
+			oldPower:confidence/100,
+		});
 		demobo.callFunction("changeColor", colors[note%12]);
+		if (window.changeColor) changeColor(colors[note%12]);
         dlc.setColor(colorNames[note%12].toUpperCase());
         dlc.setDMX();
 	}

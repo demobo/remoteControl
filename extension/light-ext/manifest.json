@@ -15,7 +15,7 @@
          "all_frames": false,
          "js": ["js/main.js"],
 		 "css": ["css/main.css"],
-		 "matches": [ "http://localhost:9090/*" , "http://www.baidu.com/", "http://grooveshark.com/", "http://rc1.demobo.com/v1/momos/light2/*"],
+		 "matches": [ "http://localhost:*/*" , "http://www.baidu.com/", "http://grooveshark.com/", "http://rc1.demobo.com/v1/momos/light2/*"],
          "run_at": "document_end"
       }
    ],

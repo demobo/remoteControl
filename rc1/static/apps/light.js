@@ -482,14 +482,15 @@ function updatePitch( time ) {
 			isPlaying:true,
 			curPower:1.2*	(note%12)/12,
 			oldPower:confidence/100,
+			color: colors[note%12]
 		});
 		if (window.syncState) syncState({
 			isPlaying:true,
 			curPower:1.2*	(note%12)/12,
 			oldPower:confidence/100,
+			color: colors[note%12]
 		});
-		demobo.callFunction("changeColor", colors[note%12]);
-		if (window.changeColor) changeColor(colors[note%12]);
+		
         dlc.setColor(colorNames[note%12].toUpperCase());
         dlc.setDMX();
 	}

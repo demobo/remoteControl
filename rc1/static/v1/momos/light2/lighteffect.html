@@ -325,6 +325,7 @@
 				gG=color.g;
                 gB=color.b;
                 refleshSphere();
+                console.log(gR, gG, gB);
             }
 			
             function loadSongInfo(songs){
@@ -354,9 +355,10 @@
             
 			function syncState(state){
 				if (state.isPlaying) {
+					if (state.color) changeColor(state.color);
 					oldPower = state.oldPower;
 					curPower = state.curPower;
-				} else {}
+				}
 			}
         </script>
 </head>

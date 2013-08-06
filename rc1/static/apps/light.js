@@ -1,4 +1,9 @@
 // (function() {
+	var effectMode = 0;
+	var stateEnable =true;
+    var curState;
+    var curPower=0;
+    var oldPower=0;
     buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	ui = {
 		name : 'light2',
@@ -26,7 +31,13 @@
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
 		demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() {
       		demoboBody.injectScript('http://localhost:1240/dev/LightConsole.js', function(){
-            $(document).keydown(function(e){if (e.which==13){window.sendNowPlaying()}})
+ 
+
+			$(document).keydown(function(e) {
+				if (e.which == 13) {
+					effectMode = (effectMode+1)%3;
+				}
+			})
 			  jQuery.noConflict();
 			  if (DEMOBO) {
 			  	DEMOBO.autoConnect = true;
@@ -96,7 +107,7 @@
         			var newValue = Grooveshark.getCurrentSongStatus().song.songName;
         			if (_this.oldValue !== newValue) {
         				_this.oldValue = newValue;
-                sendNowPlaying();
+                		sendNowPlaying();
         			}
         		};
         		_this.delay = function() {
@@ -111,43 +122,48 @@
         	if (window.loadSongInfo) loadSongInfo(getNowPlayingData());
         };
         
+        sendCurState = function () {
+        	if (!curState || !stateEnable) return;
+			demobo.callFunction("syncState", curState);
+			if (window.syncState) syncState(curState);
+			dlc.setColor(curColor);
+       		dlc.setDMX();
+       		stateEnable = false;
+       		setTimeout(function(){
+       			stateEnable = true;
+       		},200);
+       		console.log(curState.color, effectMode);
+        }
+        
         getNowPlayingData = function () {
-        	var toReturn = [];
-          var o = Grooveshark.getCurrentSongStatus().song;
-          if (!o){
-            return;
-          }
-        	toReturn.push( {
-        		'title' : o.songName,
-        		'artist' : o.artistName,
-        		'album' : o.albumName,
-        		'image' : o.artURL
-          });
-        	return toReturn;
+				var toReturn = [];
+				if (window.Grooveshark) {
+					var o = Grooveshark.getCurrentSongStatus().song;
+				} else {
+					var o = onstage;
+				}
+				if (!o) {
+					return;
+				}
+				toReturn.push({
+					'title' : o.songName||o.title,
+					'artist' : o.artistName||o.artist,
+					'album' : o.albumName||o.album,
+					'image' : o.artURL||o.image
+				});
+				return toReturn;
         };
 
 			  function initializeLiveMusicChanges() {
-			  		if (window.Pandora) return;
+			  		if (window.Grooveshark) return;
 					//debugger
 					var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
 					onStageRef.on('value', function(snapshot) {
-						var onstage = snapshot.val();
+						onstage = snapshot.val();
 
 						if (onstage) {
 							// console.log(onstage.artist);
-
-							demobo.callFunction("loadSongInfo", {
-								image : onstage.image,
-								title : onstage.title,
-								artist : onstage.artist,
-								album : onstage.album
-							});
-							if (window.loadSongInfo) loadSongInfo({
-								image : onstage.image,
-								title : onstage.title,
-								artist : onstage.artist,
-								album : onstage.album
-							});
+							sendNowPlaying();
 						}
 
 					});
@@ -155,7 +171,10 @@
 
         
 			  // ********** custom event handler functions *************
-			  function onReady() {}
+			  function onReady() {
+			  	sendNowPlaying();
+			  	sendCurState();	
+			  }
       		});
 		});
 	});
@@ -477,22 +496,31 @@ function updatePitch( time ) {
 		// " - note: " + noteFromPitch( pitch ) +
 		// " - confidence: " + confidence + "% "
 		// );
-		var note =  noteFromPitch( pitch );
-		demobo.callFunction("syncState", {
-			isPlaying:true,
-			curPower:1.2*	(note%12)/12,
-			oldPower:confidence/100,
-			color: colors[note%12]
-		});
-		if (window.syncState) syncState({
-			isPlaying:true,
-			curPower:1.2*	(note%12)/12,
-			oldPower:confidence/100,
-			color: colors[note%12]
-		});
 		
-        dlc.setColor(colorNames[note%12].toUpperCase());
-        dlc.setDMX();
+		var note =  noteFromPitch( pitch );
+		if (effectMode==0) {
+			oldPower = (note%12)/10;
+			curPower = confidence/100;
+			color = colors[note%12];
+		} else if (effectMode==1) {
+			oldPower = curPower;
+			curPower = sum/80;
+			color = colors[note%12];
+		} else if (effectMode==2) {
+			oldPower = sum/80;
+			curPower = num_cycles/80;
+			color = colors[note%12];
+		}
+		
+		curState = {
+			isPlaying:true,
+			curPower: curPower, //(note%12)/10,
+			oldPower: oldPower, //num_cycles/100, //confidence/100,
+			color: color
+		};
+		curColor = colorNames[note%12].toUpperCase();
+		sendCurState();
+		// console.log(num_cycles, sum, confidence, curColor);
 	}
 
 	if (!window.requestAnimationFrame)

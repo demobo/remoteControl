@@ -60,7 +60,6 @@ class LightConsole
     @data[index]=val
 
   setColor: (color, index)->
-    DEBUG && console.log('setcolor called')
     if (index?)
       val=@colorMap[color]
       if val?

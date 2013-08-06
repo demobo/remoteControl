@@ -81,7 +81,6 @@
     LightConsole.prototype.setColor = function(color, index) {
       var val;
 
-      DEBUG && console.log('setcolor called');
       if ((index != null)) {
         val = this.colorMap[color];
         if (val != null) {

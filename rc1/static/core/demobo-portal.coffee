@@ -51,12 +51,6 @@ if not window.demoboLoading
       'docs\\.google\\.com\/presentation':     'docs.google.com-new.js'
       'grooveshark\\.com':     'grooveshark.com-new.js'
       'play\\.spotify\\.com':    'spotify.com-new.js'
-      'sfbay\\.craigslist\\.org':'yelp.com.js'
-      'www\\.yelp\\.com':'yelp.com.js'
-      'www\\.yellowpages\\.com': 'yelp.com.js'
-      'www\\.foodspotting\\.com':'yelp.com.js'
-      'www\\.urbanspoon\\.com' : 'yelp.com.js'
-      'foursquare\\.com':      'yelp.com.js'
       'www\\.npr\\.org':       'npr.org.js'
 
     ###
@@ -406,9 +400,9 @@ if not window.demoboLoading
         
         toReturn = 
           'input': base+'inputtool-new.js'
-          'dummy': base+'dummy.js'
           'browsertool': base+'browsertool-new.js'
           'help': base+'help.js'
+          'phone': base+'yelp.com.js'
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote

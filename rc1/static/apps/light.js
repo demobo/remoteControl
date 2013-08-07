@@ -4,6 +4,7 @@
     var curState;
     var curPower=0;
     var oldPower=0;
+    var beatCount = 0;
     buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	ui = {
 		name : 'light2',
@@ -511,13 +512,17 @@ function updatePitch( time ) {
 			curPower = num_cycles/80;
 			color = colors[note%12];
 		}
-		
+		var pattern = (beatCount/20)%6;
+		beatCount++;
 		curState = {
 			isPlaying:true,
 			curPower: curPower, //(note%12)/10,
 			oldPower: oldPower, //num_cycles/100, //confidence/100,
-			color: color
+			color: color,
+			pattern : pattern,
+			effectMode : effectMode
 		};
+		
 		curColor = colorNames[note%12].toUpperCase();
 		sendCurState();
 		// console.log(num_cycles, sum, confidence, curColor);

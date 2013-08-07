@@ -31,10 +31,13 @@ var patterns
 // var patternFilter
 
 function changePattern(pattern) {
-	if (pattern % 2 == 1) {
+	var i=pattern % 3
+	if (i==1) {
 		drawPattern1_wrap();
+	} else if (i==2) {
+		drawPattern2_wrap();
 	} else {
-		restorePattern()
+		restorePattern();
 	}
 }
 
@@ -89,21 +92,31 @@ function drawPattern2(r, g, b) {
 	patterns = new createjs.Shape();
 	patterns.x = canvas.width / 2;
 	patterns.y = canvas.height / 2;
-	patterns.compositeOperation = "lighter";
+	
 
-	for (var i = 0; i <= 10; i++) {
-		var j = i * 36;
-		var r=6;
+	for (var i = 1; i <= 10; i++) {
+		var j = 360/10 * i;
+		// first round
 		var x=15 * Math.cos(j);
-		var y=15 * Math.sin(j)
-		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 3);
+		var y=15 * Math.sin(j);
+		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 3.5);
 	}
-
-	// circle = new createjs.Shape();
-	// circle.x = 150;
-	// circle.y = 150;
-	// circle.graphics.beginFill("black").drawCircle(0, 0, 70);
-
+	for (var i = 1; i <= 20; i++) {
+		var j = 360/20 * i;
+		// second round
+		x=25 * Math.cos(j);
+		y=25 * Math.sin(j);
+		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 2.2);
+	}
+	for (var i = 1; i <= 40; i++) {
+		var j = 360/40 * i;
+		// third round
+		x=35 * Math.cos(j);
+		y=35 * Math.sin(j);
+		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 2.2);
+	}
+	
+	patterns.compositeOperation = "lighter";
 	// stage.addChild(circle,patterns);
 	patterns.rotation = temp;
 	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);

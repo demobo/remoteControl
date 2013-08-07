@@ -34,7 +34,7 @@ var testCases3 = [{
 			g : rnd(0, 255),
 			b : rnd(0, 255),
 		},
-		pattern : 1,
+		pattern : 2,
 	}
 }];
 

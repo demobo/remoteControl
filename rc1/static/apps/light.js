@@ -73,7 +73,7 @@
                         var curleft= parseInt(e.value.left)*dpiAdjust;
                         var prevTop = parseInt(e.value.prevTop)*dpiAdjust;
                         var prevLeft= parseInt(e.value.prevLeft)*dpiAdjust;
-                        var target = $(e.value.html).css('position', 'relative').css('font-size', '33px');
+                        var target = $(e.value.html).css('position', 'absolute').css('font-size', '33px');
 
                         console.log(target);
                         $('#iphoneDockScreen').append(target);
@@ -83,7 +83,18 @@
                         var deltaTop = 10*(curtop-prevTop);
                         var deltaLeft = 10*(curleft-prevLeft);
 
-                        target.animate({top: "+="+deltaTop+"px", left: "+="+deltaLeft+"px"}, 500, function(){setTimeout(function(){target.remove()}, 10000)}); //delete in 10 secs
+
+					target.animate({
+						top : "+=" + deltaTop + "px",
+						left : "+=" + deltaLeft + "px"
+					}, 500, function() {
+						setTimeout(function() {
+							target.hide('slow', function(){
+								target.remove();
+							})
+						}, 10000)
+					});
+					//delete in 10 secs
 
                     },false);
 

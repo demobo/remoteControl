@@ -327,11 +327,14 @@
     }
 
     textClick = function(){
-        $(this).html('<input type="text"></input>');
-        $(this).off('click');
-        $('#magicDiv input').blur(function(){
-            $('#magicDiv .text').html($('#magicDiv input').val()).on('click',textClickHandler);
-        }).focus();
+//        $(this).html('<input type="text"></input>');
+//        $(this).off('click');
+//        $('#magicDiv input').blur(function(){
+//            $('#magicDiv .text').html($('#magicDiv input').val()).on('click',textClick);
+//        }).focus();
+        var text = prompt('What you wanna say to the crowd!');
+        if (text && text.trim())
+            $(this).html(text);
     }
 
     testClick = function(){alert('clicked')};

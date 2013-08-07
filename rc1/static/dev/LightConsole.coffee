@@ -100,6 +100,19 @@ class LightConsole
       this.setTilt(val, 3)
 
   ###
+  predefied patterns
+  ###
+  setPattern: (patternIndex, index)->
+    mapping=
+      0:0
+      1:1
+      2:3
+      3:7
+      4:8
+      5:14
+    this.setGobo(mapping[patternIndex], index)
+
+  ###
   there are totally 15 gobos. index 0 is default circle; index 1-7 are rotation gobos; 8-14 are fixed gobos
   ###
   setGobo: (goboIndex, index)->

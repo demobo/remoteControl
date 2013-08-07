@@ -146,8 +146,7 @@
         1: 1,
         2: 3,
         3: 7,
-        4: 9,
-        5: 14
+        4: 9
       };
       return this.setGobo(mapping[patternIndex], index);
     };

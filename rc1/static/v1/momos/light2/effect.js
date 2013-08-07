@@ -78,6 +78,37 @@ function drawPattern1(r, g, b) {
 	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
 }
 
+function drawPattern2_wrap() {
+	drawPattern2(gR, gG, gB);
+}
+
+function drawPattern2(r, g, b) {
+	var temp = patterns.rotation;
+	usePatterns = true;
+	patterns.graphics.clear();
+	patterns = new createjs.Shape();
+	patterns.x = canvas.width / 2;
+	patterns.y = canvas.height / 2;
+	patterns.compositeOperation = "lighter";
+
+	for (var i = 0; i <= 10; i++) {
+		var j = i * 36;
+		var r=6;
+		var x=15 * Math.cos(j);
+		var y=15 * Math.sin(j)
+		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 3);
+	}
+
+	// circle = new createjs.Shape();
+	// circle.x = 150;
+	// circle.y = 150;
+	// circle.graphics.beginFill("black").drawCircle(0, 0, 70);
+
+	// stage.addChild(circle,patterns);
+	patterns.rotation = temp;
+	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
+}
+
 function init() {
 	// create a new stage and point it at our canvas:
 	canvas = document.getElementById("visualizer");

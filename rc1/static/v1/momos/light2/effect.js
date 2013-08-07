@@ -30,8 +30,23 @@ var loadingFld;
 var patterns
 // var patternFilter
 
+function changePattern(pattern) {
+	if (pattern % 2 == 1) {
+		drawPattern1_wrap();
+	} else {
+		restorePattern()
+	}
+}
+
 function drawPattern1_wrap() {
 	drawPattern1(gR, gG, gB);
+}
+
+function restorePattern() {
+	usePatterns = false;
+	patterns.graphics.clear();
+	refleshSphere();
+	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
 }
 
 function drawPattern1(r, g, b) {
@@ -320,3 +335,57 @@ function tick() {
 	//patterns.updateCache();
 	stage.update();
 }
+
+var syncEnable = true;
+$(document).ready(function() {
+	non480x320Adjust();
+});
+
+function non480x320Adjust() {
+	var screenHeight = $(window).height();
+	// zoomAdjust for non iphones
+	$('#frame').css('zoom', screenHeight / 320);
+	// jquery mobile input range is not working with zoom
+	$('.volumeControl').css('zoom', 320 / screenHeight);
+}
+
+function changeColor(color) {
+	gR = color.r;
+	gG = color.g;
+	gB = color.b;
+	refleshSphere();
+}
+
+function loadSongInfo(songs) {
+	if ($.isArray(songs)) {
+		var song = songs[0];
+		var nextSong = songs[1];
+	} else
+		var song = songs;
+	flipAlbumArt();
+	$('#songName').text(song.title);
+	$('#artist').text(song.artist);
+	$('img.currentAlbumArt').attr('src', song.image);
+}
+
+//function handler of img onload event
+function flipAlbumArt() {
+	$('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function() {
+		setTimeout(function() {
+			$('img.currentAlbumArt').toggleClass('to90 to0');
+		}, 0);
+		$(this).unbind('webkitTransitionEnd');
+	});
+}
+
+function syncState(state) {
+	if (state.isPlaying) {
+		if (state.color)
+			changeColor(state.color);
+		changePattern(state.pattern);
+		oldPower = state.oldPower;
+		curPower = state.curPower;
+	} else {
+	}
+}
+

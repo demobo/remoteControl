@@ -337,17 +337,6 @@ function tick() {
 }
 
 var syncEnable = true;
-$(document).ready(function() {
-	non480x320Adjust();
-});
-
-function non480x320Adjust() {
-	var screenHeight = $(window).height();
-	// zoomAdjust for non iphones
-	$('#frame').css('zoom', screenHeight / 320);
-	// jquery mobile input range is not working with zoom
-	$('.volumeControl').css('zoom', 320 / screenHeight);
-}
 
 function changeColor(color) {
 	gR = color.r;

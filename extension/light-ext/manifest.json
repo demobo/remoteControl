@@ -1,6 +1,6 @@
 {
-   "name": "Berry",
-   "description": "Berry video call",
+   "name": "Light Saber",
+   "description": "Coolest party/concert app",
    "browser_action":
    {
 	  "default_icon": "images/icon_bw_19.png",

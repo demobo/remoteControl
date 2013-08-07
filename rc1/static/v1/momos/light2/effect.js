@@ -31,11 +31,17 @@ var patterns
 // var patternFilter
 
 function changePattern(pattern) {
-	var i=pattern % 3
+	var i=pattern % 6
 	if (i==1) {
 		drawPattern1_wrap();
 	} else if (i==2) {
 		drawPattern2_wrap();
+	} else if (i==3) {
+		drawPattern3_wrap();
+	} else if (i==4) {
+		drawPattern4_wrap();
+	} else if (i==5) {
+		drawPattern5_wrap();
 	} else {
 		restorePattern();
 	}
@@ -92,8 +98,6 @@ function drawPattern2(r, g, b) {
 	patterns = new createjs.Shape();
 	patterns.x = canvas.width / 2;
 	patterns.y = canvas.height / 2;
-	
-
 	for (var i = 0; i < 10; i++) {
 		var ang = 370/10 * i;
 		// first round
@@ -122,6 +126,30 @@ function drawPattern2(r, g, b) {
 	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
 }
 
+function drawPattern5_wrap() {
+	drawPattern5(gR, gG, gB);
+}
+
+function drawPattern5(r, g, b) {
+	var xs = [0,-5,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var ys = [-40,-30,-10,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var temp = patterns.rotation;
+	usePatterns = true;
+	patterns.graphics.clear();
+	patterns = new createjs.Shape();
+	patterns.x = canvas.width / 2;
+	patterns.y = canvas.height / 2;
+	for (var i = 0; i < 50; i++) {
+		var ang = 370/10 * i;
+		var x=xs[i];
+		var y=ys[i];
+		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, Math.random()*5);
+	}
+	patterns.compositeOperation = "lighter";
+	// stage.addChild(circle,patterns);
+	patterns.rotation = temp;
+	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
+}
 function init() {
 	// create a new stage and point it at our canvas:
 	canvas = document.getElementById("visualizer");

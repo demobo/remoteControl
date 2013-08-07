@@ -47,8 +47,8 @@
 			  }
 			  demoboLoading = undefined;
 
-//			  ui.controllerUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "/control.html?" + ui.version;
-              ui.controllerUrl = "http://10.0.0.17:1240/v1/momos/" + ui.name + "/control.html?" + ui.version;
+			  ui.controllerUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "/control.html?" + ui.version;
+              // ui.controllerUrl = "http://10.0.0.17:1240/v1/momos/" + ui.name + "/control.html?" + ui.version;
 			  ui.incomingCallCtrlUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "incoming" + "/control.html?" + ui.version;
 
 			  // do all the iniations you need here

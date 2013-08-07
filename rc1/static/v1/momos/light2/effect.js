@@ -41,6 +41,74 @@ function changePattern(pattern) {
 	}
 }
 
+function drawPattern4_wrap() {
+	drawPattern4(gR, gG, gB);
+}
+
+function drawPattern4(r, g, b) {
+	var temp = patterns.rotation;
+	usePatterns = true;
+	patterns.graphics.clear();
+	patterns = new createjs.Shape();
+	patterns.x = canvas.width / 2;
+	patterns.y = canvas.height / 2;
+	
+	patterns.graphics.setStrokeStyle(2,'round','round');
+	patterns.graphics.beginStroke(createjs.Graphics.getRGB(r, g, b));
+	patterns.compositeOperation = "lighter";
+	
+
+	var oldx=patterns.x;
+	var oldy=patterns.y;
+
+	for (var t = 0; t < 40; t++) {
+		var radius = 0.1;
+		var ang = 360 * t;
+		var s = 2 * Math.PI * radius * t;
+		var x0 = s * Math.cos(ang);
+		var y0 = s * Math.sin(ang);
+		var x = x0 + s * Math.sin(ang);
+		var y = y0 - s * Math.cos(ang);
+		var z = 0;
+		patterns.graphics.moveTo(x0, y0).lineTo(x, y, x0, y0);
+		oldx=x;
+		oldy=y;
+	}
+
+	patterns.graphics.endStroke();
+	patterns.rotation = temp;
+	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
+};
+
+
+function drawPattern3_wrap() {
+	drawPattern3(gR, gG, gB);
+}
+
+function drawPattern3(r, g, b) {
+	var temp = patterns.rotation;
+	usePatterns = true;
+	patterns.graphics.clear();
+	patterns = new createjs.Shape();
+	patterns.x = canvas.width / 2;
+	patterns.y = canvas.height / 2;
+	
+	patterns.graphics.setStrokeStyle(2);
+	patterns.graphics.beginStroke(createjs.Graphics.getRGB(r, g, b));
+	patterns.compositeOperation = "lighter";
+
+	for (var i = 0; i < 20; i++) {
+		var j = 18 * i;
+		var x = 20 * Math.cos(j);
+		var y = 20 * Math.sin(j);
+		patterns.graphics.drawCircle(x, y, 18);
+	}
+	
+	patterns.rotation = temp;
+	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
+};
+
+
 function drawPattern1_wrap() {
 	drawPattern1(gR, gG, gB);
 }

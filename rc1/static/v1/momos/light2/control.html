@@ -41,8 +41,8 @@
 		<!-- include jQuery and demobo library-->
 		<link rel="stylesheet" type="text/css" href="http://api.demobo.com/app.css">
 		<script>
-			
-			var maxCircles = 25;
+			var usePatterns=false;
+			var maxCircles = 2;
 
 			var canvas;
 			var stage;
@@ -69,6 +69,43 @@
 			var scanLines;
 			var fpsFld;
 			var loadingFld;
+			
+			var patterns
+			// var patternFilter
+
+			function drawPattern1_wrap() {
+				drawPattern1(gR,gG,gB);
+			}
+			
+			function drawPattern1(r,g,b) {
+				var temp=patterns.rotation;
+				usePatterns=true;
+				patterns.graphics.clear();
+				patterns = new createjs.Shape();
+				patterns.x = canvas.width / 2;
+				patterns.y = canvas.height / 2;
+			    patterns.graphics.setStrokeStyle(5);
+			    patterns.graphics.beginStroke(createjs.Graphics.getRGB(r,g,b));
+			    patterns.compositeOperation = "lighter";
+			    
+			    for (var i=0;i<4;i++)
+				{
+					var j=i*8;
+					patterns.graphics.moveTo(j,-28);
+			    	patterns.graphics.lineTo(j,28);
+			    	patterns.graphics.moveTo(-j,-28);
+			    	patterns.graphics.lineTo(-j,28);
+				}
+
+			    // circle = new createjs.Shape();
+			    // circle.x = 150;
+			    // circle.y = 150;
+    			// circle.graphics.beginFill("black").drawCircle(0, 0, 70);
+    			
+				// stage.addChild(circle,patterns);
+				patterns.rotation=temp;
+				stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
+			}
 			
 			function init() {
 				// create a new stage and point it at our canvas:
@@ -142,6 +179,8 @@
 
 				stage.addChild(screen, fpsFld, loadingFld);
 				stage.update();
+				
+				patterns = new createjs.Shape();
 
 				circles = [];
 
@@ -161,10 +200,18 @@
 				var h = canvas.height;
 				var r = 40;
 				backSphere = new createjs.Shape();
-				backSphere.graphics.beginFill(createjs.Graphics.getRGB(gR, gG, gB, 0.6)).drawCircle(0, 0, r);
+				var tR=gR;
+				var tG=gG;
+				var tB=gB;
+				if (usePatterns) {
+					tR=0;
+					tG=0;
+					tB=0;
+				}
+				backSphere.graphics.beginFill(createjs.Graphics.getRGB(tR, tG, tB, 0.6)).drawCircle(0, 0, r);
 				
 				frontSphere = new createjs.Shape();
-				frontSphere.graphics.beginRadialGradientFill(["rgba(0,0,0,0)", createjs.Graphics.getRGB(gR, gG, gB, 0.3)], [0, 1], -r * 0.2, -r * 0.2, 0, -r * 0.1, -r * 0.1, r);
+				frontSphere.graphics.beginRadialGradientFill(["rgba(0,0,0,0)", createjs.Graphics.getRGB(tR, tG, tB, 0.3)], [0, 1], -r * 0.2, -r * 0.2, 0, -r * 0.1, -r * 0.1, r);
 				frontSphere.graphics.drawCircle(0, 0, r);
 				
 				glow = new createjs.Shape();
@@ -179,7 +226,7 @@
 				light.y = backSphere.y = glow.y = frontSphere.y = h / 2;
 				light.compositeOperation = "lighter";
 				
-				stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, scanLines, fpsFld);
+				stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
 			}
 			
 
@@ -269,7 +316,9 @@
 				
 				var s = avgVol.right * avgVol.right * 0.8 + 0.3;
 				frontCircles.scaleX = frontCircles.scaleY = backCircles.scaleX = backCircles.scaleY = Math.max(s, backCircles.scaleX + (s - backCircles.scaleX) * 0.1);
-				frontSphere.scaleX = frontSphere.scaleY = backSphere.scaleX = backSphere.scaleY = light.scaleX = light.scaleY = 1 + avgVol.right * avgVol.right * 0.6;
+				frontSphere.scaleX = frontSphere.scaleY = backSphere.scaleX = backSphere.scaleY = light.scaleX = light.scaleY = Math.max(s, backCircles.scaleX + (s - backCircles.scaleX) * 0.1) * 2.5;
+				// old instant method
+				// frontSphere.scaleX = frontSphere.scaleY = backSphere.scaleX = backSphere.scaleY = light.scaleX = light.scaleY = 1 + avgVol.right * avgVol.right * 0.6;
 
 				var l = circles.length;
 
@@ -295,8 +344,8 @@
 					circle.y = circle._y * p;
 					circle.scaleX = circle.scaleY = (vol.left * vol.left * 1.1 + 0.4) * p * 2;
 					circle.alpha = vol.left + vol.right + 0.4;
-					if (circle.z > 0) {
-						if (Math.sqrt(circle.x * circle.x + circle.y * circle.y) < 60 || (Math.random() < 0.15 && circle.z >= 100) && l > max) {
+					// if (circle.z > 0) {
+						if (Math.sqrt(circle.x * circle.x + circle.y * circle.y) < 120 || (Math.random() < 0.15 && circle.z >= 5) && l > max) {
 							if (circle.parent) {
 								circle.parent.removeChild(circle);
 							}
@@ -304,11 +353,15 @@
 						} else {
 							backCircles.addChild(circle);
 						}
-					} else {
-						frontCircles.addChild(circle);
-					}
+					// } else {
+						// frontCircles.addChild(circle);
+					// }
 				}
-				//stage.updateCache();
+				
+				//for patterns inside sphere
+				patterns.rotation += 5;
+				patterns.scaleX = patterns.scaleY = Math.max(s, backCircles.scaleX + (s - backCircles.scaleX) * 0.1) * 2.3;
+				//patterns.updateCache();
 				stage.update();
 			}
 

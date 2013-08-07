@@ -32,6 +32,14 @@ var testCases3 = [
 				b:rnd(0,255),
 			},
 		}];
+		
+var testCases4 = [
+		{
+			functionName : "drawPattern1_wrap",
+			data : {
+			},
+		}];
 
-var testSuite = [testCases1,testCases2,testCases3];
+
+var testSuite = [testCases1,testCases2,testCases3,testCases4];
 // var testSuite = [testCases1,testCases2];

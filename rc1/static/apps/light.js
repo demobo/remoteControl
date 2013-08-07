@@ -47,7 +47,8 @@
 			  }
 			  demoboLoading = undefined;
 
-			  ui.controllerUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "/control.html?" + ui.version;
+//			  ui.controllerUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "/control.html?" + ui.version;
+              ui.controllerUrl = "http://10.0.0.17:1240/v1/momos/" + ui.name + "/control.html?" + ui.version;
 			  ui.incomingCallCtrlUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "incoming" + "/control.html?" + ui.version;
 
 			  // do all the iniations you need here
@@ -65,6 +66,27 @@
 				  	demobo.mapInputEvents({
 				  		'demoboApp' : onReady,
 				  	});
+                    var dpiAdjust = 0.79;
+                    demobo.addEventListener('input',function(e) {
+                        console.log(e);
+                        var curtop = parseInt(e.value.top)*dpiAdjust;
+                        var curleft= parseInt(e.value.left)*dpiAdjust;
+                        var prevTop = parseInt(e.value.prevTop)*dpiAdjust;
+                        var prevLeft= parseInt(e.value.prevLeft)*dpiAdjust;
+                        var target = $(e.value.html).css('position', 'relative').css('font-size', '33px');
+
+                        console.log(target);
+                        $('#iphoneDockScreen').append(target);
+
+                        target.css({top:curtop, left:curleft, width: target.width()*dpiAdjust, height: target.height()*dpiAdjust});
+
+                        var deltaTop = 10*(curtop-prevTop);
+                        var deltaLeft = 10*(curleft-prevLeft);
+
+                        target.animate({top: "+="+deltaTop+"px", left: "+="+deltaLeft+"px"}, 500, function(){setTimeout(function(){target.remove()}, 10000)}); //delete in 10 secs
+
+                    },false);
+
 				  	demobo.addEventListener("update", function(e) {
 		            //transformation
 		            var temp=e.z;
@@ -128,6 +150,7 @@
 			demobo.callFunction("syncState", curState);
 			if (window.syncState) syncState(curState);
 			dlc.setColor(curColor);
+      dlc.setGobo(0); //setGobo takes one param of value 0-14, of which 1-14 corresponds to 14 gobo shapes in goboShapes.bmp in Dropbox folder, and 0 is the default circle shape. Specifically, Index 1-7 are rotating gobos and index 8-14 are static gobos. 
        		dlc.setDMX();
        		stateEnable = false;
        		setTimeout(function(){

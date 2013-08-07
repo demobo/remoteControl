@@ -246,11 +246,10 @@ function init() {
 
 	var w = canvas.width;
 	var h = canvas.height;
-
-	scanLineImage = new Image();
-	scanLineImage.src = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAMAAAADCAYAAABWKLW/AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAACJJREFUeNpiZGBg+M8ABSwMEB4PI5BkAnEY/zP8BdEAAQYAVGQFD+H0tWAAAAAASUVORK5CYII=";
-
+	
+	scanLineImage=document.getElementById('grid');
 	loadMusic();
+
 	//start ticking!
 
 	var screen = new createjs.Shape();

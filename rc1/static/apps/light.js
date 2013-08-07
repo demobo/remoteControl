@@ -4,6 +4,7 @@
     var curState;
     var curPower=0;
     var oldPower=0;
+    var beatCount = 0;
     buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	ui = {
 		name : 'light2',
@@ -148,8 +149,9 @@
         	if (!curState || !stateEnable) return;
 			demobo.callFunction("syncState", curState);
 			if (window.syncState) syncState(curState);
+			// dlc.setPattern(curState.pattern);
+			dlc.setGobo(0); //setGobo takes one param of value 0-14, of which 1-14 corresponds to 14 gobo shapes in goboShapes.bmp in Dropbox folder, and 0 is the default circle shape. Specifically, Index 1-7 are rotating gobos and index 8-14 are static gobos. 
 			dlc.setColor(curColor);
-      dlc.setGobo(0); //setGobo takes one param of value 0-14, of which 1-14 corresponds to 14 gobo shapes in goboShapes.bmp in Dropbox folder, and 0 is the default circle shape. Specifically, Index 1-7 are rotating gobos and index 8-14 are static gobos. 
        		dlc.setDMX();
        		stateEnable = false;
        		setTimeout(function(){
@@ -534,13 +536,17 @@ function updatePitch( time ) {
 			curPower = num_cycles/80;
 			color = colors[note%12];
 		}
-		
+		var pattern = (beatCount/20)%6;
+		beatCount++;
 		curState = {
 			isPlaying:true,
 			curPower: curPower, //(note%12)/10,
 			oldPower: oldPower, //num_cycles/100, //confidence/100,
-			color: color
+			color: color,
+			pattern : pattern,
+			effectMode : effectMode
 		};
+		
 		curColor = colorNames[note%12].toUpperCase();
 		sendCurState();
 		// console.log(num_cycles, sum, confidence, curColor);

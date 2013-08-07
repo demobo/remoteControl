@@ -83,7 +83,18 @@
                         var deltaTop = 10*(curtop-prevTop);
                         var deltaLeft = 10*(curleft-prevLeft);
 
-                        target.animate({top: "+="+deltaTop+"px", left: "+="+deltaLeft+"px"}, 500, function(){setTimeout(function(){target.remove()}, 10000)}); //delete in 10 secs
+
+					target.animate({
+						top : "+=" + deltaTop + "px",
+						left : "+=" + deltaLeft + "px"
+					}, 500, function() {
+						setTimeout(function() {
+							target.hide('slow', function(){
+								target.remove();
+							})
+						}, 10000)
+					});
+					//delete in 10 secs
 
                     },false);
 

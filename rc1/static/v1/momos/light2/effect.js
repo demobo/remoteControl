@@ -31,11 +31,17 @@ var patterns
 // var patternFilter
 
 function changePattern(pattern) {
-	var i=pattern % 3
+	var i=pattern % 6
 	if (i==1) {
 		drawPattern1_wrap();
 	} else if (i==2) {
 		drawPattern2_wrap();
+	} else if (i==3) {
+		drawPattern3_wrap();
+	} else if (i==4) {
+		drawPattern4_wrap();
+	} else if (i==5) {
+		drawPattern5_wrap();
 	} else {
 		restorePattern();
 	}
@@ -92,27 +98,25 @@ function drawPattern2(r, g, b) {
 	patterns = new createjs.Shape();
 	patterns.x = canvas.width / 2;
 	patterns.y = canvas.height / 2;
-	
-
-	for (var i = 1; i <= 10; i++) {
-		var j = 360/10 * i;
+	for (var i = 0; i < 10; i++) {
+		var ang = 370/10 * i;
 		// first round
-		var x=15 * Math.cos(j);
-		var y=15 * Math.sin(j);
+		var x=15 * Math.cos(ang);
+		var y=15 * Math.sin(ang);
 		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 3.5);
 	}
-	for (var i = 1; i <= 20; i++) {
-		var j = 360/20 * i;
+	for (var i = 0; i < 20; i++) {
+		var ang = 360/20 * i;
 		// second round
-		x=25 * Math.cos(j);
-		y=25 * Math.sin(j);
+		var x=25 * Math.cos(ang);
+		var y=25 * Math.sin(ang);
 		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 2.2);
 	}
-	for (var i = 1; i <= 40; i++) {
-		var j = 360/40 * i;
+	for (var i = 0; i < 40; i++) {
+		var ang = 360/40 * i;
 		// third round
-		x=35 * Math.cos(j);
-		y=35 * Math.sin(j);
+		var x=35 * Math.cos(ang);
+		var y=35 * Math.sin(ang);
 		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 2.2);
 	}
 	
@@ -122,6 +126,30 @@ function drawPattern2(r, g, b) {
 	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
 }
 
+function drawPattern5_wrap() {
+	drawPattern5(gR, gG, gB);
+}
+
+function drawPattern5(r, g, b) {
+	var xs = [0,-5,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var ys = [-40,-30,-10,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+	var temp = patterns.rotation;
+	usePatterns = true;
+	patterns.graphics.clear();
+	patterns = new createjs.Shape();
+	patterns.x = canvas.width / 2;
+	patterns.y = canvas.height / 2;
+	for (var i = 0; i < 50; i++) {
+		var ang = 370/10 * i;
+		var x=xs[i];
+		var y=ys[i];
+		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, Math.random()*5);
+	}
+	patterns.compositeOperation = "lighter";
+	// stage.addChild(circle,patterns);
+	patterns.rotation = temp;
+	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
+}
 function init() {
 	// create a new stage and point it at our canvas:
 	canvas = document.getElementById("visualizer");

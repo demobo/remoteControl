@@ -36,7 +36,7 @@
 
 			$(document).keydown(function(e) {
 				if (e.which == 13) {
-					effectMode = (effectMode+1)%3;
+					effectMode = (effectMode+1)%2;
 				}
 			})
 			  jQuery.noConflict();
@@ -147,6 +147,7 @@
         
         sendCurState = function () {
         	if (!curState || !stateEnable) return;
+        	beatCount++;
 			demobo.callFunction("syncState", curState);
 			if (window.syncState) syncState(curState);
 			dlc.setPattern(curState.pattern);
@@ -174,7 +175,9 @@
 					'title' : o.songName||o.title,
 					'artist' : o.artistName||o.artist,
 					'album' : o.albumName||o.album,
-					'image' : o.artURL||o.image
+					'image' : o.artURL||o.image,
+					'mood' : o.mood||o.mood,
+					'genre' : o.genre||o.genre,
 				});
 				return toReturn;
         };
@@ -536,8 +539,7 @@ function updatePitch( time ) {
 			curPower = num_cycles/80;
 			color = colors[note%12];
 		}
-		var pattern = Math.floor(beatCount/40)%6;
-		beatCount++;
+		var pattern = Math.floor(beatCount/10)%6;
 		curState = {
 			isPlaying:true,
 			curPower: curPower, //(note%12)/10,

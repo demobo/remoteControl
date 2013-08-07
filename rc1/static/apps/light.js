@@ -73,7 +73,7 @@
                         var curleft= parseInt(e.value.left)*dpiAdjust;
                         var prevTop = parseInt(e.value.prevTop)*dpiAdjust;
                         var prevLeft= parseInt(e.value.prevLeft)*dpiAdjust;
-                        var target = $(e.value.html).css('position', 'relative').css('font-size', '33px');
+                        var target = $(e.value.html).css('position', 'absolute').css('font-size', '33px');
 
                         console.log(target);
                         $('#iphoneDockScreen').append(target);

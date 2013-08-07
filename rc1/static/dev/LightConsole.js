@@ -134,6 +134,25 @@
     };
 
     /*
+    predefied patterns
+    */
+
+
+    LightConsole.prototype.setPattern = function(patternIndex, index) {
+      var mapping;
+
+      mapping = {
+        0: 0,
+        1: 1,
+        2: 3,
+        3: 7,
+        4: 9,
+        5: 14
+      };
+      return this.setGobo(mapping[patternIndex], index);
+    };
+
+    /*
     there are totally 15 gobos. index 0 is default circle; index 1-7 are rotation gobos; 8-14 are fixed gobos
     */
 

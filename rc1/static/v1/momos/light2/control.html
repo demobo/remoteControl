@@ -285,20 +285,20 @@
 		// var screenWidth = $(window).width();
 	// }
     //***************section of flipping photos **********
-    var content = ["I ♥ You  (‘∀’●)♡", "Let's Dance (〜￣▽￣)〜", "More beers (＾-＾)＿日", "Kisses <333333", "Great Music ヽ(○´∀`)ﾉ♪", "ヽ(*⌒∇⌒*)ﾉ Cheers"];
+    var content = ["<div class='text'>I ♥ You</div><div class='emo'>(‘∀’●)♡</div>", "<div class='text'>Let's Dance</div><div class='emo'> (〜￣▽￣)〜</div>", "<div class='text'>More beers</div><div class='emo'> (＾-＾)＿日</div>", "<div class='text'>Kisses</div><div class='emo'> <333333</div>", "<div class='text'>Great Music</div><div class='emo'> ヽ(○´∀`)ﾉ♪</div>", "<div class='text'>Cheers</div><div class='emo'>ヽ(*⌒∇⌒*)ﾉ</div>"];
     var contentCounter = 0;
-    clickHandler = function(){
-        if (window.contentCounter === content.length-1){
-            $(this).html('<input type="text"></input>');
-            $(this).off('click');
-            $('#magicDiv input').blur(function(){
-                $('#magicDiv').html($('#magicDiv input').val()).on('click',clickHandler);
-            }).focus();
-            window.contentCounter = -1;
-        }else{
+    emoClick = function(){
+//        if (window.contentCounter === content.length-1){
+//            $(this).html('<input type="text"></input>');
+//            $(this).off('click');
+//            $('#magicDiv input').blur(function(){
+//                $('#magicDiv').html($('#magicDiv input').val()).on('click',clickHandler);
+//            }).focus();
+//            window.contentCounter = -1;
+//        }else{
             window.contentCounter = (window.contentCounter+1)%window.content.length;
-            $(this).html(content[contentCounter]);
-        }
+            $(this).parent().html(content[contentCounter]);
+//        }
     }
     newDiv = function(){
         var target = document.createElement('div');
@@ -308,7 +308,7 @@
             contentCounter = 0;
         }
         target.innerHTML = content[contentCounter];
-        $(target).click(clickHandler);
+//        $(target).click(clickHandler);
         var csstop = parseInt(1)*60+"px";
         var cssleft = parseInt(1)*60+"px";
         $(target).css({
@@ -321,7 +321,20 @@
         $(target).draggable();
         $(target).css('position','absolute');
         $('body').append($(target));
+        $(target).delegate('.emo', 'click', emoClick);
+        $(target).delegate('.text', 'click', textClick);
+
     }
+
+    textClick = function(){
+        $(this).html('<input type="text"></input>');
+        $(this).off('click');
+        $('#magicDiv input').blur(function(){
+            $('#magicDiv .text').html($('#magicDiv input').val()).on('click',textClickHandler);
+        }).focus();
+    }
+
+    testClick = function(){alert('clicked')};
 
     newDiv();
 

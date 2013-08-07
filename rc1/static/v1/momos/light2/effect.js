@@ -374,7 +374,7 @@ function tick() {
 	}
 
 	//for patterns inside sphere
-	patterns.rotation += 5;
+	//patterns.rotation += 5;
 	patterns.scaleX = patterns.scaleY = Math.max(s, backCircles.scaleX + (s - backCircles.scaleX) * 0.1) * 2.3;
 	//patterns.updateCache();
 	stage.update();

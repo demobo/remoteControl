@@ -31,7 +31,7 @@ var patterns
 // var patternFilter
 
 function changePattern(pattern) {
-	var i=pattern % 6
+	var i=pattern % 5
 	if (i==1) {
 		drawPattern1_wrap();
 	} else if (i==2) {
@@ -40,12 +40,54 @@ function changePattern(pattern) {
 		drawPattern3_wrap();
 	} else if (i==4) {
 		drawPattern4_wrap();
-	} else if (i==5) {
-		drawPattern5_wrap();
 	} else {
 		restorePattern();
 	}
 }
+
+function drawPattern5_wrap() {
+	drawPattern5(gR, gG, gB);
+}
+
+function drawPattern5(r, g, b) {
+	var temp = patterns.rotation;
+	usePatterns = true;
+	patterns.graphics.clear();
+	patterns = new createjs.Shape();
+	patterns.x = canvas.width / 2;
+	patterns.y = canvas.height / 2;
+	
+	patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b));
+	patterns.compositeOperation = "lighter";
+
+	for (var i = 0; i < 5; i++) {
+		var x = Math.random() * 25;
+		var y = Math.random() * 25;
+		patterns.graphics.drawPolyStar(x, y, 5, 5, 0.6, -90);
+	}
+	
+	for (var i = 0; i < 5; i++) {
+		var x = Math.random() * -25;
+		var y = Math.random() * 25;
+		patterns.graphics.drawPolyStar(x, y, 5, 5, 0.6, -90);
+	}
+	
+	for (var i = 0; i < 5; i++) {
+		var x = Math.random() * -25;
+		var y = Math.random() * -25;
+		patterns.graphics.drawPolyStar(x, y, 5, 5, 0.6, -90);
+	}
+	
+	for (var i = 0; i < 5; i++) {
+		var x = Math.random() * 25;
+		var y = Math.random() * -25;
+		patterns.graphics.drawPolyStar(x, y, 5, 5, 0.6, -90);
+	}
+
+	patterns.rotation = temp;
+	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
+};
+
 
 function drawPattern4_wrap() {
 	drawPattern4(gR, gG, gB);
@@ -67,7 +109,7 @@ function drawPattern4(r, g, b) {
 	var oldx=patterns.x;
 	var oldy=patterns.y;
 
-	for (var t = 0; t < 40; t++) {
+	for (var t = 0; t < 50; t++) {
 		var radius = 0.1;
 		var ang = 360 * t;
 		var s = 2 * Math.PI * radius * t;
@@ -81,7 +123,6 @@ function drawPattern4(r, g, b) {
 		oldy=y;
 	}
 
-	patterns.graphics.endStroke();
 	patterns.rotation = temp;
 	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
 };
@@ -166,25 +207,27 @@ function drawPattern2(r, g, b) {
 	patterns = new createjs.Shape();
 	patterns.x = canvas.width / 2;
 	patterns.y = canvas.height / 2;
-	for (var i = 0; i < 10; i++) {
-		var ang = 370/10 * i;
+	
+
+	for (var i = 1; i < 10; i++) {
+		var j = 37 * i;
 		// first round
-		var x=15 * Math.cos(ang);
-		var y=15 * Math.sin(ang);
+		var x=15 * Math.cos(j);
+		var y=15 * Math.sin(j);
 		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 3.5);
 	}
-	for (var i = 0; i < 20; i++) {
-		var ang = 360/20 * i;
+	for (var i = 1; i < 20; i++) {
+		var j = 17 * i;
 		// second round
-		var x=25 * Math.cos(ang);
-		var y=25 * Math.sin(ang);
+		x=25 * Math.cos(j);
+		y=25 * Math.sin(j);
 		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 2.2);
 	}
-	for (var i = 0; i < 40; i++) {
-		var ang = 360/40 * i;
+	for (var i = 1; i < 40; i++) {
+		var j = 360/40 * i;
 		// third round
-		var x=35 * Math.cos(ang);
-		var y=35 * Math.sin(ang);
+		x=35 * Math.cos(j);
+		y=35 * Math.sin(j);
 		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, 2.2);
 	}
 	
@@ -194,30 +237,6 @@ function drawPattern2(r, g, b) {
 	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
 }
 
-function drawPattern5_wrap() {
-	drawPattern5(gR, gG, gB);
-}
-
-function drawPattern5(r, g, b) {
-	var xs = [0,-5,15,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	var ys = [-40,-30,-10,30,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
-	var temp = patterns.rotation;
-	usePatterns = true;
-	patterns.graphics.clear();
-	patterns = new createjs.Shape();
-	patterns.x = canvas.width / 2;
-	patterns.y = canvas.height / 2;
-	for (var i = 0; i < 50; i++) {
-		var ang = 370/10 * i;
-		var x=xs[i];
-		var y=ys[i];
-		patterns.graphics.beginFill(createjs.Graphics.getRGB(r, g, b)).drawCircle(x, y, Math.random()*5);
-	}
-	patterns.compositeOperation = "lighter";
-	// stage.addChild(circle,patterns);
-	patterns.rotation = temp;
-	stage.addChild(bg, glow, backCircles, backSphere, light, frontSphere, frontCircles, patterns, scanLines, fpsFld);
-}
 function init() {
 	// create a new stage and point it at our canvas:
 	canvas = document.getElementById("visualizer");
@@ -470,7 +489,7 @@ function tick() {
 	}
 
 	//for patterns inside sphere
-	//patterns.rotation += 5;
+	patterns.rotation += 5;
 	patterns.scaleX = patterns.scaleY = Math.max(s, backCircles.scaleX + (s - backCircles.scaleX) * 0.1) * 2.3;
 	//patterns.updateCache();
 	stage.update();

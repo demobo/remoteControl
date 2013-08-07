@@ -34,7 +34,7 @@ var testCases3 = [{
 			g : rnd(0, 255),
 			b : rnd(0, 255),
 		},
-		pattern : 2,
+		pattern : rnd(1,50),
 	}
 }];
 
@@ -49,7 +49,7 @@ var testCases4 = [{
 			g : rnd(0, 255),
 			b : rnd(0, 255),
 		},
-		pattern : 0,
+		pattern : rnd(1,50),
 	}
 }];
 

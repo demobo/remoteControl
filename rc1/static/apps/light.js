@@ -1,31 +1,43 @@
 // (function() {
+	var effectMode = 0;
+	var stateEnable =true;
+    var curState;
+    var curPower=0;
+    var oldPower=0;
     buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	ui = {
 		name : 'light2',
-		version : '0723',
-		playPauseButton: 	'.playButton:visible, .pauseButton:visible',
-		playButton: 		'.playButton',
-		pauseButton: 		'.pauseButton',
-		nextButton: 		'.skipButton',
-		previousButton: 	'',
-		likeButton: 		'.thumbUpButton',
-		dislikeButton:		'.thumbDownButton',
-		volume:				'.volumeBackground',
-		title: 				'.playerBarSong',
-		artist: 			'.playerBarArtist',
-		album: 				'.playerBarAlbum',
-		coverart:			'.stationSlides:visible .art[src], .playerBarArt',
-		songTrigger: 		'#playerBar .nowplaying',
-		stationTrigger: 	'.middlecolumn',
-		selectedStation:	'.stationChangeSelector .textWithArrow, .stationChangeSelectorNoMenu p',
-		stationCollection:	'.stationListItem .stationName',
-		albumCollection:	'',
-		playlistTrigger: 	''
+		version : Math.random(),
+  	playPauseButton: 	'#player_play_pause',
+  	playButton: 		'#player_play_pause.play',
+  	pauseButton: 		'#player_play_pause.pause',
+  	nextButton: 		'#player_next',
+  	previousButton: 	'#player_previous',
+  	likeButton: 		'.queue-item.queue-item-active .smile:not(.active)',
+  	dislikeButton:		'.queue-item.queue-item-active .frown',
+  	volume:				'#volumeControl',
+  	title: 				'',
+  	artist: 			'',
+  	album: 				'',
+  	coverart:			'',
+  	songTrigger: 		'#queue_list',
+  	stationTrigger: 	'',
+  	selectedStation:	'',
+  	stationCollection:	'',
+  	albumCollection:	'',
+  	playlistTrigger: 	''
 	};
 
 	demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js', function() {
 		demoboBody.injectScript('https://cdn.firebase.com/v0/firebase.js', function() {
       		demoboBody.injectScript('http://localhost:1240/dev/LightConsole.js', function(){
+ 
+
+			$(document).keydown(function(e) {
+				if (e.which == 13) {
+					effectMode = (effectMode+1)%3;
+				}
+			})
 			  jQuery.noConflict();
 			  if (DEMOBO) {
 			  	DEMOBO.autoConnect = true;
@@ -39,21 +51,24 @@
 
 			  // do all the iniations you need here
 			  function init() {
-			  	toggleLiveInput();
-			  	demobo.setController({
-			  		url : ui.controllerUrl,
-			  		orientation: "portrait"
-			  	});
-			  	demobo.setController({
-			  		'page' : 'wheel'
-			  	}, "1FC0071B-44A9-4091-B3E7-32083D4DB5B6");
-			  	
-			  	// your custom demobo input event dispatcher
-			  	demobo.mapInputEvents({
-			  		'demoboApp' : onReady,
-			  	});
-			  	demobo.addEventListener("update", function(e) {
-			  		console.log(e.x, e.y, e.z)
+				  	toggleLiveInput();
+				  	demobo.setController({
+				  		url : ui.controllerUrl,
+				  		orientation: "portrait"
+				  	});
+				  	demobo.setController({
+				  		'page' : 'wheel'
+				  	}, "78435E83-AE4B-4D49-B258-964B7707E69B");
+				  	
+				  	// your custom demobo input event dispatcher
+				  	demobo.mapInputEvents({
+				  		'demoboApp' : onReady,
+				  	});
+				  	demobo.addEventListener("update", function(e) {
+		            //transformation
+		            var temp=e.z;
+		            e.z = e.y;
+		            e.y = temp;
                     e.y = -e.y;
                     buff.splice(0, 1)
                     if (Math.abs(e.x)+Math.abs(e.y)>3)
@@ -74,29 +89,82 @@
 			  	});
 			  	
 
-		  	setupSongTrigger();
+		  	if (document.domain === 'grooveshark.com') setupSongTrigger();
 
           window.dlc = new window.LightConsole();
           initializeLiveMusicChanges();
 			  }
 
+        function setupSongTrigger() {
+        		var triggerDelay = 100;
+        		var trigger = jQuery('#np-meta-container')[0];
+        		var _this = {
+        			target : trigger,
+        			oldValue : ''
+        		};
+        		_this.onChange = function() {
+              if (!Grooveshark.getCurrentSongStatus().song) return;
+        			var newValue = Grooveshark.getCurrentSongStatus().song.songName;
+        			if (_this.oldValue !== newValue) {
+        				_this.oldValue = newValue;
+                		sendNowPlaying();
+        			}
+        		};
+        		_this.delay = function() {
+        			setTimeout(_this.onChange, triggerDelay);
+        		};
+        		_this.target.addEventListener('DOMSubtreeModified', _this.delay, false);
+        
+        }
+        
+        sendNowPlaying = function () {
+        	demobo.callFunction('loadSongInfo', getNowPlayingData());
+        	if (window.loadSongInfo) loadSongInfo(getNowPlayingData());
+        };
+        
+        sendCurState = function () {
+        	if (!curState || !stateEnable) return;
+			demobo.callFunction("syncState", curState);
+			if (window.syncState) syncState(curState);
+			dlc.setColor(curColor);
+      dlc.setGobo(0); //setGobo takes one param of value 0-14, of which 1-14 corresponds to 14 gobo shapes in goboShapes.bmp in Dropbox folder, and 0 is the default circle shape. Specifically, Index 1-7 are rotating gobos and index 8-14 are static gobos. 
+       		dlc.setDMX();
+       		stateEnable = false;
+       		setTimeout(function(){
+       			stateEnable = true;
+       		},200);
+       		console.log(curState.color, effectMode);
+        }
+        
+        getNowPlayingData = function () {
+				var toReturn = [];
+				if (window.Grooveshark) {
+					var o = Grooveshark.getCurrentSongStatus().song;
+				} else {
+					var o = onstage;
+				}
+				if (!o) {
+					return;
+				}
+				toReturn.push({
+					'title' : o.songName||o.title,
+					'artist' : o.artistName||o.artist,
+					'album' : o.albumName||o.album,
+					'image' : o.artURL||o.image
+				});
+				return toReturn;
+        };
 
 			  function initializeLiveMusicChanges() {
-			  		if (window.Pandora) return;
+			  		if (window.Grooveshark) return;
 					//debugger
 					var onStageRef = new Firebase('https://stage-lighting.firebaseio.com/livemusic/onstage');
 					onStageRef.on('value', function(snapshot) {
-						var onstage = snapshot.val();
+						onstage = snapshot.val();
 
 						if (onstage) {
-							console.log(onstage.artist);
-
-							demobo.callFunction("loadSongInfo", {
-								image : onstage.image,
-								title : onstage.title,
-								artist : onstage.artist,
-								album : onstage.album
-							});
+							// console.log(onstage.artist);
+							sendNowPlaying();
 						}
 
 					});
@@ -105,79 +173,13 @@
         
 			  // ********** custom event handler functions *************
 			  function onReady() {
-			  	demobo.callFunction('IncomingCallStatus', {
-			  	});
+			  	sendNowPlaying();
+			  	sendCurState();	
 			  }
       		});
 		});
 	});
 // })();
-
-
-
-function setupSongTrigger() {
-	if (!window.Pandora) return;
-	var triggerDelay = 50;
-	var longDelay = 500;
-	var trigger = $(ui.songTrigger)[0];
-	var _this = {
-		oldCoverart : $(ui.coverart).attr('src'),
-		oldTitle : $(ui.title).text()
-	};
-	var maxChecks = 10;
-	var checkTitle = function() {
-		var newTitle = $(ui.title).text();
-		if (newTitle && _this.oldTitle !== newTitle) {
-			_this.oldTitle = newTitle;
-			checkCoverart(maxChecks);
-		}
-	};
-	var checkCoverart = function(checksLeft) {
-		var newCoverart = $(ui.coverart).attr('src');
-		if (newCoverart && _this.oldCoverart !== newCoverart) {
-			_this.oldCoverart = newCoverart;
-			sendNowPlaying();
-		} else if (checksLeft) {
-			setTimeout(function() {
-				checkCoverart(checksLeft - 1);
-			}, longDelay);
-		} else {
-			var newCoverart = $(ui.coverart).attr('src');
-			_this.oldCoverart = newCoverart;
-			sendNowPlaying();
-		}
-	}
-	var delay = function() {
-		setTimeout(checkTitle, triggerDelay);
-	};
-	if (trigger)
-		trigger.addEventListener('DOMSubtreeModified', delay, false);
-}
-
-function sendNowPlaying() {
-	var curSong = getCurrentSong();
-	if (!curSong)
-		return;
-	demobo.callFunction('loadSongInfo', curSong);
-}
-
-function getCurrentSong() {
-	var imgURL = $(ui.coverart).attr('src');
-	if (!imgURL)
-		return;
-	if (imgURL.substr(0, 4) != 'http')
-		imgURL = "http://www.pandora.com/img/no_album_art.jpg";
-	//document.location.origin + imgURL;
-	return {
-		'title' : $(ui.title).text(),
-		'artist' : $(ui.artist).text(),
-		'album' : $(ui.album).text(),
-		'image' : imgURL
-	};
-}
-
-
-
 
 
 (function (global, exports, perf) {
@@ -371,7 +373,7 @@ var rafID = null;
 var tracks = null;
 var buflen = 1024;
 var buf = new Uint8Array( buflen );
-var MINVAL = 170; //134;  // 128 == zero.  MINVAL is the "minimum detected signal" level.
+var MINVAL = 250; //134;  // 128 == zero.  MINVAL is the "minimum detected signal" level.
 
 function findNextPositiveZeroCrossing( start ) {
 	var i = Math.ceil( start );
@@ -495,18 +497,35 @@ function updatePitch( time ) {
 		// " - note: " + noteFromPitch( pitch ) +
 		// " - confidence: " + confidence + "% "
 		// );
+		
 		var note =  noteFromPitch( pitch );
-		demobo.callFunction("syncState", {
+		if (effectMode==0) {
+			oldPower = (note%12)/10;
+			curPower = confidence/100;
+			color = colors[note%12];
+		} else if (effectMode==1) {
+			oldPower = curPower;
+			curPower = sum/80;
+			color = colors[note%12];
+		} else if (effectMode==2) {
+			oldPower = sum/80;
+			curPower = num_cycles/80;
+			color = colors[note%12];
+		}
+		
+		curState = {
 			isPlaying:true,
-			curPower:(note%12)/12,
-			oldPower:confidence/100*5,
-		});
-		demobo.callFunction("changeColor", colors[note%12]);
-        dlc.setColor(colorNames[note%12].toUpperCase());
-        dlc.setDMX();
+			curPower: curPower, //(note%12)/10,
+			oldPower: oldPower, //num_cycles/100, //confidence/100,
+			color: color
+		};
+		curColor = colorNames[note%12].toUpperCase();
+		sendCurState();
+		// console.log(num_cycles, sum, confidence, curColor);
 	}
 
 	if (!window.requestAnimationFrame)
 		window.requestAnimationFrame = window.webkitRequestAnimationFrame;
 	rafID = window.requestAnimationFrame( updatePitch );
 }
+

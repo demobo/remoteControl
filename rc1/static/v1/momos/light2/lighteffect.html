@@ -6,21 +6,16 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
 		<!-- <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no"/> -->
 		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-orientations" content="portrait" />
+		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
 		<link href="styles.css" rel="stylesheet" type="text/css">
 		<link href="qtip.css" rel="stylesheet" type="text/css">
 		<!-- include jQuery and demobo library -->
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
 		<script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 		<script type="text/javascript" src="main.js"></script>
-		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
-		
 		<script src="http://code.createjs.com/createjs-2013.05.14.min.js"></script>
 		<script src="http://www.createjs.com/Demos/src/easeljs/filters/ColorFilter.js"></script>
 		<script type="text/javascript" src="http://api.demobo.com/js/lib/VolumeData.js"></script>
-		<script type="text/javascript" src="http://api.demobo.com/js/jquery/qtip.js"></script>
-		<!-- <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script> -->
-		<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" /> -->
 		<style>
 			body {
 				overflow: hidden;
@@ -316,9 +311,6 @@
 
 		<script>
 			var syncEnable = true;
-        	$(document).ready(function(){
-				non480x320Adjust();
-			});
 			
 			function non480x320Adjust() {
 				var screenHeight = $(window).height();
@@ -333,6 +325,7 @@
 				gG=color.g;
                 gB=color.b;
                 refleshSphere();
+                // console.log(gR, gG, gB);
             }
 			
             function loadSongInfo(songs){
@@ -365,14 +358,14 @@
 					if (state.color) changeColor(state.color);
 					oldPower = state.oldPower;
 					curPower = state.curPower;
-				} else {}
+				}
 			}
         </script>
 </head>
 <body onload="init();">
 	<div id="main">
 			<div id='frame'>
-				<canvas id="visualizer" width="320" height="568"></canvas>
+				<canvas id="visualizer" width="960" height="640"></canvas>
 				<div id='content'>
 					<img id='albumArt' class='currentAlbumArt to0'/>
 					<div id='controlPanel'>

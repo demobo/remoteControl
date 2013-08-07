@@ -2,7 +2,7 @@
 (function() {
   var DEBUG, LightConsole;
 
-  DEBUG = true;
+  DEBUG = false;
 
   LightConsole = (function() {
     function LightConsole() {
@@ -52,18 +52,25 @@
     };
 
     LightConsole.prototype.setDMX = function() {
-      var d;
+      var d, e;
 
       d = JSON.stringify(this.data);
       if (jQuery) {
-        return jQuery.ajax({
-          type: 'POST',
-          url: 'http://localhost:9090/set_dmx',
-          data: {
-            'u': 1,
-            'd': d
-          }
-        });
+        try {
+          return jQuery.ajax({
+            type: 'POST',
+            url: 'http://localhost:9090/set_dmx',
+            data: {
+              'u': 1,
+              'd': d
+            }
+          }).fail(function() {
+            return console.log('setDMX failed');
+          });
+        } catch (_error) {
+          e = _error;
+          return console.log('silence...');
+        }
       }
     };
 
@@ -71,10 +78,14 @@
       return this.data[index] = val;
     };
 
+    /*
+      set color of lights
+    */
+
+
     LightConsole.prototype.setColor = function(color, index) {
       var val;
 
-      DEBUG && console.log('setcolor called');
       if ((index != null)) {
         val = this.colorMap[color];
         if (val != null) {
@@ -88,6 +99,11 @@
       }
     };
 
+    /*
+    set horizontal angle of lights
+    */
+
+
     LightConsole.prototype.setPan = function(val, index) {
       if ((index != null)) {
         return this.setData(index * 16 + 0, val);
@@ -99,6 +115,11 @@
         return this.setPan(val, 3);
       }
     };
+
+    /*
+      set vertical angle of lights
+    */
+
 
     LightConsole.prototype.setTilt = function(val, index) {
       if ((index != null)) {
@@ -112,18 +133,107 @@
       }
     };
 
+    /*
+    there are totally 15 gobos. index 0 is default circle; index 1-7 are rotation gobos; 8-14 are fixed gobos
+    */
+
+
     LightConsole.prototype.setGobo = function(goboIndex, index) {
-      var val;
+      var channel, channel1, channel2, val;
 
       DEBUG && console.log('setgobo called');
       if ((index != null)) {
-        val = goboIndex * 14 + 6;
-        return this.setData(index, val);
+        if (goboIndex === 0) {
+          channel1 = index * 16 + 5;
+          channel2 = index * 16 + 7;
+          this.setData(channel1, 0);
+          return this.setData(channel2, 0);
+        } else if (goboIndex < 8) {
+          channel = index * 16 + 5;
+          val = goboIndex * 10 + 5;
+          this.setData(channel, val);
+          return this.setData(index * 16 + 7, 0);
+        } else {
+          channel = index * 16 + 7;
+          val = goboIndex * 14 + 20;
+          this.setData(index * 16 + 5, 0);
+          return this.setData(channel, val);
+        }
       } else {
         this.setGobo(goboIndex, 0);
         this.setGobo(goboIndex, 1);
         this.setGobo(goboIndex, 2);
         return this.setGobo(goboIndex, 3);
+      }
+    };
+
+    /*
+      val can be 0-1, which 0 correspons to smallest diameter and 1 largest.
+    */
+
+
+    LightConsole.prototype.setLightDiameter = function(val, index) {
+      if ((index != null)) {
+        val = Math.floor(val * 191);
+        return this.setData(index * 16 + 12, val);
+      } else {
+        this.setLightDiameter(val, 0);
+        this.setLightDiameter(val, 1);
+        this.setLightDiameter(val, 2);
+        return this.setLightDiameter(val, 3);
+      }
+    };
+
+    /*
+      val can be 0-1, which 0 corresponds to smallest intesity and 1 largets
+    */
+
+
+    LightConsole.prototype.setLightIntensity = function(val, index) {
+      if ((index != null)) {
+        val = Math.floor(val * 255);
+        return this.setData(index * 16 + 11, val);
+      } else {
+        this.setLightIntensity(val, 0);
+        this.setLightIntensity(val, 1);
+        this.setLightIntensity(val, 2);
+        return this.setLightIntensity(val, 3);
+      }
+    };
+
+    /*
+      val can be 0-1, which 0 corresponds to smallest intesity and 1 largets
+    */
+
+
+    LightConsole.prototype.setFrostFilter = function(val, index) {
+      if ((index != null)) {
+        val = Math.floor(val * 191);
+        return this.setData(index * 16 + 13, val);
+      } else {
+        this.setFrostFilter(val, 0);
+        this.setFrostFilter(val, 1);
+        this.setFrostFilter(val, 2);
+        return this.setFrostFilter(val, 3);
+      }
+    };
+
+    /*
+      There are 8 options for shutter control (I dont exactly know what every option does...default to 8th option)
+    */
+
+
+    LightConsole.prototype.setShutter = function(optionIndex, index) {
+      var val;
+
+      if ((optionIndex != null)) {
+        val = optionIndex * 32 + 16;
+        return this.setData(index * 16 + 10, val);
+      } else {
+        this.setShutter(optionIndex, 0);
+        this.setShutter(optionIndex, 1);
+        this.setShutter(optionIndex, 2);
+        return this.setShutter(optionIndex, 3);
       }
     };
 
@@ -142,7 +252,7 @@
       if (hor < 0) {
         hor = hor + 144;
       }
-      console.log('val: ' + hor);
+      DEBUG && console.log('val: ' + hor);
       return [ver, hor];
     };
 

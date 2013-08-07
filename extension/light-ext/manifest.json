@@ -4,8 +4,7 @@
    "browser_action":
    {
 	  "default_icon": "images/icon_bw_19.png",
-      "default_title": "berry",
-	  "default_popup": "popup.html"
+      "default_title": "Light Saber"
    },
    "background" : {
     "scripts": ["js/background.js"]

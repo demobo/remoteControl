@@ -109,7 +109,6 @@ class LightConsole
       2:3
       3:7
       4:9
-      5:14
     this.setGobo(mapping[patternIndex], index)
 
   ###

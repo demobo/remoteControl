@@ -21,6 +21,9 @@
 		<script type="text/javascript" src="http://api.demobo.com/js/jquery/qtip.js"></script>
 		<!-- <script src="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.js"></script> -->
 		<!-- <link rel="stylesheet" href="http://code.jquery.com/mobile/1.1.1/jquery.mobile-1.1.1.min.css" /> -->
+    <script type='text/javascript' src='util.js'></script>
+	<link rel="stylesheet" type="text/css" href="shapes.css" />
+
 		<style>
 			body {
 				overflow: hidden;
@@ -420,6 +423,8 @@
 					curPower = state.curPower;
 				} else {}
 			}
+
+
         </script>
 </head>
 <body onload="init();">
@@ -647,5 +652,50 @@
 				display: none;
 			}
         </style>
+<script>
+    //***************section of flipping photos **********
+    var content = ["I ♥ You  (‘∀’●)♡", "Let's Dance (〜￣▽￣)〜", "More beers (＾-＾)＿日", "Kisses <333333", "Great Music ヽ(○´∀`)ﾉ♪", "ヽ(*⌒∇⌒*)ﾉ Cheers"];
+    var contentCounter = 0;
+    clickHandler = function(){
+        if (window.contentCounter === content.length-1){
+            $(this).html('<input type="text"></input>');
+            $(this).off('click');
+            $('#magicDiv input').blur(function(){
+                $('#magicDiv').html($('#magicDiv input').val()).on('click',clickHandler);
+            }).focus();
+            window.contentCounter = -1;
+        }else{
+            window.contentCounter = (window.contentCounter+1)%window.content.length;
+            $(this).html(content[contentCounter]);
+        }
+    }
+    newDiv = function(){
+        var target = document.createElement('div');
+        target.id = 'magicDiv';
+        target.className = 'draggable font33';
+        if (contentCounter<0){
+            contentCounter = 0;
+        }
+        target.innerHTML = content[contentCounter];
+        $(target).click(clickHandler);
+        var csstop = parseInt(1)*60+"px";
+        var cssleft = parseInt(1)*60+"px";
+        $(target).css({
+            top: '143px',
+            left: '20px'
+        });
+        $(target).on('remove', function(){
+            setTimeout(newDiv, 1000);
+        }); //on remove
+        $(target).draggable();
+        $(target).css('position','absolute');
+        $('body').append($(target));
+    }
+
+    newDiv();
+
+
+    document.ontouchmove = function(event){ event.preventDefault(); };
+    </script>
     </body>
 </html>

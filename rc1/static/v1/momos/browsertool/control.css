@@ -173,3 +173,6 @@ a {
 .btn:hover, .btn:focus {
 	background-color: #575757;
 }
+.comingsoon {
+	color: #aaa;
+}

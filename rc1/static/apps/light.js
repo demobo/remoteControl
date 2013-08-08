@@ -550,7 +550,7 @@ function updatePitch( time ) {
 			curPower = num_cycles/80;
 			color = colors[note%12];
 		}
-		var pattern = Math.floor(beatCount/10)%6;
+		var pattern = Math.floor(beatCount/10)%5;
 		curState = {
 			isPlaying:true,
 			curPower: curPower, //(note%12)/10,

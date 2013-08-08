@@ -73,7 +73,7 @@
                         var curleft= parseInt(e.value.left)*dpiAdjust;
                         var prevTop = parseInt(e.value.prevTop)*dpiAdjust;
                         var prevLeft= parseInt(e.value.prevLeft)*dpiAdjust;
-                        var target = $(e.value.html).css('position', 'absolute').css('font-size', '33px');
+                        var target = $(e.value.html).css('position', 'absolute').css('font-size', '33px').css('white-space', 'nowrap');
 
                         console.log(target);
                         $('#iphoneDockScreen').append(target);
@@ -550,7 +550,7 @@ function updatePitch( time ) {
 			curPower = num_cycles/80;
 			color = colors[note%12];
 		}
-		var pattern = Math.floor(beatCount/10)%6;
+		var pattern = Math.floor(beatCount/10)%5;
 		curState = {
 			isPlaying:true,
 			curPower: curPower, //(note%12)/10,

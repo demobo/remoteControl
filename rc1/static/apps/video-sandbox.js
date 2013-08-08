@@ -67,7 +67,7 @@
 	
 	VideoSandbox.prototype.refreshController = function () {
 		DEBUG && console.log('refreshController called');
-    this.resume();
+    this.resumeBobo();
 	};
 
   VideoSandbox.prototype.resumeBobo = function(){

@@ -6,7 +6,7 @@
   VideoSandbox.prototype.initialize = function(){
     this.setInfo('iconClass', 'fui-play-circle');
     this.setInfo('priority', 3);
-    this.setInfo('boboID', 'videosnadbox');
+    this.setInfo('boboID', 'videosandbox');
     this.setInfo('name', 'Sandbox Video Bobo');
     this.setInfo('description', 'A sandbox bobo that is only supposed to work on demobo.com');
     this.setInfo('type', 'specific');

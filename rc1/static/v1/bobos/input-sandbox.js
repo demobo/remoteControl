@@ -35,8 +35,10 @@
   InputSandbox.prototype.resumeBobo = function(){
     console.log('inputsandbox\'s resume is clicked');
     //change to inputsandbox
-    $('.flex-control-nav li a')[3].click();
-    $('.demo-col textarea').focus();
+//    $('.flex-control-nav li a')[3].click();
+      $('.flex-control-nav li a')[2].click();
+
+      $('.demo-col textarea').focus();
   };
 
   InputSandbox.prototype.onDelete = function() {

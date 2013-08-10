@@ -12,7 +12,7 @@
 		this.setInfo('type', 'specific');
 
 		this.setController({
-			url : 'http://rc1.demobo.com/v1/momos/videoplayer/control.html?0301'
+			url : 'http://rc1.demobo.com/v1/momos/videoplayer/control.html?0801'
 		});
 
 		this.setInputEventHandlers({
@@ -57,10 +57,7 @@
 			volume : Math.floor(v.volume * 100),
 			position : Math.floor((v.currentTime * 1.0 / v.duration) * 100)
 		};
-		var self = this;
-		setTimeout(function() {
-			self.callFunction('syncState', state);
-		}, 30);
+		this.callFunction('syncState', state);
 	};
 
 	VideoSandbox.prototype.setVolume = function(num) {

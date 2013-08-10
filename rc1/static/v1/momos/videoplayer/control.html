@@ -44,10 +44,10 @@
 				});
 				var onSlideChange = function(){
 					updateVolume();
-					demobo.mobile.fireInputEvent('volumeSlider', $('#volumeSlider').val());
+					demobo.mobile.fireInputEvent('volumeSliderChange', $('#volumeSlider').val());
 				};
 				var onVideoSlideChange = function(){
-					demobo.mobile.fireInputEvent('videoSlider', $('#videoSlider').val());
+					demobo.mobile.fireInputEvent('videoSliderChange', $('#videoSlider').val());
 				};
 				$('body').on('click', '.list-item p', function() {
 					$('#stationItem').click();

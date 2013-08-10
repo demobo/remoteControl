@@ -17,14 +17,15 @@
 
 		this.setInputEventHandlers({
 			'playPauseButton' : 'playPause',
-			'volumeSlider' : 'setVolume',
-			'videoSlider' : 'setProgress',
+			'volumeSliderChange' : 'setVolume',
+			'videoSliderChange' : 'setProgress',
 			'demoboApp' : 'refreshController'
 		});
 		this.setup();
 	};
 	// ********** custom event handler functions *************
 	VideoSandbox.prototype.setProgress = function(num) {
+		if (num==$('video')[0].currentTime) return;
 		$('video')[0].currentTime = $('video')[0].duration * num / 100.0
 	};
 
@@ -56,10 +57,14 @@
 			volume : Math.floor(v.volume * 100),
 			position : Math.floor((v.currentTime * 1.0 / v.duration) * 100)
 		};
-		this.callFunction('syncState', state);
+		var self = this;
+		setTimeout(function() {
+			self.callFunction('syncState', state);
+		}, 30);
 	};
 
 	VideoSandbox.prototype.setVolume = function(num) {
+		if (num==$('video')[0].volume) return;
 		DEBUG && console.log('setVolume called');
 		$('video')[0].volume = num * 1.0 / 100;
 	};

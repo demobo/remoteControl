@@ -495,14 +495,37 @@
         };
 
         /*
+        // return true if the url is absolute(pretty naive now)
+        */
+
+
+        DemoboPortal.prototype.isAbsolute = function(url) {
+          return url.substr(0, 4) === 'http';
+        };
+
+        /*
         // Return an object that contains all available bobos for the current website.
         */
 
 
         DemoboPortal.prototype.getBoboRoutes = function() {
-          var remote, toReturn;
+          var arr, count, exp, remote, temp, toReturn, url, _i, _j, _len, _len1, _ref, _ref1;
 
           if (window.demoboDevBobos) {
+            _ref = window.demoboDevBobos;
+            for (exp in _ref) {
+              arr = _ref[exp];
+              temp = [];
+              for (_i = 0, _len = arr.length; _i < _len; _i++) {
+                url = arr[_i];
+                if (this.isAbsolute(url)) {
+                  return url;
+                } else {
+                  return base + url;
+                }
+              }
+              window.demoboDevBobos[exp] = temp;
+            }
             return window.demoboDevBobos;
           }
           toReturn = {
@@ -511,6 +534,22 @@
             'help': base + 'help.js',
             'phone': base + 'yelp.com.js'
           };
+          if (window.demoboAddBobos) {
+            count = 0;
+            _ref1 = window.demoboAddBobos;
+            for (exp in _ref1) {
+              arr = _ref1[exp];
+              for (_j = 0, _len1 = arr.length; _j < _len1; _j++) {
+                url = arr[_j];
+                if (this.isAbsolute(url)) {
+                  toReturn['add' + count] = url;
+                } else {
+                  toReturn['add' + count] = base + url;
+                }
+                count++;
+              }
+            }
+          }
           remote = this.getRemote();
           if (remote) {
             toReturn['remote'] = base + remote;

@@ -371,7 +371,6 @@
   };
   
   loadBoBo = function() {
-    debugger
     window.demoboPortal.addBobo(Communication);
   };
   

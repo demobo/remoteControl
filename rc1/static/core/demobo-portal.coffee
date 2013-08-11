@@ -392,10 +392,24 @@ if not window.demoboLoading
         return null
 
       ###
+      // return true if the url is absolute(pretty naive now)
+      ###
+      isAbsolute: (url)->
+        return url.substr(0, 4) is 'http'
+
+      ###
       // Return an object that contains all available bobos for the current website.
       ###
       getBoboRoutes: ()->
         if (window.demoboDevBobos)
+          for exp, arr of window.demoboDevBobos
+            temp = []            
+            for url in arr
+              if @isAbsolute(url)
+                return url
+              else
+                return base+url
+            window.demoboDevBobos[exp] = temp
           return window.demoboDevBobos
         
         toReturn = 
@@ -403,6 +417,17 @@ if not window.demoboLoading
           'browsertool': base+'browsertool-new.js'
           'help': base+'help.js'
           'phone': base+'yelp.com.js'
+        
+        if (window.demoboAddBobos)
+          count = 0
+          for exp, arr of window.demoboAddBobos
+            for url in arr
+              if this.isAbsolute(url)
+                toReturn['add'+count] = url
+              else
+                toReturn['add'+count] = base + url
+              count++
+        
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote

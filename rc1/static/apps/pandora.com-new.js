@@ -294,7 +294,7 @@
 	};
 
 	Pandora.prototype.syncState = function(e) {
-    var pandora = this;
+    	var pandora = this;
 		setTimeout(function() {
 			pandora.setInfo('curState', {isPlaying: pandora.getIsPlaying(), volume: pandora.getVolume()});
 			pandora.callFunction('syncState', pandora.getInfo('curState'));

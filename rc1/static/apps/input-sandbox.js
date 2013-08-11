@@ -35,9 +35,59 @@
   InputSandbox.prototype.resumeBobo = function(){
     console.log('inputsandbox\'s resume is clicked');
     //change to inputsandbox
-    $('.flex-control-nav li a')[3].click();
-    $('.demo-col textarea').focus();
+//    $('.flex-control-nav li a')[3].click();
+      $('.flex-control-nav li a')[2].click();
+
+      $('.demo-col textarea').focus();
   };
+
+  InputSandbox.prototype.onDelete = function() {
+    Backspace();
+  }
+  
+  function getCaret(el) {
+      if (el.selectionStart) {
+          return el.selectionStart;
+      } else if (document.selection) {
+          el.focus();
+
+          var r = document.selection.createRange();
+          if (r == null) {
+              return 0;
+          }
+
+          var re = el.createTextRange(),
+              rc = re.duplicate();
+          re.moveToBookmark(r.getBookmark());
+          rc.setEndPoint('EndToStart', re);
+
+          return rc.text.length;
+      }
+      return 0;
+  }
+
+  function resetCursor(txtElement, currentPos) { 
+      if (txtElement.setSelectionRange) { 
+          txtElement.focus(); 
+          txtElement.setSelectionRange(currentPos, currentPos); 
+      } else if (txtElement.createTextRange) { 
+          var range = txtElement.createTextRange();  
+          range.moveStart('character', currentPos); 
+          range.select(); 
+      } 
+  }
+
+  function Backspace() {
+      var textarea = document.activeElement;
+      var currentPos = getCaret(textarea);    
+      var text = textarea.value;
+
+      var backSpace = text.substr(0, currentPos-1) + text.substr(currentPos, text.length);
+
+      textarea.value=backSpace;
+
+      resetCursor(textarea, currentPos-1);
+  }
 
   InputSandbox.prototype.next = function(){
     if (document.activeElement.tagName === 'INPUT'){
@@ -68,7 +118,9 @@
      'typing-area': 'insertTextAtCursor',
      'enter-button' : 'onEnter',
 	   'select-button' : 'onSelect',
-     'next-button': 'next'
+     'next-button': 'next',
+     'delete-button' : 'onDelete'
+
     });
 
   };

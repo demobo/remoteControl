@@ -163,9 +163,8 @@ function setSimulator(url) {
 
 $(document).ready(function(){
     if (document.domain === 'localhost'){
-       //alert("Our sandbox doesn't work under domain 'localhost'. ");
+       alert("Our sandbox doesn't work under domain 'localhost'. Try to find your real IP with 'ifconfig' on Mac or 'ipconfig' on Windows");
     }
-
     var refreshSimulator = function() {
         localStorage.setItem("url", $('#url').val());
         var base = document.location.origin;
@@ -188,7 +187,7 @@ $(document).ready(function(){
         $('iframe').attr('src', url);
         $('#controllerUrl').attr('href', url);
     };
-
+    $('a#set').click(refreshSimulator);
     var populateMomo = function(){
         //load preferences and populate select box
         var momos = JSON.parse(window.localStorage.getItem('momos'));

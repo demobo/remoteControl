@@ -23,15 +23,35 @@ var testCases2 = [
 			}
 		}];
 
-var testCases3 = [
-		{
-			functionName : "changeColor",
-			data : {
-				r:rnd(0,255),
-				g:rnd(0,255),
-				b:rnd(0,255),
-			},
-		}];
+var testCases3 = [{
+	functionName : "syncState",
+	data : {
+		isPlaying : true,
+		curPower : Math.random() * 1.2,
+		oldPower : Math.random(),
+		color : {
+			r : rnd(0, 255),
+			g : rnd(0, 255),
+			b : rnd(0, 255),
+		},
+		pattern : rnd(1,50),
+	}
+}];
 
-var testSuite = [testCases1,testCases2,testCases3];
+var testCases4 = [{
+	functionName : "syncState",
+	data : {
+		isPlaying : true,
+		curPower : Math.random() * 1.2,
+		oldPower : Math.random(),
+		color : {
+			r : rnd(0, 255),
+			g : rnd(0, 255),
+			b : rnd(0, 255),
+		},
+		pattern : rnd(1,50),
+	}
+}];
+
+var testSuite = [testCases1,testCases2,testCases3,testCases4];
 // var testSuite = [testCases1,testCases2];

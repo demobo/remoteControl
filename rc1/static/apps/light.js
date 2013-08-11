@@ -4,6 +4,7 @@
     var curState;
     var curPower=0;
     var oldPower=0;
+    var beatCount = 0;
     buff=[[0,0,0],[0,0,0],[0,0,0],[0,0,0],[0,0,0]];
 	ui = {
 		name : 'light2',
@@ -35,7 +36,7 @@
 
 			$(document).keydown(function(e) {
 				if (e.which == 13) {
-					effectMode = (effectMode+1)%3;
+					effectMode = (effectMode+1)%2;
 				}
 			})
 			  jQuery.noConflict();
@@ -47,6 +48,7 @@
 			  demoboLoading = undefined;
 
 			  ui.controllerUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "/control.html?" + ui.version;
+              // ui.controllerUrl = "http://10.0.0.17:1240/v1/momos/" + ui.name + "/control.html?" + ui.version;
 			  ui.incomingCallCtrlUrl = "http://rc1.demobo.com/v1/momos/" + ui.name + "incoming" + "/control.html?" + ui.version;
 
 			  // do all the iniations you need here
@@ -64,6 +66,38 @@
 				  	demobo.mapInputEvents({
 				  		'demoboApp' : onReady,
 				  	});
+                    var dpiAdjust = 0.79;
+                    demobo.addEventListener('input',function(e) {
+                        console.log(e);
+                        var curtop = parseInt(e.value.top)*dpiAdjust;
+                        var curleft= parseInt(e.value.left)*dpiAdjust;
+                        var prevTop = parseInt(e.value.prevTop)*dpiAdjust;
+                        var prevLeft= parseInt(e.value.prevLeft)*dpiAdjust;
+                        var target = $(e.value.html).css('position', 'absolute').css('font-size', '33px').css('white-space', 'nowrap');
+
+                        console.log(target);
+                        $('#iphoneDockScreen').append(target);
+
+                        target.css({top:curtop, left:curleft, width: target.width()*dpiAdjust, height: target.height()*dpiAdjust});
+
+                        var deltaTop = 10*(curtop-prevTop);
+                        var deltaLeft = 10*(curleft-prevLeft);
+
+
+					target.animate({
+						top : "+=" + deltaTop + "px",
+						left : "+=" + deltaLeft + "px"
+					}, 500, function() {
+						setTimeout(function() {
+							target.hide('slow', function(){
+								target.remove();
+							})
+						}, 10000)
+					});
+					//delete in 10 secs
+
+                    },false);
+
 				  	demobo.addEventListener("update", function(e) {
 		            //transformation
 		            var temp=e.z;
@@ -124,8 +158,11 @@
         
         sendCurState = function () {
         	if (!curState || !stateEnable) return;
+        	beatCount++;
 			demobo.callFunction("syncState", curState);
 			if (window.syncState) syncState(curState);
+			dlc.setPattern(curState.pattern);
+//			dlc.setGobo(0); //setGobo takes one param of value 0-14, of which 1-14 corresponds to 14 gobo shapes in goboShapes.bmp in Dropbox folder, and 0 is the default circle shape. Specifically, Index 1-7 are rotating gobos and index 8-14 are static gobos.
 			dlc.setColor(curColor);
        		dlc.setDMX();
        		stateEnable = false;
@@ -149,7 +186,9 @@
 					'title' : o.songName||o.title,
 					'artist' : o.artistName||o.artist,
 					'album' : o.albumName||o.album,
-					'image' : o.artURL||o.image
+					'image' : o.artURL||o.image,
+					'mood' : o.mood||o.mood,
+					'genre' : o.genre||o.genre,
 				});
 				return toReturn;
         };
@@ -511,13 +550,16 @@ function updatePitch( time ) {
 			curPower = num_cycles/80;
 			color = colors[note%12];
 		}
-		
+		var pattern = Math.floor(beatCount/10)%5;
 		curState = {
 			isPlaying:true,
 			curPower: curPower, //(note%12)/10,
 			oldPower: oldPower, //num_cycles/100, //confidence/100,
-			color: color
+			color: color,
+			pattern : pattern,
+			effectMode : effectMode
 		};
+		
 		curColor = colorNames[note%12].toUpperCase();
 		sendCurState();
 		// console.log(num_cycles, sum, confidence, curColor);

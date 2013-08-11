@@ -94,13 +94,17 @@
         Communication.telephones = select(dom, '[itemprop=telephone]');
         var iframe = document.getElementById('demobo_overlay');
         
-        if (Communication.telephones.length<1) {
-          traverse(dom, process);
-          iframe.contentWindow.postMessage(Communication.telephones, '*');
-          //iframe.contentWindow.postMessage(Communication.telephones, window.demoboBase);
-        } else {
-          iframe.contentWindow.postMessage(Communication.telephones[0].children, '*');
-          //iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
+        try{
+          if (Communication.telephones.length<1) {
+            traverse(dom, process);
+            iframe.contentWindow.postMessage(Communication.telephones, '*');
+            //iframe.contentWindow.postMessage(Communication.telephones, window.demoboBase);
+          } else {
+            iframe.contentWindow.postMessage(Communication.telephones[0].children, '*');
+            //iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
+          }
+        }catch(e){
+          //TODO: there is an exception here 
         }
       }
     //}, { verbose: false, ignoreWhitespace: true });
@@ -367,6 +371,7 @@
   };
   
   loadBoBo = function() {
+    debugger
     window.demoboPortal.addBobo(Communication);
   };
   

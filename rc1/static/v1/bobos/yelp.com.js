@@ -96,14 +96,16 @@
         
         if (Yelp.telephones.length<1) {
           traverse(dom, process);
-          iframe.contentWindow.postMessage(Yelp.telephones, window.demoboBase);
+          iframe.contentWindow.postMessage(Yelp.telephones, '*');
+          //iframe.contentWindow.postMessage(Yelp.telephones, window.demoboBase);
         } else {
-          iframe.contentWindow.postMessage(Yelp.telephones[0].children, window.demoboBase);
+          iframe.contentWindow.postMessage(Yelp.telephones[0].children, '*');
+          //iframe.contentWindow.postMessage(Yelp.telephones[0].children, window.demoboBase);
         }
       }
     //}, { verbose: false, ignoreWhitespace: true });
-    }, { ignoreWhitespace: true });
-    //});
+    //}, { ignoreWhitespace: true });
+    });
     var parser = new Tautologistics.NodeHtmlParser.Parser(handler);
     parser.parseComplete(document.body.innerHTML);
     //console.log(JSON.stringify(handler.dom, null, 2));

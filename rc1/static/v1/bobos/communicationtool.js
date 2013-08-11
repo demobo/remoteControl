@@ -1,31 +1,31 @@
 (function(){
   // ******************* custom event handler functions ***************************
 
-  var Yelp = window.Bobo.extend();
+  var Communication = window.Bobo.extend();
 
   var uniqueId = 0;
 
-  Yelp.telephones = [];
+  Communication.telephones = [];
   
-  Yelp.prototype.pauseBobo = function(){
+  Communication.prototype.pauseBobo = function(){
     //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
     //$('#boboModal').modal('hide');
     $('#demobo_overlay').hide();
   };
 
-  Yelp.prototype.resumeBobo = function(){
+  Communication.prototype.resumeBobo = function(){
     //$('#demobo_overlay').css('bottom', 0);
     //$('#boboModal').modal();
     $('#demobo_overlay').show();
   }
   
-  Yelp.prototype.onReady = function(){
+  Communication.prototype.onReady = function(){
     console.log('onready is called')
     console.log(arguments);
     console.log(this);
   }
   
-  Yelp.prototype.insertTextAtCursor = function(text){
+  Communication.prototype.insertTextAtCursor = function(text){
     console.log('insert is called')
     console.log(arguments);
     console.log(this);
@@ -38,7 +38,7 @@
     element.focus();
   }
   
-  Yelp.prototype.onEnter = function() {
+  Communication.prototype.onEnter = function() {
   var element = document.activeElement;
   var e = document.createEvent('TextEvent');
     e.initTextEvent('textInput', true, true, null, "\n", 'zh-CN');
@@ -46,14 +46,14 @@
     element.focus();
   }
   
-  Yelp.prototype.onSelect = function(){
+  Communication.prototype.onSelect = function(){
     var element = document.activeElement;
     element.focus();
     element.select();
   }
 
   // override the initialize function of Bobo
-  Yelp.prototype.initialize = function(){
+  Communication.prototype.initialize = function(){
     this.getInfo('config')['iconUrl'] = 'test1.png'
     // this.setInfo('priority', 2);
     this.setInfo('boboID', 'phone');
@@ -71,7 +71,7 @@
     this.demoboParser();
     
     this.setController({
-     url: 'http://rc1.demobo.com/rc/inputtool/index.html?9999',
+     url: 'http://rc1.demobo.com/rc/communicationtool/control.html?0810',
      orientation: 'portrait'
     });
 
@@ -84,23 +84,23 @@
 
   };
   
-  Yelp.prototype.demoboParser = function() {
+  Communication.prototype.demoboParser = function() {
       var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function (error, dom) {
       if (error) {
         
       } else {
-        Yelp.telephones = [];
+        Communication.telephones = [];
         // soupselect happening here...
-        Yelp.telephones = select(dom, '[itemprop=telephone]');
+        Communication.telephones = select(dom, '[itemprop=telephone]');
         var iframe = document.getElementById('demobo_overlay');
         
-        if (Yelp.telephones.length<1) {
+        if (Communication.telephones.length<1) {
           traverse(dom, process);
-          iframe.contentWindow.postMessage(Yelp.telephones, '*');
-          //iframe.contentWindow.postMessage(Yelp.telephones, window.demoboBase);
+          iframe.contentWindow.postMessage(Communication.telephones, '*');
+          //iframe.contentWindow.postMessage(Communication.telephones, window.demoboBase);
         } else {
-          iframe.contentWindow.postMessage(Yelp.telephones[0].children, '*');
-          //iframe.contentWindow.postMessage(Yelp.telephones[0].children, window.demoboBase);
+          iframe.contentWindow.postMessage(Communication.telephones[0].children, '*');
+          //iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
         }
       }
     //}, { verbose: false, ignoreWhitespace: true });
@@ -113,7 +113,7 @@
     
   };
   
-  Yelp.prototype.parsePage = function(){
+  Communication.prototype.parsePage = function(){
     
     var businesses = new Array;
     var that = this;
@@ -150,7 +150,7 @@
     
   };
   
-  Yelp.prototype.createAddContactButton = function($el) {
+  Communication.prototype.createAddContactButton = function($el) {
     
       
       var $button = $('<button/>',
@@ -171,7 +171,7 @@
     return $button;
   };
   
-  Yelp.prototype.createPhoneCallButton = function($el) {
+  Communication.prototype.createPhoneCallButton = function($el) {
     var $button = $('<button/>',
       {
           text: 'Phone Call'
@@ -191,7 +191,7 @@
     return $button;
   };
   
-  Yelp.prototype.createOpenMapButton = function($el) {
+  Communication.prototype.createOpenMapButton = function($el) {
     var $button = $('<button/>',
       {
           text: 'Open Map'
@@ -211,7 +211,7 @@
     return $button;
   };
   
-  Yelp.prototype.onAddContactClick = function(e) {
+  Communication.prototype.onAddContactClick = function(e) {
     console.log('onAddContactClick');
     
     var id = $(this).attr("orgin-id");
@@ -232,7 +232,7 @@
     return false;
   };
   
-  Yelp.prototype.onPhoneCallClick = function(e) {
+  Communication.prototype.onPhoneCallClick = function(e) {
     console.log('onPhoneCallClick');
     
     var id = $(this).attr("orgin-id");
@@ -250,7 +250,7 @@
     return false;
   };
   
-  Yelp.prototype.onOpenMapClick = function(e) {
+  Communication.prototype.onOpenMapClick = function(e) {
     console.log('onOpenMapClick');
     
     var id = $(this).attr("orgin-id");
@@ -270,7 +270,7 @@
                 data : value,
                 type : key
               };
-    Yelp.telephones.push(telephone);
+    Communication.telephones.push(telephone);
   }
   
   traverse = function(objects, func) {
@@ -367,7 +367,7 @@
   };
   
   loadBoBo = function() {
-    window.demoboPortal.addBobo(Yelp);
+    window.demoboPortal.addBobo(Communication);
   };
   
   responseToMessage = function(e) {

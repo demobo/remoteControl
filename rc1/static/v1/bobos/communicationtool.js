@@ -10,13 +10,13 @@
   Communication.prototype.pauseBobo = function(){
     //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
     //$('#boboModal').modal('hide');
-    $('#demobo_overlay').hide();
+    $('#demobo-widget').hide();
   };
 
   Communication.prototype.resumeBobo = function(){
     //$('#demobo_overlay').css('bottom', 0);
     //$('#boboModal').modal();
-    $('#demobo_overlay').show();
+    $('#demobo-widget').show();
   }
   
   Communication.prototype.onReady = function(){
@@ -71,7 +71,7 @@
     this.demoboParser();
     
     this.setController({
-     url: 'http://rc1.demobo.com/rc/communicationtool/control.html?0810',
+     url: 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
      orientation: 'portrait'
     });
 

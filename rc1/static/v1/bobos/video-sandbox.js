@@ -12,19 +12,20 @@
 		this.setInfo('type', 'specific');
 
 		this.setController({
-			url : 'http://rc1.demobo.com/v1/momos/videoplayer/control.html?0301'
+			url : 'http://rc1.demobo.com/v1/momos/videoplayer/control.html?0801'
 		});
 
 		this.setInputEventHandlers({
 			'playPauseButton' : 'playPause',
-			'volumeSlider' : 'setVolume',
-			'videoSlider' : 'setProgress',
+			'volumeSliderChange' : 'setVolume',
+			'videoSliderChange' : 'setProgress',
 			'demoboApp' : 'refreshController'
 		});
 		this.setup();
 	};
 	// ********** custom event handler functions *************
 	VideoSandbox.prototype.setProgress = function(num) {
+		if (num==$('video')[0].currentTime) return;
 		$('video')[0].currentTime = $('video')[0].duration * num / 100.0
 	};
 
@@ -60,6 +61,7 @@
 	};
 
 	VideoSandbox.prototype.setVolume = function(num) {
+		if (num==$('video')[0].volume) return;
 		DEBUG && console.log('setVolume called');
 		$('video')[0].volume = num * 1.0 / 100;
 	};

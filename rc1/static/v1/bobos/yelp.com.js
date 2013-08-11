@@ -102,8 +102,8 @@
         }
       }
     //}, { verbose: false, ignoreWhitespace: true });
-    }, { ignoreWhitespace: true });
-    //});
+    //}, { ignoreWhitespace: true });
+    });
     var parser = new Tautologistics.NodeHtmlParser.Parser(handler);
     parser.parseComplete(document.body.innerHTML);
     //console.log(JSON.stringify(handler.dom, null, 2));

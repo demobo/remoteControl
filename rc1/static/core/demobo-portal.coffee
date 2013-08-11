@@ -416,7 +416,6 @@ if not window.demoboLoading
           'input': base+'inputtool-new.js'
           'browsertool': base+'browsertool-new.js'
           'help': base+'help.js'
-          'phone': base+'yelp.com.js'
         
         if (window.demoboAddBobos)
           count = 0

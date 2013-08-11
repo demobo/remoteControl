@@ -531,8 +531,7 @@
           toReturn = {
             'input': base + 'inputtool-new.js',
             'browsertool': base + 'browsertool-new.js',
-            'help': base + 'help.js',
-            'phone': base + 'yelp.com.js'
+            'help': base + 'help.js'
           };
           if (window.demoboAddBobos) {
             count = 0;

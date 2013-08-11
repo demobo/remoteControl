@@ -196,6 +196,18 @@ if not window.demoboLoading
         return @portal.isExtension()
 
       ###
+      // return true if it is standalone mode
+      ###
+      isStandalone: ()->
+        return @portal.isStandalone()
+
+      ###
+      // return true if it is bookmarklet mode
+      ###
+      isBookmarklet: ()->
+        return @portal.isBookmarklet()
+
+      ###
       // alert
       ###
       alert: (info)->
@@ -326,6 +338,9 @@ if not window.demoboLoading
       connectedHandler: (portal)->
         return (data)->
           console.log('connected')
+          if potal.isExtension()
+            if parseFloat(data.appVersion)<3.0
+              portal.alert('Please install deMobo v3.0+ for this feature. (iPhone Only)')
           portal.setDeviceController(portal.get('curBobo'), data.deviceID)
           portal.addDevice(data.deviceID)
 
@@ -436,7 +451,18 @@ if not window.demoboLoading
       // Return true if this is extension
       ###
       isExtension: ()->
-        return (this.get('isExtension') is 1)
+        return (@get('mode') is "EXTENSION")
+
+      ###
+      // return true if it is standalone mode
+      ###
+      isStandalone: ()->
+        return (@get('mode') is "STANDALONE") 
+      ###
+      // return true if it is bookmarklet mode
+      ###
+      isBookmarklet: ()->
+        return (@get('mode') is "BOOKMARKLET")
 
       ###
       //Called immediately upon the object's instantiation (guaranteed) 
@@ -453,8 +479,10 @@ if not window.demoboLoading
         this.set('boboRoutes', boboRoutes)
         this.set('lastBoboID', this.loadLastBoboID())
 
-        this.set('isExtension', window._extension)
-        delete window._extension
+        if window._extension is 1
+          @set('mode', 'EXTENSION')
+        else
+          @set('mode', 'STANDALONE')
 
         ###
         // Register event handlers for connected, disconnected,  

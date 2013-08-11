@@ -223,6 +223,24 @@
         };
 
         /*
+        // return true if it is standalone mode
+        */
+
+
+        Bobo.prototype.isStandalone = function() {
+          return this.portal.isStandalone();
+        };
+
+        /*
+        // return true if it is bookmarklet mode
+        */
+
+
+        Bobo.prototype.isBookmarklet = function() {
+          return this.portal.isBookmarklet();
+        };
+
+        /*
         // alert
         */
 
@@ -407,10 +425,11 @@
 
         connectedHandler: function(portal) {
           return function(data) {
-            console.log('connected', data);
-            if (portal.isExtension()) {
-            	if (parseFloat(data.appVersion)<3.0)
-            		portal.alert('Please install deMobo v3.0+ for this feature. (iPhone Only)');
+            console.log('connected');
+            if (potal.isExtension()) {
+              if (parseFloat(data.appVersion) < 3.0) {
+                portal.alert('Please install deMobo v3.0+ for this feature. (iPhone Only)');
+              }
             }
             portal.setDeviceController(portal.get('curBobo'), data.deviceID);
             return portal.addDevice(data.deviceID);
@@ -566,7 +585,25 @@
 
 
         DemoboPortal.prototype.isExtension = function() {
-          return this.get('isExtension') === 1;
+          return this.get('mode') === "EXTENSION";
+        };
+
+        /*
+        // return true if it is standalone mode
+        */
+
+
+        DemoboPortal.prototype.isStandalone = function() {
+          return this.get('mode') === "STANDALONE";
+        };
+
+        /*
+        // return true if it is bookmarklet mode
+        */
+
+
+        DemoboPortal.prototype.isBookmarklet = function() {
+          return this.get('mode') === "BOOKMARKLET";
         };
 
         /*
@@ -586,8 +623,11 @@
           this.set('curBobo', null);
           this.set('boboRoutes', boboRoutes);
           this.set('lastBoboID', this.loadLastBoboID());
-          this.set('isExtension', window._extension);
-          delete window._extension;
+          if (window._extension === 1) {
+            this.set('mode', 'EXTENSION');
+          } else {
+            this.set('mode', 'STANDALONE');
+          }
           /*
           // Register event handlers for connected, disconnected,
           */

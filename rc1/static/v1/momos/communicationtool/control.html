@@ -1,17 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html ng-app="boboService">
 	<head>
-		<meta charset="utf-8">
+		<title>Demobo MicroData Guest</title>
+		
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=0.5, user-scalable=no"/> -->
 		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" >
-		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/font-awesome/3.2.0/css/font-awesome.css">
-		<link rel="stylesheet" type="text/css" href="http://rc1.demobo.com/fui/css/flat-ui.css">
-		<link rel="stylesheet" type="text/css" href="http://rc1.demobo.com/fui/css/style.css">
-		<link rel="stylesheet" type="text/css" href="control.css">
+		<meta name="apple-mobile-web-app-orientations" content="portrait" />
+		
+		<!-- Loading Bootstrap -->
+	    <link href="fui/bootstrap/css/bootstrap.css" rel="stylesheet">
+	    <!--<link href="fui/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">-->
+	
+	    <!-- Loading Flat UI -->
+	    <link href="fui/css/flat-ui.css" rel="stylesheet">
+	    
+		<link rel="stylesheet" href="css/app.css">
+  		<!--<link rel="stylesheet" href="css/bootstrap.css">-->
+  		<script src="libs/angular.js"></script>
+  		<script src="js/services.js"></script>
+  		<script src="js/controllers.js"></script>
+  		
+  		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+
+		<script type="text/javascript">
+			function onReceiveData(data) {
+				console.log(data);
+				var scope = angular.element(document.getElementById('controller')).scope();
+				var microdatas = data;
+				
+				scope.$apply(function(){
+			        scope.microdatas = microdatas;
+			    })
+			}
+			
+			function responeToAction(action, data) {
+				if (action === 'phonecall') {
+			  		var bizTelephoneValue = data.trim().replace(/[^0-9]/g, '').replace(' ', '');
+			  		//demobo.openPage({url: 'tel:' + bizTelephoneValue, title: 'Phone Call', message: 'Make a phone call to ' + bizTelephoneValue});
+			  		window.open('tel:' + bizTelephoneValue);
+				} else if (action === 'sms') {
+			  		var smsValue = data.trim().replace(/[^0-9]/g, '').replace(' ', '');
+			  		//demobo.openPage({url: 'sms:' + smsValue, title: 'Send SMS', message: 'Send a sms to ' + smsValue});
+			  		window.open('sms:' + smsValue);
+				}
+			}
+		</script>
 	</head>
 	<body>
-		This is Phone MOMO controller.
+		<div>
+		<div id="controller" ng-controller="MicrodataListController">
+			<div class="nav-header">demobo widget</div>
+			<table class="table table-hover" style="display: block">
+				<tbody>
+					<tr ng-repeat="md in microdatas">
+						<td style="padding-left: 10px; width: 70%; height: 46px;">{{md.data}}</td>
+						<td style="padding: 8px;">
+							<span class="btn btn-mini btn-primary" onclick="responeToAction('phonecall', '{{md.data}}')">call</span>
+			      			<span class="btn btn-mini btn-primary" onclick="responeToAction('sms', '{{md.data}}')">sms</span>
+			      		</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		</div>
 	</body>
 </html>

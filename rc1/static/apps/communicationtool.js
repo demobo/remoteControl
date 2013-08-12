@@ -10,13 +10,17 @@
   Communication.prototype.pauseBobo = function(){
     //$('#demobo_overlay').css('bottom', -$('#demobo_overlay').height());
     //$('#boboModal').modal('hide');
-    $('#demobo_overlay').hide();
+    //$('#demobo_overlay').hide();
+    var demoboWidget = document.getElementById('demobo_overlay');
+    demoboWidget.style.display = "none";
   };
 
   Communication.prototype.resumeBobo = function(){
     //$('#demobo_overlay').css('bottom', 0);
     //$('#boboModal').modal();
-    $('#demobo_overlay').show();
+    //$('#demobo_overlay').show();
+    var demoboWidget = document.getElementById('demobo_overlay');
+    demoboWidget.style.display = "";
   }
   
   Communication.prototype.onReady = function(){
@@ -81,6 +85,8 @@
       'enter-button' : 'onEnter',
       'select-button' : 'onSelect'
     });
+    
+    this.resumeBobo();
 
   };
   
@@ -113,156 +119,156 @@
     
   };
   
-  Communication.prototype.parsePage = function(){
-    
-    var businesses = new Array;
-    var that = this;
-    var results = $('.search-result');
-      
-    $.each( results , function(index, result) { 
-      
-      var $bizName = $(result).find('.biz-name');
-      $bizName.css("background-color", "red");
-      
-      $bizName.after(that.createAddContactButton($(result)));
-      var bizNameValue = $bizName.text().trim();
-      
-      var $bizAddress = $(result).find('address');
-      $bizAddress.css("background-color", "yellow");
-      
-      $bizAddress.after(that.createOpenMapButton($bizAddress));
-      var bizAddressValue = $bizAddress.text().trim();
-      
-      var $bizTelephone = $(result).find('.biz-phone');
-      $bizTelephone.css("background-color", "cyan");
-      
-      $bizTelephone.after(that.createPhoneCallButton($bizTelephone));
-      var bizTelephoneValue = $bizTelephone.text().trim();
-      
-      var biz = { 
-                  bizName       : bizNameValue,
-                  bizAddress    : bizAddressValue,
-                  bizTelephone  : bizTelephoneValue
-                };
-                
-      businesses.push(biz);
-    });
-    
-  };
+  // Communication.prototype.parsePage = function(){
+//     
+    // var businesses = new Array;
+    // var that = this;
+    // var results = $('.search-result');
+//       
+    // $.each( results , function(index, result) { 
+//       
+      // var $bizName = $(result).find('.biz-name');
+      // $bizName.css("background-color", "red");
+//       
+      // $bizName.after(that.createAddContactButton($(result)));
+      // var bizNameValue = $bizName.text().trim();
+//       
+      // var $bizAddress = $(result).find('address');
+      // $bizAddress.css("background-color", "yellow");
+//       
+      // $bizAddress.after(that.createOpenMapButton($bizAddress));
+      // var bizAddressValue = $bizAddress.text().trim();
+//       
+      // var $bizTelephone = $(result).find('.biz-phone');
+      // $bizTelephone.css("background-color", "cyan");
+//       
+      // $bizTelephone.after(that.createPhoneCallButton($bizTelephone));
+      // var bizTelephoneValue = $bizTelephone.text().trim();
+//       
+      // var biz = { 
+                  // bizName       : bizNameValue,
+                  // bizAddress    : bizAddressValue,
+                  // bizTelephone  : bizTelephoneValue
+                // };
+//                 
+      // businesses.push(biz);
+    // });
+//     
+  // };
   
-  Communication.prototype.createAddContactButton = function($el) {
-    
-      
-      var $button = $('<button/>',
-      {
-          text: 'add Contact'
-      });
-      
-      var id = uniqueId++;
-      
-      if (!$el.attr("demobo-biz-id")) {
-        $el.attr("demobo-biz-id", id);
-      } else {
-        id = $el.attr("demobo-biz-id");
-      }
-    
-      $button.attr("orgin-id", id);
-      $button.click(this.onAddContactClick);
-    return $button;
-  };
+  // Communication.prototype.createAddContactButton = function($el) {
+//     
+//       
+      // var $button = $('<button/>',
+      // {
+          // text: 'add Contact'
+      // });
+//       
+      // var id = uniqueId++;
+//       
+      // if (!$el.attr("demobo-biz-id")) {
+        // $el.attr("demobo-biz-id", id);
+      // } else {
+        // id = $el.attr("demobo-biz-id");
+      // }
+//     
+      // $button.attr("orgin-id", id);
+      // $button.click(this.onAddContactClick);
+    // return $button;
+  // };
   
-  Communication.prototype.createPhoneCallButton = function($el) {
-    var $button = $('<button/>',
-      {
-          text: 'Phone Call'
-      });
-      
-      var id = uniqueId++;
-      
-      if (!$el.attr("demobo-biz-id")) {
-        $el.attr("demobo-biz-id", id);
-      } else {
-        id = $el.attr("demobo-biz-id");
-      }
-    
-      $button.attr("orgin-id", id);
-      
-      $button.click(this.onPhoneCallClick);
-    return $button;
-  };
+  // Communication.prototype.createPhoneCallButton = function($el) {
+    // var $button = $('<button/>',
+      // {
+          // text: 'Phone Call'
+      // });
+//       
+      // var id = uniqueId++;
+//       
+      // if (!$el.attr("demobo-biz-id")) {
+        // $el.attr("demobo-biz-id", id);
+      // } else {
+        // id = $el.attr("demobo-biz-id");
+      // }
+//     
+      // $button.attr("orgin-id", id);
+//       
+      // $button.click(this.onPhoneCallClick);
+    // return $button;
+  // };
   
-  Communication.prototype.createOpenMapButton = function($el) {
-    var $button = $('<button/>',
-      {
-          text: 'Open Map'
-      });
-      
-      var id = uniqueId++;
-      
-      if (!$el.attr("demobo-biz-id")) {
-        $el.attr("demobo-biz-id", id);
-      } else {
-        id = $el.attr("demobo-biz-id");
-      }
-    
-      $button.attr("orgin-id", id);
-      
-      $button.click(this.onOpenMapClick);
-    return $button;
-  };
+  // Communication.prototype.createOpenMapButton = function($el) {
+    // var $button = $('<button/>',
+      // {
+          // text: 'Open Map'
+      // });
+//       
+      // var id = uniqueId++;
+//       
+      // if (!$el.attr("demobo-biz-id")) {
+        // $el.attr("demobo-biz-id", id);
+      // } else {
+        // id = $el.attr("demobo-biz-id");
+      // }
+//     
+      // $button.attr("orgin-id", id);
+//       
+      // $button.click(this.onOpenMapClick);
+    // return $button;
+  // };
   
-  Communication.prototype.onAddContactClick = function(e) {
-    console.log('onAddContactClick');
-    
-    var id = $(this).attr("orgin-id");
-    
-    var $biz = $('[demobo-biz-id=' + id + ']');
-    
-    var bizNameValue = $biz.find('.biz-name').text().trim();
-    var bizAddressValue = $biz.find('address').text().trim();
-    var bizTelephoneValue = $biz.find('.biz-phone').text().trim();
-    var biz = { 
-                bizName       : bizNameValue,
-                bizAddress    : bizAddressValue,
-                bizTelephone  : bizTelephoneValue
-              };
-                
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  };
+  // Communication.prototype.onAddContactClick = function(e) {
+    // console.log('onAddContactClick');
+//     
+    // var id = $(this).attr("orgin-id");
+//     
+    // var $biz = $('[demobo-biz-id=' + id + ']');
+//     
+    // var bizNameValue = $biz.find('.biz-name').text().trim();
+    // var bizAddressValue = $biz.find('address').text().trim();
+    // var bizTelephoneValue = $biz.find('.biz-phone').text().trim();
+    // var biz = { 
+                // bizName       : bizNameValue,
+                // bizAddress    : bizAddressValue,
+                // bizTelephone  : bizTelephoneValue
+              // };
+//                 
+    // e.preventDefault();
+    // e.stopPropagation();
+    // return false;
+  // };
   
-  Communication.prototype.onPhoneCallClick = function(e) {
-    console.log('onPhoneCallClick');
-    
-    var id = $(this).attr("orgin-id");
-    var $biz = $('[demobo-biz-id=' + id + ']');
-    var bizTelephoneValue = $biz.text().trim().replace(/[^0-9]/g, '').replace(' ', '');
-    
-    console.log('call phone ' + bizTelephoneValue);
-    //alert('call phone ' + bizTelephoneValue);
-    
-    var bizTelephoneUrl = "tel:" + bizTelephoneValue;
-    
-    demobo.openPage({url: bizTelephoneUrl, touchEnabled: true});
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  };
+  // Communication.prototype.onPhoneCallClick = function(e) {
+    // console.log('onPhoneCallClick');
+//     
+    // var id = $(this).attr("orgin-id");
+    // var $biz = $('[demobo-biz-id=' + id + ']');
+    // var bizTelephoneValue = $biz.text().trim().replace(/[^0-9]/g, '').replace(' ', '');
+//     
+    // console.log('call phone ' + bizTelephoneValue);
+    // //alert('call phone ' + bizTelephoneValue);
+//     
+    // var bizTelephoneUrl = "tel:" + bizTelephoneValue;
+//     
+    // demobo.openPage({url: bizTelephoneUrl, touchEnabled: true});
+    // e.preventDefault();
+    // e.stopPropagation();
+    // return false;
+  // };
   
-  Communication.prototype.onOpenMapClick = function(e) {
-    console.log('onOpenMapClick');
-    
-    var id = $(this).attr("orgin-id");
-    var $biz = $('[demobo-biz-id=' + id + ']');
-    var bizAddressValue = $biz.text().trim();
-    
-    console.log('open map ' + bizAddressValue);
-    //alert('open map ' + bizAddressValue);
-    e.preventDefault();
-    e.stopPropagation();
-    return false;
-  };
+  // Communication.prototype.onOpenMapClick = function(e) {
+    // console.log('onOpenMapClick');
+//     
+    // var id = $(this).attr("orgin-id");
+    // var $biz = $('[demobo-biz-id=' + id + ']');
+    // var bizAddressValue = $biz.text().trim();
+//     
+    // console.log('open map ' + bizAddressValue);
+    // //alert('open map ' + bizAddressValue);
+    // e.preventDefault();
+    // e.stopPropagation();
+    // return false;
+  // };
 
   //called with every property and it's value
   process = function(key,value) {

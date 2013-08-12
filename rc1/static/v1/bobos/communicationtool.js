@@ -303,7 +303,8 @@
             //console.log('phone number matched ' + object.data.trim());
             //telephones.push(object.data.trim());
             var phase = object.data.trim();
-            var bizTelephoneValue = phase.replace(/[^0-9]/g, '').replace(' ', '');
+            console.log(phase);
+            var bizTelephoneValue = phase.replace('+1', '').replace(/[^0-9]/g, '').replace(' ', '');
             pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
             match = pattern.exec(bizTelephoneValue);
             if (match != null) {

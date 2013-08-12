@@ -34,7 +34,6 @@
 
     if (this.hasPresentButton()){
       this.insertScript();
-      return;
     };
 
     this.setInfo('iconClass', 'fui-play-circle');

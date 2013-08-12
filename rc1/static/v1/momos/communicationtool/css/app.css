@@ -70,3 +70,15 @@ h4 small {
 	border-right: 1px solid;
 	border-left: 1px solid;
 }
+
+table td.info {
+	width: 60%;
+}
+
+table td.buttons {
+	padding: 5px;
+}
+.btn.btn-mini {
+	width: 25px;
+	margin :3px;
+}

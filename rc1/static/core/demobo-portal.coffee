@@ -421,9 +421,9 @@ if not window.demoboLoading
             temp = []            
             for url in arr
               if @isAbsolute(url)
-                return url
+                temp.push(url)
               else
-                return base+url
+                temp.push(base+url)
             window.demoboDevBobos[exp] = temp
           return window.demoboDevBobos
         

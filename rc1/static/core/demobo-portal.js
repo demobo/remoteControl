@@ -542,9 +542,9 @@
               for (_i = 0, _len = arr.length; _i < _len; _i++) {
                 url = arr[_i];
                 if (this.isAbsolute(url)) {
-                  return url;
+                  temp.push(url);
                 } else {
-                  return base + url;
+                  temp.push(base + url);
                 }
               }
               window.demoboDevBobos[exp] = temp;

@@ -338,7 +338,7 @@ if not window.demoboLoading
       connectedHandler: (portal)->
         return (data)->
           console.log('connected')
-          if portal.isExtension()
+          if not portal.isStandalone()
             if parseFloat(data.appVersion)<3.0
               portal.alert('Please install deMobo v3.0+ for this feature. (iPhone Only)')
           portal.setDeviceController(portal.get('curBobo'), data.deviceID)

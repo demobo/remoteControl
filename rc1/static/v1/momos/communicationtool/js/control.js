@@ -20,7 +20,7 @@ function responeToAction(action, data) {
 		window.open('sms:' + value);
 	} else if (action === 'map') {
 		var value = encodeURIComponent(data.trim());
-		window.open('http://maps.apple.com/?daddr=' + value);
+		window.open('http://maps.apple.com/?daddr=' + value, '_blank');
 	} else if (action === 'email') {
 		var value = data.trim();
 		window.open('mailto:' + value);

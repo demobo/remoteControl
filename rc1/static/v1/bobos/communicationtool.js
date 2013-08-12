@@ -27,7 +27,7 @@
     console.log('onready is called')
     console.log(arguments);
     console.log(this);
-    that.callFunction('onReceiveData', Communication.telephones);
+    this.callFunction('onReceiveData', Communication.telephones);
   }
   
   Communication.prototype.insertTextAtCursor = function(text){
@@ -79,7 +79,7 @@
     
     this.setController({
      //url: 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
-     url: 'http://10.0.0.12/v1/momos/communicationtool/control.html?0810',
+     url: 'http://10.0.0.12:1240/v1/momos/communicationtool/control.html?0810',
      orientation: 'portrait'
     });
 
@@ -112,6 +112,12 @@
         } else {
           iframe.contentWindow.postMessage(Communication.telephones[0].children, '*');
           //iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);                    
+        }
+        
+        try {
+          that.callFunction('onReceiveData', Communication.telephones);
+        } catch(e) {
+          
         }
       }
     //}, { verbose: false, ignoreWhitespace: true });

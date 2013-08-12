@@ -12,7 +12,8 @@ if (!document.getElementById('toggle')){
 
   var load = document.createElement('div');
   load.setAttribute('id', 'load');
-  load.setAttribute('onclick', 'javascript:(function(){if (window.demobo)return;document.getElementById("toggle").click()})()');
+  load.setAttribute('onclick', 'javascript:(function(){document.getElementById("toggle").click()})()');
+//  load.setAttribute('onclick', 'javascript:(function(){if (window.demobo)return;document.getElementById("toggle").click()})()');
   document.body.appendChild(load);
 
   function onMessage(message, sender, sendResponse) {

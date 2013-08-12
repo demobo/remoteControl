@@ -14,7 +14,7 @@
          "all_frames": false,
          "js": ["js/main.js"],
 		 "matches": [ "*://*/*" ],
-         "run_at": "document_end"
+         "run_at": "document_idle"
       }
    ],
    "icons":
@@ -28,6 +28,6 @@
    "permissions": [
      "*://*/*", "tabs"
    ],
-   "version": "0.1.5",
+   "version": "0.1.6",
    "manifest_version": 2
 }

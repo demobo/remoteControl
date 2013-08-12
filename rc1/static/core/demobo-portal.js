@@ -426,7 +426,7 @@
         connectedHandler: function(portal) {
           return function(data) {
             console.log('connected');
-            if (potal.isExtension()) {
+            if (portal.isExtension()) {
               if (parseFloat(data.appVersion) < 3.0) {
                 portal.alert('Please install deMobo v3.0+ for this feature. (iPhone Only)');
               }

@@ -20,7 +20,7 @@
     //$('#boboModal').modal();
     //$('#demobo_overlay').show();
     var demoboWidget = document.getElementById('demobo_overlay');
-    demoboWidget.style.display = "";
+    demoboWidget.style.display = "block";
   }
   
   Communication.prototype.onReady = function(){
@@ -90,7 +90,7 @@
       'select-button' : 'onSelect'
     });
     
-    this.resumeBobo();
+    //this.resumeBobo();
     
   };
   
@@ -111,6 +111,7 @@
           //iframe.contentWindow.postMessage(Communication.telephones, window.demoboBase);
         } else {
           iframe.contentWindow.postMessage(Communication.telephones[0].children, '*');
+          Communication.telephones = Communication.telephones[0].children;
           //iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);                    
         }
         

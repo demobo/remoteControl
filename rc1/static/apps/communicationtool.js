@@ -20,7 +20,7 @@
     //$('#boboModal').modal();
     //$('#demobo_overlay').show();
     var demoboWidget = document.getElementById('demobo_overlay');
-    demoboWidget.style.display = "";
+    demoboWidget.style.display = "block";
   }
   
   Communication.prototype.onReady = function(){
@@ -72,6 +72,8 @@
       // this.demoboParser();
     // }
     
+    this.pauseBobo();
+    
     this.demoboParser();
     
     this.setController({
@@ -86,8 +88,6 @@
       'select-button' : 'onSelect'
     });
     
-    this.resumeBobo();
-
   };
   
   Communication.prototype.demoboParser = function() {
@@ -285,12 +285,17 @@
       //console.log(JSON.stringify(object, null, " "));
       if (typeof(object.type)=="string") {
         if ((object.type) == "text") {
+          var phase = object.data.trim();
+          
+          var emailPattern =/^.*[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b.*$/;
+          var emailMatch = emailPattern.exec(phase);
+          if (emailMatch != null) {
+            func("email", phase);
+          }
+          
           var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
-          var match = pattern.exec(object.data.trim());
+          var match = pattern.exec(phase);
           if (match != null) {
-            //console.log('phone number matched ' + object.data.trim());
-            //telephones.push(object.data.trim());
-            var phase = object.data.trim();
             var bizTelephoneValue = phase.replace(/[^0-9]/g, '').replace(' ', '');
             pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
             match = pattern.exec(bizTelephoneValue);

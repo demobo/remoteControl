@@ -58,7 +58,7 @@ var testCases2 = [{
 	data : {
 		title: "Taco Restaurant",
 		data: [{
-			title: "ABC",
+			title: "9. China Village Seafood Restaurant",
 			data : "(415) 982-7877",
 			type : "telephone"
 		}]

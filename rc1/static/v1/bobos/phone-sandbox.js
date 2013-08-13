@@ -31,7 +31,7 @@
 
 		this.setController({
 			//    set proper Momo
-			url : 'http://rc1.demobo.com/v1/momos/comunicationtool/control.html?0614',
+			url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0614',
 			orientation : 'portrait'
 		});
 

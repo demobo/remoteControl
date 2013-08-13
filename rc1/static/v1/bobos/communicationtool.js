@@ -80,8 +80,8 @@
 		this.demoboParser();
 
 		this.setController({
-			// url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
-			url: 'http://10.0.0.24:1240/v1/momos/communicationtool/control.html?0810',
+			url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
+			// url: 'http://10.0.0.24:1240/v1/momos/communicationtool/control.html?0810',
 			orientation : 'portrait'
 		});
 

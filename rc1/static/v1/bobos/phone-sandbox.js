@@ -28,6 +28,7 @@
 		this.setInfo('name', 'Sandbox Phone Bobo');
 		this.setInfo('description', 'A sandbox bobo that is only supposed to work on demobo.com');
 		this.setInfo('type', 'specific');
+		this.setInfo('priority', 2);
 
 		this.setController({
 			//    set proper Momo

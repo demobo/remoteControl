@@ -19,7 +19,7 @@
 	// override the initialize function of Bobo
 	HelpSandbox.prototype.initialize = function() {
 		this.setInfo('iconClass', 'fui-question-sign')
-		this.setInfo('priority', -1);
+		this.setInfo('priority', 4);
 		this.setInfo('boboID', 'helpsandbox');
 		this.setInfo('name', 'Bobo HelpSandboxer');
 		this.setInfo('description', 'This bobo shows all available bobos of the current website');

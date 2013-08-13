@@ -68,17 +68,6 @@
 		this.setInfo('name', 'Contact Helper');
 		this.setInfo('description', 'An amazing tool to sync phones, emails and addresses to your phone. It lets your make calls and send messages right away!');
 		this.setInfo('type', 'generic');
-
-		// if (typeof(this.parsePage) == "function") {
-		// this.parsePage();
-		// } else {
-		// this.demoboParser();
-		// }
-
-		this.pauseBobo();
-
-		this.demoboParser();
-
 		this.setController({
 			url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
 			// url: 'http://10.0.0.24:1240/v1/momos/communicationtool/control.html?0810',
@@ -91,9 +80,14 @@
 			'enter-button' : 'onEnter',
 			'select-button' : 'onSelect'
 		});
+	};
 
-		//this.resumeBobo();
-
+	Communication.prototype.run = function() {
+		var that = this;
+		setTimeout(function(){
+			that.pauseBobo.apply(that, []);
+			that.demoboParser.apply(that, []);	
+		}, 1000);
 	};
 
 	Communication.prototype.demoboParser = function() {

@@ -23,7 +23,7 @@
 	}
 	// override the initialize function of Bobo
 	PhoneSandbox.prototype.initialize = function() {
-		this.setInfo('iconClass', 'fui-earth');
+		this.setInfo('iconClass', 'fui-phone');
 		this.setInfo('boboID', 'phonesandbox');
 		this.setInfo('name', 'Sandbox Phone Bobo');
 		this.setInfo('description', 'A sandbox bobo that is only supposed to work on demobo.com');
@@ -31,7 +31,7 @@
 
 		this.setController({
 			//    set proper Momo
-			url : 'http://rc1.demobo.com/v1/momos/browsertool/control.html?0614',
+			url : 'http://rc1.demobo.com/v1/momos/comunicationtool/control.html?0614',
 			orientation : 'portrait'
 		});
 

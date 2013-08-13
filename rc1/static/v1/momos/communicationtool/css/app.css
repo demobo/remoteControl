@@ -82,3 +82,34 @@ table td.buttons {
 	width: 25px;
 	margin :3px;
 }
+.btn-call {
+	background-color: #34C238;
+}
+.btn-sms {
+	background-color: #61E65E;
+}
+.btn-email {
+	background-color: #6D89F0;
+}
+.btn-map {
+	background-color: #E8DEBD;
+	color: #6EA6E6;
+}
+.btn-map i{
+	color: #A5D291;
+}
+.btn-gmap {
+	background-color: #5C80C5;
+}
+.btn-gmap i{
+	color: #D82916;
+}
+
+
+.info .title {
+	color: #16a085;
+}
+.nav-header {
+	background-color: #16a085;
+	color: #ffffff;
+}

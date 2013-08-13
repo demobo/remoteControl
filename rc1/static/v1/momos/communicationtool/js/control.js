@@ -20,8 +20,10 @@ function responeToAction(action, data) {
 		window.open('sms:' + value);
 	} else if (action === 'map') {
 		var value = encodeURIComponent(data.trim());
-		// window.open('comgooglemaps://?daddr=' + value);
-		window.open('http://maps.apple.com/?q&daddr=' + value);
+		window.open('http://maps.apple.com/maps?q=*&daddr=' + value);
+	} else if (action === 'gmap') {
+		var value = encodeURIComponent(data.trim());
+		window.open('comgooglemaps://?daddr=' + value);
 	} else if (action === 'email') {
 		var value = data.trim();
 		window.open('mailto:' + value);

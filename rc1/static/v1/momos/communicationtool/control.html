@@ -6,6 +6,7 @@
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name = "format-detection" content = "telephone=no">
 		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" >
 		<link rel="stylesheet" type="text/css" href="http://rc1.demobo.com/fui/css/flat-ui.css">
 		<link rel="stylesheet" href="css/app.css">
@@ -29,7 +30,7 @@
 					<tbody>
 						<tr ng-repeat="md in microdatas">
 							<td class="info">
-							<div>
+							<div class="title">
 								{{md.title}}
 							</div>
 							<div>
@@ -38,20 +39,23 @@
 							<td class="buttons">
 							<div ng-if="md.type == 'telephone'">
 								<div class="btn btn-mini btn-call" onclick="responeToAction('phonecall', '{{md.data}}')">
-									<i class="fui-phone-sign"></i>call
+									<i class="fui-phone"></i>call
 								</div>
 								<div class="btn btn-mini btn-sms" onclick="responeToAction('sms', '{{md.data}}')">
-									<i class="fui-comment"></i>sms
+									<i class="fui-comment-2"></i>text
 								</div>
 							</div>
 							<div ng-if="md.type == 'address'">
-								<div class="btn btn-mini btn-address" onclick="responeToAction('map', '{{md.data}}')">
+								<div class="btn btn-mini btn-gmap" onclick="responeToAction('gmap', '{{md.data}}')">
+									<i class="fui-map-marker"></i>map
+								</div>
+								<div class="btn btn-mini btn-map" onclick="responeToAction('map', '{{md.data}}')">
 									<i class="fui-map"></i>map
 								</div>
 							</div>
 							<div ng-if="md.type == 'email'">
 								<div class="btn btn-mini btn-email" onclick="responeToAction('email', '{{md.data}}')">
-									<i class="fui-mail"></i>email
+									<i class="fui-envelope-alt"></i>email
 								</div>
 							</div></td>
 						</tr>

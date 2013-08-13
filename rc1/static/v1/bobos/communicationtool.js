@@ -20,14 +20,17 @@
     //$('#boboModal').modal();
     //$('#demobo_overlay').show();
     var demoboWidget = document.getElementById('demobo_overlay');
-    demoboWidget.style.display = "block";
+    // demoboWidget.style.display = "block";
   }
 
   Communication.prototype.onReady = function() {
     console.log('onready is called')
     console.log(arguments);
-    console.log(this);
-    this.callFunction('onReceiveData', Communication.telephones);
+    console.log(Communication.telephones);
+    this.callFunction('onReceiveData', {
+      title : document.getElementsByTagName('title')[0].innerHTML,
+      data : Communication.telephones
+    });
   }
 
   Communication.prototype.insertTextAtCursor = function(text) {
@@ -77,8 +80,8 @@
     this.demoboParser();
 
     this.setController({
-      //url: 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
-      url : 'http://10.0.0.12:1240/v1/momos/communicationtool/control.html?0810',
+      url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
+      // url: 'http://10.0.0.24:1240/v1/momos/communicationtool/control.html?0810',
       orientation : 'portrait'
     });
 
@@ -113,12 +116,15 @@
           Communication.telephones = Communication.telephones[0].children;
           //iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
         }
+        console.log("newParse", Communication.telephones);
+        // try {
+          that.callFunction('onReceiveData', {
+            title : document.getElementsByTagName('title')[0].innerHTML,
+            data : Communication.telephones
+          });
+        // } catch(e) {
 
-        try {
-          that.callFunction('onReceiveData', Communication.telephones);
-        } catch(e) {
-
-        }
+        // }
       }
       //}, { verbose: false, ignoreWhitespace: true });
     }, {
@@ -284,11 +290,10 @@
   // };
 
   //called with every property and it's value
-  process = function(type, description, data) {
+  process = function(key, value) {
     var telephone = {
-      type : type,
-      description : description,
-      data : data
+      data : value,
+      type : key
     };
     Communication.telephones.push(telephone);
   }
@@ -298,67 +303,31 @@
       //console.log(JSON.stringify(object, null, " "));
       if ( typeof (object.type) == "string") {
         if ((object.type) == "text") {
-          var phase = object.data.trim();
-          phase = phase.replace(new RegExp('zero', 'gi'), '0');
-          phase = phase.replace(new RegExp('one', 'gi'), '1');
-          phase = phase.replace(new RegExp('two', 'gi'), '2');
-          phase = phase.replace(new RegExp('three', 'gi'), '3');
-          phase = phase.replace(new RegExp('four', 'gi'), '4');
-          phase = phase.replace(new RegExp('five', 'gi'), '5');
-          phase = phase.replace(new RegExp('six', 'gi'), '6');
-          phase = phase.replace(new RegExp('seven', 'gi'), '7');
-          phase = phase.replace(new RegExp('eight', 'gi'), '8');
-          phase = phase.replace(new RegExp('nine', 'gi'), '9');
-          var pattern = /[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?/;
-          var match = phase.match(pattern);
-          //console.log(phase);
-          if (match) {
-            console.log(match);
-            var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
-            var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/];
-            var i = 0;
-            match = false;
-            while ((!match) && (i < excludedPatterns.length)) {
-              match = phase.match(excludedPatterns[i]);
-              if (match) {
-                console.log('excluded match', phase);
-              }
-              i++;
-            }
-            if (!match) {
-              console.log('telephone matched', phase);
-              func("telephone", phase, data);
+          var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
+          var match = pattern.exec(object.data.trim());
+          if (match != null) {
+            //console.log('phone number matched ' + object.data.trim());
+            //telephones.push(object.data.trim());
+            var phase = object.data.trim();
+            console.log(phase);
+            var bizTelephoneValue = phase.replace('+1', '').replace(/[^0-9]/g, '').replace(' ', '');
+            pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+            match = pattern.exec(bizTelephoneValue);
+            if (match != null) {
+              console.log('phone number matched ' + phase);
+              func("telephone", phase);
+            } else {
+              var tokens = phase.split(" ");
+              each(tokens, function(index, token) {
+                //var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+                var match1 = pattern.exec(token);
+                if (match1 != null) {
+                  console.log('phone number matched ' + token);
+                  func("telephone", token);
+                }
+              });
             }
           }
-
-          /*
-           var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
-           var match = pattern.exec(object.data.trim());
-           if (match != null) {
-           //console.log('phone number matched ' + object.data.trim());
-           //telephones.push(object.data.trim());
-           var phase = object.data.trim();
-           console.log(phase);
-           var bizTelephoneValue = phase.replace('+1', '').replace(/[^0-9]/g, '').replace(' ', '');
-           pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
-           match = pattern.exec(bizTelephoneValue);
-           if (match != null) {
-           console.log('phone number matched ' + phase);
-           func("telephone", phase);
-           }
-           else {
-           var tokens = phase.split(" ");
-           each(tokens, function(index, token) {
-           //var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
-           var match1 = pattern.exec(token);
-           if (match1 != null) {
-           console.log('phone number matched ' + token);
-           func("telephone", token);
-           }
-           });
-           }
-           }
-           */
         }
       }
 

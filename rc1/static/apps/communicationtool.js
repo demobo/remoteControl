@@ -297,7 +297,7 @@
           var match = pattern.exec(phase);
           if (match != null) {
             var bizTelephoneValue = phase.replace(/[^0-9]/g, '').replace(' ', '');
-            pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
+            //pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
             match = pattern.exec(bizTelephoneValue);
             if (match != null) {
               console.log('phone number matched ' + phase);

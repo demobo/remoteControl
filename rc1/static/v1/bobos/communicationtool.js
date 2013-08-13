@@ -283,12 +283,17 @@
   // };
 
   //called with every property and it's value
-  process = function(key,value) {
+  process = function(type, description, data) {
     var telephone = { 
-                data : value,
-                type : key
+                type : type,
+                description : description,
+                data : data
               };
     Communication.telephones.push(telephone);
+  }
+  
+  parse = function(objects, func) {
+    
   }
   
   traverse = function(objects, func) {
@@ -297,6 +302,40 @@
       //console.log(JSON.stringify(object, null, " "));
       if (typeof(object.type)=="string") {
         if ((object.type) == "text") {
+          var phase = object.data.trim();
+          phase = phase.replace(new RegExp('zero', 'gi'), '0');
+          phase = phase.replace(new RegExp('one', 'gi'), '1');
+          phase = phase.replace(new RegExp('two', 'gi'), '2');
+          phase = phase.replace(new RegExp('three', 'gi'), '3');
+          phase = phase.replace(new RegExp('four', 'gi'), '4');
+          phase = phase.replace(new RegExp('five', 'gi'), '5');
+          phase = phase.replace(new RegExp('six', 'gi'), '6');
+          phase = phase.replace(new RegExp('seven', 'gi'), '7');
+          phase = phase.replace(new RegExp('eight', 'gi'), '8');
+          phase = phase.replace(new RegExp('nine', 'gi'), '9');
+          var pattern = /[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?/;
+          var match = phase.match(pattern);
+          //console.log(phase);
+          if (match) {
+            console.log(match);
+            var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
+            var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/];
+            var i = 0;
+            match = false;
+            while ((!match) && (i<excludedPatterns.length)) {
+              match = phase.match(excludedPatterns[i]);
+              if (match) {
+                console.log('excluded match', phase);
+              }
+              i++;
+            }
+            if (!match) {
+              console.log('telephone matched', phase);
+              func("telephone", phase, data);
+            }
+          }
+          
+          /*
           var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
           var match = pattern.exec(object.data.trim());
           if (match != null) {
@@ -323,6 +362,7 @@
               });  
             }
           }
+          */
         }
       }
       

@@ -284,10 +284,10 @@
 	// };
 
 	//called with every property and it's value
-	process = function(type, description, data) {
+	process = function(type, title, data) {
     var telephone = { 
                 type : type,
-                description : description,
+                title : title,
                 data : data
               };
     Communication.telephones.push(telephone);

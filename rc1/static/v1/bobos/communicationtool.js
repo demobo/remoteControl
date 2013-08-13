@@ -68,34 +68,29 @@
 		this.setInfo('name', 'Contact Helper');
 		this.setInfo('description', 'An amazing tool to sync phones, emails and addresses to your phone. It lets your make calls and send messages right away!');
 		this.setInfo('type', 'generic');
-
-		// if (typeof(this.parsePage) == "function") {
-		// this.parsePage();
-		// } else {
-		// this.demoboParser();
-		// }
-
-		this.pauseBobo();
-
-		this.demoboParser();
-
 		this.setController({
-			url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
-			// url: 'http://10.0.0.24:1240/v1/momos/communicationtool/control.html?0810',
+			// url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
+			url: 'http://10.0.0.24:1240/v1/momos/communicationtool/control.html?0810',
 			orientation : 'portrait'
 		});
-
 		this.setInputEventHandlers({
 			'demoboApp' : 'onReady',
 			'typing-area' : 'insertTextAtCursor',
 			'enter-button' : 'onEnter',
 			'select-button' : 'onSelect'
 		});
-
-		//this.resumeBobo();
-
 	};
-
+	
+	Communication.prototype.run = function() {
+		var that = this;
+		
+		//portal needs 1000ms to populate device array
+		setTimeout(function(){
+			that.pauseBobo.apply(that, []);
+			that.demoboParser.apply(that, []);	
+		}, 1000);
+	};
+	
 	Communication.prototype.demoboParser = function() {
 		var that = this;
 		var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function(error, dom) {
@@ -117,14 +112,10 @@
 					//iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
 				}
 				console.log("newParse", Communication.telephones);
-				// try {
-					that.callFunction('onReceiveData', {
-						title : document.getElementsByTagName('title')[0].innerHTML,
-						data : Communication.telephones
-					});
-				// } catch(e) {
-
-				// }
+				that.callFunction('onReceiveData', {
+					title : document.getElementsByTagName('title')[0].innerHTML,
+					data : Communication.telephones
+				});
 			}
 			//}, { verbose: false, ignoreWhitespace: true });
 		}, {
@@ -381,10 +372,9 @@
 		iframe.setAttribute('id', 'demobo_overlay');
 		iframe.setAttribute('src', src);
 		iframe.setAttribute('scrolling', 'no');
-		iframe.setAttribute('style', 'border: 1; overflow: hidden; height: 188px; width: 332px;');
+		iframe.setAttribute('style', 'border: 1; overflow: hidden; height: 188px; width: 332px; display: none;');
 		//iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
 		iframe.addEventListener('load', onloadHandler);
-
 		div.appendChild(iframe);
 		document.body.appendChild(div);
 	};

@@ -290,54 +290,63 @@
 	// };
 
 	//called with every property and it's value
-	process = function(key, value) {
-		var telephone = {
-			data : value,
-			type : key
-		};
-		Communication.telephones.push(telephone);
-	}
-	traverse = function(objects, func) {
-
-		each(objects, function(index, object) {
-			//console.log(JSON.stringify(object, null, " "));
-			if ( typeof (object.type) == "string") {
-				if ((object.type) == "text") {
-					var pattern = /^.*[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?.*$/;
-					var match = pattern.exec(object.data.trim());
-					if (match != null) {
-						//console.log('phone number matched ' + object.data.trim());
-						//telephones.push(object.data.trim());
-						var phase = object.data.trim();
-						console.log(phase);
-						var bizTelephoneValue = phase.replace('+1', '').replace(/[^0-9]/g, '').replace(' ', '');
-						pattern = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
-						match = pattern.exec(bizTelephoneValue);
-						if (match != null) {
-							console.log('phone number matched ' + phase);
-							func("telephone", phase);
-						} else {
-							var tokens = phase.split(" ");
-							each(tokens, function(index, token) {
-								//var pattern1 = /^(?:\([2-9]\d{2}\)\ ?|[2-9]\d{2}(?:\-?|\ ?))[2-9]\d{2}[- ]?\d{4}$/;
-								var match1 = pattern.exec(token);
-								if (match1 != null) {
-									console.log('phone number matched ' + token);
-									func("telephone", token);
-								}
-							});
-						}
-					}
-				}
-			}
-
-			if ( typeof (object.children) == "object") {
-				traverse(object.children, func);
-			}
-
-		});
-
-	};
+	process = function(type, description, data) {
+    var telephone = { 
+                type : type,
+                description : description,
+                data : data
+              };
+    Communication.telephones.push(telephone);
+  }
+  
+  traverse = function(objects, func) {
+        
+    each(objects , function(index, object) {
+      //console.log(JSON.stringify(object, null, " "));
+      if (typeof(object.type)=="string") {
+        if ((object.type) == "text") {
+          var phase = object.data.trim();
+          phase = phase.replace(new RegExp('zero', 'gi'), '0');
+          phase = phase.replace(new RegExp('one', 'gi'), '1');
+          phase = phase.replace(new RegExp('two', 'gi'), '2');
+          phase = phase.replace(new RegExp('three', 'gi'), '3');
+          phase = phase.replace(new RegExp('four', 'gi'), '4');
+          phase = phase.replace(new RegExp('five', 'gi'), '5');
+          phase = phase.replace(new RegExp('six', 'gi'), '6');
+          phase = phase.replace(new RegExp('seven', 'gi'), '7');
+          phase = phase.replace(new RegExp('eight', 'gi'), '8');
+          phase = phase.replace(new RegExp('nine', 'gi'), '9');
+          var pattern = /[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?/;
+          var match = phase.match(pattern);
+          //console.log(phase);
+          if (match) {
+            console.log(match);
+            var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
+            var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/];
+            var i = 0;
+            match = false;
+            while ((!match) && (i<excludedPatterns.length)) {
+              match = phase.match(excludedPatterns[i]);
+              if (match) {
+                console.log('excluded match', phase);
+              }
+              i++;
+            }
+            if (!match) {
+              console.log('telephone matched', phase);
+              func("telephone", phase, data);
+            }
+          }
+        }
+      }
+      
+      if (typeof(object.children)=="object") {
+        traverse(object.children,func);
+      }
+      
+    });
+    
+  };
 
 	each = function(objects, f) {
 		for (var i = 0; i < objects.length; i++) {

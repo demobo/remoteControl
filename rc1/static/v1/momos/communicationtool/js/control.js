@@ -1,11 +1,7 @@
-function onReceiveTitle(data) {
-	$(".nav-header").text(data);
-}
-function onReceiveData(data) {
-	console.log(data);
+function onReceiveData(args) {
+	$(".nav-header").text(args.title);
 	var scope = angular.element(document.getElementById('controller')).scope();
-	var microdatas = data;
-
+	var microdatas = args.data;
 	scope.$apply(function() {
 		scope.microdatas = microdatas;
 	})
@@ -28,4 +24,13 @@ function responeToAction(action, data) {
 		var value = data.trim();
 		window.open('mailto:' + value);
 	}
+}
+
+Storage.prototype.setObject = function(key, value) {
+	this.setItem(key, JSON.stringify(value));
+}
+
+Storage.prototype.getObject = function(key) {
+	var value = this.getItem(key);
+	return value && JSON.parse(value);
 }

@@ -42,7 +42,7 @@
   };
 
   InputSandbox.prototype.onDelete = function() {
-    Backspace();
+    backspace();
   }
   
   function getCaret(el) {
@@ -77,17 +77,16 @@
       } 
   }
 
-  function Backspace() {
-      var textarea = document.activeElement;
-      var currentPos = getCaret(textarea);    
-      var text = textarea.value;
-
-      var backSpace = text.substr(0, currentPos-1) + text.substr(currentPos, text.length);
-
-      textarea.value=backSpace;
-
-      resetCursor(textarea, currentPos-1);
-  }
+  function backspace() {
+		var textarea = document.activeElement;
+		var start = textarea.selectionStart;
+		var end = textarea.selectionEnd;
+		if (start === end)
+			start--;
+		var text = textarea.value;
+		textarea.value = text.substr(0, start) + text.substr(end, text.length);
+		resetCursor(textarea, start);
+	}
 
   InputSandbox.prototype.next = function(){
     if (document.activeElement.tagName === 'INPUT'){

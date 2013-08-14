@@ -283,7 +283,7 @@
       }
       if (!match) {
         console.log('email matched', phase);
-        func("email", phase, data);
+        func("email", "Email", data);
       }
     }
   }

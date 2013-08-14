@@ -4,7 +4,7 @@ var appEnginePort = 1240;
 //modifiy addBobos if you wanna add bobos to the existing bobos
 var addBobos = {
   	// '.*':['https://localhost:443/v1/bobos/docs.google.com-new.js']
-  	'.*':['http://localhost:1240/v1/bobos/communicationtool.js']
+  	'.*':['https://localhost/v1/bobos/communicationtool.js']
   }; 
 
 //modify setBobos if you wanna replace the existing bobos
@@ -23,7 +23,7 @@ if (!document.getElementById('toggle')){
 
   var load = document.createElement('div');
   load.setAttribute('id', 'load');
-  load.setAttribute('onclick', 'javascript:(function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));!c.demoboPortal&&(function(){c._extension=1;var a=new Date,b=c.document.createElement("script"),e="//d1hew6xzj9n4kw.cloudfront.net";window.demoboBase=e;b.src="//d32q09dnclw46p.cloudfront.net/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)}());})(window)');
+  load.setAttribute('onclick', 'javascript:(function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));!c.demoboPortal&&(function(){c.demoboAddBobos='+JSON.stringify(addBobos)+';c._extension=1;var a=new Date,b=c.document.createElement("script"),e="//d1hew6xzj9n4kw.cloudfront.net";window.demoboBase=e;b.src="//d32q09dnclw46p.cloudfront.net/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)}());})(window)');
 
   document.body.appendChild(load);
 

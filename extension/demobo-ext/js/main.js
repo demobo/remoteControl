@@ -12,7 +12,7 @@ if (!document.getElementById('toggle')){
 
   var load = document.createElement('div');
   load.setAttribute('id', 'load');
-  load.setAttribute('onclick', 'javascript:(function(){document.getElementById("toggle").click()})()');
+  load.setAttribute('onclick', 'javascript:(function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));!c.demoboPortal&&(function(){c._extension=1;var a=new Date,b=c.document.createElement("script"),e="//d1hew6xzj9n4kw.cloudfront.net";window.demoboBase=e;b.src="//d32q09dnclw46p.cloudfront.net/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)}());})(window)');
 //  load.setAttribute('onclick', 'javascript:(function(){if (window.demobo)return;document.getElementById("toggle").click()})()');
   document.body.appendChild(load);
 

@@ -293,11 +293,14 @@
 			}
 		}
 	}
-	each = function(objects, f) {
-		for (var i = 0; i < objects.length; i++) {
-			f(i, objects[i]);
-		}
-	};
+
+  each = function(objects, f) {
+    if (objects) {
+      for (var i = 0; i < objects.length; i++) {
+        f(i, objects[i]);
+      }  
+    }
+  };
 
 	loadJS = function(src, f) {
 		/* load and exec the script, code in f will be executed after this script is loaded

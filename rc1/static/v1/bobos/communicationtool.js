@@ -161,11 +161,17 @@
 
   //called with every property and it's value
   process = function(type, title, data) {
+    
+    for (var i=0; i<Communication.telephones.length; i++) {
+      if (data === Communication.telephones[i].data ) return;
+    }
+    
     var telephone = {
       type : type,
       title : title,
       data : data
     };
+    
     Communication.telephones.push(telephone);
   }
   traverse = function(objects, func) {

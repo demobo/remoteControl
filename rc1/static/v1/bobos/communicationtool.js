@@ -28,7 +28,7 @@
 		console.log(arguments);
 		console.log(Communication.telephones);
 		this.callFunction('onReceiveData', {
-			title : document.getElementsByTagName('title')[0].innerHTML,
+			title : document.title,
 			data : Communication.telephones
 		});
 	}
@@ -84,13 +84,22 @@
 
 	Communication.prototype.run = function() {
 		var that = this;
+		var target = document.querySelector('head > title');
+		var observer = new window.WebKitMutationObserver(function(mutations) {
+		    mutations.forEach(function(mutation) {
+		    	that.demoboParser.apply(that, []);
+		        console.log('new title:', mutation.target.textContent);
+		    });
+		});
+		observer.observe(target, { subtree: true, characterData: true, childList: true });
 		setTimeout(function(){
 			that.pauseBobo.apply(that, []);
-			that.demoboParser.apply(that, []);	
+			that.demoboParser.apply(that, []);
 		}, 1000);
 	};
 
 	Communication.prototype.demoboParser = function() {
+		console.log('new parse');
 		var that = this;
 		var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function(error, dom) {
 			if (error) {
@@ -111,14 +120,11 @@
 					//iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
 				}
 				console.log("newParse", Communication.telephones);
-				// try {
-					that.callFunction('onReceiveData', {
-						title : document.getElementsByTagName('title')[0].innerHTML,
-						data : Communication.telephones
-					});
-				// } catch(e) {
-
-				// }
+			
+				that.callFunction('onReceiveData', {
+					title : document.title,
+					data : Communication.telephones
+				});
 			}
 			//}, { verbose: false, ignoreWhitespace: true });
 		}, {
@@ -131,43 +137,6 @@
 		//that's all... no magic, no bloated framework
 
 	};
-
-	// Communication.prototype.parsePage = function(){
-	//
-	// var businesses = new Array;
-	// var that = this;
-	// var results = $('.search-result');
-	//
-	// $.each( results , function(index, result) {
-	//
-	// var $bizName = $(result).find('.biz-name');
-	// $bizName.css("background-color", "red");
-	//
-	// $bizName.after(that.createAddContactButton($(result)));
-	// var bizNameValue = $bizName.text().trim();
-	//
-	// var $bizAddress = $(result).find('address');
-	// $bizAddress.css("background-color", "yellow");
-	//
-	// $bizAddress.after(that.createOpenMapButton($bizAddress));
-	// var bizAddressValue = $bizAddress.text().trim();
-	//
-	// var $bizTelephone = $(result).find('.biz-phone');
-	// $bizTelephone.css("background-color", "cyan");
-	//
-	// $bizTelephone.after(that.createPhoneCallButton($bizTelephone));
-	// var bizTelephoneValue = $bizTelephone.text().trim();
-	//
-	// var biz = {
-	// bizName       : bizNameValue,
-	// bizAddress    : bizAddressValue,
-	// bizTelephone  : bizTelephoneValue
-	// };
-	//
-	// businesses.push(biz);
-	// });
-	//
-	// };
 
 	//called with every property and it's value
 	process = function(type, title, data) {
@@ -185,38 +154,9 @@
       //console.log(JSON.stringify(object, null, " "));
       if (typeof(object.type)=="string") {
         if ((object.type) == "text") {
-          var phase = object.data.trim();
-          phase = phase.replace(new RegExp('zero', 'gi'), '0');
-          phase = phase.replace(new RegExp('one', 'gi'), '1');
-          phase = phase.replace(new RegExp('two', 'gi'), '2');
-          phase = phase.replace(new RegExp('three', 'gi'), '3');
-          phase = phase.replace(new RegExp('four', 'gi'), '4');
-          phase = phase.replace(new RegExp('five', 'gi'), '5');
-          phase = phase.replace(new RegExp('six', 'gi'), '6');
-          phase = phase.replace(new RegExp('seven', 'gi'), '7');
-          phase = phase.replace(new RegExp('eight', 'gi'), '8');
-          phase = phase.replace(new RegExp('nine', 'gi'), '9');
-          var pattern = /[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?/;
-          var match = phase.match(pattern);
-          //console.log(phase);
-          if (match) {
-            console.log(match);
-            var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
-            var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/, /script/, /\{/];
-            var i = 0;
-            match = false;
-            while ((!match) && (i<excludedPatterns.length)) {
-              match = phase.match(excludedPatterns[i]);
-              if (match) {
-                console.log('excluded match', phase);
-              }
-              i++;
-            }
-            if (!match) {
-              console.log('telephone matched', phase);
-              func("telephone", phase, data);
-            }
-          }
+          phoneNumberParser(object, func);
+          //addressParser(object, func);
+          emailParser(object, func);
         }
       }
       
@@ -228,9 +168,90 @@
     
   };
   
-  phoneNumbderParser = function() {
-    
+  phoneNumberParser = function(object, func) {
+    var phase = object.data.trim();
+    phase = phase.replace(new RegExp('zero', 'gi'), '0');
+    phase = phase.replace(new RegExp('one', 'gi'), '1');
+    phase = phase.replace(new RegExp('two', 'gi'), '2');
+    phase = phase.replace(new RegExp('three', 'gi'), '3');
+    phase = phase.replace(new RegExp('four', 'gi'), '4');
+    phase = phase.replace(new RegExp('five', 'gi'), '5');
+    phase = phase.replace(new RegExp('six', 'gi'), '6');
+    phase = phase.replace(new RegExp('seven', 'gi'), '7');
+    phase = phase.replace(new RegExp('eight', 'gi'), '8');
+    phase = phase.replace(new RegExp('nine', 'gi'), '9');
+    var pattern = /[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?/;
+    var match = phase.match(pattern);
+    //console.log(phase);
+    if (match) {
+      console.log(match);
+      var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
+      var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/, /script/, /\{/];
+      var i = 0;
+      match = false;
+      while ((!match) && (i<excludedPatterns.length)) {
+        match = phase.match(excludedPatterns[i]);
+        if (match) {
+          console.log('excluded match', phase);
+        }
+        i++;
+      }
+      if (!match) {
+        console.log('telephone matched', phase);
+        func("telephone", phase, data);
+      }
+    }
   };
+  
+  addressParser = function(object, func) {
+    var phase = object.data.trim();
+    var pattern = /\s*((?:(?:\d+(?:\x20+\w+\.?)+(?:(?:\x20+STREET|ST|DRIVE|DR|AVENUE|AVE|ROAD|RD|LOOP|COURT|CT|CIRCLE|LANE|LN|BOULEVARD|BLVD)\.?)?)|(?:(?:P\.\x20?O\.|P\x20?O)\x20*Box\x20+\d+)|(?:General\x20+Delivery)|(?:C[\\\/]O\x20+(?:\w+\x20*)+))\,?\x20*(?:(?:(?:APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(?:LIP|PC|T(?:E|OP))|TRLR|UNIT|\x23)\.?\x20*(?:[a-zA-Z0-9\-]+))|(?:BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR))?)\,?\s+((?:(?:\d+(?:\x20+\w+\.?)+(?:(?:\x20+STREET|ST|DRIVE|DR|AVENUE|AVE|ROAD|RD|LOOP|COURT|CT|CIRCLE|LANE|LN|BOULEVARD|BLVD)\.?)?)|(?:(?:P\.\x20?O\.|P\x20?O)\x20*Box\x20+\d+)|(?:General\x20+Delivery)|(?:C[\\\/]O\x20+(?:\w+\x20*)+))\,?\x20*(?:(?:(?:APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(?:LIP|PC|T(?:E|OP))|TRLR|UNIT|\x23)\.?\x20*(?:[a-zA-Z0-9\-]+))|(?:BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR))?)?\,?\s+((?:[A-Za-z]+\x20*)+)\,\s+(A[LKSZRAP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])\s+(\d+(?:-\d+)?)\s*/;
+    var match = phase.match(pattern);
+    console.log(phase);
+    if (match) {
+      console.log(match);
+      var data = match[0].trim();
+      var excludedPatterns = [];
+      var i = 0;
+      match = false;
+      while ((!match) && (i<excludedPatterns.length)) {
+        match = phase.match(excludedPatterns[i]);
+        if (match) {
+          console.log('excluded match', phase);
+        }
+        i++;
+      }
+      if (!match) {
+        console.log('address matched', phase);
+        func("address", phase, data);
+      }
+    }
+  };
+  
+  emailParser = function(object, func) {
+    var phase = object.data.trim();
+    var pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/;
+    var match = phase.match(pattern);
+    console.log(phase);
+    if (match) {
+      console.log(match);
+      var data = match[0].trim();
+      var excludedPatterns = [];
+      var i = 0;
+      match = false;
+      while ((!match) && (i<excludedPatterns.length)) {
+        match = phase.match(excludedPatterns[i]);
+        if (match) {
+          console.log('excluded match', phase);
+        }
+        i++;
+      }
+      if (!match) {
+        console.log('email matched', phase);
+        func("email", phase, data);
+      }
+    }  
+  }
   
 	each = function(objects, f) {
 		for (var i = 0; i < objects.length; i++) {
@@ -274,7 +295,7 @@
 		iframe.setAttribute('id', 'demobo_overlay');
 		iframe.setAttribute('src', src);
 		iframe.setAttribute('scrolling', 'no');
-		iframe.setAttribute('style', 'border: 1; overflow: hidden; height: 188px; width: 332px;');
+		iframe.setAttribute('style', 'border: 1; overflow: hidden; height: 188px; width: 332px; display: none;');
 		//iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
 		iframe.addEventListener('load', onloadHandler);
 

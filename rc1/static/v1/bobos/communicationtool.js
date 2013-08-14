@@ -196,7 +196,7 @@
 	};
 
 	formatPhone = function(number) {
-		number = (number+"").replace(/^1/,"");
+		number = number.replace(/^1/, "");
 		var numbers = number.replace(/\D/g, ''), char = {
 			0 : '(',
 			3 : ') ',

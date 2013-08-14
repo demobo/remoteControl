@@ -86,10 +86,20 @@
 		var that = this;
 		setTimeout(function(){
 			that.pauseBobo.apply(that, []);
-			that.demoboParser.apply(that, []);	
+			that.demoboParser.apply(that, []);
 		}, 1000);
 	};
 
+  Communication.prototype.demoboAddressParser = function() {
+    var addresses = (document.body.innerText.match(/[0-9].*\n.*, [A-Z]{2} [0-9]*/g)||[]).concat(document.body.innerText.match(/[0-9].*, [A-Z]{2} [0-9]*/g));
+    console.log(addresses);
+    each(addresses , function(index, address) {
+      if (address) {  
+        process("address", "Address", address);
+      }
+    });
+  };
+  
 	Communication.prototype.demoboParser = function() {
 		var that = this;
 		var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function(error, dom) {
@@ -112,6 +122,9 @@
 				}
 				console.log("newParse", Communication.telephones);
 				// try {
+				  
+				  that.demoboAddressParser();
+				  
 					that.callFunction('onReceiveData', {
 						title : document.getElementsByTagName('title')[0].innerHTML,
 						data : Communication.telephones
@@ -201,7 +214,7 @@
     var phase = object.data.trim();
     var pattern = /\s*((?:(?:\d+(?:\x20+\w+\.?)+(?:(?:\x20+STREET|ST|DRIVE|DR|AVENUE|AVE|ROAD|RD|LOOP|COURT|CT|CIRCLE|LANE|LN|BOULEVARD|BLVD)\.?)?)|(?:(?:P\.\x20?O\.|P\x20?O)\x20*Box\x20+\d+)|(?:General\x20+Delivery)|(?:C[\\\/]O\x20+(?:\w+\x20*)+))\,?\x20*(?:(?:(?:APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(?:LIP|PC|T(?:E|OP))|TRLR|UNIT|\x23)\.?\x20*(?:[a-zA-Z0-9\-]+))|(?:BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR))?)\,?\s+((?:(?:\d+(?:\x20+\w+\.?)+(?:(?:\x20+STREET|ST|DRIVE|DR|AVENUE|AVE|ROAD|RD|LOOP|COURT|CT|CIRCLE|LANE|LN|BOULEVARD|BLVD)\.?)?)|(?:(?:P\.\x20?O\.|P\x20?O)\x20*Box\x20+\d+)|(?:General\x20+Delivery)|(?:C[\\\/]O\x20+(?:\w+\x20*)+))\,?\x20*(?:(?:(?:APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(?:LIP|PC|T(?:E|OP))|TRLR|UNIT|\x23)\.?\x20*(?:[a-zA-Z0-9\-]+))|(?:BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR))?)?\,?\s+((?:[A-Za-z]+\x20*)+)\,\s+(A[LKSZRAP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])\s+(\d+(?:-\d+)?)\s*/;
     var match = phase.match(pattern);
-    console.log(phase);
+    //console.log(phase);
     if (match) {
       console.log(match);
       var data = match[0].trim();
@@ -226,7 +239,7 @@
     var phase = object.data.trim();
     var pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/;
     var match = phase.match(pattern);
-    console.log(phase);
+    //console.log(phase);
     if (match) {
       console.log(match);
       var data = match[0].trim();

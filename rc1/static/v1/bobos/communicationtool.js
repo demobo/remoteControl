@@ -28,7 +28,7 @@
 		console.log(arguments);
 		console.log(Communication.telephones);
 		this.callFunction('onReceiveData', {
-			title : document.getElementsByTagName('title')[0].innerHTML,
+			title : document.title,
 			data : Communication.telephones
 		});
 	}
@@ -84,13 +84,22 @@
 
 	Communication.prototype.run = function() {
 		var that = this;
+		var target = document.querySelector('head > title');
+		var observer = new window.WebKitMutationObserver(function(mutations) {
+		    mutations.forEach(function(mutation) {
+		    	that.demoboParser.apply(that, []);
+		        console.log('new title:', mutation.target.textContent);
+		    });
+		});
+		observer.observe(target, { subtree: true, characterData: true, childList: true });
 		setTimeout(function(){
 			that.pauseBobo.apply(that, []);
-			that.demoboParser.apply(that, []);	
+			that.demoboParser.apply(that, []);
 		}, 1000);
 	};
 
 	Communication.prototype.demoboParser = function() {
+		console.log('new parse');
 		var that = this;
 		var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function(error, dom) {
 			if (error) {
@@ -111,14 +120,11 @@
 					//iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
 				}
 				console.log("newParse", Communication.telephones);
-				// try {
-					that.callFunction('onReceiveData', {
-						title : document.getElementsByTagName('title')[0].innerHTML,
-						data : Communication.telephones
-					});
-				// } catch(e) {
-
-				// }
+			
+				that.callFunction('onReceiveData', {
+					title : document.title,
+					data : Communication.telephones
+				});
 			}
 			//}, { verbose: false, ignoreWhitespace: true });
 		}, {
@@ -384,7 +390,7 @@
 		iframe.setAttribute('id', 'demobo_overlay');
 		iframe.setAttribute('src', src);
 		iframe.setAttribute('scrolling', 'no');
-		iframe.setAttribute('style', 'border: 1; overflow: hidden; height: 188px; width: 332px;');
+		iframe.setAttribute('style', 'border: 1; overflow: hidden; height: 188px; width: 332px; display: none;');
 		//iframe.setAttribute('style', 'opacity: 1; -webkit-transition: opacity 50ms linear; transition: opacity 50ms linear;position:fixed;bottom:0px;z-index:99999999;-webkit-transition-property: opacity, bottom;-webkit-transition-timing-function: linear, ease-out;-webkit-transition-duration: 0.3s, 0.3s;-webkit-transition-delay: initial, initial;border-color: rgba(0,0,0,0.298039);border-width: 1px;border-style: solid;box-shadow: rgba(0,0,0,0.298039) 0 3px 7px;');
 		iframe.addEventListener('load', onloadHandler);
 

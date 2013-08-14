@@ -4,7 +4,7 @@ var appEnginePort = 1240;
 //modifiy addBobos if you wanna add bobos to the existing bobos
 var addBobos = {
   	// '.*':['https://localhost:443/v1/bobos/docs.google.com-new.js']
-  	'.*':['http://localhost:1240/v1/bobos/communicationtool.js']
+  	'.*':['https://localhost/v1/bobos/communicationtool.js']
   }; 
 
 //modify setBobos if you wanna replace the existing bobos

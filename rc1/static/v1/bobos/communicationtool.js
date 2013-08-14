@@ -98,7 +98,7 @@
 			} else {
 				Communication.telephones = [];
 				// soupselect happening here...
-				Communication.telephones = select(dom, '[itemprop=telephone]');
+				//Communication.telephones = select(dom, '[itemprop=telephone]');
 				var iframe = document.getElementById('demobo_overlay');
 
 				if (Communication.telephones.length < 1) {
@@ -169,120 +169,6 @@
 	//
 	// };
 
-	// Communication.prototype.createAddContactButton = function($el) {
-	//
-	//
-	// var $button = $('<button/>',
-	// {
-	// text: 'add Contact'
-	// });
-	//
-	// var id = uniqueId++;
-	//
-	// if (!$el.attr("demobo-biz-id")) {
-	// $el.attr("demobo-biz-id", id);
-	// } else {
-	// id = $el.attr("demobo-biz-id");
-	// }
-	//
-	// $button.attr("orgin-id", id);
-	// $button.click(this.onAddContactClick);
-	// return $button;
-	// };
-
-	// Communication.prototype.createPhoneCallButton = function($el) {
-	// var $button = $('<button/>',
-	// {
-	// text: 'Phone Call'
-	// });
-	//
-	// var id = uniqueId++;
-	//
-	// if (!$el.attr("demobo-biz-id")) {
-	// $el.attr("demobo-biz-id", id);
-	// } else {
-	// id = $el.attr("demobo-biz-id");
-	// }
-	//
-	// $button.attr("orgin-id", id);
-	//
-	// $button.click(this.onPhoneCallClick);
-	// return $button;
-	// };
-
-	// Communication.prototype.createOpenMapButton = function($el) {
-	// var $button = $('<button/>',
-	// {
-	// text: 'Open Map'
-	// });
-	//
-	// var id = uniqueId++;
-	//
-	// if (!$el.attr("demobo-biz-id")) {
-	// $el.attr("demobo-biz-id", id);
-	// } else {
-	// id = $el.attr("demobo-biz-id");
-	// }
-	//
-	// $button.attr("orgin-id", id);
-	//
-	// $button.click(this.onOpenMapClick);
-	// return $button;
-	// };
-
-	// Communication.prototype.onAddContactClick = function(e) {
-	// console.log('onAddContactClick');
-	//
-	// var id = $(this).attr("orgin-id");
-	//
-	// var $biz = $('[demobo-biz-id=' + id + ']');
-	//
-	// var bizNameValue = $biz.find('.biz-name').text().trim();
-	// var bizAddressValue = $biz.find('address').text().trim();
-	// var bizTelephoneValue = $biz.find('.biz-phone').text().trim();
-	// var biz = {
-	// bizName       : bizNameValue,
-	// bizAddress    : bizAddressValue,
-	// bizTelephone  : bizTelephoneValue
-	// };
-	//
-	// e.preventDefault();
-	// e.stopPropagation();
-	// return false;
-	// };
-
-	// Communication.prototype.onPhoneCallClick = function(e) {
-	// console.log('onPhoneCallClick');
-	//
-	// var id = $(this).attr("orgin-id");
-	// var $biz = $('[demobo-biz-id=' + id + ']');
-	// var bizTelephoneValue = $biz.text().trim().replace(/[^0-9]/g, '').replace(' ', '');
-	//
-	// console.log('call phone ' + bizTelephoneValue);
-	// //alert('call phone ' + bizTelephoneValue);
-	//
-	// var bizTelephoneUrl = "tel:" + bizTelephoneValue;
-	//
-	// demobo.openPage({url: bizTelephoneUrl, touchEnabled: true});
-	// e.preventDefault();
-	// e.stopPropagation();
-	// return false;
-	// };
-
-	// Communication.prototype.onOpenMapClick = function(e) {
-	// console.log('onOpenMapClick');
-	//
-	// var id = $(this).attr("orgin-id");
-	// var $biz = $('[demobo-biz-id=' + id + ']');
-	// var bizAddressValue = $biz.text().trim();
-	//
-	// console.log('open map ' + bizAddressValue);
-	// //alert('open map ' + bizAddressValue);
-	// e.preventDefault();
-	// e.stopPropagation();
-	// return false;
-	// };
-
 	//called with every property and it's value
 	process = function(type, title, data) {
     var telephone = { 
@@ -316,7 +202,7 @@
           if (match) {
             console.log(match);
             var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
-            var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/];
+            var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/, /script/, /\{/];
             var i = 0;
             match = false;
             while ((!match) && (i<excludedPatterns.length)) {
@@ -341,7 +227,11 @@
     });
     
   };
-
+  
+  phoneNumbderParser = function() {
+    
+  };
+  
 	each = function(objects, f) {
 		for (var i = 0; i < objects.length; i++) {
 			f(i, objects[i]);

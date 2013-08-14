@@ -188,6 +188,15 @@
 
   };
 
+  formatPhone = function(number) {
+      var numbers = number.replace(/\D/g, ''),
+          char = {0:'(',3:') ',6:' - '};
+      number = '';
+      for (var i = 0; i < numbers.length; i++) {
+          number += (char[i]||'') + numbers[i];
+      } return number;
+  };
+  
   phoneNumberParser = function(object, func) {
     var phase = object.data.trim();
     phase = phase.replace(new RegExp('zero', 'gi'), '0');
@@ -218,7 +227,7 @@
       }
       if (!match) {
         console.log('telephone matched', phase);
-        func("telephone", "Phone", data);
+        func("telephone", "Phone", formatPhone(data));
       }
     }
   };

@@ -265,7 +265,7 @@
     if (match) {
       console.log(match);
       var data = match[0].trim();
-      var excludedPatterns = [];
+      var excludedPatterns = [/<!--/, /script/, /\{/];
       var i = 0;
       match = false;
       while ((!match) && (i < excludedPatterns.length)) {

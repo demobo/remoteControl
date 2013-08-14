@@ -105,9 +105,12 @@ table td.buttons {
 
 .info .title {
 	color: #16a085;
-	width: 143px;
+	width: 140px;
 }
 .nav-header {
 	background-color: #16a085;
 	color: #ffffff;
+}
+.table {
+	overflow: hidden;
 }

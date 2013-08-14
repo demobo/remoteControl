@@ -130,25 +130,17 @@
 					//iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
 				}
 				console.log("newParse", Communication.telephones);
-<<<<<<< HEAD
 				// try {
 				  
 				  that.demoboAddressParser();
 				  
 					that.callFunction('onReceiveData', {
-						title : document.getElementsByTagName('title')[0].innerHTML,
+						title : document.title,
 						data : Communication.telephones
 					});
 				// } catch(e) {
 
 				// }
-=======
-			
-				that.callFunction('onReceiveData', {
-					title : document.title,
-					data : Communication.telephones
-				});
->>>>>>> aa42b2d02b796d6dc52e59d66f825733fc6aa7aa
 			}
 			//}, { verbose: false, ignoreWhitespace: true });
 		}, {

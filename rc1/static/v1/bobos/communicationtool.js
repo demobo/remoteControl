@@ -103,7 +103,7 @@
   };
 
   Communication.prototype.demoboAddressParser = function() {
-    var addresses = (document.body.innerText.match(/[0-9].*\n.*, [A-Z]{2} [0-9]*/g) || []).concat(document.body.innerText.match(/[0-9].*, [A-Z]{2} [0-9]*/g));
+    var addresses = document.body.innerText.match(/[0-9]{1,6}.*, [A-Z]{2} [0-9]*/g) || document.body.innerText.match(/[0-9]{1,6}.*\n.*, [A-Z]{2} [0-9]*/g);
     console.log(addresses);
     each(addresses, function(index, address) {
       if (address) {

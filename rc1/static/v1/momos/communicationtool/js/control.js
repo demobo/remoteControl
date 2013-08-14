@@ -1,10 +1,15 @@
+
 function onReceiveData(args) {
 	$(".nav-header").text(args.title);
 	var scope = angular.element(document.getElementById('controller')).scope();
 	var microdatas = args.data;
 	scope.$apply(function() {
 		scope.microdatas = microdatas;
-	})
+	});
+	// TODO: listen to rendercomplete event
+	setTimeout(function(){
+		$('.title').css("opacity",1).dotdotdot();
+	},10);
 }
 
 function responeToAction(action, data) {

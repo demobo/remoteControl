@@ -58,10 +58,21 @@ var testCases2 = [{
 	data : {
 		title: "Taco Restaurant",
 		data: [{
-			title: "ABC",
+			title: "9. China Village Seafood Restaurant",
 			data : "(415) 982-7877",
 			type : "telephone"
 		}]
 	}
 }];
-var testSuite = [testCases1, testCases2];
+var testCases3 = [{
+	functionName : "onReceiveData",
+	data : {
+		title: "Taco Restaurant",
+		data: [{
+			title: "9. China Village Seafood Restaurafsasafasfsadfadsfadfdafadfafaeaaaefaewfe fnt 9. China Village Seafood Restaurant 9. China Village Seafood Restaurant 9. China Village Seafood Restaurant 9. China Village Seafood Restaurant9. China Village Seafood Restaurant 9. China Village Seafood Restaurant",
+			data : "(415) 982-7877",
+			type : "telephone"
+		}]
+	}
+}];
+var testSuite = [testCases1, testCases2, testCases3];

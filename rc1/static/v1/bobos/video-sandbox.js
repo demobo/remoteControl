@@ -21,7 +21,6 @@
 			'videoSliderChange' : 'setProgress',
 			'demoboApp' : 'refreshController'
 		});
-		this.setup();
 	};
 	// ********** custom event handler functions *************
 	VideoSandbox.prototype.setProgress = function(num) {
@@ -29,7 +28,10 @@
 		$('video')[0].currentTime = $('video')[0].duration * num / 100.0
 	};
 
-	VideoSandbox.prototype.setup = function() {
+	VideoSandbox.prototype.run = function() {
+    window.demobo.addEventListener('connected', function(){
+      window.demoboPortal.switchBobo('videosandbox');
+    });
 		var jv = $('video');
 		var vs = this;
 		jv.bind('timeupdate', function() {

@@ -106,6 +106,8 @@ table td.buttons {
 .info .title {
 	color: #16a085;
 	width: 140px;
+	max-height: 40px;
+	opacity:0;
 }
 .nav-header {
 	background-color: #16a085;

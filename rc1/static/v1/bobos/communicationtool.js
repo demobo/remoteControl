@@ -132,43 +132,6 @@
 
 	};
 
-	// Communication.prototype.parsePage = function(){
-	//
-	// var businesses = new Array;
-	// var that = this;
-	// var results = $('.search-result');
-	//
-	// $.each( results , function(index, result) {
-	//
-	// var $bizName = $(result).find('.biz-name');
-	// $bizName.css("background-color", "red");
-	//
-	// $bizName.after(that.createAddContactButton($(result)));
-	// var bizNameValue = $bizName.text().trim();
-	//
-	// var $bizAddress = $(result).find('address');
-	// $bizAddress.css("background-color", "yellow");
-	//
-	// $bizAddress.after(that.createOpenMapButton($bizAddress));
-	// var bizAddressValue = $bizAddress.text().trim();
-	//
-	// var $bizTelephone = $(result).find('.biz-phone');
-	// $bizTelephone.css("background-color", "cyan");
-	//
-	// $bizTelephone.after(that.createPhoneCallButton($bizTelephone));
-	// var bizTelephoneValue = $bizTelephone.text().trim();
-	//
-	// var biz = {
-	// bizName       : bizNameValue,
-	// bizAddress    : bizAddressValue,
-	// bizTelephone  : bizTelephoneValue
-	// };
-	//
-	// businesses.push(biz);
-	// });
-	//
-	// };
-
 	//called with every property and it's value
 	process = function(type, title, data) {
     var telephone = { 
@@ -185,38 +148,9 @@
       //console.log(JSON.stringify(object, null, " "));
       if (typeof(object.type)=="string") {
         if ((object.type) == "text") {
-          var phase = object.data.trim();
-          phase = phase.replace(new RegExp('zero', 'gi'), '0');
-          phase = phase.replace(new RegExp('one', 'gi'), '1');
-          phase = phase.replace(new RegExp('two', 'gi'), '2');
-          phase = phase.replace(new RegExp('three', 'gi'), '3');
-          phase = phase.replace(new RegExp('four', 'gi'), '4');
-          phase = phase.replace(new RegExp('five', 'gi'), '5');
-          phase = phase.replace(new RegExp('six', 'gi'), '6');
-          phase = phase.replace(new RegExp('seven', 'gi'), '7');
-          phase = phase.replace(new RegExp('eight', 'gi'), '8');
-          phase = phase.replace(new RegExp('nine', 'gi'), '9');
-          var pattern = /[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?/;
-          var match = phase.match(pattern);
-          //console.log(phase);
-          if (match) {
-            console.log(match);
-            var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
-            var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/, /script/, /\{/];
-            var i = 0;
-            match = false;
-            while ((!match) && (i<excludedPatterns.length)) {
-              match = phase.match(excludedPatterns[i]);
-              if (match) {
-                console.log('excluded match', phase);
-              }
-              i++;
-            }
-            if (!match) {
-              console.log('telephone matched', phase);
-              func("telephone", phase, data);
-            }
-          }
+          phoneNumberParser(object, func);
+          //addressParser(object, func);
+          emailParser(object, func);
         }
       }
       
@@ -228,9 +162,90 @@
     
   };
   
-  phoneNumbderParser = function() {
-    
+  phoneNumberParser = function(object, func) {
+    var phase = object.data.trim();
+    phase = phase.replace(new RegExp('zero', 'gi'), '0');
+    phase = phase.replace(new RegExp('one', 'gi'), '1');
+    phase = phase.replace(new RegExp('two', 'gi'), '2');
+    phase = phase.replace(new RegExp('three', 'gi'), '3');
+    phase = phase.replace(new RegExp('four', 'gi'), '4');
+    phase = phase.replace(new RegExp('five', 'gi'), '5');
+    phase = phase.replace(new RegExp('six', 'gi'), '6');
+    phase = phase.replace(new RegExp('seven', 'gi'), '7');
+    phase = phase.replace(new RegExp('eight', 'gi'), '8');
+    phase = phase.replace(new RegExp('nine', 'gi'), '9');
+    var pattern = /[\s]?(1\s*[-\/\.]?)?(\((\d{3})\)|(\d{3}))\s*[-\/\.]?\s*(\d{3})\s*[-\/\.]?\s*(\d{4})\s*(([xX]|[eE][xX][tT])\.?\s*(\d+))*[\s\.]?/;
+    var match = phase.match(pattern);
+    //console.log(phase);
+    if (match) {
+      console.log(match);
+      var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
+      var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/, /script/, /\{/];
+      var i = 0;
+      match = false;
+      while ((!match) && (i<excludedPatterns.length)) {
+        match = phase.match(excludedPatterns[i]);
+        if (match) {
+          console.log('excluded match', phase);
+        }
+        i++;
+      }
+      if (!match) {
+        console.log('telephone matched', phase);
+        func("telephone", phase, data);
+      }
+    }
   };
+  
+  addressParser = function(object, func) {
+    var phase = object.data.trim();
+    var pattern = /\s*((?:(?:\d+(?:\x20+\w+\.?)+(?:(?:\x20+STREET|ST|DRIVE|DR|AVENUE|AVE|ROAD|RD|LOOP|COURT|CT|CIRCLE|LANE|LN|BOULEVARD|BLVD)\.?)?)|(?:(?:P\.\x20?O\.|P\x20?O)\x20*Box\x20+\d+)|(?:General\x20+Delivery)|(?:C[\\\/]O\x20+(?:\w+\x20*)+))\,?\x20*(?:(?:(?:APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(?:LIP|PC|T(?:E|OP))|TRLR|UNIT|\x23)\.?\x20*(?:[a-zA-Z0-9\-]+))|(?:BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR))?)\,?\s+((?:(?:\d+(?:\x20+\w+\.?)+(?:(?:\x20+STREET|ST|DRIVE|DR|AVENUE|AVE|ROAD|RD|LOOP|COURT|CT|CIRCLE|LANE|LN|BOULEVARD|BLVD)\.?)?)|(?:(?:P\.\x20?O\.|P\x20?O)\x20*Box\x20+\d+)|(?:General\x20+Delivery)|(?:C[\\\/]O\x20+(?:\w+\x20*)+))\,?\x20*(?:(?:(?:APT|BLDG|DEPT|FL|HNGR|LOT|PIER|RM|S(?:LIP|PC|T(?:E|OP))|TRLR|UNIT|\x23)\.?\x20*(?:[a-zA-Z0-9\-]+))|(?:BSMT|FRNT|LBBY|LOWR|OFC|PH|REAR|SIDE|UPPR))?)?\,?\s+((?:[A-Za-z]+\x20*)+)\,\s+(A[LKSZRAP]|C[AOT]|D[EC]|F[LM]|G[AU]|HI|I[ADLN]|K[SY]|LA|M[ADEHINOPST]|N[CDEHJMVY]|O[HKR]|P[ARW]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY])\s+(\d+(?:-\d+)?)\s*/;
+    var match = phase.match(pattern);
+    console.log(phase);
+    if (match) {
+      console.log(match);
+      var data = match[0].trim();
+      var excludedPatterns = [];
+      var i = 0;
+      match = false;
+      while ((!match) && (i<excludedPatterns.length)) {
+        match = phase.match(excludedPatterns[i]);
+        if (match) {
+          console.log('excluded match', phase);
+        }
+        i++;
+      }
+      if (!match) {
+        console.log('address matched', phase);
+        func("address", phase, data);
+      }
+    }
+  };
+  
+  emailParser = function(object, func) {
+    var phase = object.data.trim();
+    var pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/;
+    var match = phase.match(pattern);
+    console.log(phase);
+    if (match) {
+      console.log(match);
+      var data = match[0].trim();
+      var excludedPatterns = [];
+      var i = 0;
+      match = false;
+      while ((!match) && (i<excludedPatterns.length)) {
+        match = phase.match(excludedPatterns[i]);
+        if (match) {
+          console.log('excluded match', phase);
+        }
+        i++;
+      }
+      if (!match) {
+        console.log('email matched', phase);
+        func("email", phase, data);
+      }
+    }  
+  }
   
 	each = function(objects, f) {
 		for (var i = 0; i < objects.length; i++) {

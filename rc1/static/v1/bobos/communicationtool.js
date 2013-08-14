@@ -107,7 +107,7 @@
     console.log(addresses);
     each(addresses, function(index, address) {
       if (address) {
-        address = address.replace('\n', ' ');
+        address = address.replace(/\n/g, ' ');
         process("address", "Address", address);
       }
     });

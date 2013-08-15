@@ -90,8 +90,7 @@ table td.buttons {
 	background-color: #6D89F0;
 }
 .btn-map {
-	background-color: #E8DEBD;
-	color: #6EA6E6;
+	background-color: #88A6E2;
 }
 .btn-map i {
 	color: #A5D291;
@@ -108,6 +107,11 @@ table td.buttons {
 	width: 140px;
 	max-height: 40px;
 	opacity:0;
+}
+.info .data {
+	width: 140px;
+	word-wrap: break-word;
+	font-size: 14px;
 }
 .nav-header {
 	background-color: #16a085;

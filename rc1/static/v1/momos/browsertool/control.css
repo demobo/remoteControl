@@ -161,15 +161,25 @@ a {
 .btn-social-youtube {
 	background-color: #EB4B4D;
 }
+.btn-social-yelp {
+	background-color: #F57878;
+}
 .btn-social-vimeo {
 	background-color: #3395CA;
 }
 .btn-social-slideshare {
 	background-color: #312f2d;
 }
+.btn-social-game {
+	background-color: #312f2d;
+}
+.btn-social-craigslist {
+	background-color: #ccf;
+}
 .btn-social-other {
 	background-color: #999999;
 }
+
 .btn:hover, .btn:focus {
 	background-color: #575757;
 }

@@ -59,8 +59,8 @@ var testCases2 = [{
 		title: "Taco Restaurant",
 		data: [{
 			title: "9. China Village Seafood Restaurant",
-			data : "(415) 982-7877",
-			type : "telephone"
+			data : "asdfghjklkiuytrdfghjiuytghjjh@gmail.com",
+			type : "email"
 		}]
 	}
 }];

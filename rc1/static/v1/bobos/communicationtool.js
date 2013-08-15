@@ -116,7 +116,7 @@
 			var title = resultElement.querySelector('.search-result-title').innerText;
 			var address = resultElement.querySelector('address').innerText.replace(/\n/g, ' ');
 			var phone = resultElement.querySelector('.biz-phone').innerText;
-			// console.log(title, phone, address);
+			console.log(title, phone, address);
 			process("telephone", title, phone);
 			process("address", "", address);
 		});
@@ -127,12 +127,12 @@
 		var address = document.querySelector('.mapaddress a');
 		var phones = matchPhone(document.querySelector('.userbody').innerText);
 		var emails = matchEmail(document.querySelector('.body').innerText);
-		// console.log(title, phone, address, email);
-		if (phones.length)
+		console.log(title, phone, address, email);
+		if (phones && phones.length)
 			process("telephone", title, formatPhone(phones[0].replace(/[^0-9]/g,"")));
 		if (address)
 			process("address", "", address.href.replace(/.*\%3A\+/, "").replace(/\+/g, " ").replace(/\%3/g,""));
-		if (emails.length) {
+		if (emails && emails.length) {
 			each(emails, function(index, email) {
 				process("email", "", email);
 			});

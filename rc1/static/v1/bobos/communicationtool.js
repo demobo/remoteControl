@@ -122,12 +122,33 @@
 		});
 	};
 
+	Communication.prototype.craigslistParser = function() {
+		var title = document.querySelector('.postingtitle').innerText;
+		var address = document.querySelector('.mapaddress a');
+		var phones = matchPhone(document.querySelector('.userbody').innerText);
+		var emails = matchEmail(document.querySelector('.body').innerText);
+		// console.log(title, phone, address, email);
+		if (phones.length)
+			process("telephone", title, formatPhone(phones[0].replace(/[^0-9]/g,"")));
+		if (address)
+			process("address", "", address.href.replace(/.*\%3A\+/, "").replace(/\+/g, " ").replace(/\%3/g,""));
+		if (emails.length) {
+			each(emails, function(index, email) {
+				process("email", "", email);
+			});
+		}
+	};
+
 	Communication.prototype.demoboParser = function() {
 		console.log('new parse');
 		var that = this;
 		Communication.telephones = [];
-		if (window.location.origin === "http://www.yelp.com" && document.getElementsByClassName('search-result').length) {
+		if (window.document.domain === "www.yelp.com" && document.getElementsByClassName('search-result').length) {
 			this.yelpParser();
+			this.sendToPhone();
+		}
+		if (window.document.domain === "craigslist.org" && document.getElementsByClassName('dateReplyBar').length) {
+			this.craigslistParser();
 			this.sendToPhone();
 		} else {
 			var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function(error, dom) {
@@ -166,6 +187,27 @@
 		});
 	};
 
+	matchPhone = function(phase) {
+		phase = phase.replace(new RegExp('zero', 'gi'), '0');
+		phase = phase.replace(new RegExp('one', 'gi'), '1');
+		phase = phase.replace(new RegExp('two', 'gi'), '2');
+		phase = phase.replace(new RegExp('three', 'gi'), '3');
+		phase = phase.replace(new RegExp('four', 'gi'), '4');
+		phase = phase.replace(new RegExp('five', 'gi'), '5');
+		phase = phase.replace(new RegExp('six', 'gi'), '6');
+		phase = phase.replace(new RegExp('seven', 'gi'), '7');
+		phase = phase.replace(new RegExp('eight', 'gi'), '8');
+		phase = phase.replace(new RegExp('nine', 'gi'), '9');
+		var pattern = /[0-9]{3}.{1,2}[0-9]{3}.{0,1}[0-9]{4}/g;
+		var match = phase.match(pattern);
+		return match;
+	}
+	matchEmail = function(phase) {
+		// var pattern = /^\s*\@^\s*\.^\s*/g;
+		var pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/;
+		var match = phase.match(pattern);
+		return match;
+	}
 	//called with every property and it's value
 	process = function(type, title, data) {
 
@@ -207,7 +249,7 @@
 		var numbers = number.replace(/\D/g, ''), char = {
 			0 : '(',
 			3 : ') ',
-			6 : ' - '
+			6 : '-'
 		};
 		number = '';
 		for (var i = 0; i < numbers.length; i++) {

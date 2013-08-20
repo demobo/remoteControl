@@ -152,6 +152,7 @@
 	};
 
 	Communication.prototype.sendToPhone = function() {
+		console.log("sendToPhone", document.title, Communication.telephones);
 		this.callFunction('onReceiveData', {
 			title : document.title,
 			data : Communication.telephones

@@ -1,4 +1,4 @@
-var dev = false;//change these two lines for loading local files
+var dev = true;//change these two lines for loading local files
 var appEnginePort = 1240;
 
 //modifiy addBobos if you wanna add bobos to the existing bobos

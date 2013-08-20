@@ -127,7 +127,7 @@
 		var address = document.querySelector('.mapaddress a');
 		var phones = matchPhone(document.querySelector('.userbody').innerText);
 		var emails = matchEmail(document.querySelector('.body').innerText);
-		console.log(title, phones, address, email);
+		console.log(title, phones, address, emails);
 		if (phones && phones.length)
 			process("telephone", title, formatPhone(phones[0].replace(/[^0-9]/g,"")));
 		if (address)

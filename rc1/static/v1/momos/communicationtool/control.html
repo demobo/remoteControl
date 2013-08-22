@@ -58,7 +58,16 @@
 								<div class="btn btn-mini btn-email" onclick="responeToAction('email', '{{md.data}}')">
 									<i class="fui-envelope-alt"></i>email
 								</div>
-							</div></td>
+							</div>
+							<div ng-if="md.type == 'url'">
+								<div class="btn btn-mini btn-chrome" onclick="responeToAction('chrome', '{{md.data}}')">
+									<i class="fui-chrome"></i>chrome
+								</div>
+								<!-- <div class="btn btn-mini btn-safari" onclick="responeToAction('safari', '{{md.data}}')">
+									<i class="fui-safari"></i>safari
+								</div> -->
+							</div>
+							</td>
 						</tr>
 					</tbody>
 				</table>

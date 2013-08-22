@@ -101,6 +101,22 @@ table td.buttons {
 .btn-gmap i {
 	color: #D82916;
 }
+.btn-safari {
+	background-color: #333333;
+}
+.btn-safari i {
+	color: #77D8EF;
+}
+.btn-chrome {
+	background-color: #333333;
+}
+.btn-chrome i {
+	color: #DFE0B0;
+}
+.btn.btn-mini.btn-chrome {
+	font-size: 9px;
+	line-height: 13px;
+}
 
 .info .title {
 	color: #16a085;
@@ -112,6 +128,8 @@ table td.buttons {
 	width: 140px;
 	word-wrap: break-word;
 	font-size: 14px;
+	height: 37px;
+	overflow: hidden;
 }
 .nav-header {
 	background-color: #16a085;

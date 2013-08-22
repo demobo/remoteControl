@@ -58,6 +58,10 @@ var testCases2 = [{
 	data : {
 		title: "Taco Restaurant",
 		data: [{
+			title: "URL",
+			data : "http://www.yelp.com/search?find_desc=taco&find_loc=San+Mateo%2C+CA&ns=1",
+			type : "url"
+		}, {
 			title: "9. China Village Seafood Restaurant",
 			data : "asdfghjklkiuytrdfghjiuytghjjh@gmail.com",
 			type : "email"

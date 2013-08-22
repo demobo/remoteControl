@@ -21,13 +21,20 @@ function responeToAction(action, data) {
 		window.open('sms:' + value);
 	} else if (action === 'map') {
 		var value = encodeURIComponent(data.trim());
-		window.open('http://maps.apple.com/maps?q=*&daddr=' + value);
+		// window.open('http://maps.apple.com/maps?q=*&daddr=' + value);
+		window.open('Maps://?saddr=Current+Location&daddr=' + value);
 	} else if (action === 'gmap') {
 		var value = encodeURIComponent(data.trim());
-		window.open('comgooglemaps://?daddr=' + value);
+		window.open('comgooglemaps://?saddr=Current+Location&daddr=' + value);
 	} else if (action === 'email') {
 		var value = data.trim();
 		window.open('mailto:' + value);
+	} else if (action === 'chrome') {
+		var value = data.trim();
+		window.open('googlechrome://' + value);
+	} else if (action === 'safari') {
+		var value = data.trim();
+		window.open('http://' + value, '_blank');
 	}
 }
 

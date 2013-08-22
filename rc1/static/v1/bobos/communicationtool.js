@@ -103,6 +103,9 @@
 			process("telephone", title, formatPhone(phones[0].replace(/[^0-9]/g,"")));
 		if (address)
 			process("address", "", decodeURIComponent(address.href).replace(/.*=loc:\+/, "").replace(/\+/g, " "));
+		else {
+			this.demoboAddressParser();
+		}	
 		if (emails && emails.length) {
 			each(emails, function(index, email) {
 				process("email", "", email);

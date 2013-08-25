@@ -25,7 +25,7 @@
 		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 		<!-- load demobo mobile api before jqm -->
 		<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
-		<script src="fui/js/bootstrap.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
 	</head>
 	<body>
 		<script>
@@ -125,7 +125,10 @@
 			document.ontouchmove = function(event) {
 				event.preventDefault();
 			};
+			
+			playnow = function(e) {
+			};
 		</script>
-		<div style="position: absolute; top: 400px; left: 85px; z-index: 99;"><a href="#fakelink" class="btn btn-large btn-block btn-primary" id="test"><img src="images/inner_button_play.png"></a></div>
+		<div style="position: absolute; bottom: 20px; left: 85px; z-index: 99;"><a href="#fakelink" class="btn btn-large btn-block btn-primary" id="test" onclick="playnow();"><img src="images/inner_button_play.png"></a></div>
 	</body>
 </html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<style type="text/css">
+			body {
+				background-color: #ffffff;
+				background-image: url("images/sear1.jpg");
+				background-size: 400% 100%;
+				background-position: -500px 0%;
+			}
+			.draggable {
+				position: absolute;
+				width: 100px;
+				height: 100px;
+				margin-left: -30px;
+				margin-top: -30px;
+				color: #FFF;
+				font: bold 16px Helvetica, Arial, Sans-serif;
+				text-align: center;
+				background: transparent;
+			}
+		</style>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<!-- load demobo mobile api before jqm -->
+		<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+	</head>
+	<body>
+		<script>
+		
+			$(document).ready(function(){
+				$.ajax({
+				  type: "GET",
+				  url: "deals.json"
+				}).done(function( msg ) {
+				  //alert( "Data Saved: " + msg );
+				  debugger;
+				  for (var i = 0; i < 6; i++) {
+					var target = $('<div class="draggable"><img width="100%" height="100%" src="' + msg.localads.ad[i].aditem.itemimage + '"></div>');
+					var csstop = parseInt(1 + (i - 1) / 1) * 98 + "px";
+					var cssleft = parseInt(2 + (i - 1) % 1) * 80 + "px";
+					target.css({
+						top : csstop,
+						left : cssleft
+					});
+					$('body').append(target);
+				  }
+				});
+				
+				// $.ajax({
+				  // type: "GET",
+				  // url: 'http://api.developer.sears.com/v2.1/deals/localAd/Sears/json/getOffers/unitNum/1478?resultSetType=full&apikey=Vd4DzC37B90k80OakoJN57Ua3X4RDDEu'
+				// }).done(function( msg ) {
+				  // //alert( "Data Saved: " + msg );
+				  // debugger;
+				  // for (var i = 0; i < 8; i++) {
+					// var target = $('<div class="draggable"><img width="100%" height="100%" src="' + msg.localads.ad[i].aditem.itemimage + '"></div>');
+					// var csstop = parseInt(1 + (i - 1) / 1) * 98 + "px";
+					// var cssleft = parseInt(2 + (i - 1) % 1) * 80 + "px";
+					// target.css({
+						// top : csstop,
+						// left : cssleft
+					// });
+					// $('body').append(target);
+				  // }
+				// });
+            });
+			
+			function pad(str, max) {
+				return str.length < max ? pad("0" + str, max) : str;
+			}
+
+			
+			/* draggable */
+			$('body').unbind('drag').bind('drag', function(e) {
+				var deltaTop = 5 * (e.top - e.prevTop);
+				var deltaLeft = 5 * (e.left - e.prevLeft);
+				var target = $(e.html);
+				$('body').append(target);
+				target.css({
+					top : e.top,
+					left : e.left
+				});
+				target.draggable();
+				target.animate({
+					top : "+=" + deltaTop + "px",
+					left : "+=" + deltaLeft + "px"
+				}, 500);
+			});
+			$.fn.draggable = function() {
+				var offset = null;
+				var prevTop, prevLeft, curTop, curLeft;
+				var start = function(e) {
+					var orig = e.originalEvent;
+					var pos = $(this).position();
+					offset = {
+						x : orig.changedTouches[0].pageX - pos.left,
+						y : orig.changedTouches[0].pageY - pos.top
+					};
+				};
+				var moveMe = function(e) {
+					e.preventDefault();
+					var orig = e.originalEvent;
+					$(this).css({
+						top : orig.changedTouches[0].pageY - offset.y,
+						left : orig.changedTouches[0].pageX - offset.x
+					});
+					prevTop = curTop;
+					prevLeft = curLeft;
+					curTop = $(this).css('top');
+					curLeft = $(this).css('left');
+				};
+				var end = function(e) {
+					if (parseInt(curTop) <= 30 || parseInt(curLeft) <= 30 || parseInt(curTop) >= 270 || parseInt(curLeft) >= 430) {
+						
+					}
+				};
+				this.unbind("touchstart").bind("touchstart", start);
+				this.unbind("touchmove").bind("touchmove", moveMe);
+				this.unbind("touchend").bind("touchend", end);
+			};
+			$(".draggable").draggable();
+			document.ontouchmove = function(event) {
+				event.preventDefault();
+			};
+		</script>
+	</body>
+</html>

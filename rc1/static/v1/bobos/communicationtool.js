@@ -132,6 +132,7 @@
 				if (!error) {
 					// soupselect happening here...
 					//Communication.telephones = select(dom, '[itemprop=telephone]');
+					var info = select(dom, '#bizInfoContent');
 					var iframe = document.getElementById('demobo_overlay');
 
 					if (Communication.telephones.length < 1) {

@@ -65,6 +65,10 @@ var testCases2 = [{
 			title: "9. China Village Seafood Restaurant",
 			data : "asdfghjklkiuytrdfghjiuytghjjh@gmail.com",
 			type : "email"
+		}, {
+			title: "Seafood Restaurant",
+			data : "08/25/2013 14:30PM",
+			type : "url"
 		}]
 	}
 }];

@@ -45,6 +45,7 @@
 					});
 					$('body').append(target);
 				  }
+				  $(".draggable").draggable();
 				});
 				
 				// $.ajax({
@@ -119,7 +120,7 @@
 				this.unbind("touchmove").bind("touchmove", moveMe);
 				this.unbind("touchend").bind("touchend", end);
 			};
-			$(".draggable").draggable();
+			
 			document.ontouchmove = function(event) {
 				event.preventDefault();
 			};

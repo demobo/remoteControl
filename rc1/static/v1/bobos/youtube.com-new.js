@@ -274,22 +274,20 @@
   	Youtube.prototype.fullScreen = function () {
       var ui = this.getInfo('ui');
   		if (!yt.config_.PLAYER_REFERENCE) return;
-  		jQuery('#watch7-video,#player-api').css({position:'fixed',top:0,left:0,'z-index':9998,width:'100%',height:'100%'});
+  		jQuery('#watch7-video,#player-api, #player-api-legacy').css({position:'fixed',top:0,left:0,'z-index':9998,width:'100%',height:'105%'});
   		jQuery('#watch7-player').css({width:'100%',height:'100%'});
   		jQuery('body').css({overflow:'hidden'});
   		ui.isFullScreen = true;
-//  		demobo._sendToSimulator('setData', {key: 'autoConnect', value: true});
   		localStorage.setItem('couchMode','true');
   	};
 
   	Youtube.prototype.regularScreen = function () {
       var ui = this.getInfo('ui');
   		if (!yt.config_.PLAYER_REFERENCE) return;
-  		jQuery('#watch7-video,#player-api').css({position:'',top:'',left:'','z-index':'',width:'',height:''});
+  		jQuery('#watch7-video,#player-api, #player-api-legacy').css({position:'',top:'',left:'','z-index':'',width:'',height:''});
   		jQuery('#watch7-player').css({width:'',height:''});
   		jQuery('body').css({overflow:''});
   		ui.isFullScreen = false;
-//  		demobo._sendToSimulator('setData', {key: 'autoConnect', value: false});
   		localStorage.setItem('couchMode','false');
   	};
 

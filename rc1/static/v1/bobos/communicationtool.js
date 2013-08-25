@@ -29,33 +29,7 @@
 		console.log(Communication.telephones);
 		this.sendToPhone();
 	}
-
-	Communication.prototype.insertTextAtCursor = function(text) {
-		console.log('insert is called')
-		console.log(arguments);
-		console.log(this);
-
-		var element = document.activeElement
-
-		var e = document.createEvent('TextEvent');
-		e.initTextEvent('textInput', true, true, null, text, 'zh-CN');
-		element.dispatchEvent(e);
-		element.focus();
-	}
-
-	Communication.prototype.onEnter = function() {
-		var element = document.activeElement;
-		var e = document.createEvent('TextEvent');
-		e.initTextEvent('textInput', true, true, null, "\n", 'zh-CN');
-		element.dispatchEvent(e);
-		element.focus();
-	}
-
-	Communication.prototype.onSelect = function() {
-		var element = document.activeElement;
-		element.focus();
-		element.select();
-	}
+	
 	// override the initialize function of Bobo
 	Communication.prototype.initialize = function() {
 		this.getInfo('config')['iconUrl'] = 'test1.png'
@@ -66,16 +40,13 @@
 		this.setInfo('description', 'An amazing tool to sync phones, emails and addresses to your phone. It lets your make calls and send messages right away!');
 		this.setInfo('type', 'generic');
 		this.setController({
-			url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0810',
-			// url: 'http://10.0.0.24:1240/v1/momos/communicationtool/control.html?0810',
+			url : 'http://rc1.demobo.com/v1/momos/communicationtool/control.html?0820',
+			// url: 'http://10.0.0.16:1240/v1/momos/communicationtool/control.html?0820',
 			orientation : 'portrait'
 		});
 
 		this.setInputEventHandlers({
-			'demoboApp' : 'onReady',
-			'typing-area' : 'insertTextAtCursor',
-			'enter-button' : 'onEnter',
-			'select-button' : 'onSelect'
+			'demoboApp' : 'onReady'
 		});
 	};
 
@@ -101,7 +72,7 @@
 
 	Communication.prototype.demoboAddressParser = function() {
 		var addresses = document.body.innerText.match(/[0-9]{1,6}.*, [A-Z]{2} [0-9]*/g) || document.body.innerText.match(/[0-9]{1,6}.*\n.*, [A-Z]{2} [0-9]*/g);
-		console.log(addresses);
+		console.log("address parser", addresses);
 		each(addresses, function(index, address) {
 			if (address) {
 				address = address.replace(/\n/g, ' ');
@@ -116,7 +87,7 @@
 			var title = resultElement.querySelector('.search-result-title').innerText;
 			var address = resultElement.querySelector('address').innerText.replace(/\n/g, ' ');
 			var phone = resultElement.querySelector('.biz-phone').innerText;
-			// console.log(title, phone, address);
+			console.log(title, phone, address);
 			process("telephone", title, phone);
 			process("address", "", address);
 		});
@@ -127,12 +98,15 @@
 		var address = document.querySelector('.mapaddress a');
 		var phones = matchPhone(document.querySelector('.userbody').innerText);
 		var emails = matchEmail(document.querySelector('.body').innerText);
-		// console.log(title, phone, address, email);
-		if (phones.length)
+		console.log(title, phones, address, emails);
+		if (phones && phones.length)
 			process("telephone", title, formatPhone(phones[0].replace(/[^0-9]/g,"")));
 		if (address)
-			process("address", "", address.href.replace(/.*\%3A\+/, "").replace(/\+/g, " ").replace(/\%3/g,""));
-		if (emails.length) {
+			process("address", "", decodeURIComponent(address.href).replace(/.*=loc:\+/, "").replace(/\+/g, " "));
+		else {
+			this.demoboAddressParser();
+		}	
+		if (emails && emails.length) {
 			each(emails, function(index, email) {
 				process("email", "", email);
 			});
@@ -143,11 +117,14 @@
 		console.log('new parse');
 		var that = this;
 		Communication.telephones = [];
+		
 		if (window.document.domain === "www.yelp.com" && document.getElementsByClassName('search-result').length) {
+			process("url", "URL", location.host+location.pathname+location.search);
 			this.yelpParser();
 			this.sendToPhone();
 		}
 		if (window.document.domain === "craigslist.org" && document.getElementsByClassName('dateReplyBar').length) {
+			process("url", "URL", location.host+location.pathname+location.search);
 			this.craigslistParser();
 			this.sendToPhone();
 		} else {
@@ -159,16 +136,15 @@
 					var iframe = document.getElementById('demobo_overlay');
 
 					if (Communication.telephones.length < 1) {
+						process("url", "URL", location.host+location.pathname+location.search);
 						traverse(dom, process);
-						iframe.contentWindow.postMessage(Communication.telephones, '*');
-						//iframe.contentWindow.postMessage(Communication.telephones, window.demoboBase);
+						// iframe.contentWindow.postMessage(Communication.telephones, '*');
 					} else {
-						iframe.contentWindow.postMessage(Communication.telephones[0].children, '*');
-						Communication.telephones = Communication.telephones[0].children;
-						//iframe.contentWindow.postMessage(Communication.telephones[0].children, window.demoboBase);
+						// iframe.contentWindow.postMessage(Communication.telephones[0].children, '*');
+						// Communication.telephones = Communication.telephones[0].children;
 					}
 					that.demoboAddressParser();
-
+					that.sendToPhone();
 				}
 			}, {
 				ignoreWhitespace : true
@@ -182,6 +158,7 @@
 	};
 
 	Communication.prototype.sendToPhone = function() {
+		console.log("sendToPhone", document.title, Communication.telephones);
 		this.callFunction('onReceiveData', {
 			title : document.title,
 			data : Communication.telephones
@@ -189,22 +166,22 @@
 	};
 
 	matchPhone = function(phase) {
-		phase = phase.replace(new RegExp('zero', 'gi'), '0');
-		phase = phase.replace(new RegExp('one', 'gi'), '1');
-		phase = phase.replace(new RegExp('two', 'gi'), '2');
-		phase = phase.replace(new RegExp('three', 'gi'), '3');
-		phase = phase.replace(new RegExp('four', 'gi'), '4');
-		phase = phase.replace(new RegExp('five', 'gi'), '5');
-		phase = phase.replace(new RegExp('six', 'gi'), '6');
-		phase = phase.replace(new RegExp('seven', 'gi'), '7');
-		phase = phase.replace(new RegExp('eight', 'gi'), '8');
-		phase = phase.replace(new RegExp('nine', 'gi'), '9');
-		var pattern = /[0-9]{3}.{1,2}[0-9]{3}.{0,1}[0-9]{4}/g;
+		phase = phase.replace(/\s*zero\s*/gi, '0');
+		phase = phase.replace(/\s*one\s*/gi, '1');
+		phase = phase.replace(/\s*two\s*/gi, '2');
+		phase = phase.replace(/\s*three\s*/gi, '3');
+		phase = phase.replace(/\s*four\s*/gi, '4');
+		phase = phase.replace(/\s*five\s*/gi, '5');
+		phase = phase.replace(/\s*six\s*/gi, '6');
+		phase = phase.replace(/\s*seven\s*/gi, '7');
+		phase = phase.replace(/\s*eight\s*/gi, '8');
+		phase = phase.replace(/\s*nine\s*/gi, '9');
+		// console.log(phase);
+		var pattern = /[0-9]{3}.{0,2}[0-9]{3}.{0,1}[0-9]{4}/g;
 		var match = phase.match(pattern);
 		return match;
 	}
 	matchEmail = function(phase) {
-		// var pattern = /^\s*\@^\s*\.^\s*/g;
 		var pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/;
 		var match = phase.match(pattern);
 		return match;

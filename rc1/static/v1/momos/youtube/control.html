@@ -89,6 +89,17 @@
 				$("#popupPanel button").on("vclick", function() {
 					$("#popupPanel").popup('close');
 				});
+				$('#videoSlider').on('slidestart', function() {
+					syncEnable = false;
+					$(this).on('change', onVideoSlideChange);
+					onVideoSlideChange();
+				}).on('slidestop', function() {
+					syncEnable = true;
+					$(this).off('change', onVideoSlideChange);
+				});
+				var onVideoSlideChange = function() {
+					demobo.mobile.fireInputEvent('videoSliderChange', $('#videoSlider').val());
+				};
 			});
 			function non480x320Adjust() {
 				var screenWidth = $(window).width();
@@ -115,7 +126,7 @@
 			//function handler of img onload event
 			function flipAlbumArt() {
 				$('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function() {
-					$('img.albumArt').toggleClass('currentAlbumArt newAlbumArt')
+					$('img.albumArt').toggleClass('currentAlbumArt newAlbumArt');
 					setTimeout(function() {
 						$('img.currentAlbumArt').toggleClass('to90 to0');
 					}, 0);
@@ -144,7 +155,12 @@
 				}
 				if (state.volume) {
 					$('#volumeSlider').val(state.volume);
-					$('#volumeSlider').slider('refresh');
+					// prevent event firing
+					// $('#volumeSlider').slider('refresh');
+				}
+				if (state.position) {
+					$('#videoSlider').val(state.position);
+					$('#videoSlider').slider('refresh');
 				}
 			}
 
@@ -231,9 +247,9 @@
 			<div id="touchcarouselFrame">
 				<div id="touchcarousel"></div>
 			</div>
-			<!-- <div class="videoPosition">
+			<div class="videoPosition">
 				<input type="range" name="slider-mini" id="videoSlider" value="0" min="0" max="100" data-highlight="true" data-mini="true" />
-			</div> -->
+			</div>
 			<div id='frame' class="page">
 				<div id="volGroup">
 					<div class="upButton">
@@ -361,7 +377,7 @@
 			.albumArt {
 				width: 132px;
 				height: 99px;
-				border: grey 1px solid;
+				border: none;
 			}
 
 			#controlPanel {
@@ -502,13 +518,13 @@
 			.playbackControl {
 				bottom: -5px;
 				position: relative;
-				margin-bottom: 20px;
+				margin-bottom: 3px;
 				text-align: center;
 			}
 			#reloadButton, #volumeButton, #fullScreenButton, #vimeoButton {
 				height: 29px;
 				width: 57px;
-				margin: .5em;
+				margin: 7px 10px;
 				display: inline-block;
 			}
 			#reloadButton.ui-btn-icon-top .ui-icon {
@@ -599,7 +615,7 @@
 
 			#touchcarouselFrame {
 				width: 100%;
-				height: 152px;
+				height: 155px;
 				overflow-x: scroll;
 			}
 			#touchcarousel {
@@ -645,7 +661,7 @@
 				text-shadow: none;
 			}
 			.ui-input-search {
-				border: 2px solid #F1F1F1;
+				border: 2px solid #777;
 				width: 300px;
 				display: inline-block;
 				margin: .5em 10px;
@@ -680,7 +696,7 @@
 			}
 			.upButton {
 				background-color: #333;
-				height: 100px;
+				height: 90px;
 				-webkit-border-top-left-radius: 10%;
 				-webkit-border-top-right-radius: 10%;
 				margin: 1px 10px;
@@ -689,7 +705,7 @@
 			}
 			.downButton {
 				background-color: #333;
-				height: 100px;
+				height: 90px;
 				-webkit-border-bottom-left-radius: 10%;
 				-webkit-border-bottom-right-radius: 10%;
 				margin: 1px 10px;
@@ -750,7 +766,7 @@
 			}
 			.videoPosition .ui-slider {
 				width: 100%;
-				height:10px;
+				height: 10px;
 			}
 			.videoPosition .ui-slider-track.ui-btn-down-c.ui-btn-corner-all.ui-mini {
 				margin: 0px;
@@ -758,6 +774,10 @@
 				width: 100%;
 				height: 5px;
 				border-radius: 0px;
+				background: #777;
+				border: none;
+				border-top: 1px solid #999;
+				border-bottom: 1px solid #999;
 			}
 			.videoPosition .ui-btn-active {
 				background: #333;

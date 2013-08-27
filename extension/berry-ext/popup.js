@@ -18,8 +18,6 @@ window.addEventListener('message', function(e) {
 			syncData();
 		} else {
 			if (extensionData.activeTabId) chrome.tabs.sendMessage(extensionData.activeTabId,{action:'FromPopup', detail: e.data});
-			console.log(e.data);
-//			if (e.data.type=="input") window.close();
 		}
 	}
 });

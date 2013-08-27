@@ -1,0 +1,182 @@
+#demoboCover {
+	position : fixed;
+	top : 0px;
+	left : 0px;
+	width : 100%;
+	height : 100%;
+	z-index : 999999;
+	opacity : 0;
+	color: black;
+	font-family : Helvetica, Arial;
+	font-weight : normal;
+	font-size: 20px;
+	text-shadow : 0 1px white;
+	text-align : center;
+}
+#demoboCover *{
+	text-align: center;
+}
+#demoboCoverDiv {
+	width : 800px;
+	background: #fff -webkit-gradient(linear, 0% 0%, 0% 100%, from(#a1a1a1), to(#fff));
+	margin : 40px auto;
+	border-radius : 10px;
+	border : 3px #504F51 solid;
+}
+#demoboCoverDiv img {
+	width: 180px;
+	margin : 0px;
+	border-radius : 29px;
+	border-width: 3px;
+	background: #fff -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#A1A1A1));
+}
+#demoboClose {
+	position: relative;
+	height: 40px;
+}
+#demoboClose a {
+	position : absolute;
+	margin-top : 10px;
+	right : 30px;
+	position : 30px;
+	cursor : pointer;
+	color : #504F51;
+	border : 2px solid #504F51;
+	border-radius: 20px;
+	background: #fff -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#A1A1A1));
+	font-size : 16px;
+	font-weight : bold;
+	display : inline-block;
+	padding : 11px 3px;
+	text-decoration : none;
+	text-shadow : none;
+	line-height: 6px;
+	width: 20px;
+	height: 4px;
+}
+#demoboClose a:hover {
+	background: #fff -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddd), to(#A1A1A1));
+}
+#demoboHelpPage{
+	width : 100%;
+	height : 575px;
+	padding : 0px;
+	margin-bottom : -8px;
+	margin-top : -248px;
+	border : none;
+}
+
+/* checkbox */
+#demoboCover #settings {
+	position: relative;
+	width: 130px;
+	margin: auto;
+	font-size: 14px;
+}
+#demoboCover ul#checked {
+	list-style: none;
+	position: relative;
+	margin: 0px;
+}
+
+#demoboCover ul#checked li p {
+	display: block;
+	margin-bottom: 20px;
+	background: -moz-linear-gradient(19% 75% 90deg,#000, #666); 
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000), to(#666));
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	border: 1px solid #555555;
+	width: 120px;
+	position: relative;
+	height: 32px;
+}
+
+#demoboCover ul#checked p:before {
+	content: "ON";
+	padding-left: 0px;
+	line-height: 32px;
+	color: #fff;
+	font-size: 14px;
+	text-shadow: #093B5C 0px -1px 1px;
+
+}
+
+#demoboCover ul#checked p:after {
+	content: "OFF";
+	padding-left: 35px;
+	line-height: 32px;
+	color: #fff;
+	font-size: 14px;
+	text-shadow: #093B5C 0px -1px 1px;
+}
+
+#demoboCover .check { 
+	display: block;
+	width: 60px;
+	height: 30px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	background: -moz-linear-gradient(19% 75% 90deg,#FFFFFF, #A1A1A1);
+	background: #fff -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#A1A1A1));
+	border: 1px solid #e5e5e5;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+}
+
+#demoboCover input[type=checkbox] {
+	display: none;
+}
+
+@-webkit-keyframes labelON {
+	0% {
+		top: 0px;
+    	left: 0px;
+	}
+	
+	100% { 
+		top: 0px;
+    	left: 38px;
+	}
+}
+
+#demoboCover input[type=checkbox]:checked + label.check {
+	top: 0px;
+	left: 58px;
+	-webkit-animation-name: labelON; 
+  	-webkit-animation-duration: .2s; 
+  	-webkit-animation-iteration-count: 1;
+  	-webkit-animation-timing-function: ease-in;
+  	-webkit-box-shadow: #244766 -1px 0px 3px;
+}
+
+@-webkit-keyframes labelOFF {
+	0% {
+		top: 0px;
+    	left: 38px;
+	}
+	
+	100% { 
+		top: 0px;
+    	left: 0px;
+	}
+}
+
+#demoboCover input[type=checkbox] + label.check {
+	top: 0px;
+	left: 0px;
+	-webkit-animation-name: labelOFF; 
+  	-webkit-animation-duration: .2s; 
+  	-webkit-animation-iteration-count: 1;
+  	-webkit-animation-timing-function: ease-in;
+  	-webkit-box-shadow: #244766 1px 0px 3px;
+	cursor: pointer;
+}
+
+#demoboCover label.info {
+	cursor: pointer;
+	margin-left: -4px;
+}
+
+/* checkbox done */

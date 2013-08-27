@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>New Shape</title>
+		<script src="http://code.createjs.com/createjs-2013.05.14.min.js"></script>
+		<script>
+			var img, star, stage;
+			var scale;
+			var angle;
+			function init() {
+				handleImageLoad();
+			}
+			
+			function drawPattern1() {
+				patterns = new createjs.Shape();
+				patterns.x = 150;
+				patterns.y = 150;
+			    patterns.graphics.setStrokeStyle(4);
+			    patterns.graphics.beginStroke(createjs.Graphics.getRGB(255,255,255));
+			    
+			    for (var i=0;i<5;i++)
+				{
+					var j=i*10;
+					patterns.graphics.moveTo(j,-50);
+			    	patterns.graphics.lineTo(j,50);
+			    	patterns.graphics.moveTo(-j,-50);
+			    	patterns.graphics.lineTo(-j,50);
+				}
+			    
+			    circle = new createjs.Shape();
+			    circle.x = 150;
+			    circle.y = 150;
+    			circle.graphics.beginFill("black").drawCircle(0, 0, 70);
+    			
+				stage.addChild(circle,patterns);
+				stage.update();
+			}
+			
+
+			function handleImageLoad() {
+
+				//find canvas and load images, wait for last image to load
+				var canvas = document.getElementById("testCanvas");
+
+				// create a new stage and point it at our canvas:
+				stage = new createjs.Stage(canvas);
+
+				drawPattern1();
+				createjs.Ticker.addEventListener("tick", tick);
+			}
+
+			function tick(event) {
+				patterns.rotation += 5;
+				// star.scaleX = star.scaleY = 1.5 + Math.sin(angle) * 3;
+				stage.update(event);
+			}
+
+		</script>
+	</head>
+	<body onload="init();">
+		<h1>New Web Project Page</h1>
+		<div id="loader" class=""></div>
+		<div class="canvasHolder">
+			<canvas id="testCanvas" width="960" height="400"></canvas>
+		</div>
+	</body>
+</html>
+

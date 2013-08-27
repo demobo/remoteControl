@@ -32,3 +32,6 @@ pip-log.txt
 
 .tmp_*
 .*~
+
+#WebStorm
+.idea*

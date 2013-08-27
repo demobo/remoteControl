@@ -1,0 +1,140 @@
+html {
+
+}
+body {
+	height: 100%;
+	padding: 0;
+}
+ul {
+	list-style-type: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+li {
+
+}
+
+h1, h2, h3 {
+	line-height: 40px;
+}
+
+h1 {
+	font-size: 38.5px;
+}
+
+h2 {
+	font-size: 31.5px;
+}
+
+h3 {
+	font-size: 24.5px;
+}
+
+h4 {
+	font-size: 17.5px;
+}
+
+h5 {
+	font-size: 14px;
+}
+
+h6 {
+	font-size: 11.9px;
+}
+
+h1 small {
+	font-size: 24.5px;
+}
+
+h2 small {
+	font-size: 17.5px;
+}
+
+h3 small {
+	font-size: 14px;
+}
+
+h4 small {
+	font-size: 14px;
+}
+
+.demobo-widget-open {
+	display: inline-block;
+	-webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, .3);
+	position: static;
+	border-color: rgba(0, 0, 0, .3);
+	border-top: 1px solid;
+	border-right: 1px solid;
+	border-left: 1px solid;
+}
+
+table td.info {
+	width: 60%;
+}
+
+table td.buttons {
+	padding: 5px;
+}
+.btn.btn-mini {
+	width: 25px;
+	margin: 3px;
+}
+.btn-call {
+	background-color: #34C238;
+}
+.btn-sms {
+	background-color: #61E65E;
+}
+.btn-email {
+	background-color: #6D89F0;
+}
+.btn-map {
+	background-color: #88A6E2;
+}
+.btn-map i {
+	color: #A5D291;
+}
+.btn-gmap {
+	background-color: #5C80C5;
+}
+.btn-gmap i {
+	color: #D82916;
+}
+.btn-safari {
+	background-color: #333333;
+}
+.btn-safari i {
+	color: #77D8EF;
+}
+.btn-chrome {
+	background-color: #333333;
+}
+.btn-chrome i {
+	color: #DFE0B0;
+}
+.btn.btn-mini.btn-chrome {
+	font-size: 9px;
+	line-height: 13px;
+}
+
+.info .title {
+	color: #16a085;
+	width: 140px;
+	max-height: 40px;
+	opacity:0;
+}
+.info .data {
+	width: 140px;
+	word-wrap: break-word;
+	font-size: 14px;
+	height: 37px;
+	overflow: hidden;
+}
+.nav-header {
+	background-color: #16a085;
+	color: #ffffff;
+}
+.table {
+	overflow: hidden;
+}

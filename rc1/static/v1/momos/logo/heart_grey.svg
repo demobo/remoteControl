@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) --><svg height="841.88976pt" id="svg1" inkscape:version="0.44" sodipodi:docbase="d:\ra\svg" sodipodi:docname="heart.svg" sodipodi:version="0.32" width="595.27559pt" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <metadata>
+    <rdf:RDF xmlns:cc="http://web.resource.org/cc/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+      <cc:Work rdf:about="">
+        <dc:title>Heart</dc:title>
+        <dc:description>This is a normal valentines day heart.</dc:description>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li></rdf:li>
+            <rdf:li>valentines</rdf:li>
+            <rdf:li>holiday</rdf:li>
+            <rdf:li>symbol</rdf:li>
+            <rdf:li>valentine</rdf:li>
+            <rdf:li>shapes</rdf:li>
+            <rdf:li>hash(0x8a07724)</rdf:li>
+            <rdf:li>hash(0x8a07754)</rdf:li>
+            <rdf:li>day</rdf:li>
+            <rdf:li>shape</rdf:li>
+            <rdf:li>hash(0x8a076d0)</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:publisher>
+          <cc:Agent rdf:about="http://www.openclipart.org">
+            <dc:title>Jon Phillips</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Jon Phillips</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Jon Phillips</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:date></dc:date>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <cc:license rdf:resource="http://web.resource.org/cc/PublicDomain"/>
+        <dc:language>en</dc:language>
+      </cc:Work>
+      <cc:License rdf:about="http://web.resource.org/cc/PublicDomain">
+        <cc:permits rdf:resource="http://web.resource.org/cc/Reproduction"/>
+        <cc:permits rdf:resource="http://web.resource.org/cc/Distribution"/>
+        <cc:permits rdf:resource="http://web.resource.org/cc/DerivativeWorks"/>
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <defs id="defs3">
+  	<linearGradient
+       id="linearGradient2684">
+      <stop
+         id="stop2686"
+         offset="0"
+         style="stop-color:#ffffff;stop-opacity:1;" />
+      <stop
+         id="stop2688"
+         offset="1"
+         style="stop-color:#000000;stop-opacity:1;" />
+    </linearGradient>
+  	<linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient2684"
+       id="linearGradient2690"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(1.128181,0,0,1.128181,-53.99314,-83.36009)"
+       x1="70.913956"
+       y1="101.74152"
+       x2="70.951942"
+       y2="88.923729" />
+    <linearGradient id="linearGradient2824">
+      <stop id="stop2826" offset="0" style="stop-color:#e60000;stop-opacity:1;"/>
+      <stop id="stop2828" offset="1" style="stop-color:#490000;stop-opacity:1;"/>
+    </linearGradient>
+    <radialGradient cx="265.44135" cy="314.25397" fx="265.44135" fy="314.25397" gradientTransform="matrix(1.367055,0.695376,-0.657311,1.292225,121.3825,-241.0111)" gradientUnits="userSpaceOnUse" id="radialGradient2834" inkscape:collect="always" r="237.91248" xlink:href="#linearGradient2824"/>
+  </defs>
+  <sodipodi:namedview bordercolor="#666666" borderopacity="1.0" id="base" inkscape:current-layer="layer1" inkscape:cx="549.40674" inkscape:cy="596.00159" inkscape:document-units="px" inkscape:guide-bbox="true" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:window-height="615" inkscape:window-width="987" inkscape:window-x="88" inkscape:window-y="116" inkscape:zoom="0.35" pagecolor="#ffffff" showguides="true"/>
+  <g id="layer1" inkscape:groupmode="layer" inkscape:label="Layer 1">
+    <path d="M 246.27285,200.86018 C 180.03285,200.86018 126.2729,254.62017 126.2729,320.86018 C 126.2729,455.61569 262.20605,490.94748 354.83535,624.16822 C 442.40959,491.76486 583.39785,451.31362 583.39785,320.86018 C 583.39785,254.62018 529.63795,200.86017 463.39785,200.86018 C 415.34995,200.86018 373.99625,229.23061 354.83535,270.04768 C 335.67455,229.2306 294.32085,200.86017 246.27285,200.86018 z " id="path7" inkscape:transform-center-x="80" inkscape:transform-center-y="105.71429" sodipodi:nodetypes="ccccccc" style="fill:grey;fill-opacity:1;stroke:grey;stroke-width:35.70000076;stroke-miterlimit:4;stroke-opacity:1"/>
+  </g>
+</svg>

@@ -1,5 +1,5 @@
 ###
-// demobo-portal.js 1.0.0
+// demobo-portal.js 0.9.2
 
 // (c) 2013 Jiahao Li, de Mobo LLC
 ###
@@ -29,32 +29,29 @@ if not window.demoboLoading
     // ---------------
     // Current version
     ###
-    version = '0.9.1'
+    version = '0.9.2'
 
     base = window.demoboBase+'/apps/'
     connectScript = window.demoboBase+'/core/connect.js'
+    faviconScript = window.demoboBase+'/core/favicon.js'
     
     ###
     // This sets the routing of controllers for websites (currently hardcoded)
     ###
     remotes = 
-      'www.pandora.com':     'pandora.com-new.js'
-      'douban.fm':           'douban.fm-new.js'
-      'www.youtube.com':     'youtube.com-new.js'
-      'www.last.fm':         'last.fm-new.js'
-      '8tracks.com':         '8tracks.com-new.js'
-      'vimeo.com':           'vimeo.com-new.js'
-      'youku.com':           'youku.com-new.js'
-      'www.rdio.com':        'rdio.com-new.js'
-      'www.slideshare.net':  'slideshare.net-new.js'
-      'docs.google.com':     'docs.google.com-new.js'
-      'grooveshark.com':     'grooveshark.com-new.js'
-      'play.spotify.com':    'spotify.com-new.js'
-      'sfbay.craigslist.org':'yelp.com.js'
-      'www.yellowpages.com': 'yelp.com.js'
-      'www.foodspotting.com':'yelp.com.js'
-      'www.urbanspoon.com' : 'yelp.com.js'
-      'foursquare.com':      'yelp.com.js'
+      '^http://www\\.pandora\\.com':     'pandora.com-new.js'
+      '^http://douban\\.fm':           'douban.fm-new.js'
+      'www\\.youtube\\.com':     'youtube.com-new.js'
+      'www\\.last\\.fm\/listen':         'last.fm-new.js'
+      '8tracks\\.com':         '8tracks.com-new.js'
+      'vimeo\\.com':           'vimeo.com-new.js'
+      'youku\\.com':           'youku.com-new.js'
+      'www\\.rdio\\.com':        'rdio.com-new.js'
+      'www\\.slideshare\\.net':  'slideshare.net-new.js'
+      'docs\\.google\\.com\/presentation':     'docs.google.com-new.js'
+      'grooveshark\\.com':     'grooveshark.com-new.js'
+      'play\\.spotify\\.com':    'spotify.com-new.js'
+      'www\\.npr\\.org':       'npr.org.js'
 
     ###
     // definitions of utilities 
@@ -72,7 +69,7 @@ if not window.demoboLoading
     ###
     // Try to preload demobo API and other scripts as early as possible
     ###
-    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js')
+    cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js')
     cacheJS(connectScript)
 
     ###
@@ -168,7 +165,7 @@ if not window.demoboLoading
         defaultConfig = 
           'developer': 'developer@demobo.com'
 
-        @boboInfos['priority'] = 1   
+        @boboInfos['priority'] = 0   
         @boboInfos['config'] = defaultConfig
         @boboInfos['boboID'] = null
         @boboInfos['connectedDevices'] = {}
@@ -191,6 +188,30 @@ if not window.demoboLoading
           return true
         else
           return false
+
+      ###
+      // return true if it is extension
+      ###
+      isExtension: ()->
+        return @portal.isExtension()
+
+      ###
+      // return true if it is standalone mode
+      ###
+      isStandalone: ()->
+        return @portal.isStandalone()
+
+      ###
+      // return true if it is bookmarklet mode
+      ###
+      isBookmarklet: ()->
+        return @portal.isBookmarklet()
+
+      ###
+      // alert
+      ###
+      alert: (info)->
+        @portal.alert(info)
 
       ### 
       //Call the function on device. if `devicedID` is not specified, call the function on all devices connected to this bobo 
@@ -253,7 +274,12 @@ if not window.demoboLoading
       ###
       // reservered for future use 
       ###
-      resume: ->
+      resumeBobo: ->
+
+      ###
+      // reservered for future use 
+      ###
+      pauseBobo: ->
 
       ###
       // reservered for future use 
@@ -312,8 +338,27 @@ if not window.demoboLoading
       connectedHandler: (portal)->
         return (data)->
           console.log('connected')
+          if not portal.isStandalone()
+            if parseFloat(data.appVersion)<3.0
+              portal.alert('Please install deMobo v3.0+ for this feature. (iPhone Only)')
           portal.setDeviceController(portal.get('curBobo'), data.deviceID)
           portal.addDevice(data.deviceID)
+
+      ###
+      // Handler that runs when demobo is enabled
+      ###
+      enabledHandler: (portal)->
+        return (data)->
+          console.log('enabled')
+          portal.turnOnFavicon()          
+
+      ###
+      // Handler that runs when demobo is disabled
+      ###
+      disabledHandler: (portal)->
+        return (data)->
+          console.log('disabled')
+          portal.turnOffFavicon()
 
       ###
       // Handler that runs when a new device is disconnected
@@ -322,7 +367,7 @@ if not window.demoboLoading
         return (data)->
           console.log('mbcommand')
           switch data.value.command
-            when 'switchBobo' then portal.switchBobo(data.value.boboID) 
+            when 'switchBobo' then portal.switchBobo(data.value.boboID, true) 
             else false
               
 
@@ -354,24 +399,70 @@ if not window.demoboLoading
       // Get current website's remote control url
       ###
       getRemote: ()->
-        domain = document.domain
+        url = document.URL
         for key, val of remotes
-          if key is domain
+          pat = new RegExp(key)
+          if pat.test(url)
             return val
         return null
+
+      ###
+      // return true if the url is absolute(pretty naive now)
+      ###
+      isAbsolute: (url)->
+        return url.substr(0, 4) is 'http'
 
       ###
       // Return an object that contains all available bobos for the current website.
       ###
       getBoboRoutes: ()->
+        if (window.demoboDevBobos)
+          for exp, arr of window.demoboDevBobos
+            temp = []            
+            for url in arr
+              if @isAbsolute(url)
+                temp.push(url)
+              else
+                temp.push(base+url)
+            window.demoboDevBobos[exp] = temp
+          return window.demoboDevBobos
+        
         toReturn = 
           'input': base+'inputtool-new.js'
-          'dummy': base+'dummy.js'
+          'browsertool': base+'browsertool-new.js'
+          'help': base+'help.js'
+        
+        if (window.demoboAddBobos)
+          count = 0
+          for exp, arr of window.demoboAddBobos
+            for url in arr
+              if this.isAbsolute(url)
+                toReturn['add'+count] = url
+              else
+                toReturn['add'+count] = base + url
+              count++
+        
         remote = this.getRemote()
         if remote
           toReturn['remote'] = base + remote
         return toReturn
 
+      ###
+      // Return true if this is extension
+      ###
+      isExtension: ()->
+        return (@get('mode') is "EXTENSION")
+
+      ###
+      // return true if it is standalone mode
+      ###
+      isStandalone: ()->
+        return (@get('mode') is "STANDALONE") 
+      ###
+      // return true if it is bookmarklet mode
+      ###
+      isBookmarklet: ()->
+        return (@get('mode') is "BOOKMARKLET")
 
       ###
       //Called immediately upon the object's instantiation (guaranteed) 
@@ -386,11 +477,19 @@ if not window.demoboLoading
         this.set('boboDeviceMap', {})
         this.set('curBobo', null)
         this.set('boboRoutes', boboRoutes)
+        this.set('lastBoboID', this.loadLastBoboID())
+
+        if window._extension is 1
+          @set('mode', 'EXTENSION')
+        else
+          @set('mode', 'STANDALONE')
 
         ###
         // Register event handlers for connected, disconnected,  
         ###
         @demobo.addEventListener('connected', demoboHandlers.connectedHandler(this))
+        @demobo.addEventListener('enabled', demoboHandlers.enabledHandler(this))
+        @demobo.addEventListener('disabled', demoboHandlers.disabledHandler(this))
         @demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this))
         @demobo.addEventListener('mb', demoboHandlers.mbHandler(this))
 
@@ -403,7 +502,7 @@ if not window.demoboLoading
 
         window.addEventListener('focus', ()->
           setTimeout(()->
-            window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
+            window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
           , 1000)
         )
 
@@ -474,8 +573,41 @@ if not window.demoboLoading
             info['active'] = 1
           boboInfos.push(info)
         
-        toSend['bobos'] = boboInfos
+#        toSend['bobos'] = boboInfos
+        toSend['bobos'] = this.getBobosInfo()
         return @demobo.setController(toSend, deviceID)
+
+      ###
+      // get information of bobos
+      ###
+      getBobosInfo: ()->
+        boboInfos = []
+        curBoboID = this.get('curBobo').getInfo('boboID')
+        for boboID, bobo of this.get('bobos')
+          info = {}
+          info['id'] = boboID
+          info['icon'] = bobo.getInfo('iconClass')
+          info['description'] = bobo.getInfo('description')
+          info['name'] = bobo.getInfo('name')
+          info['type'] = bobo.getInfo('type')
+          info['priority'] = bobo.getInfo('priority')
+          info['iconName'] = bobo.getInfo('iconClass')
+          if boboID is curBoboID
+            info['active'] = 1
+          boboInfos.push(info)
+        boboInfos.sort((a, b)->
+          if (a.priority>b.priority)
+            return -1
+          else if (a.priority<b.priority)
+            return 1
+          else
+            if (a.id<b.id)
+              return -1
+            else if (a.id is b.id)
+              return 0
+            else
+              return 1
+        )
       
       ###
       //Return true if `deviceID` is already in the mapping; false otherwise.
@@ -532,10 +664,24 @@ if not window.demoboLoading
         @demobo.setController(controller)
 
       ###
+      // Set most recently used bobo in localstorage
+      ###
+      saveLastBoboID: ()->
+        window.localStorage.setItem('demoboLastBobo', this.get('curBobo').getInfo('boboID'))
+
+      ###
+      // get most recently used bobo in localstorage
+      ###
+      loadLastBoboID: ()->
+        return window.localStorage.getItem('demoboLastBobo')
+
+      ###
       // Switch to another bobo 
       ###
-      switchBobo: (boboID)->
-        oldBoboID = this.get('curBobo').getInfo('boboID')
+      switchBobo: (boboID, callResume)->
+        oldBobo = this.get('curBobo')
+        oldBoboID = oldBobo.getInfo('boboID')
+        oldBobo.pauseBobo()
         boboDeviceMap = this.get('boboDeviceMap')
         deviceBoboMap = this.get('deviceBoboMap')
         
@@ -552,8 +698,21 @@ if not window.demoboLoading
         for deviceID in devices
           this.setDeviceController(newBobo, deviceID)
 
-        newBobo.resume()
+        if (callResume)
+          newBobo.resumeBobo()
+        if this.shouldSaveBoboID(boboID)
+          this.saveLastBoboID()
         return true
+
+      ###
+      // return false if the bobo is a "platform" bobo such as catalog, phone ...
+      ###
+      shouldSaveBoboID: (boboID)->
+        platformBobos = [
+          'catalog'
+          'help'
+        ]
+        return not (boboID in platformBobos)
      
       ###
       // Take an argument of a extended `Bobo` class and create a new `Bobo` instance. 
@@ -583,9 +742,12 @@ if not window.demoboLoading
             this.set('curBobo', boboObj)
             ### shame to have to code this like this... ###
             setTimeout(()->
-              window.demobo.getDeviceInfo.apply(window.demobo, ['', 'g=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
+              window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}'])
             , 1000)
-          else if boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority')
+          else if (boboID is this.get('lastBoboID'))
+            boboObj.setInfo('priority', 10)
+            this.switchBobo(boboObj.getInfo('boboID')) 
+          else if (not (this.get('curBobo').getInfo('boboID') is this.get('lastBoboID'))) and ((boboObj.getInfo('priority')>this.get('curBobo').getInfo('priority'))) 
             this.switchBobo(boboObj.getInfo('boboID'))
            
           #this.setController(boboObj.getInfo('controller'))
@@ -628,6 +790,28 @@ if not window.demoboLoading
         return oldVal
 
       ###
+      // alert
+      ###
+      alert: (info)->
+        window.alert(info)
+
+      ###
+      // turnoff favicon
+      ###
+      turnOffFavicon: ()->
+        favicon = this.get('favicon')
+        if favicon
+          favicon.turnOff()
+
+      ###
+      // turn on favicon
+      ###
+      turnOnFavicon: ()->
+        favicon = this.get('favicon')
+        if favicon
+          favicon.turnOn()
+
+      ###
       // Create the view of a bobo, which would be showed up in portal 
       ###
       createBoboView: (boboID, boboInfo)->
@@ -638,7 +822,7 @@ if not window.demoboLoading
     //----------------
     // instantiate a `DemoboPortal` object and expose to global use
     ###
-    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.0.min.js',()->
+    loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js',()->
 
       demoboPortal = new DemoboPortal()
       window.demoboPortal = demoboPortal
@@ -650,6 +834,11 @@ if not window.demoboLoading
         window.__dmtg = ()->
           visible = document.getElementById('demoboConnect').style.top isnt ''
           if visible then window._hideDemoboConnect() else window._showDemoboConnect()
+      )
+
+      loadJS(faviconScript, ()->
+        favicon = new DeMoboFavicon()
+        demoboPortal.set('favicon', favicon)
       )
     )
 

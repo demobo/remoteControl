@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-orientations" content="landscape-right" />
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.js"></script>
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.min.css" />
+		<link rel="stylesheet" href="control.css" />
+		<script>
+			var syncEnable = true;
+			$(document).ready(function() {
+				$('.nextButton').hide();
+				non480x320Adjust();
+				$('#smallButton').bind('click', tabAnimation);
+				$('img').bind('load', flipAlbumArt);
+				$('body').on('click', '#albumArt', function() {
+					$('#playPauseButton').click();
+				});
+				// silent button
+				$('#volumeButton').on('vclick', function(){
+					$('#volumeSlider').val(0);
+					$('#volumeSlider').slider('refresh');
+					onSlideChange();
+				});
+				$('#volumeSlider').on('slidestart',function(){
+					syncEnable = false;
+					$(this).on('change',onSlideChange);
+					onSlideChange();
+				}).on('slidestop',function(){
+					syncEnable = true;
+					$(this).off('change',onSlideChange);
+				});
+				$('#videoSlider').on('slidestart',function(){
+					syncEnable = false;
+					$(this).on('change',onVideoSlideChange);
+					onVideoSlideChange();
+				}).on('slidestop',function(){
+					syncEnable = true;
+					$(this).off('change',onVideoSlideChange);
+				});
+				var onSlideChange = function(){
+					updateVolume();
+					demobo.mobile.fireInputEvent('volumeSliderChange', $('#volumeSlider').val());
+				};
+				var onVideoSlideChange = function(){
+					demobo.mobile.fireInputEvent('videoSliderChange', $('#videoSlider').val());
+				};
+				$('body').on('click', '.list-item p', function() {
+					$('#stationItem').click();
+				});
+			});
+			
+			function updateVolume() {
+				if ($('#volumeSlider').val()==0) {
+					$('#volumeButton').addClass('off');
+				}
+				else {
+					$('#volumeButton').removeClass('off');
+				}
+			}
+
+			function non480x320Adjust() {
+				var screenHeight = $(window).height();
+				// zoomAdjust for non iphones
+                $('#frame').css('zoom', screenHeight / 320);
+                // jquery mobile input range is not working with zoom
+                $('.volumeControl').css('zoom', 320 / screenHeight);
+			}
+			
+			function loadSongInfo(songs) {
+				if ($.isArray(songs)) {
+					var song = songs[0];
+					var nextSong = songs[1];
+				} else
+					var song = songs;
+				$('#songName').text(song.title);
+				$('#artist').text(song.artist);
+				$('img.newAlbumArt').attr('src', song.image);
+			}
+
+			function tabAnimation() {
+				if ($('#listTab').css('left') == '80px') {
+					$('#listTab').animate({
+						'left' : '480px'
+					}, 'slow');
+				} else {
+					$('#listTab').animate({
+						'left' : '80px'
+					}, 'slow');
+				}
+			}
+
+			//function handler of img onload event
+			function flipAlbumArt() {
+				$('img.currentAlbumArt').toggleClass('to90 to0').bind('webkitTransitionEnd', function() {
+					$('img').toggleClass('currentAlbumArt newAlbumArt')
+					setTimeout(function() {
+						$('img.currentAlbumArt').toggleClass('to90 to0');
+					}, 0);
+					$(this).unbind('webkitTransitionEnd');
+					if ($('#listTab').css('left') == '80px') {
+						$('#listTab').animate({
+							'left' : '480px'
+						}, 'slow');
+					}
+				});
+			}
+
+			function loadChannelList(list) {
+				$('#list-items').html('');
+				$.each(list, function(index, value) {
+					if (value.selected)
+						var option = $('<div class="list-item selected"><a id="stationItem" value="' + index + '">' + value.title + '</a></div>');
+					else
+						var option = $('<div class="list-item"><a id="stationItem" value="' + index + '">' + value.title + '</a><p>' + value.subtitle + '</p></div>');
+					$('#list-items').append(option);
+					if (value.selected)
+						setCurrentChannel(index);
+				});
+			}
+
+			function setCurrentChannel(index) {
+				$('#list-items .list-item').removeClass('selected');
+				$($('#list-items .list-item')[index]).addClass('selected');
+			}
+
+			function syncState(state) {
+				if (!syncEnable)
+					return;
+				if (state.isPlaying) {
+					$('#playPauseButton').removeClass('playButton').addClass('pauseButton');
+				} else {
+					$('#playPauseButton').removeClass('pauseButton').addClass('playButton');
+				}
+				$('#volumeSlider').val(state.volume);
+				$('#volumeSlider').slider('refresh');
+				
+				$('#videoSlider').val(state.position);
+				$('#videoSlider').slider('refresh');
+				
+				if (state.enableNextButton) $('.nextButton').show();
+			}
+			
+			function syncStory(story) {
+				console.log("synceSTORY");
+				if (!syncEnable)
+					return;
+				if (story.curStory) {
+					$('.story-slug').text(story.curSlug);
+					$('.story-title').text(story.curStory);
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div id="main">
+			<div id='frame'>
+				<div id='content'>
+					<div class="story">
+						<h5 class="story-slug"></h5>
+						<h1 class="story-title">Demo Video</h1>
+						<div class="videoPosition">
+							<input type="range" name="slider-mini" id="videoSlider" value="0" min="0" max="100" data-highlight="true" data-mini="true" />
+						</div>
+					</div>
+					<div id='controlPanel'>
+						<div class="volumeControl">
+							<div class="volumeButton" id="volumeButton"></div>
+							<input type="range" name="slider-mini" id="volumeSlider" value="25" min="0" max="100" data-highlight="true" data-mini="true" />
+							<div class="volume-overlay"></div>
+						</div>
+						<div class="buttons">
+							<ul class="jp-controls unstyled">
+								<!-- <li>
+									<a href="javascript:;" class="backButton" id="previousButton" tabindex="1">previous</a>
+								</li> -->
+								<li>
+									<a href="javascript:;" class="playButton" id="playPauseButton" tabindex="1" style="display: block;">playpause</a>
+								</li>
+								<li>
+									<a href="javascript:;" class="nextButton" id="nextButton" tabindex="1" data-bind="click: playNext">next</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					
+					<div class="border"></div>
+					 
+				</div>
+				
+			</div>
+		</div>
+	</body>
+</html>

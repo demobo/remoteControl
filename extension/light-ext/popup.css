@@ -1,0 +1,132 @@
+html {
+    background: white;
+    border: none;
+    zoom: 0.8;
+}
+
+body {
+    height: 742px;
+    width: 382px;
+    color: white;
+    margin: 0;
+    padding: 0px;
+    -webkit-user-select: none;
+}
+
+iframe {
+	display: block;
+    height: 480px;
+    width: 320px;
+    background: #444;
+    position: absolute;
+    left: 24px;
+    top: 122px;
+	border-radius: 0px;
+    border-width: 7px;
+	border-style: solid;
+}
+
+.white iframe {
+	border-color: #ddd;
+}
+
+.black iframe {
+	border-color: #222;
+}
+
+.white .phone{
+	background-color: #fff;
+	border-color: #888;
+}
+
+.black .phone {
+	background-color: #000;
+	border-color: #888;
+}
+.phone {
+    position: absolute;
+    background-clip: padding-box;
+    height: 722px;
+    width: 362px;
+    border-radius: 58px;
+    border-width: 10px;
+	border-style: solid;
+    opacity: 0.9;
+}
+
+.speaker1 {
+    position: absolute;
+    background: black;
+    background-clip: padding-box;
+    height: 10px;
+    width: 65px;
+    border-radius: 8px;
+    border: grey 4px solid;
+    left: 145px;
+    top: 46px;
+}
+
+.speaker2 {
+    position: absolute;
+    background: black;
+    background-clip: padding-box;
+    height: 8px;
+    width: 35px;
+    border-radius: 6px;
+    border: grey 2px solid;
+    left: 162px;
+    top: 17px;
+}
+
+.camera {
+    position: absolute;
+    background: black;
+    background-clip: padding-box;
+    width: 3px;
+    height: 3px;
+    border-radius: 6px;
+    border: grey 5px solid;
+    left: 240px;
+    top: 49px;
+}
+
+.homebutton {
+    position: absolute;
+    background-color: inherit;
+    background-clip: padding-box;
+    width: 65px;
+    height: 65px;
+    border-radius: 60px;
+	border-color: inherit;
+    border-width: 2px;
+	border-style: solid;
+    right: 147px;
+    bottom: 23px;
+	cursor: pointer;
+	opacity: 0.5;
+}
+.white .homebutton.connected {
+	border-color: #0697c5;
+}
+.black .homebutton.connected {
+	border-color: #0697c5;
+}
+.homebutton:hover {
+	opacity: 0.7;
+}
+.homebutton:active {
+	opacity: 1;
+}
+.homebuttonIcon {
+    position: relative;
+    background-color: inherit;
+    background-clip: padding-box;
+    width: 21px;
+    height: 21px;
+    border-radius: 8px;
+	border-color: inherit;
+    border-width: 2px;
+	border-style: solid;
+    margin: auto;
+    top: 20px;
+}

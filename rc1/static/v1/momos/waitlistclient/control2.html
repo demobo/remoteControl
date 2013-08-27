@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-orientations" content="portrait" />
+		<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
+		<link href='http://fonts.googleapis.com/css?family=Nova+Square' rel='stylesheet' type='text/css'>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+		<script src="http://api.demobo.com/demobo.mobile.1.0.1.min.js"></script>
+        <script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+        <script>
+        	var syncEnable = true;
+            $(document).ready(function(){
+				non480x320Adjust();
+				$('.depth').on("touchstart", function(){demobo.mobile.fireInputEvent(this.id, "");});
+            });
+			function sendTouchEvent(event) {
+				event.preventDefault();
+				if (event.targetTouches.length == 1) {
+				    var touch = event.targetTouches[0];
+				    demobo.mobile.fireInputEvent('demoboEvent', {type: event.type, x: touch.pageX, y: touch.pageY});
+				}
+			}
+			function non480x320Adjust() {
+				var screenWidth = $(window).width();
+				// zoomAdjust for non iphones
+                $('body').css('zoom', screenWidth / 320);
+			}
+			
+			function renderAnswers(answers) {
+				for (var i in answers) {
+					$('.answer div').eq(i).html('<span>'+answers[i]+'</span>');
+				}
+				$('#main').animate({
+			    	scrollTop: $(".answer").offset().top
+			    }, 300);
+			}
+			function renderBuzzer() {
+				$('#main').animate({
+			    	scrollTop: $(".buzzer").offset().top
+			    }, 300);
+			}
+        </script>
+    </head>
+    <body>
+        <div id="main" data-role=page>
+			<div class="party">
+				<div id="b1" class="depth" type="button" data-role="none"></div>
+				<div id="b2" class="depth" type="button" data-role="none"></div>
+				<div id="b3" class="depth" type="button" data-role="none"></div>
+				<div id="b4" class="depth" type="button" data-role="none"></div>
+			</div>
+        </div>
+        <style>
+        	.ui-body-c, .ui-overlay-c {
+                width: 100%;
+				height: 100%;
+                overflow: hidden;
+                font-family: 'Nova Square', cursive;
+				color: #F1F1F1;
+				-webkit-user-select: none;
+				background: #222;
+            }
+			.ui-page {
+				background: transparent;
+			}
+            #main {
+            	width: 100%;
+				height: 100%;
+				overflow: hidden;
+				white-space: nowrap;
+			}
+
+			/* buzzer button */
+			.buzzer, .answer {
+				height: 100%;
+                width: 100%;
+			}
+			#buzzer {
+			    left: 50%;
+				margin: -80px;
+				position: absolute;
+				top: 30%;
+				-webkit-box-align: center;
+				text-align: center;
+				border-radius: 80px;
+				height: 160px;
+				width: 160px;
+				line-height: 160px;
+				background: #700517;
+				color: #903030;
+			}
+			#buzzer:active {
+				line-height: 166px;
+				color: #a03030;
+			}
+			
+			.answer div {
+			    width: 280px;
+			    height: 90px;
+			    font-size: 20px;
+			    -webkit-box-align: center;
+				text-align: center;
+				border-radius: 10px;
+				line-height: 30px;
+				margin: 25px 20px;
+				white-space: pre-wrap;  
+			}
+			.answer div:active {
+			    line-height: 30px;
+			}
+			.answer div span {
+				display: table-cell;
+				vertical-align: middle;
+				height: 90px;
+				width: 280px;
+			}
+			#b1 {
+				background: #1589FF;
+				color: #153E7E;
+			}
+			#b2 {
+				background: #FFA500;
+				color: #7E3117;
+			}
+			#b3 {
+				background: #41A317;
+				color: #254117;
+			}
+			#b4 {
+				background: #FFFC17;
+				color: #827839;
+			}
+			#b1:active {
+				color: #153EaE;
+			}
+			#b2:active {
+				color: #aE3117;
+			}
+			#b3:active {
+				color: #258117;
+			}
+			#b4:active {
+				color: #a2a839;
+			}
+			/* 3D Button */
+			
+			.depth {
+			    border: none;
+			    box-shadow: inset 0 0 2px 2px hsla(0,0%,0%,.2),
+			                inset 0 0 2px 4px hsla(0,0%,0%,.2),
+			                inset 0 0 2px 6px hsla(0,0%,0%,.2),
+			                inset 0 0 1px 8px hsla(0,0%,0%,.5),
+			                inset 0 -4px 2px 4px hsla(0,0%,0%,.5),
+			                inset 0 1px 1px 8px hsla(0,0%,100%,.25),
+			                inset 0 -30px 30px hsla(0,0%,0%,.2),
+			                0 -4px 8px 4px hsla(0,0%,0%,.5),
+			                0 10px 10px hsla(0,0%,0%,.25),
+			                0 0 2px 2px hsla(0,0%,0%,.2),
+			                0 0 2px 4px hsla(0,0%,0%,.2),
+			                0 0 2px 6px hsla(0,0%,0%,.2),
+			                0 0 2px 8px hsla(0,0%,0%,.5),
+			                0 1px 2px 8px hsla(0,0%,100%,.25),
+			                0 -1px 2px 8px hsla(0,0%,0%,.5);
+			    cursor: pointer;
+			    font: bold 40px/85px 'Nova Square', cursive;
+			    
+			    padding: 0;
+			    text-shadow: 0 1px 1px hsla(0,0%,100%,.25),
+			                 0 -1px 1px hsla(0,0%,0%,.75);
+			}
+			.depth:active {
+				text-shadow: 0 0 20px hsla(240,75%,75%,.5),
+			                 0 1px 1px hsla(0,0%,100%,.25),
+			                 0 -1px 1px hsla(0,0%,0%,.75);
+			    box-shadow: inset 0 0 2px 2px hsla(0,0%,0%,.2),
+			                inset 0 0 2px 4px hsla(0,0%,0%,.2),
+			                inset 0 0 2px 6px hsla(0,0%,0%,.2),
+			                inset 0 0 1px 7px hsla(0,0%,0%,.5),
+			                inset 0 5px 15px 7px hsla(0,0%,0%,.15),
+			                inset 0 -4px 2px 3px hsla(0,0%,0%,.5),
+			                inset 0 1px 1px 7px hsla(0,0%,100%,.25),
+			                inset 0 -30px 30px hsla(0,0%,0%,.1),
+			                inset 0 30px 30px hsla(0,0%,0%,.2),
+			                0 -4px 8px 4px hsla(0,0%,0%,.5),
+			                0 5px 10px hsla(0,0%,0%,.25),
+			                0 0 2px 2px hsla(0,0%,0%,.2),
+			                0 0 2px 4px hsla(0,0%,0%,.2),
+			                0 0 2px 6px hsla(0,0%,0%,.2),
+			                0 0 2px 8px hsla(0,0%,0%,.5),
+			                0 1px 2px 8px hsla(0,0%,100%,.25),
+			                0 -1px 2px 8px hsla(0,0%,0%,.5);
+			}​
+        </style>
+    </body>
+</html>

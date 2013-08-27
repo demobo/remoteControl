@@ -132,7 +132,8 @@
 				}
 				if (state.volume) {
 					$('#volumeSlider').val(state.volume);
-					$('#volumeSlider').slider('refresh');
+					// prevent event firing
+					// $('#volumeSlider').slider('refresh');
 				}
 				if (state.position) {
 					$('#videoSlider').val(state.position);
@@ -335,7 +336,7 @@
             .albumArt {
               	width: 132px;
 				height: 99px;
-				border: grey 1px solid;
+				border: none;
             }
             
             #controlPanel {
@@ -476,7 +477,7 @@
 			.playbackControl {
 				bottom: -5px;
 				position: relative;
-				margin-bottom: 20px;
+				margin-bottom: 3px;
 				text-align: center;
 			}
 			#reloadButton, #volumeButton,#youtubeButton {
@@ -608,7 +609,7 @@
 				text-shadow: none;
 			}
 			.ui-input-search {
-				border: 2px solid #F1F1F1;
+				border: 2px solid #777;
 				width: 300px;
 				display: inline-block;
 				margin: .5em 10px;
@@ -643,7 +644,7 @@
 			}
 			.upButton{
 				background-color: #333;
-				height: 100px;
+				height: 90px;
 				-webkit-border-top-left-radius: 10%;
 				-webkit-border-top-right-radius: 10%;
 				margin: 1px 10px;
@@ -652,7 +653,7 @@
 			}
 			.downButton{
 				background-color: #333;
-				height: 100px;
+				height: 90px;
 				-webkit-border-bottom-left-radius: 10%;
 				-webkit-border-bottom-right-radius: 10%;
 				margin: 1px 10px;
@@ -730,7 +731,12 @@
 			}
 			.videoPosition .ui-slider {
 				width: 100%;
-				height: 10px;
+				height: 5px;
+				margin: 0px;
+				border-radius: 0px;
+				border: none;
+				border-top: 1px solid #999;
+				border-bottom: 1px solid #999;
 			}
 			.videoPosition .ui-slider-track.ui-btn-down-c.ui-btn-corner-all.ui-mini {
 				margin: 0px;
@@ -745,6 +751,8 @@
 			}
 			.videoPosition .ui-btn-active {
 				background: #333;
+				margin: 0px;
+				border-radius: 0px;
 			}
         </style>
     </body>

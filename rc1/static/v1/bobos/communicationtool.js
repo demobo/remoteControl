@@ -128,6 +128,7 @@
 			this.craigslistParser();
 			this.sendToPhone();
 		} else {
+			return;
 			var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function(error, dom) {
 				if (!error) {
 					// soupselect happening here...

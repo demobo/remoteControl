@@ -47,11 +47,11 @@
 	  
     this.setInfo('curChannel', 0);
 	
-
-//		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
-//		if (!/couchmode/.test(location.pathname)) return;
+// demobo._sendToSimulator('setData', {key: 'url', value: location.href});
+// if (!/couchmode/.test(location.pathname)) return;
 		this.setController( {
-			url : 'http://rc1.demobo.com/v1/momos/vimeo/control.html?0130',
+			url : 'http://rc1.demobo.com/v1/momos/vimeo/control.html?0823',
+//			url : 'http://10.0.0.18:1240/v1/momos/vimeo/control.html?0.5667568524',
 			orientation: 'portrait'
 		});
 		// your custom demobo input event dispatcher
@@ -66,6 +66,7 @@
 			'loveButton' : 		  'like',
 			'spamButton' : 		  'dislike',
 			'volumeSlider' : 	  'setVolume',
+			'videoSliderChange' : 'setProgress',
 			'stationItem' : 	  'chooseStation',
 			'playAlbum' :		    'playAlbum',
 			'staffPicks':		    'staffPicks',
@@ -100,7 +101,7 @@
     var ui = this.getInfo('ui');
 		$(ui.playPauseButton).click();
 		$(ui.lightboxOverlay).click();
-//		BigScreen.getVideo().play();
+// BigScreen.getVideo().play();
 	};
 
 	Vimeo.prototype.next = function () {
@@ -137,6 +138,14 @@
 		$(ui.dislikeButton).click();
 	};
 
+	Vimeo.prototype.setProgress = function(num) {
+		BigScreen.getVideo().setCurrentTime(BigScreen.getVideo().duration * num / 100.0);
+	};
+
+	Vimeo.prototype.getPosition = function() {
+		return Math.floor((BigScreen.getVideo().currentTime * 1.0 / BigScreen.getVideo().duration) * 100);
+	};
+	
 	Vimeo.prototype.setVolume = function (num) {
 		if (num>=0) localStorage.setItem('demoboVolume',num);
 		else num = localStorage.getItem('demoboVolume')||50;
@@ -206,15 +215,19 @@
 				$('#ottoman').blur();
 			}, 2000);
 		},500);
-//		token = $("input[name=token]", "#search_form").val();
-//        GlobalEventDispatcher.publish({type: LightboxEvent.HIDE_LIGHTBOX});
-//        GlobalEventDispatcher.publish({type: SearchLightboxEvent.DISPLAY_RESULTS,stream: {section: "search",
-//                context: f.val(),page: 1,sort: SortMethod.RELEVANT,user: null,search_term: keyword,token: token,items: n.items,total_items: n.total_items,current_item: null}});
-//		CouchData.streams.browsing.search_term=keyword;
-//		CouchData.streams.browsing.section = "search";
-//		CouchData.streams.browsing.sort = "relevant";
-//		CouchData.streams.browsing.token = token;
-//		GlobalEventDispatcher.publish({type: CouchApplicationEvent.DATA_REFRESHED,couch_data: CouchData});
+// token = $("input[name=token]", "#search_form").val();
+// GlobalEventDispatcher.publish({type: LightboxEvent.HIDE_LIGHTBOX});
+// GlobalEventDispatcher.publish({type:
+// SearchLightboxEvent.DISPLAY_RESULTS,stream: {section: "search",
+// context: f.val(),page: 1,sort: SortMethod.RELEVANT,user: null,search_term:
+// keyword,token: token,items: n.items,total_items: n.total_items,current_item:
+// null}});
+// CouchData.streams.browsing.search_term=keyword;
+// CouchData.streams.browsing.section = "search";
+// CouchData.streams.browsing.sort = "relevant";
+// CouchData.streams.browsing.token = token;
+// GlobalEventDispatcher.publish({type:
+// CouchApplicationEvent.DATA_REFRESHED,couch_data: CouchData});
 	};
 
 	Vimeo.prototype.reload = function () {
@@ -280,8 +293,8 @@
 	};
 
 	Vimeo.prototype.setupStationTrigger = function () {
-    var ui = this.getInfo('ui');
-    var vimeo = this;
+		var ui = this.getInfo('ui');
+		var vimeo = this;
 		var triggerDelay = 50;
 		var trigger = $(ui.stationTrigger)[0];
 		var _this = {
@@ -301,8 +314,8 @@
 	};
 
 	Vimeo.prototype.setupStateTrigger = function () {
-    var ui = this.getInfo('ui');
-    var vimeo = this;
+		var ui = this.getInfo('ui');
+		var vimeo = this;
 		GlobalEventDispatcher.subscribe(FlideoEvent.PLAY, function(e){
 			vimeo.syncState.apply(vimeo, []);
 			$(ui.lightboxOverlay).click();
@@ -311,6 +324,9 @@
 			vimeo.syncState.apply(vimeo, []);
 			$(ui.lightboxOverlay).click();
 		});
+		setInterval(function(){
+			if (BigScreen.getVideo().playing) vimeo.syncState.apply(vimeo, []);
+		}, 1000);
 	};
 
 	Vimeo.prototype.setupVolume = function () {
@@ -375,7 +391,11 @@
 	};
 	
 	Vimeo.prototype.syncState = function () {
-		var state = {isPlaying: BigScreen.getVideo().playing, volume: this.getVolume()};
+		var state = {
+				isPlaying: BigScreen.getVideo().playing, 
+				volume: this.getVolume(),
+				position : this.getPosition()
+		};
 		this.callFunction('syncState', state);
 	};
 	

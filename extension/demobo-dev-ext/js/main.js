@@ -5,7 +5,8 @@ var appEnginePort = 1240;
 var addBobos = {
   	// '.*':['https://localhost:443/v1/bobos/docs.google.com-new.js']
   	// '.*':['https://localhost/v1/bobos/communicationtool.js']
-  	'.*':['https://localhost/v1/bobos/youtube.com-new.js']
+//  	'.*':['https://localhost/v1/bobos/youtube.com-new.js']
+		'.*':['http://localhost:1240/v1/bobos/vimeo.com-new.js']	
   }; 
 
 //modify setBobos if you wanna replace the existing bobos

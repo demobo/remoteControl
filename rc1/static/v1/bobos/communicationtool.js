@@ -23,18 +23,15 @@
     var demoboWidget = document.getElementById('demobo_overlay');
     // demoboWidget.style.display = "block";
     this.setInfo('paused', 0);
-  }
+  };
 
   Communication.prototype.onReady = function() {
-    console.log('onready is called')
-    console.log(arguments);
-    console.log(Communication.telephones);
     this.sendToPhone();
-  }
+  };
   
   // override the initialize function of Bobo
   Communication.prototype.initialize = function() {
-    this.getInfo('config')['iconUrl'] = 'test1.png'
+    this.getInfo('config')['iconUrl'] = 'test1.png';
     // this.setInfo('priority', 2);
     this.setInfo('boboID', 'phone');
     this.setInfo('iconClass', 'fui-phone');
@@ -117,11 +114,10 @@
   };
 
   Communication.prototype.demoboParser = function() {
-    console.log('new parse');
     if (this.getInfo('paused') === 1){
-      console.log('i\'m not gonna parse, hahaha');
       return;
     }
+    console.log('new parse');
     var that = this;
     Communication.telephones = [];
     
@@ -135,7 +131,6 @@
       this.craigslistParser();
       this.sendToPhone();
     } else {
-      return;
       var handler = new Tautologistics.NodeHtmlParser.HtmlBuilder(function(error, dom) {
         if (!error) {
           // soupselect happening here...
@@ -188,12 +183,12 @@
     var pattern = /[0-9]{3}.{0,2}[0-9]{3}.{0,1}[0-9]{4}/g;
     var match = phase.match(pattern);
     return match;
-  }
+  };
   matchEmail = function(phase) {
     var pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:[A-Z]{2}|com|org|net|edu|gov|mil|biz|info|mobi|name|aero|asia|jobs|museum)\b/;
     var match = phase.match(pattern);
     return match;
-  }
+  };
   //called with every property and it's value
   process = function(type, title, data) {
 
@@ -209,7 +204,7 @@
     };
 
     Communication.telephones.push(telephone);
-  }
+  };
   traverse = function(objects, func) {
 
     each(objects, function(index, object) {
@@ -327,7 +322,7 @@
         func("email", phase, data);
       }
     }
-  }
+  };
   each = function(objects, f) {
     if (objects) {
       for (var i = 0; i < objects.length; i++) {

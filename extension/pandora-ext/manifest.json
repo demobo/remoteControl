@@ -1,5 +1,5 @@
 {
-   "name": "Pandora Remote",
+   "name": "Music Player Remote",
    "description": "Using your smartphone as a Pandora Remote, Grooveshark Remote, Last FM Remote, Douban FM Remote ...",
    "browser_action":
    {

@@ -1,6 +1,6 @@
 {
    "name": "de Mobo",
-   "description": "An interactive second screen for all your web sites. It works great on pandora, last.fm, grooveshark, rdio, 8tracks, douban, youtube, vimeo, google docs, slideshare, yelp, craigslist and more to come.",
+   "description": "An universal remote for your web.It works on Grooveshark,Pandora,YouTube,Vimeo,Google Slides,Slideshare,Rdio,last.fm,8tracks,Douban",
    "browser_action":
    {
 	  "default_icon": "images/19.png",
@@ -28,6 +28,6 @@
    "permissions": [
      "*://*/*", "tabs"
    ],
-   "version": "0.1.8",
+   "version": "0.1.9",
    "manifest_version": 2
 }

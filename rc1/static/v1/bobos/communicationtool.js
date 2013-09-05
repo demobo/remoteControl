@@ -64,8 +64,8 @@
       characterData : true,
       childList : true
     });
+    //if communicationBobo is not the one with highest priority, its pauseBobo will be called(approximately within 1sec. if so demoboParser will just return)
     setTimeout(function() {
-      that.pauseBobo.apply(that, []);
       that.demoboParser.apply(that, []);
     }, 1000);
   };

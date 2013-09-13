@@ -111,13 +111,15 @@ a&&(this.callbacks=[]);for(c=this.callbacks.length;c--;)(e=this.callbacks[c])&&(
 	};
 		
 	PreziBobo.prototype.next = function() {
-		if (this.getCurrentPageNumber()+1 >= this.getPageCount()) return;
-		this._setSlide(this.getCurrentPageNumber() + 1);
+		demoboPreziPlayer.nextStep();
+		// if (this.getCurrentPageNumber()+1 >= this.getPageCount()) return;
+		// this._setSlide(this.getCurrentPageNumber() + 1);
 	};
 
 	PreziBobo.prototype.previous = function() {
-		if (this.getCurrentPageNumber()-1 < 0) return;
-		this._setSlide(this.getCurrentPageNumber() - 1);
+		demoboPreziPlayer.previousStep();
+		// if (this.getCurrentPageNumber()-1 < 0) return;
+		// this._setSlide(this.getCurrentPageNumber() - 1);
 	};
 
 	PreziBobo.prototype.firstSlide = function() {

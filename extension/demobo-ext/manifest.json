@@ -1,6 +1,6 @@
 {
    "name": "de Mobo",
-   "description": "An universal remote for your web.It works on Grooveshark,Pandora,YouTube,Vimeo,Google Slides,Slideshare,Rdio,last.fm,8tracks,Douban",
+   "description": "A remote for Prezi, Grooveshark, Pandora, YouTube, Vimeo, Slideshare, Google Slides, Rdio, last.fm, 8tracks, Douban, NPR ...",
    "browser_action":
    {
 	  "default_icon": "images/19.png",
@@ -28,6 +28,6 @@
    "permissions": [
      "*://*/*", "tabs"
    ],
-   "version": "0.1.9",
+   "version": "0.2.0",
    "manifest_version": 2
 }

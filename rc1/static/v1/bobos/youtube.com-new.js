@@ -260,7 +260,7 @@
 		};
 
 		Youtube.prototype.setupVolume = function() {
-			jQuery('body').append('<div id="demoboVolume" style="position: fixed;width: 100%;margin: auto;bottom: 10%;left: 5%; color: #00adef;font-weight: bolder; font-size: 50px;z-index: 9999;padding: 30px 100px;"></div>');
+			jQuery('body').append('<div id="demoboVolume" style="position: fixed;width: 100%;margin: auto;bottom: 10%;left: 5%; color: #00adef;font-weight: bolder; font-size: 50px;z-index: 9999999999;padding: 30px 100px;"></div>');
 			this.setVolume();
 		};
 
@@ -340,7 +340,7 @@
 				position : 'fixed',
 				top : 0,
 				left : 0,
-				'z-index' : 9998,
+				'z-index' : 9999999998,
 				width : '100%',
 				height : '105%'
 			});

@@ -64,10 +64,7 @@
       characterData : true,
       childList : true
     });
-    setTimeout(function() {
-      that.pauseBobo.apply(that, []);
-      that.demoboParser.apply(that, []);
-    }, 1000);
+    this.demoboParser.apply(this, []);
   };
 
   Communication.prototype.demoboAddressParser = function() {

@@ -64,7 +64,11 @@
       characterData : true,
       childList : true
     });
-    this.demoboParser.apply(this, []);
+
+    //TODO: plz remove settimeout
+    setTimeout(function(){
+      that.demoboParser.apply(that, []);
+    }, 1000);
   };
 
   Communication.prototype.demoboAddressParser = function() {

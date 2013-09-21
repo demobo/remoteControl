@@ -185,7 +185,7 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 		});
 	}
 	function setupVolume() {
-		jQuery('body').append('<div id="demoboVolume" style="position: fixed;width: 100%;margin: auto;bottom: 10%;left: 5%; color: #00adef;font-weight: bolder; font-size: 50px;z-index: 9999;padding: 30px 100px;"></div>');
+		jQuery('body').append('<div id="demoboVolume" style="position: fixed;width: 100%;margin: auto;bottom: 10%;left: 5%; color: #00adef;font-weight: bolder; font-size: 50px;z-index: 9999999999;padding: 30px 100px;"></div>');
 		setVolume();
 	}
 	function getNowPlayingData() {
@@ -244,7 +244,7 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 	
 	function fullScreen() {
 		if (!yt.config_.PLAYER_REFERENCE) return;
-		jQuery('#watch7-video,#player-api, #player-api-legacy').css({position:'fixed',top:0,left:0,'z-index':9998,width:'100%',height:'105%'});
+		jQuery('#watch7-video,#player-api, #player-api-legacy').css({position:'fixed',top:0,left:0,'z-index':9999999998,width:'100%',height:'105%'});
 		jQuery('#watch7-player').css({width:'100%',height:'100%'});
 		jQuery('body').css({overflow:'hidden'});
 		ui.isFullScreen = true;

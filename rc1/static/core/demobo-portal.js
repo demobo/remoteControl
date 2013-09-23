@@ -56,7 +56,8 @@
         'docs\\.google\\.com\/presentation': 'docs.google.com-new.js',
         'grooveshark\\.com': 'grooveshark.com-new.js',
         'play\\.spotify\\.com': 'spotify.com-new.js',
-        'www\\.npr\\.org': 'npr.org.js'
+        'www\\.npr\\.org': 'npr.org.js',
+        'fir\\.sh': 'jnes.js'
       };
       /*
       // definitions of utilities 

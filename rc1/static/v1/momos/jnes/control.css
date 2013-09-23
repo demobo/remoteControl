@@ -1,0 +1,27 @@
+#frame {
+	zoom: 1;
+	background-color: gray;
+	background-image: url('NES_controller.svg');
+	background-repeat: no-repeat;
+	background-size: 480px 360px;
+}
+
+.nes_button {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	background-color: red;
+	position: absolute;
+}
+
+#A {
+	float: left;
+	margin-left: 313px;
+	margin-top: 206px;
+}
+
+#B {
+	float: left;
+	margin-left: 378px;
+	margin-top: 206px;
+}

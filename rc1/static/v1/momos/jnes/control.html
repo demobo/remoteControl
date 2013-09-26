@@ -12,26 +12,44 @@
 		<link rel="stylesheet" href="control.css" />
 		<script>
 			$(document).ready(function() {
-				$("#A,#B").mousedown(function(event) {
-					// console.log(event);
-					demobo.mobile.fireInputEvent('keydown', 13);	// 13 = Enter
+				console.log('jnes loaded!');
+				
+				$(".button").bind('touchstart', function(event) {
+					fireKeydown(event);
+					event.preventDefault();
+				});
+
+				$(".button").bind('touchend', function(event) {
+					fireKeyup(event);
+					event.preventDefault();
+				});
+
+				$(".button").bind('touchleave', function(event) {
+					fireKeyup(event);
+					event.preventDefault();
+				});
+
+				$(".button").bind('touchcancel', function(event) {
+					fireKeyup(event);
 					event.preventDefault();
 				});
 				
-				$("#A,#B").mouseup(function(event) {
-					// console.log(event);
-					demobo.mobile.fireInputEvent('keyup', 13);
-					event.preventDefault();
-				});
+				//functions...
 				
-				$("#A,#B").mouseleave(function(event) {
-					// console.log(event);
-					event.preventDefault();
-				});
+				function fireKeydown(event) {
+					var DOM_Obj=event.target;
+					console.log(event);
+					demobo.mobile.fireInputEvent('keydown', $(DOM_Obj).attr('keyCode'));
+				}
 				
-				
+				function fireKeyup(event) {
+					var DOM_Obj=event.target;
+					console.log(event);
+					demobo.mobile.fireInputEvent('keyup', $(DOM_Obj).attr('keyCode'));
+				}
+
 			});
-			
+
 			//custom functions
 			//...
 		</script>
@@ -39,8 +57,10 @@
 	<body>
 		<div id="main">
 			<div id='frame'>
-				<div id='A' class="nes_button"></div>
-				<div id='B' class="nes_button"></div>
+				<div id='select' class="button small" keyCode="17"></div>
+				<div id='start' class="button small"keyCode="13"></div>
+				<div id='A' class="button big" keyCode="88"></div>
+				<div id='B' class="button big" keyCode="90"></div>
 			</div>
 		</div>
 

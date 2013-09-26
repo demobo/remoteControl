@@ -37,7 +37,7 @@
 		this.setInfo('iconClass', 'fui-play-circle');
 
 		this.setController({
-			url : 'http://192.168.1.11:1240/v1/momos/jnes/control.html?123'
+			url : 'http://192.168.1.11:1240/v1/momos/jnes/control.html?1234'
 		});
 
 		this.setInputEventHandlers({
@@ -62,22 +62,18 @@
 	};
 
 	Jnes.prototype.setKeyDown = function(keycode, evt) {
-		num = parseInt(keycode);
-		console.log(keycode);
-		console.log(evt);
+		var num = parseInt(keycode);
 		
 		var e = $.Event("keydown");
-		e.keyCode=keycode;
+		e.keyCode=num;
 		$(document).trigger(e);
 	};
 	
 	Jnes.prototype.setKeyUp = function(keycode, evt) {
-		num = parseInt(keycode);
-		console.log(keycode);
-		console.log(evt);
+		var num = parseInt(keycode);
 		
 		var e = $.Event("keyup");
-		e.keyCode=keycode;
+		e.keyCode=num;
 		$(document).trigger(e);
 	};
 	

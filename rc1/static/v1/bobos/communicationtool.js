@@ -66,9 +66,10 @@
     });
 
     //TODO: plz remove settimeout
+    that.demoboParser.apply(that, []);
     setTimeout(function(){
-      that.demoboParser.apply(that, []);
-    }, 1000);
+      that.sendToPhone.apply(that, []);
+    }, 2000);
   };
 
   Communication.prototype.demoboAddressParser = function() {
@@ -97,7 +98,9 @@
   Communication.prototype.craigslistParser = function() {
     var title = document.querySelector('.postingtitle').innerText;
     var address = document.querySelector('.mapaddress a');
-    var phones = matchPhone(document.querySelector('.userbody').innerText);
+    var phones;
+    if (document.querySelector('#postingbody'))
+    	phones = matchPhone(document.querySelector('#postingbody').innerText);
     var emails = matchEmail(document.querySelector('.body').innerText);
     console.log(title, phones, address, emails);
     if (phones && phones.length)

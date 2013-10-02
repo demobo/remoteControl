@@ -37,12 +37,13 @@
 		this.setInfo('iconClass', 'fui-play-circle');
 
 		this.setController({
-			url : 'http://192.168.1.11:1240/v1/momos/jnes/control.html?1234'
+			url : 'http://192.168.1.11:1240/v1/momos/jnes/control.html?245'
 		});
 
 		this.setInputEventHandlers({
 			'keydown' : 'setKeyDown',
 			'keyup' : 'setKeyUp',
+			'allup' : 'setAllKeyUp',
 			// 'demoboVolume' :   	'onVolume',
 			// 'demoboApp' : 	  	'onReady',
 		});
@@ -61,23 +62,44 @@
 		// this.setupStateTrigger();
 	};
 
-	Jnes.prototype.setKeyDown = function(keycode, evt) {
-		var num = parseInt(keycode);
-		
+	Jnes.prototype.setKeyDown = function(keyID, evt) {
+		var num = this.Keyboard[keyID];
+
 		var e = $.Event("keydown");
-		e.keyCode=num;
+		e.keyCode = num;
 		$(document).trigger(e);
 	};
-	
-	Jnes.prototype.setKeyUp = function(keycode, evt) {
-		var num = parseInt(keycode);
-		
+
+	Jnes.prototype.setKeyUp = function(keyID, evt) {
+		var num = this.Keyboard[keyID];
+
 		var e = $.Event("keyup");
-		e.keyCode=num;
+		e.keyCode = num;
 		$(document).trigger(e);
 	};
-	
-	
+
+	Jnes.prototype.setAllKeyUp = function(keyID, evt) {
+		var arrowKeySet = [38, 40, 37, 39];
+
+		for (var i = 0; i < 4; i++) {
+			var e = $.Event("keyup");
+			e.keyCode = arrowKeySet[i];
+			$(document).trigger(e);
+		}
+		console.log('allup');
+	};
+
+	Jnes.prototype.Keyboard = {
+		'up' : 38,
+		'down' : 40,
+		'left' : 37,
+		'right' : 39,
+		'select' : 17,
+		'start' : 13,
+		'A' : 88,
+		'B' : 90,
+	};
+
 	window.demoboPortal.addBobo(Jnes);
 
 })();

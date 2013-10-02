@@ -11,6 +11,17 @@
 	float: left;
 	display: inline-block;
 	position: absolute;
+	opacity: 0.5;
+}
+
+.arrow {
+	height: 114px;
+	width: 114px;
+}
+
+#arrow {
+	margin-left: 32px;
+	margin-top: 144px;
 }
 
 .small {

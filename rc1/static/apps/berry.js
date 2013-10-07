@@ -5,9 +5,9 @@
 	};
 	
 	var users = {
-    "EEB03523-7A84-7B3F-3974-5EB05BF48427" : "Jeff",
+    "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D" : "Jeff",
     "5EEF475B-DB67-CC9C-235E-C49D29F96594" : "Lap",
-    "B871C024-4491-6EF0-84A4-826456FD1C02" : "Jiahao",
+    "28BE7932-53F1-024F-063C-877712F6861F" : "Jiahao",
     "C116FD42-F2B5-EE59-17A6-78F40F22221F" : "Shawn"
 	};
 
@@ -34,6 +34,7 @@
   			DEMOBO.init = init;
   			demobo.start();
   		}
+  		
   		demoboLoading = undefined;
   
   		ui.controllerUrl = "http://rc1.demobo.com/rc/" + ui.name + "?" + ui.version;
@@ -41,6 +42,7 @@
   
   		// do all the iniations you need here
   		function init() {
+  			window.demobo_guid = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
   			demobo._sendToSimulator('setData', {
   				key : 'url',
   				value : location.href

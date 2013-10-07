@@ -158,7 +158,7 @@ a&&(this.callbacks=[]);for(c=this.callbacks.length;c--;)(e=this.callbacks[c])&&(
 
 	/* helpers */
 	PreziBobo.prototype.setupPreziPlayer = function() {
-		console.log("setupPreziPlayer", Prezi);
+		// console.log("setupPreziPlayer", Prezi);
 		$('#flashContainer iframe').hide();
 		$('#flashContainer').append('<div id="demoboPreziPlayer" style="width:100%;height:100%;"></div>');
 		demoboPreziPlayer = new PreziPlayer('demoboPreziPlayer', {

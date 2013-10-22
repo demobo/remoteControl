@@ -12,7 +12,7 @@
    },
    "content_scripts": [
       {
-         "all_frames": false,
+         "all_frames": true,
          "js": ["js/main.js"],
 		 "css": ["css/main.css"],
 		 "matches": [ "*://*/*" ],

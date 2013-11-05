@@ -56,7 +56,7 @@
     var observer = new window.WebKitMutationObserver(function(mutations) {
       mutations.forEach(function(mutation) {
         that.demoboParser.apply(that, []);
-        console.log('new title:', mutation.target.textContent);
+        // console.log('new title:', mutation.target.textContent);
       });
     });
     observer.observe(target, {
@@ -74,7 +74,7 @@
 
   Communication.prototype.demoboAddressParser = function() {
     var addresses = document.body.innerText.match(/[0-9]{1,6}.*, [A-Z]{2} [0-9]*/g) || document.body.innerText.match(/[0-9]{1,6}.*\n.*, [A-Z]{2} [0-9]*/g);
-    console.log("address parser", addresses);
+    // console.log("address parser", addresses);
     each(addresses, function(index, address) {
       if (address) {
         address = address.replace(/\n/g, ' ');
@@ -89,7 +89,7 @@
       var title = resultElement.querySelector('.search-result-title').innerText;
       var address = resultElement.querySelector('address').innerText.replace(/\n/g, ' ');
       var phone = resultElement.querySelector('.biz-phone').innerText;
-      console.log(title, phone, address);
+      // console.log(title, phone, address);
       process("telephone", title, phone);
       process("address", "", address);
     });
@@ -102,7 +102,7 @@
     if (document.querySelector('#postingbody'))
     	phones = matchPhone(document.querySelector('#postingbody').innerText);
     var emails = matchEmail(document.querySelector('.body').innerText);
-    console.log(title, phones, address, emails);
+    // console.log(title, phones, address, emails);
     if (phones && phones.length)
       process("telephone", title, formatPhone(phones[0].replace(/[^0-9]/g,"")));
     if (address)
@@ -121,7 +121,7 @@
     if (this.getInfo('paused') === 1){
       return;
     }
-    console.log('new parse');
+    // console.log('new parse');
     var that = this;
     Communication.telephones = [];
     
@@ -165,7 +165,7 @@
   };
 
   Communication.prototype.sendToPhone = function() {
-    console.log("sendToPhone", document.title, Communication.telephones);
+    // console.log("sendToPhone", document.title, Communication.telephones);
     this.callFunction('onReceiveData', {
       title : document.title,
       data : Communication.telephones
@@ -259,7 +259,7 @@
     var match = phase.match(pattern);
     //console.log(phase);
     if (match) {
-      console.log(match);
+      // console.log(match);
       var data = match[0].trim().replace(/[^0-9]/g, '').replace(' ', '');
       var excludedPatterns = [/Posting ID:/, /.*@sale.craigslist.org/, /<!--/, /script/, /\{/];
       var i = 0;
@@ -267,12 +267,12 @@
       while ((!match) && (i < excludedPatterns.length)) {
         match = phase.match(excludedPatterns[i]);
         if (match) {
-          console.log('excluded match', phase);
+          // console.log('excluded match', phase);
         }
         i++;
       }
       if (!match) {
-        console.log('telephone matched', phase);
+        // console.log('telephone matched', phase);
         func("telephone", "Phone", formatPhone(data));
       }
     }
@@ -284,7 +284,7 @@
     var match = phase.match(pattern);
     //console.log(phase);
     if (match) {
-      console.log(match);
+      // console.log(match);
       var data = match[0].trim();
       var excludedPatterns = [];
       var i = 0;
@@ -292,12 +292,12 @@
       while ((!match) && (i < excludedPatterns.length)) {
         match = phase.match(excludedPatterns[i]);
         if (match) {
-          console.log('excluded match', phase);
+          // console.log('excluded match', phase);
         }
         i++;
       }
       if (!match) {
-        console.log('address matched', phase);
+        // console.log('address matched', phase);
         func("address", phase, data);
       }
     }
@@ -309,7 +309,7 @@
     var match = phase.match(pattern);
     //console.log(phase);
     if (match) {
-      console.log(match);
+      // console.log(match);
       var data = match[0].trim();
       var excludedPatterns = [/<!--/, /script/, /\{/];
       var i = 0;
@@ -317,12 +317,12 @@
       while ((!match) && (i < excludedPatterns.length)) {
         match = phase.match(excludedPatterns[i]);
         if (match) {
-          console.log('excluded match', phase);
+          // console.log('excluded match', phase);
         }
         i++;
       }
       if (!match) {
-        console.log('email matched', phase);
+        // console.log('email matched', phase);
         func("email", phase, data);
       }
     }

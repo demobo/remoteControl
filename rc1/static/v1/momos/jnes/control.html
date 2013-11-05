@@ -23,11 +23,13 @@
 				var originX = arrowPosition.left + arrow.outerWidth() / 2;
 				var originY = arrowPosition.top + arrow.outerHeight() / 2;
 
-				$(".button").on('touchstart', function(event) {
+				$(".button").on('touchstart mousedown', function(event) {
+					event.preventDefault();
 					demobo.mobile.fireInputEvent('keydown', this.id);
 				});
 
-				$(".button").on('touchend', function(event) {
+				$(".button").on('touchend mouseup', function(event) {
+					event.preventDefault();
 					demobo.mobile.fireInputEvent('keyup', this.id);
 				});
 
@@ -48,12 +50,13 @@
 					}
 				});
 
-				$(".arrowkey").on('touchend', function(event) {
+				$(".arrowkey").on('touchend touchcancel mouseup', function(event) {
+					event.preventDefault();
 					demobo.mobile.fireInputEvent('allup', 0);
 				});
 
 				$("#arrow").on('touchmove', function(event) {
-					// event.preventDefault();
+					event.preventDefault();
 					//moves
 					m++;
 					if (m % 4 != 0) {

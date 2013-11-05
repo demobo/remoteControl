@@ -60,11 +60,11 @@
 
 
   Pandora.prototype.resume = function(){
-    // console.log('resume is called');
+    console.log('resume is called');
   };
 	// ********** custom event handler functions *************
 	Pandora.prototype.onReady = function () {
-    // console.log('onReady called');
+    console.log('onReady called');
 		this.refreshController();
     this.sendStationList();
     this.sendNowPlaying();
@@ -73,12 +73,12 @@
 	};
 
 	Pandora.prototype.playPause = function() {
-    // console.log('playpause called');
+    console.log('playpause called');
 		$(this.getInfo('ui').playPauseButton).click();
 	};
 
 	Pandora.prototype.play = function() {
-    	// console.log('play called');
+    console.log('play called')
 		$(this.getInfo('ui').playButton).click();
 	};
 
@@ -87,7 +87,7 @@
 	};
 
 	Pandora.prototype.next = function() {
-    	// console.log('next pressed');
+    console.log('next pressed');
 		$(this.getInfo('ui').nextButton).click();
 	};
 
@@ -125,9 +125,9 @@
 
 
 	Pandora.prototype.refreshController = function() {
-    	// console.log('refreshController called');
+    console.log('refreshController called');
 		this.sendStationList();
-    	var _this = this;
+    var _this = this
 //		setTimeout(function(){_this.sendLast3()},100);
 		this.syncState();
 	};
@@ -135,7 +135,7 @@
 
 	//helpers 
 	Pandora.prototype.setupSongTrigger = function() {
-    	// console.log('setupsongtrigger called');
+    console.log('setupsongtrigger called');
 		var triggerDelay = 50;
 		var longDelay = 500;
 		var trigger = $(this.getInfo('ui').songTrigger)[0];
@@ -144,7 +144,7 @@
 			oldTitle : $(this.getInfo('ui').title).text()
 		};
 		var maxChecks = 10;
-    	var pandoraObj = this;
+    var pandoraObj = this;
 		var checkTitle = function() {
 			var newTitle = $(pandoraObj.getInfo('ui').title).text();
 			if (newTitle && _this.oldTitle !== newTitle) {
@@ -166,7 +166,7 @@
 				_this.oldCoverart = newCoverart;
 				pandoraObj.sendNowPlaying();
 			}
-		};
+		}
 		var delay = function() {
 			setTimeout(checkTitle, triggerDelay);
 		};
@@ -174,7 +174,7 @@
 	};
 
 	Pandora.prototype.setupStationTrigger = function() {
-    	// console.log('setupStationTrigger called');
+    console.log('setupStationTrigger called');
 		var triggerDelay = 50;
 		var trigger = $(this.getInfo('ui').stationTrigger)[0];
 		var _this = {
@@ -195,14 +195,14 @@
 	};
 
 	Pandora.prototype.setupStateTrigger = function() {
-    	// console.log('setupStateTrigger called');
-    	var _this = this;
-		$(this.getInfo('ui').volume).on('drag click', function(){_this.syncState();});
-		$(this.getInfo('ui').playButton + ',' + this.getInfo('ui').pauseButton).on('click', function(){_this.syncState();});
+    console.log('setupStateTrigger called');
+    var _this = this;
+		$(this.getInfo('ui').volume).on('drag click', function(){_this.syncState()});
+		$(this.getInfo('ui').playButton + ',' + this.getInfo('ui').pauseButton).on('click', function(){_this.syncState()});
 	};
 
 	Pandora.prototype.getAbsPosition = function(element) {
-    	// console.log('getAbsPosition called');
+    console.log('getAbsPosition called');
 		if (element) {
 			var oLeft = 0;
 			var oTop = 0;
@@ -221,12 +221,12 @@
 	};
 
 	Pandora.prototype.getNowPlayingData = function() {
-    	// console.log('getNowPlayingData called');
+    console.log('getNowPlayingData called');
 		return this.getInfo('last3PlayedSongs');
 	};
 
 	Pandora.prototype.getCurrentSong = function() {
-    	// console.log('getCurrentSong called');
+    console.log('getCurrentSong called');
 		var imgURL = $(this.getInfo('ui').coverart).attr('src');
 		if (!imgURL) return;
 		if (imgURL.substr(0,4)!='http') imgURL = "http://www.pandora.com/img/no_album_art.jpg"; //document.location.origin + imgURL;
@@ -239,7 +239,7 @@
 	};
 
 	Pandora.prototype.getStationList = function() {
-    	// console.log('getStationList called');
+    console.log('getStationList called');
 		var toReturn = [];
 		$.each($(this.getInfo('ui').stationCollection), function(index,elem) {
 			var s = {
@@ -248,12 +248,12 @@
 			if ($(elem).parent().hasClass('selected')) s.selected = true;
 			toReturn.push(s);
 		});
-    	// console.log(toReturn);
+    console.log(toReturn);
 		return toReturn;
 	};
 
 	Pandora.prototype.getCurrentStationIndex = function() {
-    	// console.log('getCurrentStationIndex called');
+    console.log('getCurrentStationIndex called');
 		var toReturn = 0;
 		$.each($(this.getInfo('ui').stationCollection), function(index,elem) {
 			if ($(elem).parent().hasClass('selected')) toReturn = index;
@@ -262,12 +262,12 @@
 	};
 
 	Pandora.prototype.sendStationList = function() {
-    	// console.log('sendStationList called');
+    console.log('sendStationList called');
 		this.callFunction('loadChannelList', this.getStationList());
 	};
 
 	Pandora.prototype.sendNowPlaying = function() {
-    	// console.log('sendNowPlaying called');
+    console.log('sendNowPlaying called');
 		var curSong = this.getCurrentSong();
 		if (!curSong) return;
 		if (!this.getInfo('last3PlayedSongs').length || this.getInfo('last3PlayedSongs')[this.getInfo('last3PlayedSongs').length-1].title != curSong.title) {
@@ -283,7 +283,7 @@
 	};
 
 	Pandora.prototype.sendLast3 = function() {
-    	// console.log('sendLast3 called');
+    console.log('sendLast3 called');
 		if (this.getInfo('last3PlayedSongs').length) var curSong = this.getInfo('last3PlayedSongs');
 		else {
 			var curSong = this.getCurrentSong();
@@ -302,11 +302,11 @@
 	};
 	
 	Pandora.prototype.getIsPlaying = function() {
-    	// console.log('getIsPlaying called');
+    console.log('getIsPlaying called');
 		return !$(this.getInfo('ui').playButton+':visible').length;
 	};
 	Pandora.prototype.getVolume = function() {
-    	// console.log('getVolume called');
+    console.log('getVolume called');
 		$(this.getInfo('ui').volume).show();
 		var min = this.getAbsPosition($('.volumeBar')[0]).left + 22;
 		var max = (min - 22) + $('.volumeBar').width() - 22;
@@ -314,5 +314,5 @@
 		return Math.round(100*(target-min)/(max-min));
 	};
    
-	window.demoboPortal.addBobo(Pandora);
+  window.demoboPortal.addBobo(Pandora);
 })();

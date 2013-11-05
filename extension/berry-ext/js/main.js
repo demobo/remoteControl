@@ -10,7 +10,7 @@
 	} else {
 		injectedExtScript = function() {
 			demoboBody.extScriptUrl = '//rc1-dot-de-mobo.appspot.com/core/berry-ext.js';
-		}
+		};
 	}
 	var injectedScript = function() {
 		demoboBody.injectScript = function(url,callback) {
@@ -22,7 +22,7 @@
 			    this.parentNode.removeChild(this);
 			};
 			(document.head||document.documentElement).appendChild(s);
-		}
+		};
 		demoboToggle.onclick = function() {
 			if (typeof toggleDemobo != 'undefined') {
 				toggleDemobo();
@@ -44,7 +44,7 @@
 				demobo._message({data: JSON.stringify(e.detail)});
 			}
 		});
-	}
+	};
 	
 	if (!document.getElementById('demoboToggle')) {
 		var demoboToggle = document.createElement('div');

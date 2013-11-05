@@ -1,6 +1,6 @@
 (function() {
 //	var appUrl = 'http://rc1.demobo.com/apps/berry.js?' + Math.random();
-  var dev = false;
+  var dev = true;
   var appUrl;
   if (dev){
 	  appUrl = 'http://localhost:1240/apps/berry.js?' + Math.random();

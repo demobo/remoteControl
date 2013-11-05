@@ -47,7 +47,7 @@ function syncData() {
 			connectPage.src = url;
 			connectPage.onload = function() {
 				connectPage.contentWindow.postMessage({action: 'syncData', detail: extensionData},'*');
-			}
+			};
 		} else {
 			connectPage.contentWindow.postMessage({action: 'syncData', detail: extensionData},'*');
 		}

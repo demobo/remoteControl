@@ -8,7 +8,7 @@ if (top === self) {
 		var users = {
 			"634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D" : "Jeff",
 			"5EEF475B-DB67-CC9C-235E-C49D29F96594" : "Lap",
-			"28BE7932-53F1-024F-063C-877712F6861F" : "Jiahao",
+			"28BE7932-53F1-024F-063C-877712F6861F" : "Chapman",
 			"C116FD42-F2B5-EE59-17A6-78F40F22221F" : "Shawn"
 		};
 
@@ -61,6 +61,11 @@ if (top === self) {
 					});
 					initializeIncomingCall();
 					preloadRingtone();
+					addEventListener("message", function(evt){
+						document.getElementById('berryFrame').contentWindow.postMessage(
+							evt.data, "*"
+						);
+					}, false);
 				}
 
 				// ********** custom event handler functions *************
@@ -113,7 +118,7 @@ if (top === self) {
 						var e = document.createElement('div');
 						e.id = 'chatContainer';
 						e.style.position = 'fixed';
-						e.style.bottom = '0px';
+						e.style.bottom = '30px';
 						e.style.right = '0px';
 						e.style.zIndex = '999';
 						document.body.appendChild(e);
@@ -121,6 +126,7 @@ if (top === self) {
 					var i = document.createElement('iframe');
 					// i.src = 'https://apprtc.appspot.com/?r=' + roomId;
 					i.src = 'https://koalabearate.appspot.com/?r=' + roomId;
+					// i.src = 'http://172.31.99.170:10080/?r=' + roomId;
 					i.className = 'videoChatFrame';
 					i.id = roomId;
 					i.style.width = '200px';
@@ -347,9 +353,9 @@ if (top === self) {
 				return;
 			setupPageTrigger();
 			addEventListener("message", function(evt){
-				console.log(evt.data);
 				var cmd = JSON.parse(evt.data);
 				if (cmd.action=="setCurrentPage") {
+					console.log(evt.data);
 					_setSlide(cmd.data);
 				}
 			}, false);

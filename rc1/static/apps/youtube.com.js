@@ -68,7 +68,7 @@ demoboBody.injectScript('//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min
 			'demoboVolume' : 	onVolume
 		});
 		setupStateTrigger();
-		setupVolume();
+		setTimeout(setupVolume, 1000);
 		if (localStorage.getItem('couchMode')!='false') fullScreen();
 		setTimeout(onReady, 1000);
 		setTimeout(onReady, 5000);

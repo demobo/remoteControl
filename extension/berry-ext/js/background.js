@@ -20,11 +20,11 @@ function setIcon() {
 	console.log('setIcon', extensionData.autoConnect);
 	if (JSON.parse(extensionData.autoConnect)) {
 		chrome.browserAction.setIcon({
-			path: 'images/icon_blue_19.png'
+			path: 'images/19.png'
 		});
 	} else {
 		chrome.browserAction.setIcon({
-			path: 'images/icon_bw_19.png'
+			path: 'images/19bw.png'
 		});
 	}
 }

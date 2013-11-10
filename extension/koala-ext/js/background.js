@@ -2,6 +2,7 @@ var koalaEnabledTabs = [];
 var activeTab;
 setBWIcon();
 preloadRingtone();
+initializeIncomingCall();
 
 /**
  turn on koala if it is not already on
@@ -90,7 +91,7 @@ function onMessage() {
 
 }
 
-var myID = "jeff123";
+var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
 function call(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.push({

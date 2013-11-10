@@ -9,74 +9,10 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.css" />
 	<script src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.2.1/jquery.mobile-1.2.1.min.js"></script>
-	<script src="http://api.demobo.com/demobo.mobile.1.0.min.js"></script>
+	<script type='text/javascript' src='https://cdn.firebase.com/v0/firebase.js'></script>
 	<link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
-	<style>
-		.endBtn {
-			-moz-box-shadow: inset 0px 34px 7px -11px #b54b3a;
-			-webkit-box-shadow: inset 0px 34px 7px -11px #b54b3a;
-			box-shadow: inset 0px 34px 7px -11px #b54b3a;
-			background-color: #a73f2d;
-			-moz-border-radius: 9px;
-			-webkit-border-radius: 9px;
-			border-radius: 9px;
-			display: inline-block;
-			color: #ffffff;
-			font-family: Arial;
-			font-size: 28px;
-			font-weight: bold;
-			padding: 20px 76px;
-			text-decoration: none;
-			text-shadow: 0px 3px 0px #7a2a1d;
-		}
-		.endBtn:hover {
-
-			background-color: #b34332;
-		}
-		.endBtn:active {
-			position: relative;
-			top: 1px;
-		}
-
-	</style>
-	<script>
-		//register contact list click event
-		$(document).ready(function() {
-			$(".user").on('click', function(evt) {
-				console.log('browserID: ' + $(evt.currentTarget).attr('browserID'));
-				demobo.mobile.fireInputEvent('outgoingCall', $(evt.currentTarget).attr('browserID'));
-				$("#showPopup").click();
-			});
-			
-			$(".endBtn").on('click', function(evt) {
-				demobo.mobile.fireInputEvent('hangUp', '0');
-			});
-			
-			$("#gotoBtn").on('click', function(evt) {
-				var url=$('#url');
-				if (url.val()!='') {
-					demobo.mobile.fireInputEvent('gotoUrl', url.val());
-					$('.urlList ul').append('<li><a class="urlListBtn">'+ url.val() + '</a></li>');
-					$('.urlList ul').listview('refresh');
-					url.val('');
-				}	
-			});
-		});
-		
-		//for jQuery mobile event
-		$(document).on('pageinit', function(e){
-		    $("#url").keydown(function(e) {
-		    	if (e.keyCode==13) {
-		    		$("#gotoBtn").click();
-		    	}
-		    });
-		    
-		    $(".urlList").on('click', function(evt) {
-		    	console.log(evt.target.text);
-		    	demobo.mobile.fireInputEvent('gotoUrl', evt.target.text);
-		    });
-		});
-	</script>
+	<link href="main.css" rel="stylesheet">
+	<script src="main.js"></script>
 </head> 
 
 	
@@ -103,7 +39,7 @@
 					<img src="https://lh6.googleusercontent.com/-dKnpjzVWawY/AAAAAAAAAAI/AAAAAAAAACU/qs2oONXJ0FM/s120-c/photo.jpg" class="ui-li-thumb"/>
 					<h3 class="ui-li-heading">Jeff</h3>
 					<p class="ui-li-desc">
-						de Master Mind
+						Hacker
 					</p>
 					<div class="socialbuttons">
 						<i class="icon-facebook-sign"></i>

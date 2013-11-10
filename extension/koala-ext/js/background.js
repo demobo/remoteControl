@@ -1,7 +1,9 @@
+var curWin;
 var koalaEnabledTabs = [];
 var activeTab;
 setBWIcon();
 preloadRingtone();
+initializeIncomingCall();
 
 /**
  turn on koala if it is not already on
@@ -37,6 +39,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 			left : screen.width - w,
 			top : 0
 		}, function(window) {
+			curWin = window;
 		});
 	}
 });
@@ -90,7 +93,7 @@ function onMessage() {
 
 }
 
-var myID = "jeff123";
+var myID = "chap123";
 function call(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.push({
@@ -99,7 +102,8 @@ function call(outgoingId) {
 }
 
 function initializeIncomingCall() {
-	var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/' + myID);
+	console.log("init");
+	var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
 	incomingCallRef.on('child_added', function(snapshot) {
 		startRingtone();
 	});

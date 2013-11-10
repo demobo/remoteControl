@@ -64,11 +64,12 @@
 				'demoboVolume' : 'onVolume'
 			});
 			this.setupStateTrigger();
-			this.setupVolume();
+			
 			if (localStorage.getItem('couchMode') != 'false')
 				this.fullScreen();
 			var y = this;
 			setTimeout(function() {
+				y.setupVolume();
 				y.onReady.apply(y, []);
 			}, 1000);
 			setTimeout(function() {

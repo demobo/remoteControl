@@ -63,10 +63,12 @@
   			'demoboVolume' : 	  'onVolume'
       });
   		this.setupStateTrigger();
-  		this.setupVolume();
   		if (localStorage.getItem('couchMode')!='false') this.fullScreen();
-      var y = this;
-  		setTimeout(function(){y.onReady.apply(y, [])}, 1000);
+      	var y = this;
+  		setTimeout(function(){
+  			y.setupVolume();
+  			y.onReady.apply(y, []);
+  		}, 1000);
   		setTimeout(function(){y.onReady.apply(y, [])}, 5000);
 
     	document.addEventListener("keyup", function(event) {

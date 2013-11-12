@@ -1,3 +1,5 @@
+//var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
+var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 var curWin;
 var koalaEnabledTabs = [];
 var activeTab;
@@ -93,9 +95,6 @@ function onMessage() {
 
 }
 
-//var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
-var myID = "28BE7932-53F1-024F-063C-877712F6861F";
-
 function call(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.push({
@@ -104,10 +103,13 @@ function call(outgoingId) {
 }
 
 function initializeIncomingCall() {
-	console.log("init");
+	console.log("init " + myID);
 	var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
 	incomingCallRef.on('child_added', function(snapshot) {
 		startRingtone();
+	});
+	incomingCallRef.on('child_removed', function(snapshot) {
+		stopRingtone();
 	});
 }
 

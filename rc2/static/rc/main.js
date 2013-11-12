@@ -1,4 +1,6 @@
 var curCallID;
+//var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
+var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 
 //register contact list click event
 $(document).ready(function() {
@@ -7,6 +9,10 @@ $(document).ready(function() {
 		curCallID = $(evt.currentTarget).attr('browserID');
 		$("#showPopup").click();
 		call(curCallID);
+	});
+	
+	$("#answer").on('click', function(evt) {
+		answer();
 	});
 
 	$(".endBtn").on('click', function(evt) {
@@ -40,9 +46,6 @@ $(document).on('pageinit', function(e) {
 	});
 });
 
-//var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
-var myID = "28BE7932-53F1-024F-063C-877712F6861F";
-
 function call(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.push({
@@ -58,6 +61,16 @@ function call(outgoingId) {
 function hangup(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.remove();
+}
+function answer() {
+	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
+	outgoingCallRef.remove();
+	outgoingCallRef.on('child_removed', function(snapshot) {
+		var roomID = snapshot.name();
+		if ($('#popup:visible')[0] && !$('#chatContainer')[0]) {
+			injectVideoChat(roomID);
+		}
+	});
 }
 
 function injectVideoChat(roomId) {

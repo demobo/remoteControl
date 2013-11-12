@@ -1,4 +1,6 @@
 var curCallID;
+var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
+// var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 
 //register contact list click event
 $(document).ready(function() {
@@ -11,7 +13,8 @@ $(document).ready(function() {
 
 	$(".endBtn").on('click', function(evt) {
 		removeVideoChat();
-		if (curCallID) hangup(curCallID);
+		if (curCallID)
+			hangup(curCallID);
 		curCallID = "";
 	});
 
@@ -40,9 +43,6 @@ $(document).on('pageinit', function(e) {
 	});
 });
 
-//var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
-var myID = "28BE7932-53F1-024F-063C-877712F6861F";
-
 function call(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.push({
@@ -55,6 +55,7 @@ function call(outgoingId) {
 		}
 	});
 }
+
 function hangup(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.remove();
@@ -81,3 +82,30 @@ function injectVideoChat(roomId) {
 function removeVideoChat() {
 	$('#chatContainer').remove();
 }
+
+function sendMessage(type, data) {
+	if (!demoboBody)
+		return;
+	var evt = new CustomEvent("FromKoala", {
+		detail : {
+			type : type,
+			data : data
+		}
+	});
+	demoboBody.dispatchEvent(evt);
+}
+
+function onExtensionMessage(e) {
+	console.log("onExtensionMessage: ", e.detail);
+	if ($(".videoChatFrame")[0])
+		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");
+}
+function onRemoteMessage(e) {
+	var cmd = JSON.parse(evt.data);
+	console.log("onRemoteMessage: ", e.detail);
+}
+
+addEventListener("message", function(e) {
+	var evt = JSON.parse(e.data);
+	console.log("onRemoteMessage: ", evt.detail);
+}, false);

@@ -1,3 +1,5 @@
+var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
+// var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 var curWin;
 var koalaEnabledTabs = [];
 var activeTab;
@@ -77,6 +79,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	}
 });
 
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+	console.log(request);
+	if (sender.tab.id == activeTab)
+		chrome.tabs.sendMessage(curWin.tabs[0].id, request);
+	else
+		chrome.tabs.sendMessage(activeTab, request);
+});
+
 function setIcon() {
 	chrome.browserAction.setIcon({
 		path : 'images/19.png'
@@ -92,9 +103,6 @@ function setBWIcon() {
 function onMessage() {
 
 }
-
-//var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
-var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 
 function call(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);

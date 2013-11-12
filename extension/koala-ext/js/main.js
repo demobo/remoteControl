@@ -19,11 +19,12 @@ var injectedScript = function() {
 	demoboBody.addEventListener("FromPopup", function(e) {
 		console.log(e.detail);
 		if (e.detail && e.detail.type) {
-			demobo._message({
-				data : JSON.stringify(e.detail)
-			});
+			// demobo._message({
+			// data : JSON.stringify(e.detail)
+			// });
 		}
 	});
+	demoboBody.addEventListener("FromExtension", onExtensionMessage);
 };
 if (!document.getElementById('toggle')) {
 	var demoboBody = document.createElement('div');
@@ -40,21 +41,41 @@ if (!document.getElementById('toggle')) {
 
 	var load = document.createElement('div');
 	load.setAttribute('id', 'load');
-	load.setAttribute('onclick', 'javascript:(function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));!c.demoboPortal&&(function(){c._extension=1;var a=new Date,b=c.document.createElement("script"),e="//d1hew6xzj9n4kw.cloudfront.net";window.demoboBase=e;b.src="//d32q09dnclw46p.cloudfront.net/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)}());})(window)');
+	if (dev) {
+		load.setAttribute('onclick', 'javascript:((function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));c._extension=1;var d=window.__dmtg;((!c.demoboPortal&&function(){var a=new Date,b=c.document.createElement("script"),e=(document.location.protocol==="https:")?"https://localhost:443":"http://localhost:' + appEnginePort + '";window.demoboBase=e;b.src=e+"/core/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)})||d)()})(window))');
+	} else {
+		load.setAttribute('onclick', 'javascript:((function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));c._extension=1;var d=window.__dmtg;((!c.demoboPortal&&function(){var a=new Date,b=c.document.createElement("script"),e="//d1hew6xzj9n4kw.cloudfront.net";window.demoboBase=e;b.src="//d32q09dnclw46p.cloudfront.net/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)})||d)()})(window))');
+	}
+	// load.setAttribute('onclick', 'javascript:(function(c){(c.demoboPortal&&c.demoboPortal.set("mode","EXTENSION"));!c.demoboPortal&&(function(){c._extension=1;var a=new Date,b=c.document.createElement("script"),e="//d1hew6xzj9n4kw.cloudfront.net";window.demoboBase=e;b.src="//d32q09dnclw46p.cloudfront.net/entry.js?"+a.getTime();b.className="demoboJS";c.document.body&&c.document.body.appendChild(b)}());})(window)');
 	//  load.setAttribute('onclick', 'javascript:(function(){if (window.demobo)return;document.getElementById("toggle").click()})()');
 	document.body.appendChild(load);
 
 	injectJavascript(injectedScript);
 
+	demoboBody.addEventListener("FromFrontground", function(e) {
+		console.log("FromFrontground", e.detail);
+		chrome.runtime.sendMessage(e.detail);
+	});
+	demoboBody.addEventListener("FromKoala", function(e) {
+		console.log("FromKoala", e.detail);
+		chrome.runtime.sendMessage(e.detail);
+	});
+
 	function onMessage(message, sender, sendResponse) {
-		console.log(message.action);
+		console.log("onMessage", message.action);
 		if (message.action === 'toggleKoala') {
 			document.getElementById('toggle').click();
 			//favicon off message
 		} else if (message.action === 'load') {
 			document.getElementById('load').click();
-			var detail = {type:"input", source:'demoboApp',value:'',userName:"simulator",deviceID:"simulator"};
-			sendToFrontPage("FromPopup",detail);
+			var detail = {
+				type : "input",
+				source : 'demoboApp',
+				value : '',
+				userName : "simulator",
+				deviceID : "simulator"
+			};
+			sendToFrontPage("FromPopup", detail);
 		} else if (message.action == 'FromPopup') {
 			if (message.detail)
 				sendToFrontPage("FromPopup", message.detail);
@@ -89,5 +110,12 @@ if (!document.getElementById('toggle')) {
 
 
 	chrome.extension.onMessage.addListener(onMessage);
+	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+		console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+		console.log(request);
+		if (!sender.tab)
+			sendToFrontPage("FromExtension", request);
+	});
+
 	//  toggle.click();
 }

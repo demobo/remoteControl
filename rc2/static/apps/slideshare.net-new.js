@@ -28,8 +28,7 @@
 		//		demobo._sendToSimulator('setData', {key: 'url', value: location.href});
 
 		this.setController({
-			url : 'http://rc1.demobo.com/v1/momos/slideshare/control.html?0201',
-			orientation : 'portrait'
+			url : 'slideshare'
 		});
 
 		if ( typeof player == 'undefined')
@@ -50,6 +49,9 @@
 		setTimeout(function() {
 			s.refreshController.apply(s, []);
 		}, 2000);
+		demoboBody.addEventListener("FromExtension", function(e) {
+			console.log("slideshare: ", e.detail);
+		});
 	};
 	// ********** custom event handler functions *************
 	Slideshare.prototype.onReady = function() {

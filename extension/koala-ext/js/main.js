@@ -24,7 +24,8 @@ var injectedScript = function() {
 			// });
 		}
 	});
-	demoboBody.addEventListener("FromExtension", onExtensionMessage);
+	if (window.onExtensionMessage)
+		demoboBody.addEventListener("FromExtension", onExtensionMessage);
 };
 if (!document.getElementById('toggle')) {
 	var demoboBody = document.createElement('div');

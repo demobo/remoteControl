@@ -107,5 +107,6 @@ function onRemoteMessage(e) {
 
 addEventListener("message", function(e) {
 	var evt = JSON.parse(e.data);
-	console.log("onRemoteMessage: ", evt.detail);
+	console.log("onRemoteMessage: ", evt);
+	sendMessage("event", evt);
 }, false);

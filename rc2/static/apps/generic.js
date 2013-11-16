@@ -19,7 +19,22 @@
 		});
 		demoboBody.addEventListener("FromExtension", function(e) {
 			console.log("generic: ", e.detail);
+			var evtData = e.detail.data.data;
+			switch(evtData.action)
+			{
+			case "urlChange":
+			  window.location = evtData.url;
+			  break;
+			case "":
+			  
+			  break;
+			default:
+			  
+			}
 		});
+		setTimeout(function(){
+			demobo._sendToSimulator('event', {url : window.location.href, action:'urlChange'});
+		},100);
 	};
 
 	// add this adaptor to demoboPortal

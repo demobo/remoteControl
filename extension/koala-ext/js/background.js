@@ -79,6 +79,15 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	}
 });
 
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+	console.log(request);
+	if (sender.tab.id == activeTab)
+		chrome.tabs.sendMessage(curWin.tabs[0].id, request);
+	else
+		chrome.tabs.sendMessage(activeTab, request);
+});
+
 function setIcon() {
 	chrome.browserAction.setIcon({
 		path : 'images/19.png'

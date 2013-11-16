@@ -17,7 +17,8 @@ $(document).ready(function() {
 
 	$(".endBtn").on('click', function(evt) {
 		removeVideoChat();
-		if (curCallID) hangup(curCallID);
+		if (curCallID)
+			hangup(curCallID);
 		curCallID = "";
 	});
 
@@ -58,6 +59,7 @@ function call(outgoingId) {
 		}
 	});
 }
+
 function hangup(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.remove();
@@ -94,3 +96,31 @@ function injectVideoChat(roomId) {
 function removeVideoChat() {
 	$('#chatContainer').remove();
 }
+
+function sendMessage(type, data) {
+	if (!demoboBody)
+		return;
+	var evt = new CustomEvent("FromKoala", {
+		detail : {
+			type : type,
+			data : data
+		}
+	});
+	demoboBody.dispatchEvent(evt);
+}
+
+function onExtensionMessage(e) {
+	console.log("onExtensionMessage: ", e.detail);
+	if ($(".videoChatFrame")[0])
+		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");
+}
+function onRemoteMessage(e) {
+	var cmd = JSON.parse(evt.data);
+	console.log("onRemoteMessage: ", e.detail);
+}
+
+addEventListener("message", function(e) {
+	var evt = JSON.parse(e.data);
+	console.log("onRemoteMessage: ", evt);
+	sendMessage("event", evt);
+}, false);

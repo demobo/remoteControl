@@ -1,18 +1,28 @@
 (function() {
 	// ******************* custom event handler functions ***************************
 
-	var Help = window.Bobo.extend();
+	var Generic = window.Bobo.extend();
 
-	Help.prototype.onReady = function() {
+	Generic.prototype.onReady = function() {
 		console.log('onready is called');
 	};
 
 	// override the initialize function of Bobo
-	Help.prototype.initialize = function() {
-		console.log("generic init ...");
+	Generic.prototype.initialize = function() {
+		console.log("Generic init ...");
+		console.log(window.location.href);
+		this.setController({
+			url : 'generic'
+		});
+		demobo._sendToSimulator('urlChange', {
+			url : window.location.href
+		});
+		demoboBody.addEventListener("FromExtension", function(e) {
+			console.log("generic: ", e.detail);
+		});
 	};
 
 	// add this adaptor to demoboPortal
-	window.demoboPortal.addBobo(Help);
+	window.demoboPortal.addBobo(Generic);
 
 })();

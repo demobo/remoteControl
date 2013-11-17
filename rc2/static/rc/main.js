@@ -25,7 +25,10 @@ $(document).ready(function() {
 	$("#gotoBtn").on('click', function(evt) {
 		var url = $('#url');
 		if (url.val() != '') {
-			demobo.mobile.fireInputEvent('gotoUrl', url.val());
+			sendMessage("event", {
+				url : url.val(),
+				action : 'urlChange'
+			});
 			$('.urlList ul').append('<li><a class="urlListBtn">' + url.val() + '</a></li>');
 			$('.urlList ul').listview('refresh');
 			url.val('');

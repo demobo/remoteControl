@@ -37,7 +37,7 @@
 
       version = '0.9.2';
       base = window.demoboBase + '/apps/';
-      connectScript = window.demoboBase + '/core/connect.js';
+      // connectScript = window.demoboBase + '/core/connect.js';
       faviconScript = window.demoboBase + '/core/favicon.js';
       /*
       // This sets the routing of controllers for websites (currently hardcoded)

@@ -1,6 +1,6 @@
 var DeMoboFavicon = function() {
-	this.docHead = document.getElementsByTagName("head")[0]
-	this.demoboIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAABYlAAAWJQFJUiTwAAAAB3RJTUUH3QgBAzotiIi1oAAAAXBJREFUOMu1lEFLQkEUhb8Zh4LMFmIQlFKIRkJU1KqCoP8Q9PwN0baltGkRtGrfpjD3bcR+QFEtokWUIi6LSAhflvL0TQtfqaTwxDowi+HOPfecO3dGAOgkm8AuEAEE7qCBHJAQcVLCITmlPxhCJ3kEon0SZZVjpwHldRS7gYBa+XsTUYBADcOG2bMMDXyc+PCqdyEBkApsC7TdXN2UtZ6pW5zdKt7KoDqrFhQLFxSujtvqj4zNEF3bBt0sMuCB9F0Xoqr5QuZghfWtDEP+EAC2VSG9v0Bgahl/cPGXx45Edt1CeiSB8CoeNeiolPhGp9F1q6MJ2e1CGpW068ZL/gj/QSTaB8TVTDZzGs22Snxe75Ar+pACalUTjeb+fA8h1U9StfxK/vKIp4cMALWKiVUpNcI6iQ0IBNzkIfsMUvQ+5NL5CkDDUhhi4+6dtSAngURrb+YnYS7UM1FCijgpwACygEZDbAJmg67ebBYwjENSX7CqerTMYqamAAAAAElFTkSuQmCC";
+	this.docHead = document.getElementsByTagName("head")[0];
+	this.demoboIcon = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABMAAAATCAYAAAByUDbMAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAAWJQAAFiUBSVIk8AAAAAd0SU1FB90LCRYRJWja818AAALCSURBVDjL5ZRNbFRlFIaf97tz78y0Mq0RN8YEF6w0djC6sN24w4UhShiKC/H/J7hRFq7cmbjDBGSjCVKkLmyKdKGyIv5sxEQTWqNJoROtgcQOUFGZOsC993tdjJMUTFybeDYnOTnnyXvOyTnwvzDtnpnX9K4tfvb498MxlhNYGyWf31BPv3r7kbvLmwte+fSH7I9eOR7tO4LUqcqn3tnR7D0xczoI4LnZhTsLeA/YakAYYDpV2HOoNbY2AD1/fGG0KP2u0WQ/DwQfC16Y2tnshL0nzlZK2Ie91RgBNmB2F/br61UV0W9EM2n6CWCMt0V4E0BPzy7cY/jWdk2oBAcjJAu4DDpiuyJxHXjJ5hZQBCQRgQS8GsRExXYG1PrNOQCEEKiklZjn+a2OcS9/qw0hkGapizxXjBFARmCNRFwLSAFAshGWpBhLdbtd9fsFr/PdK1eIMUoSIAuDnAAhJOIy0u991QppVnX7zKLnpo/o3PIy9aFhNoyMUh8a5qf2EnMfHNVye8lZtSZQAiC0kgSthsOt5o9BvAh8AXxjR7I0U6Mx6nq97l8vXvSpz09y6cKK67W6GyOjTrNMdrwG/hr4LMCewzua5zTY1Ktz31V+K/yQ4aRCIIRgx+gTHx1Tp72k2zbd5W2TuxQqFccYFctyTeLBjQ0tvvVwswAIA9j+7WNFJaiNjW3Sasa1Xk+dlV9gaIjVCx31/lwjzbLBDK830uTMAHQDrD9hLiH9bEfKPCckCdVqFbpdkixzSCqUeR5xRNL8wcfuzdeX3wA71BpbC3BAQJkXyqqZ7h+f0O2bN/PA+IRqtTplWSQAQRz4x23eHNj/ydkw3+sdjPjloEBIEq72rlKr1YixxDESgl6bajX3/SvsyQ9P6+jj9xngmWMLj9reHq1NSZLEWBaSWJTCzFRr7EuAp2bn9f7OLf7v/7O/APkPTmPgXL1XAAAAAElFTkSuQmCC";
 	function parseURI(url) {
 		var m = String(url).replace(/^\s+|\s+$/g, '').match(/^([^:\/?#]+:)?(\/\/(?:[^:@]*(?::[^:@]*)?@)?(([^:\/?#]*)(?::(\d*))?))?([^?#]*)(\?[^#]*)?(#[\s\S]*)?/);
 		return ( m ? {
@@ -19,26 +19,28 @@ var DeMoboFavicon = function() {
 
 	this.isOff = function() {
 		return this.getFavicon() !== this.onFavicon;
-	}
+	};
 
 	this.turnOn = function() {
+		// this.change(this.demoboIcon);
 		this.change(this.onFavicon);
-	}
+	};
 
 	this.turnOff = function() {
+		// this.change(this.originalFavicon);
 		this.change(this.offFavicon);
-	}
+	};
 
 	this.reset = function() {
 		this.change(this.originalFavicon);
-	}
+	};
 
 	this.toggle = function() {
 		if (this.isOff())
 			this.turnOn();
 		else
 			this.turnOff();
-	}
+	};
 	this.getFavicon = function() {
 		var favicon = "/favicon.ico";
 		var links = document.getElementsByTagName('link');
@@ -51,7 +53,7 @@ var DeMoboFavicon = function() {
 			}
 		}
 		return favicon;
-	}
+	};
 	this.grayscale = function(ctx) {
 		var imageData = ctx.getImageData(13, 13, 18, 18);
 		var data = imageData.data;
@@ -66,7 +68,7 @@ var DeMoboFavicon = function() {
 		}
 		// overwrite original image
 		ctx.putImageData(imageData, 13, 13);
-	}
+	};
 	this.colorize = function(ctx, canvas, rgb) {
 		// get all canvas pixel data
 		var imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -89,7 +91,7 @@ var DeMoboFavicon = function() {
 		}
 		// put pixel data on canvas
 		ctx.putImageData(imageData, 0, 0);
-	}
+	};
 	this.renderIcon = function(URL) {
 		var img = new Image();
 		var demoboLogo = new Image();
@@ -116,13 +118,13 @@ var DeMoboFavicon = function() {
 			canvas.height = 32;
 			var ctx = canvas.getContext("2d");
 			ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
-			ctx.drawImage(demoboLogo, 13, 13, 18, 18);
+			ctx.drawImage(demoboLogo, 0, 0, 32, 32);
 			self.onFavicon = canvas.toDataURL("image/png");
 
 			self.grayscale(ctx);
 			self.offFavicon = canvas.toDataURL("image/png");
 			self.turnOn();
-		};
+		}
 		function missingIcon() {
 			var canvas = document.createElement("canvas");
 			canvas.width = 32;
@@ -146,18 +148,18 @@ var DeMoboFavicon = function() {
 
 
 		demoboLogo.src = this.demoboIcon;
-	}
+	};
 	this.change = function(iconURL) {
 		this.removeIcon()
 		this.addLink(iconURL, "shortcut icon")
-	}
+	};
 	this.addLink = function(iconURL, relValue) {
 		var link = document.createElement("link")
 		link.type = "image/x-icon"
 		link.rel = relValue
 		link.href = iconURL
 		this.docHead.appendChild(link)
-	}
+	};
 	this.removeIcon = function() {
 		var links = this.docHead.getElementsByTagName("link");
 		// remove from the end
@@ -167,10 +169,13 @@ var DeMoboFavicon = function() {
 				this.docHead.removeChild(link)
 			}
 		}
-	}
-	this.originalFavicon = this.getFavicon()
-	this.offFavicon = '//www.google.com/s2/favicons?domain=' + window.location.host
-	this.onFavicon = this.demoboIcon
-	this.renderIcon(this.originalFavicon)
-}
-fav = new DeMoboFavicon()
+	};
+	this.originalFavicon = this.demoboIcon;
+	this.offFavicon = this.demoboIcon;
+	this.onFavicon = this.demoboIcon;
+	// this.originalFavicon = this.getFavicon();
+	// this.offFavicon = '//www.google.com/s2/favicons?domain=' + window.location.host;
+	// this.onFavicon = this.demoboIcon;
+	// this.renderIcon(this.originalFavicon);
+};
+fav = new DeMoboFavicon();

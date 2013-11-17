@@ -11,9 +11,9 @@ initializeIncomingCall();
  turn on koala if it is not already on
  **/
 chrome.browserAction.onClicked.addListener(function(tab) {
-	if (tab.url.indexOf('chrome') === 0) {
-		return;
-	}
+	// if (tab.url.indexOf('chrome') === 0) {
+		// return;
+	// }
 	chrome.tabs.sendMessage(tab.id, {
 		action : 'toggleKoala'
 	});
@@ -42,6 +42,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 			top : 0
 		}, function(window) {
 			curWin = window;
+			chrome.tabs.sendMessage(curWin.tabs[0].id, {action: "incoming", person: "Jeff", social: "Yammer"});
 		});
 	}
 });

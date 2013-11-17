@@ -14,7 +14,7 @@
 		this.setController({
 			url : 'generic'
 		});
-		demobo._sendToSimulator('urlUpdate', {
+		demobo._sendToSimulator('event', {
 			url : window.location.href,
 			action : "urlUpdate"
 		});
@@ -23,19 +23,10 @@
 			var evtData = e.detail.data.data;
 			switch(evtData.action) {
 				case "sync":
-					demobo._sendToSimulator('urlChange', {
+					demobo._sendToSimulator('event', {
 						url : window.location.href,
-						action : "urlChange""
+						action : "urlChange"
 					});
-					break;
-				case "load":
-					// demobo._sendToSimulator('urlChange', {
-						// url : window.location.href,
-						// action : "urlChange""
-					// });
-					// if (window.location.href == evtData.url)
-						// return;
-					// window.location = evtData.url;
 					break;
 				case "urlChange":
 					if (window.location.href == evtData.url)
@@ -43,7 +34,7 @@
 					window.location = evtData.url;
 					break;
 				case "click":
-					if (evtData.index>=0)
+					if (evtData.index >= 0)
 						var dom = jQuery(evtData.selector)[evtData.index];
 					else
 						var dom = jQuery(evtData.selector);
@@ -54,7 +45,7 @@
 			}
 		});
 		if (window.jQuery) {
-			jQuery('.btn.next').on( "click", function(e) {
+			jQuery('.btn.next').on("click", function(e) {
 				console.log("next click");
 				demobo._sendToSimulator('event', {
 					selector : '.btn.next',
@@ -62,7 +53,7 @@
 					action : 'click'
 				});
 			});
-			jQuery('.btn.prev').on( "click", function(e) {
+			jQuery('.btn.prev').on("click", function(e) {
 				console.log("prev click");
 				demobo._sendToSimulator('event', {
 					selector : '.btn.prev',
@@ -70,7 +61,7 @@
 					action : 'click'
 				});
 			});
-			jQuery( '.list-card' ).on( "click", function(e) {
+			jQuery('.list-card').on("click", function(e) {
 				var index = jQuery('.list-card').index(e.currentTarget);
 				console.log("list: ", index);
 				demobo._sendToSimulator('event', {
@@ -80,8 +71,8 @@
 				});
 			});
 
-			jQuery( document ).on( "click", '.icon-close', function(e) {
-				console.log("close: ", index);
+			jQuery(document).on("click", '.icon-close', function(e) {
+				console.log("close");
 				demobo._sendToSimulator('event', {
 					selector : '.icon-close',
 					index : -1,

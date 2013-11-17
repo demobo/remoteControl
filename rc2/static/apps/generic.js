@@ -21,6 +21,11 @@
 			console.log("generic: ", e.detail);
 			var evtData = e.detail.data.data;
 			switch(evtData.action) {
+				case "load":
+					if (window.location.href == evtData.url)
+						return;
+					window.location = evtData.url;
+					break;
 				case "urlChange":
 					if (window.location.href == evtData.url)
 						return;

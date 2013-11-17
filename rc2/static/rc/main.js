@@ -108,6 +108,7 @@ function sendMessage(type, data) {
 
 function onExtensionMessage(e) {
 	console.log("onExtensionMessage: ", e.detail);
+	if (evt.type=="urlUpdate") curUrl = evt.data.url;
 	if ($(".videoChatFrame")[0])
 		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");
 }
@@ -120,6 +121,5 @@ function onRemoteMessage(e) {
 addEventListener("message", function(e) {
 	var evt = JSON.parse(e.data);
 	console.log("onRemoteMessage: ", evt);
-	if (evt.action=="urlUpdate") curUrl = evt.url;
 	sendMessage("event", evt);
 }, false);

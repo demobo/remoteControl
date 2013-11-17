@@ -34,7 +34,7 @@ $(document).ready(function() {
 	});
 	
 	$("#acceptBtn").on('click', function() {
-		answer();
+		setTimeout(answer, 600);
 	});
 	
 	$("#declineBtn").on('click', function() {

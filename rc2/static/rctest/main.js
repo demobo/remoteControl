@@ -28,7 +28,7 @@ $(document).ready(function() {
 			hangup(curCallID);
 		curCallID = "";
 	});
-
+	sendMessage("event", {data: {action:"syncID", id: myID}});
 	$(".syncBtn").on('click', function(evt) {
 		sendMessage("event", {data: {action:"sync"}});
 	});

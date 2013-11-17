@@ -9,7 +9,6 @@
 
 	// override the initialize function of Bobo
 	Generic.prototype.initialize = function() {
-		var curUrl = "";
 		console.log("Generic init ...");
 		console.log(window.location.href);
 		this.setController({
@@ -24,8 +23,7 @@
 			switch(evtData.action)
 			{
 			case "urlChange":
-				if (curUrl==evtData.url) return;
-				curUrl = evtData.url;
+				if (window.location.href==evtData.url) return;
 			  	window.location = evtData.url;
 			  	break;
 			case "":

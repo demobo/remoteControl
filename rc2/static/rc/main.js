@@ -28,7 +28,8 @@ $(document).ready(function() {
 			$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify({
 				type: "urlChange",
 				data: {
-					url : curUrl
+					url : curUrl,
+					action: "urlChange"
 			}}), "*");
 	});
 

@@ -1,3 +1,4 @@
+var disableNow = false;
 var curCallID;
 var curUrl = "";
 var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
@@ -110,6 +111,7 @@ function sendMessage(type, data) {
 }
 
 function onExtensionMessage(e) {
+	if (disableNow) return;
 	console.log("onExtensionMessage: ", e.detail);
 	if (e.detail.type == "urlUpdate")
 		curUrl = e.detail.data.url;
@@ -123,6 +125,10 @@ function onRemoteMessage(e) {
 }
 
 addEventListener("message", function(e) {
+	disableNow = true;
+	setTimeout(function(){
+		disableNow = false;
+	},500);
 	var evt = JSON.parse(e.data);
 	console.log("onRemoteMessage: ", evt);
 	sendMessage("event", evt);

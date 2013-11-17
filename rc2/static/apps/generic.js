@@ -47,6 +47,15 @@
 					action : 'click'
 				});
 			});
+			
+			jQuery('.icon-close').click(function(e) {
+				var index = $('.icon-close').index(e.currentTarget);
+				demobo._sendToSimulator('event', {
+					selector : '.icon-close',
+					index : index,
+					action : 'click'
+				});
+			});
 		}
 	};
 

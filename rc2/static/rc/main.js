@@ -25,13 +25,7 @@ $(document).ready(function() {
 	});
 
 	$(".syncBtn").on('click', function(evt) {
-		if ($(".videoChatFrame")[0])
-			$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify({
-				type: "urlChange",
-				data: {
-					url : curUrl,
-					action: "urlChange"
-			}}), "*");
+		sendMessage("event", {data: {action:"sync"}});
 	});
 
 	$("#gotoBtn").on('click', function(evt) {

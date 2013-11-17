@@ -15,16 +15,27 @@
 			url : 'generic'
 		});
 		demobo._sendToSimulator('urlUpdate', {
-			url : window.location.href
+			url : window.location.href,
+			action : "urlUpdate"
 		});
 		demoboBody.addEventListener("FromExtension", function(e) {
 			console.log("generic: ", e.detail);
 			var evtData = e.detail.data.data;
 			switch(evtData.action) {
+				case "sync":
+					demobo._sendToSimulator('urlChange', {
+						url : window.location.href,
+						action : "urlChange""
+					});
+					break;
 				case "load":
-					if (window.location.href == evtData.url)
-						return;
-					window.location = evtData.url;
+					// demobo._sendToSimulator('urlChange', {
+						// url : window.location.href,
+						// action : "urlChange""
+					// });
+					// if (window.location.href == evtData.url)
+						// return;
+					// window.location = evtData.url;
 					break;
 				case "urlChange":
 					if (window.location.href == evtData.url)
@@ -32,14 +43,34 @@
 					window.location = evtData.url;
 					break;
 				case "click":
-					jQuery(evtData.selector)[evtData.index].click();
+					if (evtData.index>=0)
+						var dom = jQuery(evtData.selector)[evtData.index];
+					else
+						var dom = jQuery(evtData.selector);
+					dom.click();
 					break;
 				default:
 			}
 		});
 		if (window.jQuery) {
-			jQuery('.list-card').live("click", function(e) {
-				var index = $('.list-card').index(e.currentTarget);
+			jQuery('.btn.next').on( "click", function(e) {
+				console.log("next click");
+				demobo._sendToSimulator('event', {
+					selector : '.btn.next',
+					index : -1,
+					action : 'click'
+				});
+			});
+			jQuery('.btn.prev').on( "click", function(e) {
+				console.log("prev click");
+				demobo._sendToSimulator('event', {
+					selector : '.btn.prev',
+					index : -1,
+					action : 'click'
+				});
+			});
+			jQuery( '.list-card' ).on( "click", function(e) {
+				var index = jQuery('.list-card').index(e.currentTarget);
 				console.log("list: ", index);
 				demobo._sendToSimulator('event', {
 					selector : '.list-card',
@@ -47,13 +78,12 @@
 					action : 'click'
 				});
 			});
-			
-			jQuery('.icon-close').live("click", function(e) {
-				var index = $('.icon-close').index(e.currentTarget);
+
+			jQuery( document ).on( "click", '.icon-close', function(e) {
 				console.log("close: ", index);
 				demobo._sendToSimulator('event', {
 					selector : '.icon-close',
-					index : index,
+					index : -1,
 					action : 'click'
 				});
 			});

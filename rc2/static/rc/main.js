@@ -128,7 +128,7 @@ addEventListener("message", function(e) {
 	disableNow = true;
 	setTimeout(function(){
 		disableNow = false;
-	},500);
+	},1000);
 	var evt = JSON.parse(e.data);
 	console.log("onRemoteMessage: ", evt);
 	sendMessage("event", evt);

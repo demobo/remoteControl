@@ -22,10 +22,11 @@ $(document).ready(function() {
 	$(".syncBtn").on('click', function(evt) {
 		if ($(".videoChatFrame")[0])
 			$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify({
-				type: "urlChange"
+				type: "urlChange",
 				data: {
-					url : curUrl
-			}), "*");
+					url : curUrl,
+					action: "urlChange"
+			}}), "*");
 	});
 
 	$("#gotoBtn").on('click', function(evt) {

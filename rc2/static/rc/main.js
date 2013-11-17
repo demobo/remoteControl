@@ -24,10 +24,11 @@ $(document).ready(function() {
 	});
 
 	$(".syncBtn").on('click', function(evt) {
-		sendMessage("event", {
-			url : curUrl,
-			action : 'urlChange'
-		});
+		if ($(".videoChatFrame")[0])
+			$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify({
+				url : curUrl,
+				action : 'urlChange'
+			}), "*");
 	});
 
 	$("#gotoBtn").on('click', function(evt) {
@@ -122,7 +123,7 @@ function sendMessage(type, data) {
 
 function onExtensionMessage(e) {
 	console.log("onExtensionMessage: ", e.detail);
-	if (evt.type=="urlUpdate") curUrl = evt.data.url;
+	if (e.detail.type=="urlUpdate") curUrl = e.detail.data.url;
 	if ($(".videoChatFrame")[0])
 		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");
 }

@@ -35,9 +35,8 @@ $(document).ready(function() {
 	});
 	
 	$("#declineBtn").on('click', function() {
-		if (curCallID)
-			hangup(curCallID);
-		curCallID = "";
+		if (myID)
+			hangup(myID);
 	});
 
 	$("#gotoBtn").on('click', function(evt) {
@@ -78,6 +77,8 @@ function call(outgoingId) {
 		var callerId = snapshot.val()['name'];
 		if (callerId === myID && $('#popup:visible')[0] && !$('#chatContainer')[0]) {
 			injectVideoChat(snapshot.name());
+		} else {
+			$(".endBtn").click();
 		}
 	});
 }

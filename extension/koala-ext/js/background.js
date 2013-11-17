@@ -51,7 +51,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 						person : curSnapshot.val().person,
 						social : "Yammer"
 					});
-				}, 500);
+				}, 1000);
 			}
 
 		});
@@ -163,4 +163,11 @@ function startRingtone() {
 	isCalling = true;
 	var e = document.getElementById('ringtone');
 	e && e.play();
+	setTimeout(function() {
+		chrome.tabs.sendMessage(curWin.tabs[0].id, {
+			action : "incoming",
+			person : curSnapshot.val().person,
+			social : "Yammer"
+		});
+	}, 100);
 };

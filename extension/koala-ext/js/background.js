@@ -36,7 +36,8 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 			chrome.windows.update(wind.id, updateInfo);
 		});
 		chrome.windows.create({
-			url : 'http://localhost:1250/rctest/control.html',
+			// url : 'http://localhost:1250/rctest/control.html',
+			url : 'https://berry-c9-koalalab.c9.io/index.html',
 			type : 'popup',
 			width : w,
 			height : maxHeight,

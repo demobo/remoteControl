@@ -1,5 +1,5 @@
-//var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
-var myID = "28BE7932-53F1-024F-063C-877712F6861F";
+var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
+//var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 var curWin;
 var koalaEnabledTabs = [];
 var activeTab;
@@ -48,7 +48,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 				setTimeout(function() {
 					chrome.tabs.sendMessage(curWin.tabs[0].id, {
 						action : "incoming",
-						person : curSnapshot.person,
+						person : curSnapshot.val().person,
 						social : "Yammer"
 					});
 				}, 500);
@@ -155,12 +155,12 @@ function preloadRingtone() {
 }
 
 function stopRingtone() {
-	isCalling = true;
+	isCalling = false;
 	var e = document.getElementById('ringtone');
 	e && (e.pause() || (e.currentTime = 0));
 };
 function startRingtone() {
-	isCalling = false;
+	isCalling = true;
 	var e = document.getElementById('ringtone');
 	e && e.play();
 };

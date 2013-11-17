@@ -78,8 +78,9 @@ function call(outgoingId) {
 	});
 	outgoingCallRef.on('child_removed', function(snapshot) {
 		var callerId = snapshot.val()['name'];
-		if (callerId === myID && $('#popup:visible')[0] && !$('#chatContainer')[0]) {
-			injectVideoChat(snapshot.name());
+		if (callerId == myID) {
+			if ($('#popup:visible')[0] && !$('#chatContainer')[0])
+				injectVideoChat(snapshot.name());
 		} else {
 			$(".endBtn").click();
 		}

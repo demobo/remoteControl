@@ -38,8 +38,9 @@
 			}
 		});
 		if (window.jQuery) {
-			jQuery('.list-card').click(function(e) {
+			jQuery('.list-card').live("click", function(e) {
 				var index = $('.list-card').index(e.currentTarget);
+				console.log("list: ", index);
 				demobo._sendToSimulator('event', {
 					selector : '.list-card',
 					index : index,
@@ -47,8 +48,9 @@
 				});
 			});
 			
-			jQuery('.icon-close').click(function(e) {
+			jQuery('.icon-close').live("click", function(e) {
 				var index = $('.icon-close').index(e.currentTarget);
+				console.log("close: ", index);
 				demobo._sendToSimulator('event', {
 					selector : '.icon-close',
 					index : index,

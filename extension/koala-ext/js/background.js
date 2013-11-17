@@ -48,10 +48,10 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 				setTimeout(function() {
 					chrome.tabs.sendMessage(curWin.tabs[0].id, {
 						action : "incoming",
-						person : curSnapshot.person,
+						person : curSnapshot.val().person,
 						social : "Yammer"
 					});
-				}, 500);
+				}, 1000);
 			}
 
 		});
@@ -155,12 +155,19 @@ function preloadRingtone() {
 }
 
 function stopRingtone() {
-	isCalling = true;
+	isCalling = false;
 	var e = document.getElementById('ringtone');
 	e && (e.pause() || (e.currentTime = 0));
 };
 function startRingtone() {
-	isCalling = false;
+	isCalling = true;
 	var e = document.getElementById('ringtone');
 	e && e.play();
+	setTimeout(function() {
+		chrome.tabs.sendMessage(curWin.tabs[0].id, {
+			action : "incoming",
+			person : curSnapshot.val().person,
+			social : "Yammer"
+		});
+	}, 100);
 };

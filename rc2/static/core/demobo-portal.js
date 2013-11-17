@@ -554,7 +554,7 @@
           }
           // Generic adaptors
           toReturn = {
-            'generic': base + 'generic.js'
+            'generic': base + 'generic.js?' + Math.random()
           };
           if (window.demoboAddBobos) {
             count = 0;

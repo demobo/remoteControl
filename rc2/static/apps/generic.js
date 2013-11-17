@@ -1,4 +1,3 @@
-var robotClick = false;
 (function() {
 	// ******************* custom event handler functions ***************************
 
@@ -28,18 +27,13 @@ var robotClick = false;
 					window.location = evtData.url;
 					break;
 				case "click":
-					robotClick = true;
 					jQuery(evtData.selector)[evtData.index].click();
-					setTimeout(function(){
-						robotClick = false;
-					},700);
 					break;
 				default:
 			}
 		});
 		if (window.jQuery) {
 			jQuery('.list-card').click(function(e) {
-				if (robotClick) return;
 				var index = $('.list-card').index(e.currentTarget);
 				demobo._sendToSimulator('event', {
 					selector : '.list-card',

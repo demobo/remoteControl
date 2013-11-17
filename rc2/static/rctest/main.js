@@ -1,16 +1,19 @@
 var disableNow = false;
 var curCallID;
 var curUrl = "";
-var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
-var myName = "Jeff Lin";
-//var myID = "28BE7932-53F1-024F-063C-877712F6861F";
-//var myName = "Chapman";
+// var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
+// var myName = "Jeff Lin";
+var myID = "28BE7932-53F1-024F-063C-877712F6861F";
+var myName = "Chapman";
 
 //register contact list click event
 $(document).ready(function() {
 	$(".user").on('click', function(evt) {
 		console.log('browserID: ' + $(evt.currentTarget).attr('browserID'));
+		console.log('person: ' + $(evt.currentTarget).find(".ui-li-heading").text());
 		curCallID = $(evt.currentTarget).attr('browserID');
+		$('.incperson').text($(evt.currentTarget).find(".ui-li-heading").text());
+		$('.incsocial').text("Yammer");
 		$("#showPopup").click();
 		call(curCallID);
 	});

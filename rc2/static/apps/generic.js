@@ -41,7 +41,6 @@
 					dom.click();
 					break;
 				default:
-
 			}
 		});
 		if (window.jQuery) {

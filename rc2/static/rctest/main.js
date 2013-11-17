@@ -25,7 +25,17 @@ $(document).ready(function() {
 	});
 
 	$(".syncBtn").on('click', function(evt) {
-		sendMessage("event", {action: "sync", data: {action:"sync"}});
+		sendMessage("event", {data: {action:"sync"}});
+	});
+	
+	$("#acceptBtn").on('click', function() {
+		answer();
+	});
+	
+	$("#declineBtn").on('click', function() {
+		if (curCallID)
+			hangup(curCallID);
+		curCallID = "";
 	});
 
 	$("#gotoBtn").on('click', function(evt) {
@@ -121,15 +131,10 @@ function sendMessage(type, data) {
 function onExtensionMessage(e) {
 	if (disableNow) return;
 	console.log("onExtensionMessage: ", e.detail);
-	if (e.detail.type == "urlUpdate") {
-		curUrl = e.detail.data.url;	
-	}
-	else if (e.detail.action == "incoming")	{
-		setCallerInfo({fromPerson: e.detail.person, fromSocial: e.detail.social});
-	}
-	else if ($(".videoChatFrame")[0]) {
-		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");	
-	}
+	if (e.detail.type == "urlUpdate")
+		curUrl = e.detail.data.url;
+	if ($(".videoChatFrame")[0])
+		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");
 }
 
 function onRemoteMessage(e) {
@@ -146,3 +151,9 @@ addEventListener("message", function(e) {
 	console.log("onRemoteMessage: ", evt);
 	sendMessage("event", evt);
 }, false);
+
+function setCallerInfo(args) {
+	$('.incperson').text(args.fromPerson);
+	$('.incsocial').text(args.fromSocial);
+	window.location = "#p";
+}

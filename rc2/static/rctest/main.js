@@ -2,7 +2,9 @@ var disableNow = false;
 var curCallID;
 var curUrl = "";
 //var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
+// var myName = "Chapman Hong";
 var myID = "28BE7932-53F1-024F-063C-877712F6861F";
+var myName = "Jeff Lin";
 
 //register contact list click event
 $(document).ready(function() {
@@ -69,7 +71,8 @@ $(document).on('pageinit', function(e) {
 function call(outgoingId) {
 	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
 	outgoingCallRef.push({
-		name : myID
+		name : myID,
+		person : myName
 	});
 	outgoingCallRef.on('child_removed', function(snapshot) {
 		var callerId = snapshot.val()['name'];
@@ -131,10 +134,15 @@ function sendMessage(type, data) {
 function onExtensionMessage(e) {
 	if (disableNow) return;
 	console.log("onExtensionMessage: ", e.detail);
-	if (e.detail.type == "urlUpdate")
-		curUrl = e.detail.data.url;
-	if ($(".videoChatFrame")[0])
-		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");
+	if (e.detail.type == "urlUpdate") {
+		curUrl = e.detail.data.url;	
+	}
+	else if (e.detail.action == "incoming")	{
+		setCallerInfo({fromPerson: e.detail.person, fromSocial: e.detail.social});
+	}
+	else if ($(".videoChatFrame")[0]) {
+		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");	
+	}
 }
 
 function onRemoteMessage(e) {

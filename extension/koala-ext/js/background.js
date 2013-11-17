@@ -3,6 +3,8 @@ var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 var curWin;
 var koalaEnabledTabs = [];
 var activeTab;
+var isCalling = false;
+var curSnapshot;
 setBWIcon();
 preloadRingtone();
 initializeIncomingCall();
@@ -12,7 +14,7 @@ initializeIncomingCall();
  **/
 chrome.browserAction.onClicked.addListener(function(tab) {
 	// if (tab.url.indexOf('chrome') === 0) {
-		// return;
+	// return;
 	// }
 	chrome.tabs.sendMessage(tab.id, {
 		action : 'toggleKoala'
@@ -34,7 +36,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 			chrome.windows.update(wind.id, updateInfo);
 		});
 		chrome.windows.create({
-			url : 'http://localhost:1250/rc/control.html',
+			url : 'http://localhost:1250/rctest/control.html',
 			type : 'popup',
 			width : w,
 			height : maxHeight,
@@ -42,7 +44,16 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 			top : 0
 		}, function(window) {
 			curWin = window;
-			chrome.tabs.sendMessage(curWin.tabs[0].id, {action: "incoming", person: "Jeff", social: "Yammer"});
+			if (isCalling) {
+				setTimeout(function() {
+					chrome.tabs.sendMessage(curWin.tabs[0].id, {
+						action : "incoming",
+						person : curSnapshot.person,
+						social : "Yammer"
+					});
+				}, 500);
+			}
+
 		});
 	}
 });
@@ -122,6 +133,8 @@ function initializeIncomingCall() {
 	console.log("init " + myID);
 	var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
 	incomingCallRef.on('child_added', function(snapshot) {
+		curSnapshot = snapshot;
+		console.log(snapshot);
 		startRingtone();
 	});
 	incomingCallRef.on('child_removed', function(snapshot) {
@@ -142,10 +155,12 @@ function preloadRingtone() {
 }
 
 function stopRingtone() {
+	isCalling = true;
 	var e = document.getElementById('ringtone');
 	e && (e.pause() || (e.currentTime = 0));
 };
 function startRingtone() {
+	isCalling = false;
 	var e = document.getElementById('ringtone');
 	e && e.play();
 };

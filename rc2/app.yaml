@@ -1,4 +1,4 @@
-application: koala-lab
+application: de-mobo
 version: rc2
 runtime: python
 api_version: 1

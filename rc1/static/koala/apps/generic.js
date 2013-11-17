@@ -30,6 +30,7 @@
 					jQuery(evtData.selector)[evtData.index].click();
 					break;
 				default:
+
 			}
 		});
 		setTimeout(function() {

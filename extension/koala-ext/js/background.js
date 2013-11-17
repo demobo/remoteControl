@@ -134,17 +134,24 @@ function call(outgoingId) {
 	});
 }
 
+var incomingCallRef;
 function initializeIncomingCall() {
+	if (incomingCallRef) {
+		incomingCallRef.off('child_added', onAdd);
+		incomingCallRef.off('child_removed', onRemove);
+	}
 	console.log("init " + myID);
-	var incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
-	incomingCallRef.on('child_added', function(snapshot) {
-		curSnapshot = snapshot;
-		console.log(snapshot);
-		startRingtone();
-	});
-	incomingCallRef.on('child_removed', function(snapshot) {
-		stopRingtone();
-	});
+	incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
+	incomingCallRef.on('child_added', onAdd);
+	incomingCallRef.on('child_removed', onRemove);
+}
+function onAdd(snapshot) {
+	curSnapshot = snapshot;
+	console.log(snapshot);
+	startRingtone();
+}
+function onRemove(snapshot) {
+	stopRingtone();
 }
 
 function preloadRingtone() {

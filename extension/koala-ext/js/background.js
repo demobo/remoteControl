@@ -34,7 +34,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 			chrome.windows.update(wind.id, updateInfo);
 		});
 		chrome.windows.create({
-			url : 'http://rc2.de-mobo.appspot.com/rc/control.html',
+			url : 'http://localhost:1250/rc/control.html',
 			type : 'popup',
 			width : w,
 			height : maxHeight,

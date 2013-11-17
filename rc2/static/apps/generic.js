@@ -33,12 +33,6 @@
 
 			}
 		});
-		setTimeout(function() {
-			demobo._sendToSimulator('event', {
-				url : window.location.href,
-				action : 'urlChange'
-			});
-		}, 100);
 		if (window.jQuery) {
 			jQuery('.list-card').click(function(e) {
 				var index = $('.list-card').index(e.currentTarget);

@@ -164,7 +164,7 @@ function startRingtone() {
 	var e = document.getElementById('ringtone');
 	e && e.play();
 	setTimeout(function() {
-		if (chrome && chrome.tabs && curSnapshot) {
+		if (curWin && curWin.tabs && curSnapshot) {
 			chrome.tabs.sendMessage(curWin.tabs[0].id, {
 				action : "incoming",
 				person : curSnapshot.val().person,

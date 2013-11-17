@@ -101,7 +101,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 	console.log(request);
-	if (request.data.data.action == "syncID") {
+	if (request.data.data && request.data.data.action == "syncID") {
 		localStorage.setItem("myID",request.data.data.id);
 		myID = request.data.data.id;
 	}

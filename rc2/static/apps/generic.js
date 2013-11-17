@@ -14,7 +14,7 @@
 		this.setController({
 			url : 'generic'
 		});
-		demobo._sendToSimulator('urlChange', {
+		demobo._sendToSimulator('urlUpdate', {
 			url : window.location.href
 		});
 		demoboBody.addEventListener("FromExtension", function(e) {

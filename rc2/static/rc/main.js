@@ -1,4 +1,5 @@
 var curCallID;
+var curUrl = "";
 //var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
 var myID = "28BE7932-53F1-024F-063C-877712F6861F";
 
@@ -20,6 +21,13 @@ $(document).ready(function() {
 		if (curCallID)
 			hangup(curCallID);
 		curCallID = "";
+	});
+
+	$(".syncBtn").on('click', function(evt) {
+		sendMessage("event", {
+			url : curUrl,
+			action : 'urlChange'
+		});
 	});
 
 	$("#gotoBtn").on('click', function(evt) {
@@ -117,6 +125,7 @@ function onExtensionMessage(e) {
 	if ($(".videoChatFrame")[0])
 		$(".videoChatFrame")[0].contentWindow.postMessage(JSON.stringify(e.detail), "*");
 }
+
 function onRemoteMessage(e) {
 	var cmd = JSON.parse(evt.data);
 	console.log("onRemoteMessage: ", e.detail);
@@ -125,5 +134,6 @@ function onRemoteMessage(e) {
 addEventListener("message", function(e) {
 	var evt = JSON.parse(e.data);
 	console.log("onRemoteMessage: ", evt);
+	if (evt.action=="urlUpdate") curUrl = evt.url;
 	sendMessage("event", evt);
 }, false);

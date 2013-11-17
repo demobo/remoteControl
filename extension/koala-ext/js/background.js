@@ -104,6 +104,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	if (request.data.data && request.data.data.action == "syncID") {
 		localStorage.setItem("myID",request.data.data.id);
 		myID = request.data.data.id;
+		initializeIncomingCall();
 	}
 	else if (sender.tab.id == activeTab)
 		chrome.tabs.sendMessage(curWin.tabs[0].id, request);

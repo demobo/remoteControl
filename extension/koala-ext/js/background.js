@@ -73,7 +73,13 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
 	if (changeInfo.status && changeInfo.status === 'complete') {
 		if (koalaEnabledTabs.indexOf(tabId) != -1) {
 			chrome.tabs.sendMessage(tabId, {
-				action : 'load'
+				action : 'load',
+				data : {
+					data : {
+						action : 'load',
+						url : tab.url
+					}
+				}
 			});
 		}
 	}

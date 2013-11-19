@@ -38,6 +38,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 		chrome.windows.create({
 			// url : 'http://localhost:1250/rctest/control.html',
 			url : 'https://berry-c9-koalalab.c9.io/index.html',
+			// url : 'http://10.69.44.220:3000',
 			type : 'popup',
 			width : w,
 			height : maxHeight,

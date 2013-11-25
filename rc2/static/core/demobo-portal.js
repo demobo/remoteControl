@@ -37,7 +37,7 @@
 
       version = '0.9.2';
       base = window.demoboBase + '/apps/';
-      // connectScript = window.demoboBase + '/core/connect.js';
+      connectScript = window.demoboBase + '/core/connect.js';
       faviconScript = window.demoboBase + '/core/favicon.js';
       /*
       // This sets the routing of controllers for websites (currently hardcoded)
@@ -442,7 +442,7 @@
 
         enabledHandler: function(portal) {
           return function(data) {
-            console.log('enabled');
+            // console.log('enabled');
             return portal.turnOnFavicon();
           };
         },
@@ -452,7 +452,7 @@
 
         disabledHandler: function(portal) {
           return function(data) {
-            console.log('disabled');
+            // console.log('disabled');
             return portal.turnOffFavicon();
           };
         },

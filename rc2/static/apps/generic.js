@@ -43,41 +43,27 @@
 				default:
 			}
 		});
-		if (window.jQuery) {
-			jQuery('.btn.next').on("click", function(e) {
-				console.log("next click");
+
+
+		function onClickByClassName(className) {
+			jQuery(document).on("mouseup", className, function(e) {
+				var index = jQuery(className).index(e.currentTarget);
 				demobo._sendToSimulator('event', {
-					selector : '.btn.next',
-					index : -1,
-					action : 'click'
-				});
-			});
-			jQuery('.btn.prev').on("click", function(e) {
-				console.log("prev click");
-				demobo._sendToSimulator('event', {
-					selector : '.btn.prev',
-					index : -1,
-					action : 'click'
-				});
-			});
-			jQuery('.list-card').on("click", function(e) {
-				var index = jQuery('.list-card').index(e.currentTarget);
-				console.log("list: ", index);
-				demobo._sendToSimulator('event', {
-					selector : '.list-card',
+					selector : className,
 					index : index,
 					action : 'click'
 				});
+				console.log("click", className, index);
 			});
-
-			jQuery(document).on("click", '.icon-close', function(e) {
-				console.log("close");
-				demobo._sendToSimulator('event', {
-					selector : '.icon-close',
-					index : -1,
-					action : 'click'
-				});
-			});
+		}
+		
+		if (window.jQuery) {
+			onClickByClassName('.btnNext');
+			onClickByClassName('.btnPrevious');
+			onClickByClassName('.btn.next');
+			onClickByClassName('.btn.prev');
+			onClickByClassName('.list-card');
+			onClickByClassName('.icon-close');
 		}
 	};
 

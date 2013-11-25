@@ -34,6 +34,7 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 				height : maxHeight
 			};
 			chrome.windows.update(wind.id, updateInfo);
+			// chrome.tabs.update(tab.id, {'pinned': !tab.pinned});
 		});
 		chrome.windows.create({
 			url : 'http://colabeo.herokuapp.com/index.html',
@@ -113,13 +114,13 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 
 function setIcon() {
 	chrome.browserAction.setIcon({
-		path : 'images/19.png'
+		path : 'images/colabeo19.png'
 	});
 }
 
 function setBWIcon() {
 	chrome.browserAction.setIcon({
-		path : 'images/19_bw.png'
+		path : 'images/colabeo19_bw.png'
 	});
 }
 

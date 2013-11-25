@@ -3,7 +3,7 @@
    "description": "Koala Collabration Tool",
    "browser_action":
    {
-	  "default_icon": "images/19.png",
+	  "default_icon": "images/colabeo19.png",
       "default_title": "Koala"
    },
    "background" : {
@@ -20,10 +20,10 @@
    "content_security_policy": "script-src 'self' https://cdn.firebase.com https://*.firebaseio.com https://*.firebaseio-demo.com; object-src 'self'",
    "icons":
    {
-   	 "128": "images/128.png",
-      "48": "images/48.png",
-	  "19": "images/19.png",
-      "16": "images/16.png"
+   	 "128": "images/colabeo128.png",
+      "48": "images/colabeo48.png",
+	  "19": "images/colabeo19.png",
+      "16": "images/colabeo16.png"
    },
    "homepage_url": "http://www.koalalab.com",
    "permissions": [

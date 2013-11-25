@@ -63,7 +63,7 @@ if (!document.getElementById('toggle')) {
 	});
 
 	function onMessage(message, sender, sendResponse) {
-		console.log("onMessage", message.action);
+		// console.log("onMessage", message.action);
 		if (message.action === 'toggleKoala') {
 			document.getElementById('toggle').click();
 			//favicon off message
@@ -112,8 +112,8 @@ if (!document.getElementById('toggle')) {
 
 	chrome.extension.onMessage.addListener(onMessage);
 	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-		console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
-		console.log(request);
+		// console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
+		// console.log(request);
 		if (!sender.tab)
 			sendToFrontPage("FromExtension", request);
 	});

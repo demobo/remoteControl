@@ -1,10 +1,10 @@
 {
-   "name": "Koala",
-   "description": "Koala Collabration Tool",
+   "name": "Colabeo",
+   "description": "Colabeo Collabration Tool",
    "browser_action":
    {
 	  "default_icon": "images/colabeo19.png",
-      "default_title": "Koala"
+      "default_title": "Colabeo"
    },
    "background" : {
     "scripts": ["js/firebase.js","js/background.js"]
@@ -25,7 +25,7 @@
 	  "19": "images/colabeo19.png",
       "16": "images/colabeo16.png"
    },
-   "homepage_url": "http://www.koalalab.com",
+   "homepage_url": "http://www.colabeo.com",
    "permissions": [
      "*://*/*", "tabs"
    ],

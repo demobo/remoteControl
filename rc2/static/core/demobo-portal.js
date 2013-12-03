@@ -11,6 +11,29 @@
 */
 
 
+var demobo = {};
+var DEMOBO_DEBUG = false;
+var DEMOBO = {};
+var _demoboBody = document.getElementById('demoboBody');
+if (!_demoboBody) {
+	_demoboBody = document.createElement('div');
+	_demoboBody.setAttribute('id', 'demoboBody');
+	document.body.appendChild(_demoboBody);
+}
+
+demobo._sendToSimulator = function(type, data) {
+	if (!_demoboBody)
+		return;
+	var evt = new CustomEvent("FromFrontground", {
+		detail : {
+			type : type,
+			data : data
+		}
+	});
+	_demoboBody.dispatchEvent(evt);
+};
+
+
 (function() {
   var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, faviconScript, loadJS, nativeForEach, remotes, version, _,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -79,7 +102,7 @@
       // Try to preload demobo API and other scripts as early as possible
       */
 
-      cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js');
+      // cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js');
       cacheJS(connectScript);
       /*
       // A function that loads a script and executes the call back after the script is executed
@@ -248,15 +271,6 @@
 
         Bobo.prototype.alert = function(info) {
           return this.portal.alert(info);
-        };
-
-        /* 
-        //Call the function on device. if `devicedID` is not specified, call the function on all devices connected to this bobo
-        */
-
-
-        Bobo.prototype.callFunction = function(functionName, data, deviceID) {
-          return this.portal.callFunction(functionName, data, deviceID, this.getInfo('boboID'));
         };
 
         /*
@@ -631,23 +645,12 @@
           /*
           // Register event handlers for connected, disconnected,
           */
-
-          this.demobo.addEventListener('connected', demoboHandlers.connectedHandler(this));
-          this.demobo.addEventListener('enabled', demoboHandlers.enabledHandler(this));
-          this.demobo.addEventListener('disabled', demoboHandlers.disabledHandler(this));
-          this.demobo.addEventListener('disconnected', demoboHandlers.disconnectedHandler(this));
-          this.demobo.addEventListener('mb', demoboHandlers.mbHandler(this));
           this.on('change:bobos', demoboHandlers.handlerBobosChange);
           this.on('change:curBobo', demoboHandlers.handlerCurBoboChange);
           this.on('add:bobos', demoboHandlers.handleBoboAdd);
           this.turnOnFavicon();
           window.DEMOBO.init = function() {};
-          window.demobo.start();
-          window.addEventListener('focus', function() {
-            return setTimeout(function() {
-              return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
-            }, 1000);
-          });
+          
           for (name in boboRoutes) {
             route = boboRoutes[name];
             loadJS(route);
@@ -671,26 +674,6 @@
         };
 
         /*
-        // Make an rpc on the device. if `deviceID` is not specified, make the rpc on all devices connected to the specified bobo
-        */
-
-
-        DemoboPortal.prototype.callFunction = function(functionName, data, deviceID, boboID) {
-          var dID, deviceIDs, _i, _len;
-
-          if (deviceID) {
-            return this.demobo.callFunction(functionName, data, deviceID);
-          } else {
-            deviceIDs = this.get('boboDeviceMap')[boboID];
-            for (_i = 0, _len = deviceIDs.length; _i < _len; _i++) {
-              dID = deviceIDs[_i];
-              this.demobo.callFunction(functionName, data, dID);
-            }
-            return false;
-          }
-        };
-
-        /*
         //If the event is already registered, add a handler to its dispatcher; otherwise create a new dispatcher
         */
 
@@ -710,7 +693,6 @@
             _temp[eventName] = function() {
               return dispatcher.dispatch.apply(dispatcher, arguments);
             };
-            this.demobo.mapInputEvents(_temp);
           }
           return true;
         };
@@ -751,7 +733,7 @@
             boboInfos.push(info);
           }
           toSend['bobos'] = this.getBobosInfo();
-          return this.demobo.setController(toSend, deviceID);
+          return null;
         };
 
         /*
@@ -873,7 +855,7 @@
 
 
         DemoboPortal.prototype.setController = function(controller) {
-          return this.demobo.setController(controller);
+          return null;
         };
 
         /*
@@ -972,12 +954,6 @@
             }
             if (!this.get('curBobo')) {
               this.set('curBobo', boboObj);
-              /* shame to have to code this like this...
-              */
-
-              setTimeout(function() {
-                return window.demobo.getDeviceInfo.apply(window.demobo, ['', 'fuck=function f(data){window.demoboPortal.addExistentDevice.apply(window.demoboPortal, [data])}']);
-              }, 1000);
             } else if (boboID === this.get('lastBoboID')) {
               boboObj.setInfo('priority', 10);
               this.switchBobo(boboObj.getInfo('boboID'));
@@ -1096,34 +1072,18 @@
       // instantiate a `DemoboPortal` object and expose to global use
       */
 
-      loadJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js', function() {
-        var demoboPortal;
+   
+			var demoboPortal;
+			demoboPortal = new DemoboPortal();
+			window.demoboPortal = demoboPortal;
 
-        demoboPortal = new DemoboPortal();
-        window.demoboPortal = demoboPortal;
-        /*
-        // Load script of connection dialog and show the dialog if necessary
-        */
+			return loadJS(faviconScript, function() {
+				var favicon;
 
-        // loadJS(connectScript, function() {
-          // return window.__dmtg = function() {
-            // var visible;
-// 
-            // visible = document.getElementById('demoboConnect').style.top !== '';
-            // if (visible) {
-              // return window._hideDemoboConnect();
-            // } else {
-              // return window._showDemoboConnect();
-            // }
-          // };
-        // });
-        return loadJS(faviconScript, function() {
-          var favicon;
+				favicon = new DeMoboFavicon();
+				return demoboPortal.set('favicon', favicon);
+			});
 
-          favicon = new DeMoboFavicon();
-          return demoboPortal.set('favicon', favicon);
-        });
-      });
     }
     delete window.demoboLoading;
   }

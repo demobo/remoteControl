@@ -52,8 +52,8 @@ chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
 
 //catch refresh event
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	console.log("onUpdate");
 	if (targetTab && targetTab.id == tabId) {
+		console.log("onUpdate", changeInfo);
 		chrome.tabs.sendMessage(targetTab.id, {
 			action : 'toggleKoala'
 		});

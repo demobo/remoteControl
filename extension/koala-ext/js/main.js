@@ -56,11 +56,17 @@ if (!document.getElementById('toggle')) {
 		console.log("FromKoala", e.detail);
 		chrome.runtime.sendMessage(e.detail);
 	});
-
+	
+	var toggled = false;
 	function onMessage(message, sender, sendResponse) {
 		// console.log("onMessage", message.action);
 		if (message.action === 'toggleKoala') {
-			document.getElementById('toggle').click();
+			console.log("onMessage toggleKoala");
+			if (!toggled) {
+				console.log("onMessage toggleKoala click");
+				document.getElementById('toggle').click();
+				toggled = true;	
+			}
 			//favicon off message
 		} else if (message.action === 'load') {
 			document.getElementById('load').click();

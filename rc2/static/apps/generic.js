@@ -123,9 +123,9 @@
 			setUpListener(document, 'btnNext');
 			setUpListener(document, 'btnPrevious');
 
-			setUpListener(document, 'btn next');
-			setUpListener(document, 'btn prev');
-
+			// do not accept 'btn next'
+			setUpListener(document, 'btn');
+			
 			setUpListener(document, 'list-card');
 			setUpListener(document, 'icon-close');
 

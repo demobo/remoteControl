@@ -163,24 +163,31 @@ function resizeTargetSite(w) {
 			chrome.tabs.update(targetTab.id, {
 				pinned : true
 			}, function(tab) {
-				targetTab.favIconUrl = tab.favIconUrl;
-				tab.favIconUrl = "";
-				console.log(tab);
+				if (tab) {
+					targetTab.favIconUrl = tab.favIconUrl;
+					tab.favIconUrl = "";
+					console.log(tab);
+				} else {
+					targetTab = undefined;
+				}
 			});
 		else
 			chrome.tabs.update(targetTab.id, {
 				pinned : false
 			}, function(tab) {
-				tab.favIconUrl = targetTab.favIconUrl;
-				chrome.tabs.sendMessage(targetTab.id, {
-					data : {
+				if (tab) {
+					tab.favIconUrl = targetTab.favIconUrl;
+					chrome.tabs.sendMessage(targetTab.id, {
 						data : {
-							action : 'turnOff'
+							data : {
+								action : 'turnOff'
+							}
 						}
-					}
-				});
-				targetTab = undefined;
-				console.log(tab);
+					});
+					console.log(tab);
+				} else {
+					targetTab = undefined;
+				}
 			});
 	}
 	if (dashboardTab) {

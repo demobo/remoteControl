@@ -443,7 +443,7 @@
         enabledHandler: function(portal) {
           return function(data) {
             // console.log('enabled');
-            return portal.turnOnFavicon();
+            // return portal.turnOnFavicon();
           };
         },
         /*
@@ -453,7 +453,7 @@
         disabledHandler: function(portal) {
           return function(data) {
             // console.log('disabled');
-            return portal.turnOffFavicon();
+            // return portal.turnOffFavicon();
           };
         },
         /*
@@ -640,6 +640,7 @@
           this.on('change:bobos', demoboHandlers.handlerBobosChange);
           this.on('change:curBobo', demoboHandlers.handlerCurBoboChange);
           this.on('add:bobos', demoboHandlers.handleBoboAdd);
+          this.turnOnFavicon();
           window.DEMOBO.init = function() {};
           window.demobo.start();
           window.addEventListener('focus', function() {
@@ -1104,18 +1105,18 @@
         // Load script of connection dialog and show the dialog if necessary
         */
 
-        loadJS(connectScript, function() {
-          return window.__dmtg = function() {
-            var visible;
-
-            visible = document.getElementById('demoboConnect').style.top !== '';
-            if (visible) {
-              return window._hideDemoboConnect();
-            } else {
-              return window._showDemoboConnect();
-            }
-          };
-        });
+        // loadJS(connectScript, function() {
+          // return window.__dmtg = function() {
+            // var visible;
+// 
+            // visible = document.getElementById('demoboConnect').style.top !== '';
+            // if (visible) {
+              // return window._hideDemoboConnect();
+            // } else {
+              // return window._showDemoboConnect();
+            // }
+          // };
+        // });
         return loadJS(faviconScript, function() {
           var favicon;
 

@@ -11,6 +11,9 @@
 	Generic.prototype.initialize = function() {
 		console.log("Generic init ...");
 		console.log(window.location.href);
+		if (top === self) {
+			demoboPortal.turnOnFavicon();
+		}
 		this.setController({
 			url : 'generic'
 		});
@@ -22,6 +25,16 @@
 			console.log("generic: ", e.detail);
 			var evtData = e.detail.data.data;
 			switch(evtData.action) {
+				case "turnOn":
+					if (top === self) {
+						demoboPortal.turnOnFavicon();
+					}
+					break;
+				case "turnOff":
+					if (top === self) {
+						demoboPortal.turnOffFavicon();
+					}
+					break;
 				case "sync":
 					if (top === self) {
 						demobo._sendToSimulator('event', {
@@ -31,14 +44,14 @@
 					}
 					break;
 				case "urlChange":
-					if (top !== self)
-						return;
-					if (window.location.href == evtData.url)
-						return;
-					window.location = evtData.url;
+					if (top === self) {
+						if (window.location.href == evtData.url)
+							return;
+						window.location = evtData.url;
+					}
 					break;
 				case "click":
-					if (window.jQuery) {
+					if (false && window.jQuery) {
 						if (evtData.index >= 0)
 							var dom = jQuery(evtData.selector)[evtData.index];
 						else
@@ -67,39 +80,34 @@
 			});
 		}
 
-		function setUpListenerByClassName(delegatorClassName, elementClassName, eventName) {
+		function setUpListenerByClassName(delegatorClassName, elementClassName) {
 			var delegator = document.getElementsByClassName(delegatorClassName)[0];
-			setUpListener(delegator, elementClassName, eventName);
+			if (delegator)
+				setUpListener(delegator, elementClassName);
 		}
 
-		function setUpListener(delegator, elementClassName, eventName) {
-			delegator.addEventListener(eventName, function(event) {
+		function setUpListener(delegator, elementClassName) {
+			delegator.addEventListener("mouseup", function(event) {
 				event = event || window.event;
 				var target = event.target || event.srcElement;
 				while (target && target != delegator) {
 					if (target && target.classList.contains(elementClassName)) {
 						var targets = Array.prototype.slice.call(document.getElementsByClassName(elementClassName));
-						console.log(elementClassName, targets, target);
 						var index = Array.prototype.indexOf.call(targets, target);
-						// demobo._sendToSimulator('event', {
-							// selector : elementClassName,
-							// index : index,
-							// action : eventName
-						// });
-						console.log("click", elementClassName, index);
+						console.log('click', elementClassName, index);
+						demobo._sendToSimulator('event', {
+							selector : elementClassName,
+							index : index,
+							action : 'click'
+						});
 						break;
 					}
 					target = target.parentNode;
 				}
 			});
 		}
-		
-		function a(elementClassName) {
-			var targets = window.document.getElementsByClassName(elementClassName);
-			console.log(elementClassName, targets);
-		}
 
-		if (window.jQuery) {
+		if (false && window.jQuery) {
 			onClickByClassName('.btnNext');
 			onClickByClassName('.btnPrevious');
 
@@ -112,7 +120,17 @@
 			onClickByClassName('.filename-col img');
 			onClickByClassName('.filename-col a');
 		} else {
-			setUpListenerByClassName('clsDesktopActionTabWrapper', 'clsDesktopActionTab', 'click');
+			setUpListener(document, 'btnNext');
+			setUpListener(document, 'btnPrevious');
+
+			setUpListener(document, 'btn next');
+			setUpListener(document, 'btn prev');
+
+			setUpListener(document, 'list-card');
+			setUpListener(document, 'icon-close');
+
+			setUpListenerByClassName('clsDesktopActionTabWrapper', 'clsDesktopActionTab');
+			setUpListener(document, 'clsBorderBox');
 		}
 	};
 

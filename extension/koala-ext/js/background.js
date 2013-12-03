@@ -1,8 +1,9 @@
 // var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
 var myID = localStorage.getItem("myID") || "C116FD42-F2B5-EE59-17A6-78F40F22221F";
-var curWin;
-var koalaEnabledTabs = [];
-var activeTab;
+
+var targetTab;
+var dashboardTab;
+
 var isCalling = false;
 var curSnapshot;
 setBWIcon();
@@ -13,103 +14,65 @@ initializeIncomingCall();
  turn on koala if it is not already on
  **/
 chrome.browserAction.onClicked.addListener(function(tab) {
-	// if (tab.url.indexOf('chrome') === 0) {
-	// return;
-	// }
-	chrome.tabs.sendMessage(tab.id, {
-		action : 'toggleKoala'
-	});
-	setIcon();
-	activeTab = tab.id;
-	if (koalaEnabledTabs.indexOf(activeTab) === -1) {
-		koalaEnabledTabs.push(activeTab);
-		var w = 400;
-		var maxWidth = window.screen.availWidth;
-		var maxHeight = window.screen.availHeight;
-		chrome.windows.getCurrent(function(wind) {
-			var updateInfo = {
-				left : 0,
-				top : 0,
-				width : maxWidth - w,
-				height : maxHeight
-			};
-			chrome.windows.update(wind.id, updateInfo);
-			// chrome.tabs.update(tab.id, {'pinned': !tab.pinned});
+	if (!targetTab) {
+		targetTab = tab;
+		chrome.tabs.sendMessage(targetTab.id, {
+			action : 'toggleKoala'
 		});
-		chrome.windows.create({
-			url : 'http://colabeo.herokuapp.com/index.html',
-			type : 'popup',
-			width : w,
-			height : maxHeight,
-			left : screen.width - w,
-			top : 0
-		}, function(window) {
-			curWin = window;
-			if (isCalling) {
-				setTimeout(function() {
-					chrome.tabs.sendMessage(curWin.tabs[0].id, {
-						action : "incoming",
-						person : curSnapshot.val().person,
-						social : "Yammer"
-					});
-				}, 1000);
+		chrome.tabs.sendMessage(targetTab.id, {
+			data : {
+				data : {
+					action : 'turnOn'
+				}
 			}
-
 		});
 	}
+	if (!dashboardTab) {
+		launchDashboard();
+	}
 });
-chrome.extension.onMessage.addListener(onMessage);
 
 /*
  when switching tab, update the icon
  */
 chrome.tabs.onActivated.addListener(function(activeInfo) {
-	var currentTabId = activeInfo.tabId;
-	if (koalaEnabledTabs.indexOf(currentTabId) === -1) {
-		setBWIcon();
-	} else {
-		activeTab = currentTabId;
-		setIcon();
-	}
 
 });
 
 chrome.tabs.onRemoved.addListener(function(tabId, removeInfo) {
-	var index = koalaEnabledTabs.indexOf(tabId);
-	if (index != -1) {
-		koalaEnabledTabs.splice(index, 1);
+	if (targetTab && tabId == targetTab.id) {
+		chrome.windows.remove(dashboardTab.windowId, function() {
+		});
+	} else if (dashboardTab && tabId == dashboardTab.id) {
+		dashboardTab = undefined;
+		setBWIcon();
+		resizeTargetSite(0);
 	}
 });
 
 //catch refresh event
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
-	if (changeInfo.status && changeInfo.status === 'complete') {
-		if (koalaEnabledTabs.indexOf(tabId) != -1) {
-			chrome.tabs.sendMessage(tabId, {
-				action : 'load',
-				data : {
-					data : {
-						action : 'load',
-						url : tab.url
-					}
-				}
-			});
-		}
+	console.log("onUpdate");
+	if (targetTab && targetTab.id == tabId) {
+		chrome.tabs.sendMessage(targetTab.id, {
+			action : 'toggleKoala'
+		});
 	}
 });
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+	if (!dashboardTab || !targetTab)
+		return;
 	console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 	console.log(request);
 	if (request.data.data && request.data.data.action == "syncID") {
-		localStorage.setItem("myID",request.data.data.id);
+		localStorage.setItem("myID", request.data.data.id);
 		myID = request.data.data.id;
 		initializeIncomingCall();
-	}
-	else if (sender.tab.id == activeTab)
-		chrome.tabs.sendMessage(curWin.tabs[0].id, request);
+	} else if (sender.tab.id == targetTab.id)
+		chrome.tabs.sendMessage(dashboardTab.id, request);
 	else
-		chrome.tabs.sendMessage(activeTab, request);
+		chrome.tabs.sendMessage(targetTab.id, request);
 });
 
 function setIcon() {
@@ -122,10 +85,6 @@ function setBWIcon() {
 	chrome.browserAction.setIcon({
 		path : 'images/colabeo19_bw.png'
 	});
-}
-
-function onMessage() {
-
 }
 
 function call(outgoingId) {
@@ -146,11 +105,13 @@ function initializeIncomingCall() {
 	incomingCallRef.on('child_added', onAdd);
 	incomingCallRef.on('child_removed', onRemove);
 }
+
 function onAdd(snapshot) {
 	curSnapshot = snapshot;
 	console.log(snapshot);
 	startRingtone();
 }
+
 function onRemove(snapshot) {
 	stopRingtone();
 }
@@ -177,12 +138,85 @@ function startRingtone() {
 	var e = document.getElementById('ringtone');
 	e && e.play();
 	setTimeout(function() {
-		if (curWin && curWin.tabs && curSnapshot) {
-			chrome.tabs.sendMessage(curWin.tabs[0].id, {
+		if (dashboardTab && curSnapshot) {
+			chrome.tabs.sendMessage(dashboardTab.id, {
 				action : "incoming",
 				person : curSnapshot.val().person,
 				social : "Yammer"
-			});	
+			});
 		}
 	}, 100);
 };
+
+function resizeTargetSite(w) {
+	var maxWidth = window.screen.availWidth;
+	var maxHeight = window.screen.availHeight;
+	if (targetTab) {
+		var updateInfo = {
+			left : 0,
+			top : 0,
+			width : maxWidth - w,
+			height : maxHeight
+		};
+		chrome.windows.update(targetTab.windowId, updateInfo);
+		if (w)
+			chrome.tabs.update(targetTab.id, {
+				pinned : true
+			}, function(tab) {
+				targetTab.favIconUrl = tab.favIconUrl;
+				tab.favIconUrl = "";
+				console.log(tab);
+			});
+		else
+			chrome.tabs.update(targetTab.id, {
+				pinned : false
+			}, function(tab) {
+				tab.favIconUrl = targetTab.favIconUrl;
+				chrome.tabs.sendMessage(targetTab.id, {
+					data : {
+						data : {
+							action : 'turnOff'
+						}
+					}
+				});
+				targetTab = undefined;
+				console.log(tab);
+			});
+	}
+	if (dashboardTab) {
+		var updateInfo = {
+			left : window.screen.width - w,
+			top : 0,
+			width : w,
+			height : maxHeight
+		};
+		chrome.windows.update(dashboardTab.windowId, updateInfo);
+	}
+}
+
+function launchDashboard() {
+	var w = 400;
+	var maxWidth = window.screen.availWidth;
+	var maxHeight = window.screen.availHeight;
+	chrome.windows.create({
+		url : 'http://colabeo.herokuapp.com/index.html',
+		type : 'popup',
+		width : w,
+		height : maxHeight,
+		left : screen.width - w,
+		top : 0
+	}, function(window) {
+		dashboardTab = window.tabs[0];
+		resizeTargetSite(w);
+		if (isCalling) {
+			setTimeout(function() {
+				chrome.tabs.sendMessage(dashboardTab.id, {
+					action : "incoming",
+					person : curSnapshot.val().person,
+					social : "Yammer"
+				});
+			}, 1000);
+		}
+	});
+	setIcon();
+}

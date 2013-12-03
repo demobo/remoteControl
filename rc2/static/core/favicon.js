@@ -170,8 +170,8 @@ var DeMoboFavicon = function() {
 			}
 		}
 	};
-	this.originalFavicon = this.demoboIcon;
-	this.offFavicon = this.demoboIcon;
+	this.originalFavicon = this.getFavicon();
+	this.offFavicon = this.originalFavicon;
 	this.onFavicon = this.demoboIcon;
 	// this.originalFavicon = this.getFavicon();
 	// this.offFavicon = '//www.google.com/s2/favicons?domain=' + window.location.host;

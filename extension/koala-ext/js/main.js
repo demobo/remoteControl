@@ -17,12 +17,7 @@ var injectedScript = function() {
 		demoboBody.detail = e.detail;
 	});
 	demoboBody.addEventListener("FromPopup", function(e) {
-		console.log(e.detail);
-		if (e.detail && e.detail.type) {
-			// demobo._message({
-			// data : JSON.stringify(e.detail)
-			// });
-		}
+
 	});
 	if (window.onExtensionMessage)
 		demoboBody.addEventListener("FromExtension", onExtensionMessage);
@@ -83,8 +78,10 @@ if (!document.getElementById('toggle')) {
 			sendResponse({
 				active : true
 			});
+		} else {
+			if (!sender.tab)
+				sendToFrontPage("FromExtension", message);
 		}
-
 	};
 	function sendToFrontPage(evtName, evtDetail) {
 		var evt = new CustomEvent(evtName, {
@@ -111,12 +108,4 @@ if (!document.getElementById('toggle')) {
 
 
 	chrome.extension.onMessage.addListener(onMessage);
-	chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-		// console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
-		// console.log(request);
-		if (!sender.tab)
-			sendToFrontPage("FromExtension", request);
-	});
-
-	//  toggle.click();
 }

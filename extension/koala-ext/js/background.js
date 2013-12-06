@@ -185,9 +185,8 @@ function resizeTargetSite(w) {
 						}
 					});
 					console.log(tab);
-				} else {
-					targetTab = undefined;
 				}
+				targetTab = undefined;
 			});
 	}
 	if (dashboardTab) {

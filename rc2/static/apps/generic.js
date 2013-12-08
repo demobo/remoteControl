@@ -37,8 +37,11 @@
 					break;
 				case "sync":
 					if (top === self) {
+						var url;
+						if (window.TogetherJS && TogetherJS.running) url = window.TogetherJS.shareUrl();
+						else url = window.location.href;
 						demobo._sendToSimulator('event', {
-							url : window.location.href,
+							url : url,
 							action : "urlChange"
 						});
 					}

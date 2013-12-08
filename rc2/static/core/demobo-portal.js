@@ -35,7 +35,7 @@ demobo._sendToSimulator = function(type, data) {
 
 
 (function() {
-  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, faviconScript, loadJS, nativeForEach, remotes, version, _,
+  var Bobo, DemoboPortal, Dispatcher, base, breaker, cacheJS, connectScript, demoboHandlers, extend, faviconScript, togetherScript, loadJS, nativeForEach, remotes, version, _,
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
 
   if (!window.demoboLoading) {
@@ -62,6 +62,7 @@ demobo._sendToSimulator = function(type, data) {
       base = window.demoboBase + '/apps/';
       connectScript = window.demoboBase + '/core/connect.js';
       faviconScript = window.demoboBase + '/core/favicon.js';
+      togetherScript = window.demoboBase + '/core/together.js';
       /*
       // This sets the routing of controllers for websites (currently hardcoded)
       */
@@ -104,6 +105,7 @@ demobo._sendToSimulator = function(type, data) {
 
       // cacheJS('//d32q09dnclw46p.cloudfront.net/demobo.1.7.2.min.js');
       cacheJS(connectScript);
+
       /*
       // A function that loads a script and executes the call back after the script is executed
       */
@@ -1077,6 +1079,8 @@ demobo._sendToSimulator = function(type, data) {
 			demoboPortal = new DemoboPortal();
 			window.demoboPortal = demoboPortal;
 
+			loadJS(togetherScript, function() {
+			});
 			return loadJS(faviconScript, function() {
 				var favicon;
 

@@ -26,6 +26,9 @@
 				TogetherJSConfig_dontShowClicks = false;
 				TogetherJSConfig_cloneClicks = true;
 			}
+			demobo._sendToSimulator('event', {
+				action : "getProperty"
+			});
 		}
 		
 		var syncId;

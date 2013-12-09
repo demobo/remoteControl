@@ -11,6 +11,10 @@
 	Trello.prototype.initialize = function() {
 		console.log("Trello init ...");
 		
+		this.setController({
+			url : 'trello'
+		});
+		
 		if (top === self) {
 			if (window.TogetherJS) {
 				TogetherJSConfig_cloneClicks = false;

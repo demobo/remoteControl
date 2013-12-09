@@ -66,19 +66,17 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		return;
 	console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 	console.log(request);
-	if (request.data.data) {
-		if (request.data.data.action == "syncID") {
-			localStorage.setItem("myID", request.data.data.id);
-			localStorage.setItem("myName", request.data.data.name);
-			myID = request.data.data.id;
-			myName = request.data.data.name;
-			initializeIncomingCall();
-		}
+	if (request.data.data && request.data.data.action == "syncID") {
+		localStorage.setItem("myID", request.data.data.id);
+		localStorage.setItem("myName", request.data.data.name);
+		myID = request.data.data.id;
+		myName = request.data.data.name;
+		initializeIncomingCall();
 	} else if (request.data.action == "getProperty") {
 		chrome.tabs.sendMessage(targetTab.id, {action: "getProperty", id: myID, name: myName});
-	} else if (sender.tab.id == targetTab.id)
+	} else if (sender.tab.id == targetTab.id) {
 		chrome.tabs.sendMessage(dashboardTab.id, request);
-	else
+	} else
 		chrome.tabs.sendMessage(targetTab.id, request);
 });
 

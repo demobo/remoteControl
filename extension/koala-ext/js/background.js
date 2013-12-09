@@ -73,9 +73,9 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 			myID = request.data.data.id;
 			myName = request.data.data.name;
 			initializeIncomingCall();
-		} else if (request.data.data.action == "getProperty") {
-			sendResponse({farewell: "goodbye"});
 		}
+	} else if (request.data.action == "getProperty") {
+		chrome.tabs.sendMessage(targetTab.id, {action: "getProperty", id: myID, name: myName});
 	} else if (sender.tab.id == targetTab.id)
 		chrome.tabs.sendMessage(dashboardTab.id, request);
 	else

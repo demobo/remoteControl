@@ -28,8 +28,15 @@
 			}
 		}
 		
+		var syncId;
+		var userName;
 		demoboBody.addEventListener("FromExtension", function(e) {
 			console.log("generic: ", e.detail);
+			if (e.detail.id && e.detail.name) {
+				syncId = e.detail.id;
+				userName = e.detail.name;
+			}
+			if (!e.detail.data) return;
 			var evtData = e.detail.data.data;
 			switch(evtData.action) {
 				case "turnOn":
@@ -52,8 +59,6 @@
 							url : url,
 							action : "urlChange"
 						});
-						var syncId = "123";
-						var userName = "Host";
 						if (window.TogetherJS && !TogetherJS.running) {
 							TogetherJSConfig_getUserName = function () {return userName;};
 							TogetherJS.startup._joinShareId = syncId;
@@ -89,7 +94,6 @@
 					if (top === self) {
 						if (window.TogetherJS && !TogetherJS.running) {
 							if (evtData.syncId) {
-								var userName = "Guest";
 								TogetherJSConfig_getUserName = function () {return userName;};
 								TogetherJS.startup._joinShareId = evtData.syncId;
 								TogetherJS(window);

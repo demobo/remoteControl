@@ -72,7 +72,7 @@
 								syncId : syncId,
 								action : "syncMouse"
 							});
-						},2000);
+						},3000);
 					}
 					break;
 				case "urlChange":

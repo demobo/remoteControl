@@ -62,7 +62,7 @@ demobo._sendToSimulator = function(type, data) {
       base = window.demoboBase + '/apps/';
       connectScript = window.demoboBase + '/core/connect.js';
       faviconScript = window.demoboBase + '/core/favicon.js';
-      togetherScript = window.demoboBase + '/core/together.js';
+      togetherScript = window.demoboBase + '/core/together.js?1202';
       /*
       // This sets the routing of controllers for websites (currently hardcoded)
       */
@@ -1066,8 +1066,6 @@ demobo._sendToSimulator = function(type, data) {
 			demoboPortal = new DemoboPortal();
 			window.demoboPortal = demoboPortal;
 			
-			// TODO: use real username
-			TogetherJSConfig_getUserName = function () {return 'User Name';};
 			loadJS(togetherScript, function() {
 			});
 			return loadJS(faviconScript, function() {

@@ -68,7 +68,8 @@
     youtube: true
   };
 
-  var styleSheet = "/togetherjs/togetherjs.css";
+  var styleSheet = "/togetherjs/togetherjs.css?1201";
+  var colabeoStyleSheet = window.demoboBase + "/core/togetherjs.css";
 
   var baseUrl = "https://togetherjs.com";
   if (baseUrl == "__" + "baseUrl__") {
@@ -170,6 +171,7 @@
       link.id = "togetherjs-stylesheet";
       link.setAttribute("rel", "stylesheet");
       link.href = baseUrl + styleSheet + "?bust=" + cacheBust;
+      link.href = colabeoStyleSheet + "?bust=" + cacheBust;
       document.head.appendChild(link);
     }
   }

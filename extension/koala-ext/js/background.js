@@ -210,8 +210,8 @@ function launchDashboard() {
 	var maxWidth = window.screen.availWidth;
 	var maxHeight = window.screen.availHeight;
 	chrome.windows.create({
-		// url : 'http://colabeo.herokuapp.com/index.html',
-		url : 'https://berry-c9-koalalab.c9.io',
+		url : 'http://colabeo.herokuapp.com/index.html',
+		// url : 'https://berry-c9-koalalab.c9.io',
 		type : 'popup',
 		width : w,
 		height : maxHeight,

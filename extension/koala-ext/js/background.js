@@ -1,5 +1,6 @@
 // var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
 var myID = localStorage.getItem("myID") || "C116FD42-F2B5-EE59-17A6-78F40F22221F";
+var myName = localStorage.getItem("myName") ;
 
 var targetTab;
 var dashboardTab;
@@ -65,10 +66,16 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		return;
 	console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 	console.log(request);
-	if (request.data.data && request.data.data.action == "syncID") {
-		localStorage.setItem("myID", request.data.data.id);
-		myID = request.data.data.id;
-		initializeIncomingCall();
+	if (request.data.data) {
+		if (request.data.data.action == "syncID") {
+			localStorage.setItem("myID", request.data.data.id);
+			localStorage.setItem("myName", request.data.data.name);
+			myID = request.data.data.id;
+			myName = request.data.data.name;
+			initializeIncomingCall();
+		} else if (request.data.data.action == "getProperty") {
+			sendResponse({farewell: "goodbye"});
+		}
 	} else if (sender.tab.id == targetTab.id)
 		chrome.tabs.sendMessage(dashboardTab.id, request);
 	else
@@ -205,7 +212,8 @@ function launchDashboard() {
 	var maxWidth = window.screen.availWidth;
 	var maxHeight = window.screen.availHeight;
 	chrome.windows.create({
-		url : 'http://colabeo.herokuapp.com/index.html',
+		// url : 'http://colabeo.herokuapp.com/index.html',
+		url : 'https://berry-c9-koalalab.c9.io',
 		type : 'popup',
 		width : w,
 		height : maxHeight,

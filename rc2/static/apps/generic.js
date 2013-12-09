@@ -10,17 +10,24 @@
 	// override the initialize function of Bobo
 	Generic.prototype.initialize = function() {
 		console.log("Generic init ...");
-		console.log(window.location.href);
 		if (top === self) {
 			demoboPortal.turnOnFavicon();
 		}
 		this.setController({
 			url : 'generic'
 		});
-		demobo._sendToSimulator('event', {
-			url : window.location.href,
-			action : "urlUpdate"
-		});
+		
+		if (top === self) {
+			if (window.TogetherJS) {
+				TogetherJSConfig_suppressJoinConfirmation = true;
+				TogetherJSConfig_suppressInvite = true;
+				TogetherJSConfig_disableWebRTC = true;
+				TogetherJSConfig_youtube = true;
+				TogetherJSConfig_dontShowClicks = false;
+				TogetherJSConfig_cloneClicks = true;
+			}
+		}
+		
 		demoboBody.addEventListener("FromExtension", function(e) {
 			console.log("generic: ", e.detail);
 			var evtData = e.detail.data.data;
@@ -33,17 +40,31 @@
 				case "turnOff":
 					if (top === self) {
 						demoboPortal.turnOffFavicon();
+						if (window.TogetherJS && TogetherJS.running) {
+							TogetherJS(window);
+						}
 					}
 					break;
 				case "sync":
 					if (top === self) {
-						var url;
-						if (window.TogetherJS && TogetherJS.running) url = window.TogetherJS.shareUrl();
-						else url = window.location.href;
+						var url = window.location.href;
 						demobo._sendToSimulator('event', {
 							url : url,
 							action : "urlChange"
 						});
+						var syncId = "123";
+						var userName = "Host";
+						if (window.TogetherJS && !TogetherJS.running) {
+							TogetherJSConfig_getUserName = function () {return userName;};
+							TogetherJS.startup._joinShareId = syncId;
+							TogetherJS(window);
+						}
+						setTimeout(function(){
+							demobo._sendToSimulator('event', {
+								syncId : syncId,
+								action : "syncMouse"
+							});
+						},2000);
 					}
 					break;
 				case "urlChange":
@@ -53,6 +74,29 @@
 						window.location = evtData.url;
 					}
 					break;
+				case "toggleSyncMouse":
+					if (top === self) {
+						if (window.TogetherJS) {
+							TogetherJS(window);
+							demobo._sendToSimulator('event', {
+								syncId : syncId,
+								action : "syncMouse"
+							});
+						}
+					}
+					break;		
+				case "syncMouse":
+					if (top === self) {
+						if (window.TogetherJS && !TogetherJS.running) {
+							if (evtData.syncId) {
+								var userName = "Guest";
+								TogetherJSConfig_getUserName = function () {return userName;};
+								TogetherJS.startup._joinShareId = evtData.syncId;
+								TogetherJS(window);
+							}
+						}
+					}
+					break;	
 				case "click":
 					if (false && window.jQuery) {
 						if (evtData.index >= 0)
@@ -71,70 +115,6 @@
 			}
 		});
 
-		function onClickByClassName(className) {
-			jQuery(document).on("mouseup", className, function(e) {
-				var index = jQuery(className).index(e.currentTarget);
-				demobo._sendToSimulator('event', {
-					selector : className,
-					index : index,
-					action : 'click'
-				});
-				console.log("click", className, index);
-			});
-		}
-
-		function setUpListenerByClassName(delegatorClassName, elementClassName) {
-			var delegator = document.getElementsByClassName(delegatorClassName)[0];
-			if (delegator)
-				setUpListener(delegator, elementClassName);
-		}
-
-		function setUpListener(delegator, elementClassName) {
-			delegator.addEventListener("mouseup", function(event) {
-				event = event || window.event;
-				var target = event.target || event.srcElement;
-				while (target && target != delegator) {
-					if (target && target.classList.contains(elementClassName)) {
-						var targets = Array.prototype.slice.call(document.getElementsByClassName(elementClassName));
-						var index = Array.prototype.indexOf.call(targets, target);
-						console.log('click', elementClassName, index);
-						demobo._sendToSimulator('event', {
-							selector : elementClassName,
-							index : index,
-							action : 'click'
-						});
-						break;
-					}
-					target = target.parentNode;
-				}
-			});
-		}
-
-		if (false && window.jQuery) {
-			onClickByClassName('.btnNext');
-			onClickByClassName('.btnPrevious');
-
-			onClickByClassName('.btn.next');
-			onClickByClassName('.btn.prev');
-
-			onClickByClassName('.list-card');
-			onClickByClassName('.icon-close');
-
-			onClickByClassName('.filename-col img');
-			onClickByClassName('.filename-col a');
-		} else {
-			setUpListener(document, 'btnNext');
-			setUpListener(document, 'btnPrevious');
-
-			// do not accept 'btn next'
-			setUpListener(document, 'btn');
-			
-			setUpListener(document, 'list-card');
-			setUpListener(document, 'icon-close');
-
-			setUpListenerByClassName('clsDesktopActionTabWrapper', 'clsDesktopActionTab');
-			setUpListener(document, 'clsBorderBox');
-		}
 	};
 
 	// add this adaptor to demoboPortal

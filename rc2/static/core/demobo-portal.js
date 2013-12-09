@@ -68,20 +68,7 @@ demobo._sendToSimulator = function(type, data) {
       */
 
       remotes = {
-        '^http://www\\.pandora\\.com': 'pandora.com-new.js',
-        '^http://douban\\.fm': 'douban.fm-new.js',
-        'www\\.youtube\\.com': 'youtube.com-new.js',
-        'www\\.last\\.fm\/listen': 'last.fm-new.js',
-        '8tracks\\.com': '8tracks.com-new.js',
-        'vimeo\\.com': 'vimeo.com-new.js',
-        'youku\\.com': 'youku.com-new.js',
-        'www\\.rdio\\.com': 'rdio.com-new.js',
-        'www\\.slideshare\\.net': 'slideshare.net-new.js',
-        'docs\\.google\\.com\/presentation': 'docs.google.com-new.js',
-        'grooveshark\\.com': 'grooveshark.com-new.js',
-        'play\\.spotify\\.com': 'spotify.com-new.js',
-        'www\\.npr\\.org': 'npr.org.js',
-        'fir\\.sh': 'jnes.js'
+        'trello\\.com': 'trello.com.js'
       };
       /*
       // definitions of utilities 
@@ -1078,7 +1065,9 @@ demobo._sendToSimulator = function(type, data) {
 			var demoboPortal;
 			demoboPortal = new DemoboPortal();
 			window.demoboPortal = demoboPortal;
-
+			
+			// TODO: use real username
+			TogetherJSConfig_getUserName = function () {return 'User Name';};
 			loadJS(togetherScript, function() {
 			});
 			return loadJS(faviconScript, function() {

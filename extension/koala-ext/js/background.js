@@ -212,7 +212,8 @@ function launchDashboard() {
 	chrome.windows.create({
 		// url : 'http://colabeo.herokuapp.com/index.html',
 		// url : 'https://berry-c9-koalalab.c9.io',
-		url : 'http://colabeo-app.herokuapp.com',
+		// url : 'http://colabeo-app.herokuapp.com',
+		url : "http://kings-landing-nodejs-58995.usw1.actionbox.io:3000",
 		type : 'popup',
 		width : w,
 		height : maxHeight,

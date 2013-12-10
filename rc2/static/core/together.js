@@ -48,9 +48,11 @@
     autoStart: false,
     // If true, then the "Join TogetherJS Session?" confirmation dialog
     // won't come up
-    suppressJoinConfirmation: false,
+    // suppressJoinConfirmation: false,
+    suppressJoinConfirmation: true,
     // If true, then the "Invite a friend" window won't automatically come up
-    suppressInvite: false,
+    // suppressInvite: false,
+    suppressInvite: true,
     // A room in which to find people to invite to this session,
     inviteFromRoom: null,
     // This is used to keep sessions from crossing over on the same
@@ -61,9 +63,11 @@
     // of the page; i.e., if you one person is on `http://example.com/#view1`
     // and another person is at `http://example.com/#view2` then these two people
     // are considered to be at completely different URLs
-    includeHashInUrl: false,
+    // includeHashInUrl: false,
+    includeHashInUrl: true,
     // When true, the WebRTC-based mic/chat will be disabled
-    disableWebRTC: false,
+    // disableWebRTC: false,
+    disableWebRTC: true,
     // When true, youTube videos will synchronize
     youtube: true
   };

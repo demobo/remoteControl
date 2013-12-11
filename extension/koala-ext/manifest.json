@@ -1,6 +1,6 @@
 {
    "name": "Colabeo",
-   "description": "Colabeo Collabration Tool",
+   "description": "Colabeo Hangout with co-browsing",
    "browser_action":
    {
 	  "default_icon": "images/colabeo19.png",
@@ -29,6 +29,6 @@
    "permissions": [
      "*://*/*", "tabs"
    ],
-   "version": "0.0.2",
+   "version": "0.0.3",
    "manifest_version": 2
 }

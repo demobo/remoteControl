@@ -33,20 +33,34 @@
 		
 		var syncId;
 		var userName;
+		var userId;
+		var enableTogetherjs = function () {
+			if (syncId && window.TogetherJS && !TogetherJS.running) {
+				TogetherJSConfig_getUserName = function () {return userName;};
+				TogetherJS.startup._joinShareId = syncId;
+				TogetherJS(window);
+			}
+		};
+		var disableTogetherjs = function () {
+			if (window.TogetherJS && TogetherJS.running) {
+				TogetherJS(window);
+			}
+		};
 		demoboBody.addEventListener("FromExtension", function(e) {
 			console.log("generic: ", e.detail);
-			if (e.detail.id && e.detail.name) {
-				syncId = e.detail.id;
+			if (e.detail.id && e.detail.name ) {
+				userId = e.detail.id;
 				userName = e.detail.name;
+				syncId = e.detail.roomId;
+				enableTogetherjs();
+				window.colabeoSyncId = syncId;
 			}
 			if (!e.detail.data) return;
 			var evtData = e.detail.data.data;
 			switch(evtData.action) {
 				case "endCall":
 					if (top === self) {
-						if (window.TogetherJS && TogetherJS.running) {
-							TogetherJS(window);
-						}
+						disableTogetherjs();
 					}
 					break;
 				case "turnOn":
@@ -66,17 +80,7 @@
 							url : url,
 							action : "urlChange"
 						});
-						if (window.TogetherJS && !TogetherJS.running) {
-							TogetherJSConfig_getUserName = function () {return userName;};
-							TogetherJS.startup._joinShareId = syncId;
-							TogetherJS(window);
-						}
-						setTimeout(function(){
-							demobo._sendToSimulator('event', {
-								syncId : syncId,
-								action : "syncMouse"
-							});
-						},3000);
+						enableTogetherjs();
 					}
 					break;
 				case "urlChange":
@@ -86,28 +90,28 @@
 						window.location = evtData.url;
 					}
 					break;
-				case "toggleSyncMouse":
-					if (top === self) {
-						if (window.TogetherJS) {
-							TogetherJS(window);
-							demobo._sendToSimulator('event', {
-								syncId : syncId,
-								action : "syncMouse"
-							});
-						}
-					}
-					break;		
-				case "syncMouse":
-					if (top === self) {
-						if (window.TogetherJS && !TogetherJS.running) {
-							if (evtData.syncId) {
-								TogetherJSConfig_getUserName = function () {return userName;};
-								TogetherJS.startup._joinShareId = evtData.syncId;
-								TogetherJS(window);
-							}
-						}
-					}
-					break;	
+				// case "toggleSyncMouse":
+					// if (top === self) {
+						// if (window.TogetherJS) {
+							// TogetherJS(window);
+							// demobo._sendToSimulator('event', {
+								// syncId : syncId,
+								// action : "syncMouse"
+							// });
+						// }
+					// }
+					// break;		
+				// case "syncMouse":
+					// if (top === self) {
+						// if (window.TogetherJS && !TogetherJS.running) {
+							// if (evtData.syncId) {
+								// TogetherJSConfig_getUserName = function () {return userName;};
+								// TogetherJS.startup._joinShareId = evtData.syncId;
+								// TogetherJS(window);
+							// }
+						// }
+					// }
+					// break;	
 				case "click":
 					if (false && window.jQuery) {
 						if (evtData.index >= 0)

@@ -112,6 +112,7 @@ function initializeIncomingCall() {
 	incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
 	incomingCallRef.on('child_added', onAdd);
 	incomingCallRef.on('child_removed', onRemove);
+	incomingCallRef.on('child_changed', onRemove);
 }
 
 function onAdd(snapshot) {

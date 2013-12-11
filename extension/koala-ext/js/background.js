@@ -106,6 +106,7 @@ function initializeIncomingCall() {
 	if (incomingCallRef) {
 		incomingCallRef.off('child_added', onAdd);
 		incomingCallRef.off('child_removed', onRemove);
+		incomingCallRef.off('child_updated', onRemove);
 	}
 	console.log("init " + myID);
 	incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);

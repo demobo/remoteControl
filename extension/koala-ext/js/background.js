@@ -1,5 +1,4 @@
-// var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
-var myID = localStorage.getItem("myID") || "C116FD42-F2B5-EE59-17A6-78F40F22221F";
+var myID = localStorage.getItem("myID");
 var myName = localStorage.getItem("myName") ;
 var myRoom;
 
@@ -217,7 +216,8 @@ function launchDashboard() {
 		// url : 'http://colabeo.herokuapp.com/index.html',
 		// url : 'https://berry-c9-koalalab.c9.io',
 		// url : 'http://colabeo-app.herokuapp.com',
-		url : "http://kings-landing-nodejs-58995.usw1.actionbox.io:3000",
+		// url : "http://kings-landing-nodejs-58995.usw1.actionbox.io:3000",
+		url : "http://colabeo-alpha.herokuapp.com",
 		type : 'popup',
 		width : w,
 		height : maxHeight,

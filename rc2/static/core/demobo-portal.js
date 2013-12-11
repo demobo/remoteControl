@@ -1065,9 +1065,10 @@ demobo._sendToSimulator = function(type, data) {
 			var demoboPortal;
 			demoboPortal = new DemoboPortal();
 			window.demoboPortal = demoboPortal;
-			
-			loadJS(togetherScript, function() {
-			});
+			if (top === self) {
+				loadJS(togetherScript, function() {
+				});
+			}
 			return loadJS(faviconScript, function() {
 				var favicon;
 

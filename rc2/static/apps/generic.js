@@ -35,6 +35,7 @@
 		var userName;
 		var userId;
 		var enableTogetherjs = function () {
+			if (top !== self) return;
 			if (syncId && window.TogetherJS && !TogetherJS.running) {
 				TogetherJSConfig_getUserName = function () {return userName;};
 				TogetherJS.startup._joinShareId = syncId;
@@ -42,6 +43,7 @@
 			}
 		};
 		var disableTogetherjs = function () {
+			if (top !== self) return;
 			if (window.TogetherJS && TogetherJS.running) {
 				TogetherJS(window);
 			}
@@ -80,7 +82,9 @@
 							url : url,
 							action : "urlChange"
 						});
-						enableTogetherjs();
+						demobo._sendToSimulator('event', {
+							action : "getProperty"
+						});
 					}
 					break;
 				case "urlChange":

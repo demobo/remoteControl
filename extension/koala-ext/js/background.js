@@ -147,7 +147,8 @@ function startRingtone() {
 			chrome.tabs.sendMessage(dashboardTab.id, {
 				action : "incoming",
 				person : curSnapshot.val().person,
-				social : "Yammer"
+				social : curSnapshot.val().source,
+				room : curSnapshot.name()
 			});
 		}
 	}, 100);

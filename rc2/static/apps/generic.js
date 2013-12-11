@@ -42,6 +42,13 @@
 			if (!e.detail.data) return;
 			var evtData = e.detail.data.data;
 			switch(evtData.action) {
+				case "endCall":
+					if (top === self) {
+						if (window.TogetherJS && TogetherJS.running) {
+							TogetherJS(window);
+						}
+					}
+					break;
 				case "turnOn":
 					if (top === self) {
 						demoboPortal.turnOnFavicon();
@@ -50,9 +57,6 @@
 				case "turnOff":
 					if (top === self) {
 						demoboPortal.turnOffFavicon();
-						if (window.TogetherJS && TogetherJS.running) {
-							TogetherJS(window);
-						}
 					}
 					break;
 				case "sync":

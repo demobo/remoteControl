@@ -76,7 +76,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	} else if (request.data.data && request.data.data.action == "setProperty") {
 		myRoom = request.data.data.roomId;
 	} else if (request.data && request.data.action == "getProperty") {
-		chrome.tabs.sendMessage(targetTab.id, {action: "getProperty", id: myID, name: myName});
+		chrome.tabs.sendMessage(targetTab.id, {action: "getProperty", id: myID, name: myName, roomId: myRoom});
 	} else if (sender.tab.id == targetTab.id) {
 		chrome.tabs.sendMessage(dashboardTab.id, request);
 	} else

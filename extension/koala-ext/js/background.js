@@ -1,6 +1,7 @@
 // var myID = "634FCA96-05A2-A7DB-2D6E-5BA7E5D50C9D";
 var myID = localStorage.getItem("myID") || "C116FD42-F2B5-EE59-17A6-78F40F22221F";
 var myName = localStorage.getItem("myName") ;
+var myRoom;
 
 var targetTab;
 var dashboardTab;
@@ -72,6 +73,8 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 		myID = request.data.data.id;
 		myName = request.data.data.name;
 		initializeIncomingCall();
+	} else if (request.data.data.action == "setProperty") {
+		myRoom = request.data.data.roomId;
 	} else if (request.data.action == "getProperty") {
 		chrome.tabs.sendMessage(targetTab.id, {action: "getProperty", id: myID, name: myName});
 	} else if (sender.tab.id == targetTab.id) {

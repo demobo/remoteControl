@@ -16,20 +16,26 @@ initializeIncomingCall();
  **/
 chrome.browserAction.onClicked.addListener(function(tab) {
 	if (!targetTab) {
-		targetTab = tab;
-		chrome.tabs.sendMessage(targetTab.id, {
-			action : 'toggleKoala'
-		});
-		chrome.tabs.sendMessage(targetTab.id, {
-			data : {
+		chrome.tabs.create({'url': "http://www.colabeo.com/dashboard"}, function(tab) {
+			targetTab = tab;
+			chrome.tabs.sendMessage(targetTab.id, {
+				action : 'toggleKoala'
+			});
+			chrome.tabs.sendMessage(targetTab.id, {
 				data : {
-					action : 'turnOn'
+					data : {
+						action : 'turnOn'
+					}
 				}
+			});
+			if (!dashboardTab) {
+				launchDashboard();
 			}
 		});
-	}
-	if (!dashboardTab) {
+	} else if (!dashboardTab) {
 		launchDashboard();
+	} else {
+		resizeTargetSite(400);	
 	}
 });
 

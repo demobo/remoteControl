@@ -107,6 +107,7 @@ function removeVideoChat() {
 }
 
 function sendMessage(type, data) {
+	if (isMobile()) return;
 	if (!demoboBody)
 		return;
 	var evt = new CustomEvent("FromKoala", {
@@ -116,6 +117,10 @@ function sendMessage(type, data) {
 		}
 	});
 	demoboBody.dispatchEvent(evt);
+}
+
+function isMobile() {
+	return /mobile|android/i.test (navigator.userAgent);
 }
 
 function onExtensionMessage(e) {

@@ -679,6 +679,7 @@ input.togetherjs-upload-avatar {
 }
 .togetherjs #togetherjs-alpha-intro {
   height: 24em;
+  display: none;
 }
 .togetherjs #togetherjs-intro .togetherjs-modal-dont-join {
   /*    background-repeat: repeat-x;
@@ -704,6 +705,7 @@ input.togetherjs-upload-avatar {
   -moz-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.4), inset 0px 3px 1px 0px #ffffff;
   -webkit-box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.4), inset 0px 3px 1px 0px #ffffff;
   box-shadow: 0px 5px 15px 0px rgba(0, 0, 0, 0.4), inset 0px 3px 1px 0px #ffffff;
+  display: none;
 }
 .togetherjs .togetherjs-notification section {
   margin: 15px 7px;
@@ -796,6 +798,7 @@ input.togetherjs-upload-avatar {
 }
 .togetherjs .togetherjs-notification {
   border-bottom: 0px;
+  display: none !important;
 }
 .togetherjs .togetherjs-notification img.togetherjs-notification-logo {
   float: left;
@@ -1432,6 +1435,7 @@ section.togetherjs-buttons .togetherjs-same-url {
   margin-left: -150px;
   width: 300px;
   margin-top: -10em;
+  display: none !important;
 }
 .togetherjs .togetherjs-modal section {
   margin: 15px 7px;

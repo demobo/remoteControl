@@ -1,6 +1,7 @@
 var myID = localStorage.getItem("myID");
-var myName = localStorage.getItem("myName") ;
+var myName = localStorage.getItem("myName");
 var myRoom;
+var PORTAL_URL = "http://beta.colabeo.com/";
 
 var targetTab;
 var dashboardTab;
@@ -14,9 +15,14 @@ initializeIncomingCall();
 /**
  turn on koala if it is not already on
  **/
-chrome.browserAction.onClicked.addListener(function(tab) {
+chrome.browserAction.onClicked.addListener(launch);
+
+function launch() {
+	console.log("clicked");
 	if (!targetTab) {
-		chrome.tabs.create({'url': "http://www.colabeo.com/dashboard"}, function(tab) {
+		chrome.tabs.create({
+			'url' : PORTAL_URL
+		}, function(tab) {
 			targetTab = tab;
 			chrome.tabs.sendMessage(targetTab.id, {
 				action : 'toggleKoala'
@@ -35,10 +41,9 @@ chrome.browserAction.onClicked.addListener(function(tab) {
 	} else if (!dashboardTab) {
 		launchDashboard();
 	} else {
-		resizeTargetSite(400);	
+		resizeTargetSite(400);
 	}
-});
-
+}
 /*
  when switching tab, update the icon
  */
@@ -73,6 +78,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	console.log(sender.tab ? "from a content script:" + sender.tab.url : "from the extension");
 	console.log(request);
 	if (request.data.data && request.data.data.action == "syncID") {
+		if (myID == request.data.data.id) return;
 		localStorage.setItem("myID", request.data.data.id);
 		localStorage.setItem("myName", request.data.data.name);
 		myID = request.data.data.id;
@@ -81,7 +87,12 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 	} else if (request.data.data && request.data.data.action == "setProperty") {
 		myRoom = request.data.data.roomId;
 	} else if (request.data && request.data.action == "getProperty") {
-		chrome.tabs.sendMessage(targetTab.id, {action: "getProperty", id: myID, name: myName, roomId: myRoom});
+		chrome.tabs.sendMessage(targetTab.id, {
+			action : "getProperty",
+			id : myID,
+			name : myName,
+			roomId : myRoom
+		});
 	} else if (sender.tab.id == targetTab.id) {
 		chrome.tabs.sendMessage(dashboardTab.id, request);
 	} else
@@ -123,9 +134,30 @@ function initializeIncomingCall() {
 
 function onAdd(snapshot) {
 	curSnapshot = snapshot;
-	console.log(snapshot);
+	console.log("onAdd", snapshot);
 	startRingtone();
+
+	var opt = {
+		type : "basic",
+		title : "Caller ID:",
+		message : snapshot.val().person,
+		iconUrl : "images/colabeo48.png",
+		buttons : [
+			{ title: "Accept" , iconUrl : "images/48_yes.png" } , { title: "Dismiss" , iconUrl : "images/48_no.png" }
+		]
+	};
+	if (!dashboardTab) {
+		chrome.notifications.create(snapshot.name(), opt, function(){});
+	}
 }
+
+chrome.notifications.onButtonClicked.addListener(function (notificationId, buttonIndex){
+	stopRingtone();
+	if (buttonIndex == 0) {
+		isCalling = true;
+		launch();
+	}
+});
 
 function onRemove(snapshot) {
 	stopRingtone();
@@ -158,7 +190,8 @@ function startRingtone() {
 				action : "incoming",
 				person : curSnapshot.val().person,
 				social : curSnapshot.val().source,
-				room : curSnapshot.name()
+				room : curSnapshot.name(),
+				answer : false
 			});
 		}
 	}, 100);
@@ -184,6 +217,11 @@ function resizeTargetSite(w) {
 					tab.favIconUrl = "";
 					console.log(tab);
 				} else {
+					chrome.tabs.get(targetTab.id,function(tab){
+						if (tab.url == PORTAL_URL) {
+							chrome.tabs.remove(tab.id, function() {});
+						}
+					});
 					targetTab = undefined;
 				}
 			});
@@ -202,6 +240,11 @@ function resizeTargetSite(w) {
 					});
 					console.log(tab);
 				}
+				chrome.tabs.get(targetTab.id,function(tab){
+					if (tab.url == PORTAL_URL) {
+						chrome.tabs.remove(tab.id, function() {});
+					}
+				});
 				targetTab = undefined;
 			});
 	}
@@ -235,13 +278,34 @@ function launchDashboard() {
 		dashboardTab = window.tabs[0];
 		resizeTargetSite(w);
 		if (isCalling) {
-			setTimeout(function() {
+			// TODO: this is a hack
+			setTimeout(function(){
 				chrome.tabs.sendMessage(dashboardTab.id, {
 					action : "incoming",
 					person : curSnapshot.val().person,
-					social : "Yammer"
+					social : curSnapshot.val().source,
+					room : curSnapshot.name(),
+					answer : true
 				});
-			}, 1000);
+			},500);
+			setTimeout(function(){
+				chrome.tabs.sendMessage(dashboardTab.id, {
+					action : "incoming",
+					person : curSnapshot.val().person,
+					social : curSnapshot.val().source,
+					room : curSnapshot.name(),
+					answer : true
+				});
+			},2000);
+			setTimeout(function(){
+				chrome.tabs.sendMessage(dashboardTab.id, {
+					action : "incoming",
+					person : curSnapshot.val().person,
+					social : curSnapshot.val().source,
+					room : curSnapshot.name(),
+					answer : true
+				});
+			},4000);
 		}
 	});
 	setIcon();

@@ -27,8 +27,8 @@
    },
    "homepage_url": "http://www.colabeo.com",
    "permissions": [
-     "*://*/*", "tabs"
+     "*://*/*", "tabs", "notifications"
    ],
-   "version": "0.0.5",
+   "version": "0.0.7",
    "manifest_version": 2
 }

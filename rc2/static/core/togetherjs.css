@@ -1214,6 +1214,7 @@ section.togetherjs-buttons .togetherjs-same-url {
   height: 260px;
   width: 60px;
   width: 0px;
+  display: none !important;
 }
 #togetherjs-dock.togetherjs-dock-right #togetherjs-dock-anchor-vertical {
   display: none;
@@ -1418,6 +1419,7 @@ section.togetherjs-buttons .togetherjs-same-url {
   top: 0;
   left: 0;
   z-index: 10002;
+  display: none !important;
 }
 .togetherjs .togetherjs-modal {
   background-color: #ffffff;
@@ -1903,6 +1905,7 @@ section.togetherjs-buttons .togetherjs-same-url {
     right: 0px;
     margin: 10px;
     bottom: 0px;
+    display: none !important;
   }
   #togetherjs-dock #togetherjs-dock-anchor {
     width: 40px;

@@ -269,7 +269,7 @@ function launchDashboard() {
 		// url : 'http://colabeo-app.herokuapp.com',
 		// url : "http://kings-landing-nodejs-58995.usw1.actionbox.io:3000",
 		// url : "http://colabeo-alpha.herokuapp.com",
-		url : "http://localhost:1337",
+		url : "http://10.0.0.19:1337",
 		type : 'popup',
 		width : w,
 		height : maxHeight,

@@ -31,7 +31,7 @@ if (DEMOBO) {
 					if (link.indexOf("http")==0) {
 						var url = link +"?" + Math.random();
 					} else {
-						var url = "http://net.demobo.com/server/upload/" + DEMOBO.roomID.substr(0,5)
+						var url = "http://net.demobo.com:8080/server/upload/" + DEMOBO.roomID.substr(0,5)
 								+ ".html?" + Math.random();
 					}
 					var c = {
@@ -55,7 +55,7 @@ if (DEMOBO) {
 			$.get(link, function(data) {
 				$.ajax( {
 					type : 'POST',
-					url : "http://net.demobo.com/server/upload.php",
+					url : "http://net.demobo.com:8080/server/upload.php",
 					crossDomain : true,
 					data : {
 						data : data,

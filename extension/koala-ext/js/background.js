@@ -112,7 +112,7 @@ function setBWIcon() {
 }
 
 function call(outgoingId) {
-	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + outgoingId);
+	var outgoingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/calls/' + outgoingId);
 	outgoingCallRef.push({
 		name : myID
 	});
@@ -126,7 +126,7 @@ function initializeIncomingCall() {
 		incomingCallRef.off('child_changed', onRemove);
 	}
 	console.log("init " + myID);
-	incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/call/' + myID);
+	incomingCallRef = new Firebase('https://de-berry.firebaseio-demo.com/calls/' + myID);
 	incomingCallRef.on('child_added', onAdd);
 	incomingCallRef.on('child_removed', onRemove);
 	incomingCallRef.on('child_changed', onRemove);
@@ -134,19 +134,17 @@ function initializeIncomingCall() {
 
 function onAdd(snapshot) {
 	curSnapshot = snapshot;
-	console.log("onAdd", snapshot);
-	startRingtone();
-
-	var opt = {
-		type : "basic",
-		title : "Caller ID:",
-		message : snapshot.val().person,
-		iconUrl : "images/colabeo48.png",
-		buttons : [
-			{ title: "Accept" , iconUrl : "images/48_yes.png" } , { title: "Dismiss" , iconUrl : "images/48_no.png" }
-		]
-	};
 	if (!dashboardTab) {
+		var opt = {
+			type : "basic",
+			title : "Caller ID:",
+			message : snapshot.val().person,
+			iconUrl : "images/colabeo48.png",
+			buttons : [
+				{ title: "Accept" , iconUrl : "images/48_yes.png" } , { title: "Dismiss" , iconUrl : "images/48_no.png" }
+			]
+		};
+		startRingtone();
 		chrome.notifications.create(snapshot.name(), opt, function(){});
 	}
 }
@@ -269,7 +267,9 @@ function launchDashboard() {
 		// url : 'http://colabeo-app.herokuapp.com',
 		// url : "http://kings-landing-nodejs-58995.usw1.actionbox.io:3000",
 		// url : "http://colabeo-alpha.herokuapp.com",
-		url : "http://10.0.0.19:1337",
+		// url : "http://10.0.0.19:1337",
+		url : "http://localhost:1337",
+		// url : "http://192.168.161.153:1337",
 		type : 'popup',
 		width : w,
 		height : maxHeight,
@@ -283,30 +283,33 @@ function launchDashboard() {
 			setTimeout(function(){
 				chrome.tabs.sendMessage(dashboardTab.id, {
 					action : "incoming",
+					firstname : curSnapshot.val().firstname,
+					lastname : curSnapshot.val().lastname,
+					email : curSnapshot.val().email,
 					person : curSnapshot.val().person,
 					social : curSnapshot.val().source,
 					room : curSnapshot.name(),
 					answer : true
 				});
 			},500);
-			setTimeout(function(){
-				chrome.tabs.sendMessage(dashboardTab.id, {
-					action : "incoming",
-					person : curSnapshot.val().person,
-					social : curSnapshot.val().source,
-					room : curSnapshot.name(),
-					answer : true
-				});
-			},2000);
-			setTimeout(function(){
-				chrome.tabs.sendMessage(dashboardTab.id, {
-					action : "incoming",
-					person : curSnapshot.val().person,
-					social : curSnapshot.val().source,
-					room : curSnapshot.name(),
-					answer : true
-				});
-			},4000);
+			// setTimeout(function(){
+				// chrome.tabs.sendMessage(dashboardTab.id, {
+					// action : "incoming",
+					// person : curSnapshot.val().person,
+					// social : curSnapshot.val().source,
+					// room : curSnapshot.name(),
+					// answer : true
+				// });
+			// },2000);
+			// setTimeout(function(){
+				// chrome.tabs.sendMessage(dashboardTab.id, {
+					// action : "incoming",
+					// person : curSnapshot.val().person,
+					// social : curSnapshot.val().source,
+					// room : curSnapshot.name(),
+					// answer : true
+				// });
+			// },4000);
 		}
 	});
 	setIcon();

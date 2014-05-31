@@ -57,7 +57,8 @@
         'grooveshark\\.com': 'grooveshark.com-new.js',
         'play\\.spotify\\.com': 'spotify.com-new.js',
         'www\\.npr\\.org': 'npr.org.js',
-        'fir\\.sh': 'jnes.js'
+        'fir\\.sh': 'jnes.js',
+        '^http://famo\\.us': 'famo.us.js',
       };
       /*
       // definitions of utilities 

@@ -12,6 +12,16 @@ define(function(require, exports, module) {
     var Transitionable = require('famous/transitions/Transitionable');
     var SpringTransition = require('famous/transitions/SpringTransition');
     var View = require('famous/core/View');
+    var SequentialLayout = require("famous/views/SequentialLayout");
+    var HeaderFooterLayout = require("famous/views/HeaderFooterLayout");
+	var GridLayout = require("famous/views/GridLayout");
+	var EventHandler = require('famous/core/EventHandler');
+	
+	var MouseSync     = require("famous/inputs/MouseSync");
+	var TouchSync     = require("famous/inputs/TouchSync");
+	var ScrollSync    = require("famous/inputs/ScrollSync");
+	var GenericSync   = require("famous/inputs/GenericSync");
+	var SnapTransition = require("famous/transitions/SnapTransition");
 
     var mainContext = Engine.createContext();
 

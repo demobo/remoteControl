@@ -71,6 +71,10 @@
 					var item = $('<div class="carouselItem"><div class="title">Notes on Slide '+page+'</div><div class="note">'+items[i].note+'</div></div>');
 					$('#touchcarousel').append(item);
 				}
+				// $('.note').kinetic({
+					// triggerHardware: true,
+                    // y: false
+                // });
 				$('#notesSlider').val(1).attr({
 					'min': 1,
 					'max': items.length
@@ -139,7 +143,7 @@
 			                                }      
 						});
 			         });
-			    }
+			    };
 			})(jQuery);
 			</script>
     </head>

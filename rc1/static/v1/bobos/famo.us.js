@@ -17,42 +17,63 @@
 
 		// your custom demobo input event dispatcher
 		this.setInputEventHandlers( {
-			'demoboApp':   'onReady',
+			'demoboApp':   'onReady'
 		});
 		
-		this.codeArea = $('.ace_content');
+		var controllerUrl = 'http://rc1.demobo.com/rc/famous?'+Math.random();
 		var counter = 0;
 		var codeText;
 		var controller = {
-			url : 'http://rc1.demobo.com/rc/famous?' + counter,
+			url : controllerUrl + counter,
 			orientation: 'portrait'
 		};
 		this.setController( controller );
-		var onChange = debounce(_onChange.bind(this),500);
-		function _onChange(e) {
-			console.log(1);
-			if (codeText==this.codeArea.text()) return;
-			codeText=this.codeArea.text();
-			counter = (counter+1)%2;
-			var controller = {
-				url : 'http://rc1.demobo.com/rc/famous?' + counter,
-				orientation: 'portrait'
-			};
-			demobo.setController( controller );
+		if (typeof ace !== 'undefined' && $('#editor-view')[0]) {
+			this.editor = ace.edit('editor-view');
+			if (this.editor) {
+				var onChange = debounce(_onChange.bind(this),300);
+				function _onChange(e) {	
+					console.log(1);
+					if (codeText==this.editor.getValue()) return;
+					console.log(2);
+					codeText=this.editor.getValue();
+					counter = (counter+1)%2;
+					controller.url = controllerUrl + counter;
+					demobo.setController( controller );
+				}
+				this.editor.on('change', onChange.bind(this));
+			}
+		} else {
+			$('body')[0].addEventListener ('DOMSubtreeModified', 
+				function(e){
+					if (e.target && e.target.innerHTML.indexOf('</h2>')>0) 
+						_onDemoChange.call(this);
+				}.bind(this), false);
 		}
-		setTimeout(function(){
-			this.codeArea.bind("DOMSubtreeModified", onChange.bind(this));
-		}.bind(this),1000);
 			
 	};
 
 	// ********** custom event handler functions *************
 	Famous.prototype.onReady = function () {
-		var code = "function render() { " + this.codeArea.text() + " }";
-		demobo.callFunction("eval", code);
-		demobo.callFunction("render","");
+		if (this.editor) {
+			var code = "function render() { " + this.editor.getValue() + " }";
+			demobo.callFunction("eval", code);
+			demobo.callFunction("render","");
+			console.log(3);
+		} else {
+			_onDemoChange.call(this);
+		}
 	};
 
+	function _onDemoChange() {
+		setTimeout(function(){
+			var iframeSrc = $('iframe:visible').attr('src');
+			if (iframeSrc) {
+				demobo.setPage({url: iframeSrc, touchEnabled: true});	
+			}
+		},300);
+	}
+	
 	function debounce(func, wait, immediate) {
 		var timeout;
 		return function() {

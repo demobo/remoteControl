@@ -30,8 +30,7 @@ function responeToAction(action, data) {
 		window.open('mailto:' + value);
 	} else if (action === 'chrome') {
 		var value = data.trim();
-		window.open('pandora://');
-		// window.open('googlechrome://' + value);
+		window.open('googlechrome://' + value);
 	} else if (action === 'safari') {
 		var value = data.trim();
 		window.open('http://' + value, '_blank');

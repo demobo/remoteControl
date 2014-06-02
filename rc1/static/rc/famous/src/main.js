@@ -22,6 +22,8 @@ define(function(require, exports, module) {
 	var ScrollSync    = require("famous/inputs/ScrollSync");
 	var GenericSync   = require("famous/inputs/GenericSync");
 	var SnapTransition = require("famous/transitions/SnapTransition");
+	
+	var Lightbox      = require('famous/views/Lightbox');
 
     var mainContext = Engine.createContext();
 

@@ -1,6 +1,6 @@
 {
-   "name": "YouTube Couch Mode",
-   "description": "Watch youtube in fullscreen by default. Use your smartphone as a TV Remote on Youtube",
+   "name": "Video Remote",
+   "description": "Use your smartphone as a TV Remote on Youtube and Vimeo websites",
    "page_action":
    {
 	  "default_icon": "images/icon_19.png",
@@ -33,6 +33,6 @@
    "permissions": [
      "http://vimeo.com/*", "https://vimeo.com/*", "http://www.youtube.com/*", "https://www.youtube.com/*", "http://*.youku.com/*"
    ],
-   "version": "3.2.6",
+   "version": "3.2.7",
    "manifest_version": 2
 }

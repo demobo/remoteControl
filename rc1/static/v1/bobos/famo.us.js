@@ -32,65 +32,93 @@
 		});
 		
 		this.setController( controller );
+		
+		$('iframe').on('load', _onDemoChange.bind(this));
+		
 		if (typeof ace !== 'undefined') {
-			if ($('#editor-view')[0]) {
-				_setupEditorEvents.call(this);
-			} else {
-				
-			}
-		} else {
-			$('body')[0].addEventListener ('DOMSubtreeModified', 
-				function(e){
-					if (e.target && e.target.innerHTML.indexOf('</h2>')>0) 
-						_onDemoChange.call(this);
-				}.bind(this), false);
+			_setupEditorEvents.call(this);
+			$('body').on('DOMNodeRemoved DOMNodeInserted', '#editor-view', function(e){
+				if (e.target == e.currentTarget) _setupEditorEvents.call(this);
+			}.bind(this));
+		// } else {
+			// $('body')[0].addEventListener ('DOMSubtreeModified', function(e){
+				// if (e.target && e.target.innerHTML.indexOf('</h2>')>0) 
+					// _onDemoChange.call(this);
+			// }.bind(this), false);
 		}
 			
 	};
 
 	// ********** custom event handler functions *************
-	Famous.prototype.onReady = function () {
-		if (typeof ace !== 'undefined') {
-			if (this.editor) {
-				var code = "function runFamous() { " + this.editor.getValue() + " }; runFamous();";
-				demobo.callFunction("eval", code);
-				console.log(3);
-			} else 
-				demobo.setPage({url: logoUrl, touchEnabled: false});
-		} else {
-			_onDemoChange.call(this);
-		}
+	// Famous.prototype.onReady = function () {
+		// if (typeof ace !== 'undefined') {
+			// if (this.editor) {
+				// if (this.editor.getValue()) {
+					// _runFamous.call(this);
+				// } else if ($('iframe.famous-surface')[0]) {
+					// _onDemoChange.call(this);
+					// var iframeSrc = $('iframe.famous-surface').attr('src');
+					// if (iframeSrc && iframeSrc.indexOf('.famo.us')!==-1) {
+						// demobo.setPage({url: iframeSrc, touchEnabled: true});
+					// }
+				// }	
+			// } else 
+				// demobo.setPage({url: logoUrl, touchEnabled: false});
+		// } else {
+			// _onDemoChange.call(this);
+		// }
+	// };
+	
+	Famous.prototype.onReady = function (evtName, evt) {
+		if (this.editor && this.editor.getValue())
+			_runFamous.call(this, evt.deviceID);
+		else
+			_onDemoChange.call(this, evt, evt.deviceID);
 	};
 
+	function _runFamous(deviceID) {
+		var code = "function runFamous() { " + this.editor.getValue() + " }; runFamous();";
+		demobo.callFunction("eval", code, deviceID);
+		console.log('runFamous', deviceID)
+	}
 
 	function _setupEditorEvents(e) {	
 		if (this.editor) {
 			this.editor.off('change', onEditorChange.bind(this));
+			delete this.editor;
 		}
-		this.editor = ace.edit('editor-view');
-		if (this.editor) {
+		if ($('#editor-view')[0]) {
+			this.editor = ace.edit('editor-view');
 			this.editor.on('change', onEditorChange.bind(this));
 		}
 	}
 	
 	function _onEditorChange(e) {	
-		console.log(1);
 		if (codeText==this.editor.getValue()) return;
-		console.log(2);
+		console.log('editor change')
 		codeText=this.editor.getValue();
 		counter = (counter+1)%2;
 		controller.url = controllerUrl + counter;
 		demobo.setController( controller );
 	}
-	function _onDemoChange() {
+	function _onDemoChange(e, deviceID) {
+		console.log('demo changed', deviceID)
 		setTimeout(function(){
-			var iframeSrc = $('iframe:visible').attr('src');
-			if (iframeSrc && iframeSrc.indexOf('api.demobo.com')==-1) {
-				demobo.setPage({url: iframeSrc, touchEnabled: true});	
+			var iframeSrc = $('iframe:visible')[0].src;
+			var page = {};
+			if (iframeSrc && iframeSrc.indexOf('.famo.us')!==-1) {
+				if (iframeSrc.indexOf('//')==0) 
+					iframeSrc = 'http:' + iframeSrc;
+				page.url = iframeSrc;
+				page.touchEnabled = true;
+				if (deviceID) page.deviceID = deviceID;
 			} else {
-				demobo.setPage({url: logoUrl, touchEnabled: false});
+				page.url = logoUrl;
+				page.touchEnabled = false;
+				if (deviceID) page.deviceID = deviceID;
 			}
-		},300);
+			demobo.setPage(page);	
+		},30);
 	}
 	
 	function debounce(func, wait, immediate) {

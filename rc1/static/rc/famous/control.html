@@ -13,7 +13,8 @@
         <script type="text/javascript" src="http://code.famo.us/lib/requestAnimationFrame.js"></script>
 
         <!-- module loader -->
-        <script type="text/javascript" src="http://code.famo.us/lib/require.js"></script>
+        <script type="text/javascript" src="http://famo.us/js/lib/require.js"></script>
+        <script type="text/javascript" src="http://famo.us/js/common.js"></script>
 
         <!-- famous -->
         <link rel="stylesheet" type="text/css" href="http://code.famo.us/famous/0.2/famous.css" />
@@ -23,6 +24,7 @@
         <link rel="stylesheet" type="text/css" href="http://famo.us/css/famous_styles.css" />
         <script type="text/javascript">
             require.config({baseUrl: 'http://rc1.demobo.com/rc/famous/src/'});
+            // require.config({baseUrl: 'http://localhost:1240/rc/famous/src/'});
             require(['main']);
         </script>
     </head>

@@ -24,7 +24,7 @@
 			}
 			function renderAnswers(answers) {
 				for (var i in answers) {
-					$('.answer div').eq(i).html('<span>'+answers[i]+'</span>');
+					$('.answer div').eq(i).html('<span>'+answers[i]+'</span>').toggle(!!answers[i]);
 				}
 				$('#main').animate({
 			    	scrollTop: $(".answer").offset().top

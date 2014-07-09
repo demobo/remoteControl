@@ -116,7 +116,8 @@
 		return toReturn;
 	}
 	function getSlides() {
-		return SK_viewerApp.k[1] || SK_viewerApp.l[1] || SK_viewerApp.n[1] || _getSlides();
+		return _getSlides();
+		// return SK_viewerApp.k[1] || SK_viewerApp.l[1] || SK_viewerApp.n[1] || _getSlides();
 	}
 	function _getSlides() {
 		for (var i in SK_viewerApp) { if (SK_viewerApp[i] && Array.isArray(SK_viewerApp[i][1])) return SK_viewerApp[i][1]; }

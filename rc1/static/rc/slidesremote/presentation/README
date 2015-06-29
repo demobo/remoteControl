@@ -1,0 +1,35 @@
+r.js -o build.js
+
+1. crosswalkcreate path domain_name package_name
+2. rm www add ln -s project_folder www
+3 .plugin
+   file-transfer:
+   plugman install --platform android --project . --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git#r0.4.3
+   plugman install --platform android --project . --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.git#r1.1.0
+   plugman install --platform android --project . --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git#r0.4.0
+
+add  @Override
+        public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+            //If volume down key
+            if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+                this.loadUrl("javascript:cordova.fireDocumentEvent('volumedownbutton');");
+                return true;
+            } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
+                this.loadUrl("javascript:cordova.fireDocumentEvent('volumeupbutton');");
+                return true;
+            } else {
+                //return super.onKeyDown(keyCode, event);
+            }
+            //return super.onKeyDown(keyCode, event);
+
+            return true;
+        }
+
+        in java file to enable key event
+
+       add  android:screenOrientation="portrait" >> AndroidManifest.xml remove debuggable
+
+
+deploy new version: 1. settingView
+                    2.AndroidManifest.xml android:versionCode="4" + 1 android:versionName="1.0.3" + 0.0.1

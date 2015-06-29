@@ -11,7 +11,7 @@ var addBobos = {
 
 //modify setBobos if you wanna replace the existing bobos
 var setBobos = {
-}
+};
 
 if (!document.getElementById('toggle')){
   var toggle = document.createElement('div');

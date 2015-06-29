@@ -1,0 +1,21 @@
+
+.android.checkbox-dot {
+    background: #09c;
+    z-index: 1;
+    pointer-events: none;
+}
+.android.checkbox-dot.disabled {
+    background: #777;
+}
+.android.checkbox-background {
+    border: 2px solid #4c4e4d;
+    background: #000;
+    font-family: Helvetica Neue;
+    font-size: 28px;
+}
+.android.checkbox-dot::selection {
+    background: none;
+}
+.android.checkbox-background::selection {
+    background: none;
+}

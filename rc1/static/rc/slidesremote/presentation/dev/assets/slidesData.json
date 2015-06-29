@@ -1,0 +1,12 @@
+{
+    "slides": [
+        {"pageId": "p", "remoteURL" :"../dev/assets/imgs/Lightsaber0.svg", "notes": "lightsaber page1", "fileTitle": "Lightsaber"},
+        {"pageId":"ge3634fca_10", "remoteURL" : "../dev/assets/imgs/Lightsaber1.svg", "notes": "lightsaber page2",  "fileTitle": "Lightsaber"},
+        {"pageId":"ge3634fca_17","remoteURL" :"../dev/assets/imgs/Lightsaber2.svg", "notes": "lightsaber page3",  "fileTitle": "Lightsaber"},
+        {"pageId":"ge3634fca_114","remoteURL" :"../dev/assets/imgs/Lightsaber3.svg", "notes": "lightsaber page4",  "fileTitle": "Lightsaber"},
+        {"pageId":"g196b3a9c5_00","remoteURL": "../dev/assets/imgs/Lightsaber4.svg", "notes": "lightsaber page5", "fileTitle": "Lightsaber"},
+        {"pageId": "gf83d388c_00", "remoteURL" :"../dev/assets/imgs/Lightsaber5.svg", "notes": "lightsaber page6", "fileTitle": "Lightsaber"},
+        {"pageId": "gf83d388c_06", "remoteURL" :"../dev/assets/imgs/Lightsaber6.svg", "notes": "lightsaber page6", "fileTitle": "Lightsaber"},
+        {"pageId": "gf83d388c_018", "remoteURL" :"../dev/assets/imgs/Lightsaber7.svg", "notes": "lightsaber page7", "fileTitle": "Lightsaber"}
+    ]
+}

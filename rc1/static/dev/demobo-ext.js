@@ -26,9 +26,9 @@
 			demoboBody.injectScript(apiUrl,function() {demoboBody.injectScript(appUrl);});
 		}
 	}
-	window.showDemobo = function() {}
-	window.hideDemobo = function() {}
+	window.showDemobo = function() {};
+	window.hideDemobo = function() {};
 	window.toggleDemobo = function() {
 		demobo.setController();
-	}
+	};
 })();

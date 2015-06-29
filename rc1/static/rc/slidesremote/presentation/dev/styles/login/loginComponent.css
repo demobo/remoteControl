@@ -1,0 +1,353 @@
+.os-phrases h2 {
+	font-family: 'Dosis', 'Lato', sans-serif;
+	font-size: 40px;
+	font-weight: 200;
+	width: 100%;
+	overflow: hidden;
+	text-transform: uppercase;
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	top: -30px;
+	left: 0;
+	letter-spacing: 14px;
+	text-align: center;
+}
+
+#os-phrases2 h2 {
+    top: -70px;
+    left: 0;
+    text-transform: none;
+}
+
+.os-phrases h2,
+.os-phrases h2 > span {
+	height: 100%;
+	/* Centering with flexbox */
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-ms-flex-direction: row;
+	flex-direction: row;
+	-webkit-box-pack: center;
+	-moz-box-pack: center;
+	-webkit-justify-content: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-moz-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+}
+
+.os-phrases h2 > span {
+	margin: 0 15px;
+}
+
+.os-phrases h2 > span > span {
+	display: inline;
+	-webkit-perspective: 1000px;
+	-moz-perspective: 1000px;
+	perspective: 1000px;
+	-webkit-transform-origin: 50% 50%;
+	-moz-transform-origin: 50% 50%;
+	transform-origin: 50% 50%;
+}
+
+#os-phrases1 h2> span > span > span {
+	/*display: inline;*/
+	color: hsla(0,0%,0%,0);
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+	transform-style: preserve-3d;
+	-webkit-transform: translate3d(0,0,0);
+	-moz-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+	-webkit-animation: OpeningSequence 4s linear forwards;
+	-moz-animation: OpeningSequence 4s linear forwards;
+	animation: OpeningSequence 4s linear forwards;
+}
+
+
+#os-phrases2 h2> span > span > span {
+    /*display: inline;*/
+    color: hsla(0,0%,0%,0);
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    transform-style: preserve-3d;
+    -webkit-transform: translate3d(0,0,0);
+    -moz-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+    -webkit-animation: OpeningSequence 3.5s linear forwards;
+    -moz-animation: OpeningSequence 3.5s linear forwards;
+    animation: OpeningSequence 3.5s linear forwards;
+}
+
+
+/*.os-phrases h2:nth-child(2) > span > span > span {*/
+	/*-webkit-animation-delay: 2.5s;*/
+	/*-moz-animation-delay: 2.5s;*/
+	/*animation-delay: 2.5s;*/
+/*}*/
+
+/*.os-phrases h2:nth-child(3) > span > span > span {*/
+	/*-webkit-animation-delay: 5s;*/
+	/*-moz-animation-delay: 5s;*/
+	/*animation-delay: 5s;*/
+/*}*/
+
+#os-phrases1 h2:nth-child(2) > span > span > span {
+    font-size: 40px;
+    word-break:break-all;
+    -webkit-animation: OpeningEndSequence 10s linear forwards;
+    -moz-animation: OpeningEndSequence 10s linear forwards;
+    animation: OpeningEndSequence 10s linear forwards;
+    /*-webkit-animation: FadeIn 1s linear 4s forwards;*/
+    /*-moz-animation: FadeIn 1s linear 4s forwards;*/
+    /*animation: FadeIn 1s linear 4s forwards;*/
+}
+
+
+#os-phrases2 h2:nth-child(2) > span > span > span {
+    font-size: 40px;
+    word-break:break-all;
+    -webkit-animation: OpeningEndSequence 9s linear forwards;
+    -moz-animation: OpeningEndSequence 9s linear forwards;
+    animation: OpeningEndSequence 9s linear forwards;
+    /*-webkit-animation: FadeIn .5s linear 2.5s forwards;*/
+    /*-moz-animation: FadeIn .5s linear 2.5s forwards;*/
+    /*animation: FadeIn .5s linear 2.5s forwards;*/
+}
+
+
+/*.os-phrases h2:nth-child(4) > span > span > span {*/
+	/*-webkit-animation-delay: 7.5s;*/
+	/*-moz-animation-delay: 7.5s;*/
+	/*animation-delay: 7.5s;*/
+/*}*/
+
+/*.os-phrases h2:nth-child(5) > span > span > span {*/
+	/*font-size: 150px;*/
+	/*-webkit-animation-delay: 10.5s;*/
+	/*-moz-animation-delay: 10.5s;*/
+	/*animation-delay: 10.5s;*/
+	/*-webkit-animation-duration: 4s;*/
+	/*-moz-animation-duration: 4s;*/
+	/*animation-duration: 4s;*/
+/*}*/
+
+/*.os-phrases h2:nth-child(6) > span > span > span {*/
+	/*-webkit-animation-delay: 15s;*/
+	/*-moz-animation-delay: 15s;*/
+	/*animation-delay: 15s;*/
+/*}*/
+
+/*.os-phrases h2:nth-child(7) > span > span > span {*/
+	/*-webkit-animation-delay: 17s;*/
+	/*-moz-animation-delay: 17s;*/
+	/*animation-delay: 17s;*/
+/*}*/
+
+@-webkit-keyframes OpeningSequence {
+	0% {
+		text-shadow: 0 0 50px #fff;
+		letter-spacing: 80px;
+		opacity: 0;
+		-webkit-transform: rotateY(-90deg);
+	}
+	50% {
+		text-shadow: 0 0 1px #fff;
+		letter-spacing: 14px;
+		opacity: 0.8;
+		-webkit-transform: rotateY(0deg);
+	}
+	85% {
+		text-shadow: 0 0 1px #fff;
+		opacity: 0.8;
+		-webkit-transform: rotateY(0deg) translateZ(100px);
+	}
+	100% {
+		text-shadow: 0 0 10px #fff;
+		opacity: 0;
+		-webkit-transform: translateZ(130px);
+		pointer-events: none;
+	}
+}
+
+@-moz-keyframes OpeningSequence {
+	0% {
+		text-shadow: 0 0 50px #fff;
+		letter-spacing: 80px;
+		opacity: 0.2;
+		-moz-transform: rotateY(-90deg);
+	}
+	50% {
+		text-shadow: 0 0 1px #fff;
+		letter-spacing: 14px;
+		opacity: 0.8;
+		-moz-transform: rotateY(0deg);
+	}
+	85% {
+		text-shadow: 0 0 1px #fff;
+		opacity: 0.8;
+		-moz-transform: rotateY(0deg) translateZ(100px);
+	}
+	100% {
+		text-shadow: 0 0 10px #fff;
+		opacity: 0;
+		-moz-transform: translateZ(130px);
+		pointer-events: none;
+	}
+}
+
+@keyframes OpeningSequence {
+	0% {
+		text-shadow: 0 0 50px #fff;
+		letter-spacing: 80px;
+		opacity: 0.2;
+		transform: rotateY(-90deg);
+	}
+	50% {
+		text-shadow: 0 0 1px #fff;
+		letter-spacing: 14px;
+		opacity: 0.8;
+		transform: rotateY(0deg);
+	}
+	85% {
+		text-shadow: 0 0 1px #fff;
+		opacity: 0.8;
+		transform: rotateY(0deg) translateZ(100px);
+	}
+	100% {
+		text-shadow: 0 0 10px #fff;
+		opacity: 0;
+		transform: translateZ(130px);
+		pointer-events: none;
+	}
+}
+/*--------------------------------*/
+/*--------------------------------*/
+@-webkit-keyframes OpeningEndSequence {
+    0% {
+        text-shadow: 0 0 50px #fff;
+        letter-spacing: 80px;
+        opacity: 0;
+        -webkit-transform: rotateY(-90deg);
+    }
+    50% {
+        text-shadow: 0 0 1px #fff;
+        letter-spacing: 14px;
+        opacity: 0.5;
+        -webkit-transform: rotateY(0deg);
+    }
+    85% {
+        text-shadow: 0 0 1px #fff;
+        opacity: 0.8;
+        -webkit-transform: rotateY(0deg) translateZ(100px);
+    }
+    100% {
+        text-shadow: 0 0 5px #fff;
+        opacity: 1;
+        -webkit-transform: translateZ(130px);
+        pointer-events: none;
+    }
+}
+
+@-moz-keyframes OpeningEndSequence {
+    0% {
+        text-shadow: 0 0 50px #fff;
+        letter-spacing: 80px;
+        opacity: 0.2;
+        -moz-transform: rotateY(-90deg);
+    }
+    50% {
+        text-shadow: 0 0 1px #fff;
+        letter-spacing: 14px;
+        opacity: 0.5;
+        -moz-transform: rotateY(0deg);
+    }
+    85% {
+        text-shadow: 0 0 1px #fff;
+        opacity: 0.8;
+        -moz-transform: rotateY(0deg) translateZ(100px);
+    }
+    100% {
+        text-shadow: 0 0 5px #fff;
+        opacity: 1;
+        -moz-transform: translateZ(130px);
+        pointer-events: none;
+    }
+}
+
+@keyframes OpeningEndSequence {
+    0% {
+        text-shadow: 0 0 50px #fff;
+        letter-spacing: 80px;
+        opacity: 0;
+        transform: rotateY(-90deg);
+    }
+    50% {
+        text-shadow: 0 0 1px #fff;
+        letter-spacing: 14px;
+        opacity: 0.5;
+        transform: rotateY(0deg);
+    }
+    85% {
+        text-shadow: 0 0 1px #fff;
+        opacity: 0.8;
+        transform: rotateY(0deg) translateZ(100px);
+    }
+    100% {
+        text-shadow: 0 0 5px #fff;
+        opacity: 1;
+        transform: translateZ(130px);
+        pointer-events: none;
+    }
+}
+/*--------------------------------*/
+/*--------------------------------*/
+
+@-webkit-keyframes FadeIn { 
+	0% {
+		opacity: 0;
+		text-shadow: 0 0 50px #fff;
+	}
+	100% {
+		opacity: 0.8;
+		text-shadow: 0 0 1px #fff;
+	}
+}
+
+@-moz-keyframes FadeIn { 
+	0% {
+		opacity: 0;
+		text-shadow: 0 0 50px #fff;
+	}
+	100% {
+		opacity: 0.8;
+		text-shadow: 0 0 1px #fff;
+	}
+}
+
+@keyframes FadeIn { 
+	0% {
+		opacity: 0;
+		text-shadow: 0 0 50px #fff;
+	}
+	100% {
+		opacity: 0.8;
+		text-shadow: 0 0 1px #fff;
+	}
+}
+
+/* Bold words */
+/*.os-phrases h2:first-child .word1,*/
+/*.os-phrases h2:nth-child(2) .word1,*/
+/*.os-phrases h2:nth-child(3) .word1,*/
+#os-phrases1 h2:nth-child(2) .word1 {
+	font-weight: 600;
+}

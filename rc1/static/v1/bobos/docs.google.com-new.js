@@ -7,7 +7,7 @@
   
   GoogleDocs.prototype.hasPresentButton = function (){
     return !!document.getElementById("punch-start-presentation-left");
-  }
+  };
 
   GoogleDocs.prototype.insertScript = function (){
     document.getElementById("punch-start-presentation-left").onclick=function(){
@@ -24,11 +24,13 @@
         }
       }, 4000);
     };
-  }
+  };
 
   GoogleDocs.prototype.initialize = function (){
+  	window.docId = location.href.split('/').reverse()[1];
     this.setController({
-      url:'http://rc1.demobo.com/v1/momos/docsgoogle/control.html?0201',
+      // url:'http://rc1.demobo.com/v1/momos/docsgoogle/control.html?0201',
+      url:"http://rc1.demobo.com/rc/slidesremote/presentation/prod/index.html?0721',
       orientation: 'portrait'
     });
 
@@ -76,14 +78,13 @@
   GoogleDocs.prototype.simulateKeyEvent = function(a) {
     this.dispatchKeyboardEvent(document, "keydown", !0, !0, null, a, 0, "");
     this.dispatchKeyboardEvent(document, "keypress", !0, !0, null, a, 0, "");
-    this.dispatchKeyboardEvent(document, 
-    "keyup", !0, !0, null, a, 0, "")
+    this.dispatchKeyboardEvent(document, "keyup", !0, !0, null, a, 0, "");
   };
 
   GoogleDocs.prototype.dispatchKeyboardEvent = function(a, b) {
       var c = document.createEvent("KeyboardEvents");
       c.initKeyboardEvent.apply(c, Array.prototype.slice.call(arguments, 1));
-      a.dispatchEvent(c)
+      a.dispatchEvent(c);
   };
 
 	GoogleDocs.prototype.previous = function () {
@@ -162,9 +163,16 @@
 			var pageCount = this.getPageCount();
 			for (var i=0; i<pageCount; i++) {
 				var note = slides[i][7].replace(/ style=\"[^\"]*\"/g,'');
-				if (!note) note = "";
+				if (!note) note = "note";
+				var slideId = slides[i][0];
+				var fileTitle = document.getElementsByTagName('title')[0].innerText;
+				var imageUrl = 'https://docs.google.com/feeds/download/presentations/Export?id='
+				+window.docId
+				+'&exportFormat=svg&pageid='+slideId;
 				var s = {
-					'note' : note
+					fileTitle : fileTitle,
+					note : note,
+					imageUrl : ''
 				};
 				toReturn.push(s);
 			}
@@ -173,7 +181,8 @@
 	};
 
 	GoogleDocs.prototype.getSlides = function () {
-		return SK_viewerApp.k[1] || SK_viewerApp.l[1] || SK_viewerApp.n[1] || this._getSlides();
+		return this._getSlides();
+		// return SK_viewerApp.k[1] || SK_viewerApp.l[1] || SK_viewerApp.n[1] || this._getSlides();
 	};
 
 	GoogleDocs.prototype._getSlides = function () {

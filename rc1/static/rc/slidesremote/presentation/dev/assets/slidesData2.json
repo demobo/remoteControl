@@ -1,0 +1,9 @@
+{
+    "slides": [
+        {"pageId": "p", "remoteURL" :"../dev/assets/imgs/demobo0.svg", "notes": "notes for page1 demobo","fileTitle": "What is de Mobo?"},
+        {"pageId":"g10a04d2f_0_0", "remoteURL" : "../dev/assets/imgs/demobo1.svg", "notes": "notes for page2 demobo", "fileTitle": "What is de Mobo?"},
+        {"pageId":"g10a04d2f_0_5","remoteURL" :"../dev/assets/imgs/demobo2.svg", "notes": "notes for page3 demobo", "fileTitle": "What is de Mobo?"},
+        {"pageId":"g10a04d2f_0_10","remoteURL" :"../dev/assets/imgs/demobo3.svg", "notes": "notes for page4 demobo", "fileTitle": "What is de Mobo?"},
+        {"pageId":"g196b3a9c5_00","remoteURL": "../dev/assets/imgs/demobo4.svg", "notes": "notes for page5 demobo", "fileTitle": "What is de Mobo?"}
+    ]
+}

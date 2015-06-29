@@ -1,10 +1,10 @@
 {
-   "name": "de Mobo",
+   "name": "de Mobo - Browser Remote",
    "description": "A remote for Prezi, Grooveshark, Pandora, YouTube, Vimeo, Slideshare, Google Slides, Rdio, last.fm, 8tracks, Douban, NPR ...",
    "browser_action":
    {
 	  "default_icon": "images/19.png",
-      "default_title": "de Mobo"
+      "default_title": "de Mobo - Browser Remote"
    },
    "background" : {
     "scripts": ["js/background.js"]
@@ -28,6 +28,6 @@
    "permissions": [
      "*://*/*", "tabs"
    ],
-   "version": "0.2.0",
+   "version": "3.0.5",
    "manifest_version": 2
 }

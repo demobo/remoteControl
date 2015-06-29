@@ -8,14 +8,16 @@
 	
 	var ui = {
 		name: 				'docsgoogle',
-		version: 			'0201'
+		version: 			'0721'
 	};
-	ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
+	// ui.controllerUrl = "http://rc1.demobo.com/rc/"+ui.name+"?"+ui.version;
+	ui.controllerUrl = "http://rc1.demobo.com/rc/slidesremote/presentation/prod/index.html?"+ui.version;
 	slideChangeTimeout = null;
 	var slides;
 	
 	// do all the iniations you need here
 	function init() {
+		window.docId = location.href.split('/').reverse()[1];
 		demobo.setController( {
 			url : ui.controllerUrl,
 			orientation: 'portrait'
@@ -106,9 +108,16 @@
 			var pageCount = getPageCount();
 			for (var i=0; i<pageCount; i++) {
 				var note = slides[i][7].replace(/ style=\"[^\"]*\"/g,'');
-				if (!note) note = "";
+				if (!note) note = "note";
+				var slideId = slides[i][0];
+				var fileTitle = document.getElementsByTagName('title')[0].innerText;
+				var imageUrl = 'https://docs.google.com/feeds/download/presentations/Export?id='
+				+window.docId
+				+'&exportFormat=svg&pageid='+slideId;
 				var s = {
-					'note' : note
+					fileTitle : fileTitle,
+					note : note,
+					imageUrl : ''
 				};
 				toReturn.push(s);
 			}
@@ -123,4 +132,8 @@
 		for (var i in SK_viewerApp) { if (SK_viewerApp[i] && Array.isArray(SK_viewerApp[i][1])) return SK_viewerApp[i][1]; }
 		return [];
 	}
+	// function parse() {
+		// var url = 'https://docs.google.com/a/demobo.com/presentation/d/' + window.docId + '/htmlpresent';
+		// unescape(document.body.innerHTML.match(/htmlViewerUrl.{200}/g)[0].split("'")[1]);
+	// }
 })();

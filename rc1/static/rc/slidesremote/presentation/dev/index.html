@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slides</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+	<dev-script type="text/javascript" src="js/all.js">
+	    <script type="text/javascript" src="js/lib/functionPrototypeBind.js"></script>
+	    <script type="text/javascript" src="js/lib/classList.js"></script>
+	    <script type="text/javascript" src="js/lib/requestAnimationFrame.js"></script>
+	    <script type="text/javascript" src="js/lib/mustache.js"></script>
+	    <script type="text/javascript" src="js/lib/jquery.min.js"></script>
+	    <script src="http://api.demobo.com/demobo.mobile.1.0.2.min.js"></script>
+	    <script type="text/javascript" src="js/lib/underscore.js"></script>
+	    <script type="text/javascript" src="js/lib/backbone.js"></script>
+	    <script type="text/javascript" src="js/lib/snap.svg.js"></script>
+	    <script type="text/javascript" src="js/lib/backbone.localStorage-min.js"></script>
+	    <script type="text/javascript" src="js/lib/backbone.uniquemodel.js"></script>
+	    <script type="text/javascript" src="js/lib/howler.min.js"></script>
+	    <script type="text/javascript" src="js/lib/require.js"></script>
+	</dev-script>
+	<script type="text/javascript" src="indexRequire.js"></script>
+	
+	<dev-link rel="stylesheet" type="text/css" href="styles/all.css">
+	    <link rel="stylesheet" type="text/css" href="styles/famous.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/controls.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/skins.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/font-awesome.min.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/controls-ios/checkbox-ios.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/controls-android/checkbox-android.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/controls-ios/toggle-ios.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/controls-android/toggle-android.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/controls-android/range-android.css" />
+	    <link rel="stylesheet" type="text/css" href="styles/main.css" />
+	</dev-link>
+
+</head>
+<body>
+<script id="file-item-view" type="text/x-handlebars-template">
+    <div class="file-item">
+        <div class="file-icon">
+            <img src="{{iconLink}}">
+        </div>
+        <div class="file-title">
+            {{title}}
+        </div>
+        <div class="file-date">
+            {{timeAgo}}
+        </div>
+        <div class="file-size">
+            {{fileSizeInM}}
+        </div>
+    </div>
+</script>
+</body>
+</html>

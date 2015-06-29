@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>simplifyHtml.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id="background"></div>
+<div id='container'>
+  <div class='section'>
+    <div class='docs'><h1>simplifyHtml.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>Import libraries that are used</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="kn">import</span> <span class="nn">commands</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span><span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">bs4</span> <span class="kn">import</span> <span class="n">BeautifulSoup</span>
+
+<span class="n">SUPPORT_TAGS</span><span class="o">=</span><span class="p">[</span><span class="s">&#39;script&#39;</span><span class="p">,</span> <span class="s">&#39;link&#39;</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      <p>Create archive folders for JS and CSS if they're not there yet. The archive folders are direct children of the source folders; Return two file handlers of log files for js and css respectively</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">init</span><span class="p">(</span><span class="n">sourceJsDir</span><span class="p">,</span> <span class="n">sourceCssDir</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="k">try</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">sourceJsDir</span><span class="o">+</span><span class="s">&#39;/.archive&#39;</span><span class="p">)</span> 
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">sourceCssDir</span><span class="o">+</span><span class="s">&#39;/.archive&#39;</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>Create the log files in /tmp folder.  </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="n">jsLogFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;/tmp/jslog&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+  <span class="n">cssLogFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&quot;/tmp/csslog&quot;</span><span class="p">,</span> <span class="s">&quot;w&quot;</span><span class="p">)</span>
+  <span class="k">return</span> <span class="p">(</span><span class="n">jsLogFile</span><span class="p">,</span> <span class="n">cssLogFile</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <p>Minify the files in dev- sections of a html if possible and put the generated files in degsinated places.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">simplify</span><span class="p">(</span><span class="n">sjdir</span><span class="p">,</span> <span class="n">scdir</span><span class="p">,</span> <span class="n">shtml</span><span class="p">,</span> <span class="n">tjdir</span><span class="p">,</span> <span class="n">tcdir</span><span class="p">,</span> <span class="n">thtml</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">shtml</span><span class="p">)</span>
+  <span class="n">plainText</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <p>Run BeatifulSoup over the html to generate a dom object.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="n">htmlSoup</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">plainText</span><span class="p">)</span>
+  <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <p>Find all dev sections</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="n">devSections</span><span class="o">=</span><span class="n">htmlSoup</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">&#39;^dev-&#39;</span><span class="p">))</span>
+  
+  <span class="n">jsLogFile</span><span class="p">,</span> <span class="n">cssLogFile</span> <span class="o">=</span> <span class="n">init</span><span class="p">(</span><span class="n">sjdir</span><span class="p">,</span> <span class="n">scdir</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>handle each dev-X section</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="k">for</span> <span class="n">section</span> <span class="ow">in</span> <span class="n">devSections</span><span class="p">:</span>
+    <span class="n">tagName</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">name</span><span class="p">[</span><span class="mi">4</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">tagName</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">SUPPORT_TAGS</span><span class="p">:</span>
+      <span class="k">print</span> <span class="n">tagName</span><span class="o">+</span><span class="s">&quot; tag is not supported yet&quot;</span>
+      <span class="k">continue</span>
+
+    <span class="k">if</span> <span class="n">tagName</span><span class="o">==</span><span class="s">&quot;script&quot;</span><span class="p">:</span>
+      <span class="n">handleJsSection</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">sjdir</span><span class="p">,</span> <span class="n">tjdir</span><span class="p">,</span> <span class="n">jsLogFile</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">tagName</span><span class="o">==</span><span class="s">&quot;link&quot;</span><span class="p">:</span>
+      <span class="n">handleCssSection</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">scdir</span><span class="p">,</span> <span class="n">tcdir</span><span class="p">,</span> <span class="n">cssLogFile</span><span class="p">)</span>
+    
+    <span class="n">section</span><span class="o">.</span><span class="n">name</span><span class="o">=</span><span class="n">tagName</span>
+
+  <span class="n">destination</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">thtml</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+  <span class="n">destination</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">collapseDevSection</span><span class="p">(</span><span class="n">plainText</span><span class="p">))</span>
+  <span class="n">destination</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+  <span class="n">jsLogFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+  <span class="n">cssLogFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">collapseDevSection</span><span class="p">(</span><span class="n">plainText</span><span class="p">):</span>
+  <span class="n">toReturn</span> <span class="o">=</span> <span class="s">u&#39;&#39;</span>
+  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">startIndex</span> <span class="o">=</span> <span class="n">plainText</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;&lt;dev-&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">startIndex</span><span class="o">==-</span><span class="mi">1</span><span class="p">:</span>
+      <span class="k">return</span> <span class="n">toReturn</span> <span class="o">+</span> <span class="n">plainText</span>
+
+    <span class="n">deleteStart</span> <span class="o">=</span> <span class="n">plainText</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="n">startIndex</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">deleteEnd</span> <span class="o">=</span> <span class="n">plainText</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;&lt;/dev-&#39;</span><span class="p">,</span> <span class="n">startIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">endIndex</span> <span class="o">=</span> <span class="n">plainText</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;&gt;&#39;</span><span class="p">,</span> <span class="n">deleteEnd</span><span class="p">)</span> 
+    <span class="n">toReturn</span> <span class="o">+=</span> <span class="n">plainText</span><span class="p">[:</span><span class="n">startIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">plainText</span><span class="p">[</span><span class="n">startIndex</span><span class="o">+</span><span class="mi">5</span><span class="p">:</span><span class="n">deleteStart</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;&lt;/&#39;</span><span class="o">+</span><span class="n">plainText</span><span class="p">[</span><span class="n">deleteEnd</span><span class="o">+</span><span class="mi">6</span><span class="p">:</span><span class="n">endIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">plainText</span> <span class="o">=</span> <span class="n">plainText</span><span class="p">[</span><span class="n">endIndex</span><span class="o">+</span><span class="mi">1</span><span class="p">:]</span>
+  <span class="k">return</span> <span class="n">toReturn</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">handleCssSection</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">scdir</span><span class="p">,</span> <span class="n">tcdir</span><span class="p">,</span> <span class="n">logFile</span><span class="p">):</span>
+  <span class="k">print</span> <span class="s">&quot;</span><span class="si">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><span class="s">%&quot;</span>
+  
+  <span class="n">targetFilePath</span> <span class="o">=</span> <span class="n">tcdir</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="n">section</span><span class="p">[</span><span class="s">&#39;href&#39;</span><span class="p">]</span>
+
+  <span class="k">print</span> <span class="s">&quot;handling a css section, which is converted to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">targetFilePath</span>
+  <span class="k">print</span> <span class="s">&quot;&quot;</span>
+
+  <span class="n">targetFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetFilePath</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+  <span class="n">cssCompiler</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s">&#39;google-closure-stylesheets/compiler.jar&#39;</span><span class="p">)</span>
+
+  <span class="n">links</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;link&quot;</span><span class="p">)</span>
+
+  <span class="n">success</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="k">for</span> <span class="n">link</span> <span class="ow">in</span> <span class="n">links</span><span class="p">:</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">handleLink</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">scdir</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">cssCompiler</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">status</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+      <span class="n">success</span> <span class="o">=</span> <span class="bp">False</span>
+      
+  <span class="k">print</span> <span class="s">&quot;&quot;</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;there is error or warning, please check the log at </span><span class="si">%s</span><span class="s"> to make sure you know what happened&quot;</span> <span class="o">%</span> <span class="n">logFile</span><span class="o">.</span><span class="n">name</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;Success!&quot;</span>
+  <span class="k">print</span> <span class="s">&quot;&quot;</span>
+  <span class="n">targetFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">handleJsSection</span><span class="p">(</span><span class="n">section</span><span class="p">,</span> <span class="n">sjdir</span><span class="p">,</span> <span class="n">tjdir</span><span class="p">,</span> <span class="n">logFile</span><span class="p">):</span>
+  <span class="k">print</span> <span class="s">&quot;</span><span class="si">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span><span class="s">%&quot;</span>
+
+  <span class="n">targetFilePath</span> <span class="o">=</span> <span class="n">tjdir</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="n">section</span><span class="p">[</span><span class="s">&#39;src&#39;</span><span class="p">]</span>
+  <span class="k">print</span> <span class="s">&quot;handling a js section, which is converted to </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">targetFilePath</span>
+  <span class="k">print</span> <span class="s">&quot;&quot;</span>
+
+  <span class="n">targetFile</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">targetFilePath</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+  <span class="n">jsCompiler</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="s">&#39;google-closure-compiler/compiler.jar&#39;</span><span class="p">)</span>
+
+  <span class="n">scripts</span> <span class="o">=</span> <span class="n">section</span><span class="o">.</span><span class="n">find_all</span><span class="p">(</span><span class="s">&quot;script&quot;</span><span class="p">)</span>
+
+  <span class="n">success</span> <span class="o">=</span> <span class="bp">True</span>
+  <span class="k">for</span> <span class="n">script</span> <span class="ow">in</span> <span class="n">scripts</span><span class="p">:</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">handleScript</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">sjdir</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">jsCompiler</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">status</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+      <span class="n">success</span> <span class="o">=</span> <span class="bp">False</span>
+
+  <span class="k">print</span> <span class="s">&quot;&quot;</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="n">success</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;there is error or warning, please check the log at </span><span class="si">%s</span><span class="s"> to make sure you know what happened&quot;</span> <span class="o">%</span> <span class="n">logFile</span><span class="o">.</span><span class="n">name</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;Success!&quot;</span>
+  <span class="k">print</span> <span class="s">&quot;&quot;</span>
+    
+  <span class="n">targetFile</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>Download the file to temporary folder. And then write to targetFile(a file handler) if succeeded.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">handleFullUri</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="k">try</span><span class="p">:</span>
+    <span class="n">status</span><span class="p">,</span> <span class="n">output</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getstatusoutput</span><span class="p">(</span><span class="s">&#39;curl -GET </span><span class="si">%s</span><span class="s"> &gt; /tmp/temp&#39;</span> <span class="o">%</span> <span class="n">uri</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">status</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+      <span class="n">writeFileToTarget</span><span class="p">(</span><span class="s">&quot;/tmp/temp&quot;</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">status</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">1</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">handleLink</span><span class="p">(</span><span class="n">link</span><span class="p">,</span> <span class="n">scdir</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">cssCompiler</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="n">link</span><span class="p">[</span><span class="s">&#39;href&#39;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">uri</span><span class="p">:</span>
+      <span class="k">return</span>
+
+    <span class="k">elif</span> <span class="n">isFullUri</span><span class="p">(</span><span class="n">uri</span><span class="p">):</span>
+      <span class="n">status</span> <span class="o">=</span> <span class="n">handleFullUri</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">status</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;error happens when trying to downlaod </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">uri</span>
+      <span class="k">return</span> <span class="n">status</span>
+    <span class="k">else</span><span class="p">:</span> <span class="c">#relative uri</span>
+      <span class="n">filePath</span> <span class="o">=</span> <span class="n">scdir</span> <span class="o">+</span> <span class="s">&#39;/&#39;</span> <span class="o">+</span><span class="n">uri</span>
+      <span class="n">archiveFile</span> <span class="o">=</span> <span class="n">scdir</span><span class="o">+</span><span class="s">&#39;/.archive/&#39;</span><span class="o">+</span><span class="n">uri</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span><span class="s">&#39;-&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">isModified</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="n">filePath</span><span class="p">):</span> <span class="c"># the file has not been modified since last time</span>
+        <span class="k">print</span> <span class="s">&quot;found an archived version of </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filePath</span>
+        <span class="k">return</span> <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">handleRelativeCss</span><span class="p">(</span><span class="n">cssCompiler</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">archiveFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+  <span class="k">finally</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c">#cleanup</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">handleRelativeCss</span><span class="p">(</span><span class="n">cssCompiler</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">archiveFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">):</span>
+  <span class="n">status</span><span class="p">,</span> <span class="n">output</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getstatusoutput</span><span class="p">(</span><span class="s">&#39;java -jar &quot;</span><span class="si">%s</span><span class="s">&quot; --allow-unrecognized-functions --allow-unrecognized-properties &quot;</span><span class="si">%s</span><span class="s">&quot; -o &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">cssCompiler</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">archiveFile</span><span class="p">))</span>
+  <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span> <span class="c">#there is warning</span>
+      <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Warning when compiling </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filePath</span><span class="p">)</span>
+      <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+      <span class="k">print</span> <span class="s">&quot;waring when compiling </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="n">filePath</span>
+    <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+      <span class="k">return</span> <span class="mi">1</span>
+  <span class="k">else</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      <p>compile fails, write the original file to temp</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error when compiling </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filePath</span><span class="p">)</span> 
+    <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="n">archiveF</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">archiveF</span><span class="p">)</span>
+    <span class="n">archiveF</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;Error when compiling </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="n">filePath</span>
+  <span class="k">return</span> <span class="n">status</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">isModified</span><span class="p">(</span><span class="n">archiveFilePath</span><span class="p">,</span> <span class="n">filePath</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">archiveTime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">archiveFilePath</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
+    <span class="n">fileTime</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">stat</span><span class="p">(</span><span class="n">filePath</span><span class="p">)</span><span class="o">.</span><span class="n">st_mtime</span>
+    <span class="k">return</span> <span class="n">fileTime</span> <span class="o">&gt;=</span> <span class="n">archiveTime</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">True</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">handleRelativeJs</span><span class="p">(</span><span class="n">jsCompiler</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">archiveFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">):</span>
+  <span class="n">status</span><span class="p">,</span> <span class="n">output</span> <span class="o">=</span> <span class="n">commands</span><span class="o">.</span><span class="n">getstatusoutput</span><span class="p">(</span><span class="s">&#39;java -jar &quot;</span><span class="si">%s</span><span class="s">&quot; --js &quot;</span><span class="si">%s</span><span class="s">&quot; &gt; &quot;</span><span class="si">%s</span><span class="s">&quot;&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">jsCompiler</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">archiveFile</span><span class="p">))</span>
+
+  <span class="k">if</span> <span class="n">status</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span> <span class="c"># successfully compiled the file</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span> <span class="c"># there are warnings</span>
+      <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Warning when compiling </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filePath</span><span class="p">)</span>
+      <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+      <span class="k">print</span> <span class="s">&quot;waring when compiling </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span><span class="n">filePath</span>
+    <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">output</span><span class="p">:</span>
+      <span class="k">return</span> <span class="mi">1</span>
+  <span class="k">else</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>compile fails, write the original file to temp</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s">&quot;Error when compiling </span><span class="si">%s</span><span class="se">\n</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filePath</span><span class="p">)</span> 
+    <span class="n">logFile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+
+    <span class="n">archiveF</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+    <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">archiveF</span><span class="p">)</span>
+    <span class="n">archiveF</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+    <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">filePath</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&quot;error when compiling </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filePath</span>
+  
+  <span class="k">return</span> <span class="n">status</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">handleScript</span><span class="p">(</span><span class="n">script</span><span class="p">,</span> <span class="n">sjdir</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">jsCompiler</span><span class="p">):</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="n">uri</span> <span class="o">=</span> <span class="n">script</span><span class="p">[</span><span class="s">&#39;src&#39;</span><span class="p">]</span> 
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">uri</span><span class="p">:</span>
+      <span class="k">return</span>
+  
+    <span class="k">elif</span> <span class="n">isFullUri</span><span class="p">(</span><span class="n">uri</span><span class="p">):</span>
+      <span class="n">status</span> <span class="o">=</span> <span class="n">handleFullUri</span><span class="p">(</span><span class="n">uri</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">status</span><span class="o">!=</span><span class="mi">0</span><span class="p">:</span>
+        <span class="k">print</span> <span class="s">&quot;error happens when trying to downlaod </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">uri</span>
+      <span class="k">return</span> <span class="n">status</span>
+ 
+    <span class="k">else</span><span class="p">:</span> <span class="c"># relative uri</span>
+      <span class="n">filePath</span><span class="o">=</span><span class="n">sjdir</span><span class="o">+</span><span class="s">&#39;/&#39;</span><span class="o">+</span><span class="n">uri</span>
+      <span class="n">archiveFile</span> <span class="o">=</span> <span class="n">sjdir</span><span class="o">+</span><span class="s">&#39;/.archive/&#39;</span><span class="o">+</span><span class="n">uri</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">,</span><span class="s">&#39;-&#39;</span><span class="p">)</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">isModified</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="n">filePath</span><span class="p">):</span> <span class="c"># the file has not been modified since last time</span>
+        <span class="k">print</span> <span class="s">&quot;found an archived version of </span><span class="si">%s</span><span class="s">&quot;</span> <span class="o">%</span> <span class="n">filePath</span>
+        <span class="k">return</span> <span class="n">writeFileToTarget</span><span class="p">(</span><span class="n">archiveFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">handleRelativeJs</span><span class="p">(</span><span class="n">jsCompiler</span><span class="p">,</span> <span class="n">filePath</span><span class="p">,</span> <span class="n">archiveFile</span><span class="p">,</span> <span class="n">logFile</span><span class="p">,</span> <span class="n">targetFile</span><span class="p">)</span>
+  <span class="k">finally</span><span class="p">:</span>
+    <span class="k">pass</span> <span class="c">#cleanup</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      <p>write the file(of path)'s content to targetFileHandler</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">writeFileToTarget</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">targetFileHandler</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="k">try</span><span class="p">:</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">targetFileHandler</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">0</span>
+  <span class="k">except</span><span class="p">:</span>
+    <span class="k">return</span> <span class="mi">1</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      <p>uri is a full uri if it begins with "http://" or "https:// or "//"</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">isFullUri</span><span class="p">(</span><span class="n">uri</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;http://&#39;</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">uri</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;https://&#39;</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span> <span class="ow">or</span> <span class="n">uri</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s">&#39;//&#39;</span><span class="p">)</span><span class="o">==</span><span class="mi">0</span><span class="p">:</span>
+    <span class="k">return</span> <span class="bp">True</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">main</span><span class="p">():</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>The script takes exactly 6 arguments. If it is not, print command line information and exit. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span><span class="o">!=</span><span class="mi">7</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">&quot;simplifyHtml takes exactly 6 arguments: sourceJsDirectory, sourceCssDirectory, sourceHtml, targetJsDirectory, targetCssDirectory, targetHtml&quot;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p>Convert all paths to absolute paths. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="n">srcJsDir</span><span class="p">,</span> <span class="n">srcCssDir</span><span class="p">,</span> <span class="n">srcHtml</span><span class="p">,</span> <span class="n">tarJsDir</span><span class="p">,</span> <span class="n">tarCssDir</span><span class="p">,</span> <span class="n">tarHtml</span> <span class="o">=</span> <span class="p">[</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">abspath</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      <p>Begin the work.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="n">simplify</span><span class="p">(</span><span class="n">srcJsDir</span><span class="p">,</span> <span class="n">srcCssDir</span><span class="p">,</span> <span class="n">srcHtml</span><span class="p">,</span> <span class="n">tarJsDir</span><span class="p">,</span> <span class="n">tarCssDir</span><span class="p">,</span> <span class="n">tarHtml</span><span class="p">)</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
+      <p>Run the script.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">if</span> <span class="n">__name__</span><span class="o">==</span><span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+  <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+  <span class="n">main</span><span class="p">()</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <p>Print the time used for this run. </p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>  <span class="k">print</span> <span class="s">&quot;time total: </span><span class="si">%s</span><span class="s"> seconds&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span><span class="o">-</span><span class="n">start</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>

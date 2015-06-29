@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Slides</title>
+    <meta name="viewport" content="width=device-width, maximum-scale=1, user-scalable=no" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+	<script type="text/javascript" src="js/all.js"></script>
+	<script type="text/javascript" src="indexRequire.js"></script>
+	
+	<link rel="stylesheet" type="text/css" href="styles/all.css"></link>
+
+</head>
+<body>
+<script id="file-item-view" type="text/x-handlebars-template">
+    <div class="file-item">
+        <div class="file-icon">
+            <img src="{{iconLink}}">
+        </div>
+        <div class="file-title">
+            {{title}}
+        </div>
+        <div class="file-date">
+            {{timeAgo}}
+        </div>
+        <div class="file-size">
+            {{fileSizeInM}}
+        </div>
+    </div>
+</script>
+</body>
+</html>

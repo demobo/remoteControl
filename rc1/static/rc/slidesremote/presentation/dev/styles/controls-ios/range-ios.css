@@ -1,0 +1,26 @@
+
+.ios.range-dot {
+    background: #fff;
+    border-radius: 28px;
+    border: 1px solid #f9f8f9;
+    box-shadow: 0px 7px 15px 0px rgba(0,0,0,0.25);
+    z-index: 2;
+}
+.ios.range-bar {
+    z-index: 1;
+    background: #327cf8;
+    pointer-events: none;
+}
+.ios.range-background {
+    z-index: 0;
+    background: #aeaeae;
+}
+.ios.range-dot::selection {
+    background: none;
+}
+.ios.range-bar::selection {
+    background: none;
+}
+.ios.range-background::selection {
+    background: none;
+}
